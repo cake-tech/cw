@@ -5,7 +5,7 @@ import LocalAuthentication
 //public struct AuthenticationHandler: AsyncHandler {
 //    public func handle(action: SettingsActions, store: Store<ApplicationState>, handler: @escaping (AnyAction?) -> Void) {
 //        guard case let .authentication(pin) = action else { return }
-//        
+//
 //        workQueue.async {
 //            do {
 //                let originPinCode = try KeychainStorageImpl.standart.fetch(forKey: .pinCode)
@@ -82,6 +82,11 @@ public struct ChangeCurrentNodeHandler: Handler {
         UserDefaults.standard.set(node.uri, forKey: Configurations.DefaultsKeys.nodeUri)
         UserDefaults.standard.set(node.login, forKey: Configurations.DefaultsKeys.nodeLogin)
         UserDefaults.standard.set(node.password, forKey: Configurations.DefaultsKeys.nodePassword)
+        
+        //post a notification that the current node has changed
+        DispatchQueue.global(qos:.utility).async { NotificationCenter.default.post(name:Notification.Name("ActiveNodeChanged"), object:node.uri)
+        }
+        
         return SettingsState.Action.changeCurrentNode(node)
     }
 }

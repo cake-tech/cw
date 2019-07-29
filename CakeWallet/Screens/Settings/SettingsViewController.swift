@@ -39,7 +39,7 @@ final class TextViewUITableViewCell: FlexCell {
 
 final class SettingsViewController: BaseViewController<SettingsView>, UITableViewDelegate, UITableViewDataSource {
     enum SettingsSections: Int {
-        case wallets, personal, backup, manualBackup, advanced, support
+        case nodes, wallets, personal, backup, manualBackup, support
     }
     
     struct SettingsTextViewCellItem: CellItem {
@@ -129,6 +129,20 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         }
     }
     
+    struct SettingsInformativeCellItem: CellItem {
+        let title: String
+        let informativeText:String
+        
+        init(title: String, informativeText:String) {
+            self.title = title
+            self.informativeText = informativeText
+        }
+        
+        func setup(cell: SettingsInformativeUITableViewCell) {
+            cell.configure(title: self.title, informativeText: self.informativeText)
+        }
+    }
+    
     weak var settingsFlow: SettingsFlow?
     
     var transactionPriority: TransactionPriority {
@@ -150,13 +164,22 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         self.store = store
         self.settingsFlow = settingsFlow
         self.backupService = backupService
-        sections = [.wallets: [], .personal: [], .advanced: []]
+        sections = [.wallets: [], .personal: []]
         super.init()
         tabBarItem = UITabBarItem(
             title: title,
             image: UIImage(named: "settings_icon")?.resized(to: CGSize(width: 28, height: 28)).withRenderingMode(.alwaysOriginal),
             selectedImage: UIImage(named: "settings_selected_icon")?.resized(to: CGSize(width: 28, height: 28)).withRenderingMode(.alwaysOriginal)
         )
+        NotificationCenter.default.addObserver(self, selector: #selector(activeNodeChanged), name: Notification.Name("ActiveNodeChanged"), object: nil)
+    }
+    
+    //NotificationCenter calls this function when the active node changes
+    @objc func activeNodeChanged() {
+        DispatchQueue.main.sync {
+            self.configureBinds()
+            contentView.table.reloadData()
+        }
     }
     
     override func configureBinds() {
@@ -164,7 +187,8 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
             SettingsTextViewCellItem.self,
             SettingsCellItem.self,
             SettingsPickerCellItem<TransactionPriority>.self,
-            SettingsPickerCellItem<FiatCurrency>.self
+            SettingsPickerCellItem<FiatCurrency>.self,
+            SettingsInformativeCellItem.self
             ])
         contentView.table.delegate = self
         contentView.table.dataSource = self
@@ -177,6 +201,15 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         
         let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         navigationItem.backBarButtonItem = backButton
+        
+        //node related cells
+        let currentNode = SettingsInformativeCellItem(title: NSLocalizedString("current_node", comment: ""), informativeText:self.store.state.settingsState.node!.uri)
+        
+        let nodeList = SettingsCellItem(
+            title: NSLocalizedString("manage_nodes", comment: ""),
+            action: { [weak self] in
+                self?.settingsFlow?.change(route: .nodes)
+        })
         
         let fiatCurrencyCellItem = SettingsPickerCellItem<FiatCurrency>(
             title: NSLocalizedString("currency", comment: ""),
@@ -220,17 +253,13 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
                     })
                 )
         })
-//        let rememberPasswordCellItem = SettingsSwitchCellItem(
-//            title: NSLocalizedString("remember_pin", comment: ""),
-//            isOn: false // accountSettings.isPasswordRemembered
-//        ) { [weak self] isOn, item in
-//            //                self?.accountSettings.isPasswordRemembered = isOn
-//        }
-        let daemonSettingsCellItem = SettingsCellItem(
-            title: NSLocalizedString("node_settings", comment: ""),
-            action: { [weak self] in
-                self?.settingsFlow?.change(route: .nodes)
-        })
+        //        let rememberPasswordCellItem = SettingsSwitchCellItem(
+        //            title: NSLocalizedString("remember_pin", comment: ""),
+        //            isOn: false // accountSettings.isPasswordRemembered
+        //        ) { [weak self] isOn, item in
+        //            //                self?.accountSettings.isPasswordRemembered = isOn
+        //        }
+        
         let termSettingsCellItem = SettingsCellItem(
             title: NSLocalizedString("terms", comment: ""),
             action: { [weak self] in
@@ -407,25 +436,30 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
                     actions: [cancelAction, changeAction])
         })
         
+        sections[.nodes] = [
+            currentNode,
+            nodeList
+        ]
+        
         sections[.wallets] = [
             fiatCurrencyCellItem,
             feePriorityCellItem
         ]
+        
         sections[.personal] = [
             changePinCellItem,
             changeLanguage,
             biometricCellItem,
-//            rememberPasswordCellItem
+            //            rememberPasswordCellItem
         ]
-        sections[.advanced] = [
-            daemonSettingsCellItem
-        ]
+        
         sections[.backup] = [
             showMasterPasswordCellItem,
             changeMasterPassword,
             autoBackupSwitcher,
             backupNowCellItem
         ]
+        
         sections[.manualBackup] = [
             createBackupCellItem
         ]
@@ -539,12 +573,12 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         view.addSubview(titleLabel)
         
         switch section {
+        case .nodes:
+            titleLabel.text = NSLocalizedString("nodes", comment: "")
         case .personal:
             titleLabel.text = NSLocalizedString("personal", comment: "")
         case .wallets:
             titleLabel.text = NSLocalizedString("wallets", comment: "")
-        case .advanced:
-            titleLabel.text = NSLocalizedString("advanced", comment: "")
         case .support:
             titleLabel.text = NSLocalizedString("support", comment: "")
         case .backup:
