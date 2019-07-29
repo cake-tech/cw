@@ -164,7 +164,8 @@
 "change_pin" = "Alterar PIN";
 "allow_biometric_authentication" = "Permitir autenticação biométrica";
 "remember_pin" = "Lembrar PIN";
-"node_settings" = "Configuração do Daemon";
+"current_node" = "Nó atual";
+"manage_nodes" = "Gerenciar nós";
 "backup_password" = "Senha de backup";
 "show_backup_password" = "A senha de backup foi alterada com sucesso";
 "show_password" = "Mostrar senha";

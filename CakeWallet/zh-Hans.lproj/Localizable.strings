@@ -161,7 +161,8 @@
 "change_pin" = "更改pin";
 "allow_biometric_authentication" = "允许生物识别验证";
 "remember_pin" = "记住 pin";
-"node_settings" = "Daemon 设置";
+"current_node" = "当前节点";
+"manage_nodes" = "管理节点";
 "backup_password" = "备份密码";
 "show_backup_password" = "备份密码已成功更改";
 "show_password" = "显示密码";

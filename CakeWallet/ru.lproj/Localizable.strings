@@ -167,7 +167,8 @@
 "change_pin" = "Изменить пин-код";
 "allow_biometric_authentication" = "Разрешить биометрическую аутентификацию";
 "remember_pin" = "Запомнить пин-код";
-"node_settings" = "Настройки удаленного узла";
+"current_node" = "текущий узел";
+"manage_nodes" = "управлять узлами";
 "backup_password" = "Пароль от бэкапа";
 "show_backup_password" = "Показать бэкап-пароль";
 "show_password" = "Показать пароль";

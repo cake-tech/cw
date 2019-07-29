@@ -168,7 +168,8 @@
 "change_pin" = "PIN ändern";
 "allow_biometric_authentication" = "Biometrische Authentifizierung erlauben";
 "remember_pin" = "PIN merken";
-"node_settings" = "Daemon-Einstellungen";
+"current_node" = "Aktueller Knoten";
+"manage_nodes" = "Knoten verwalten";
 "backup_password" = "Sicherungskennwort";
 "show_backup_password" = "Das Sicherungskennwort wurde erfolgreich geändert";
 "show_password" = "Passwort anzeigen";

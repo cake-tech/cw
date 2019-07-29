@@ -167,7 +167,8 @@
 "change_pin" = "핀 변경 ";
 "allow_biometric_authentication" = "바이오메트릭 승인 ";
 "remember_pin" = "핀 기억하기 ";
-"node_settings" = "데몬 세팅 ";
+"current_node" = "현재 노드";
+"manage_nodes" = "노드 관리";
 "backup_password" = "백업 비밀번호";
 "show_backup_password" = "백업 비밀번호가 성공적으로 변경되었습니다.";
 "show_password" = "암호 표시";

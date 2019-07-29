@@ -167,7 +167,8 @@
 "change_pin" = "ピン変更";
 "allow_biometric_authentication" = "生体認証を許可";
 "remember_pin" = "ピンを記憶";
-"node_settings" = "デーモン設定";
+"current_node" = "現在のノード";
+"manage_nodes" = "ノードを管理する";
 "backup_password" = "バックアップパスワード";
 "show_backup_password" = "バックアップパスワードが正常に変更されました";
 "show_password" = "パスワードを表示";
