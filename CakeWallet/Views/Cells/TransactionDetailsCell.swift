@@ -13,6 +13,7 @@ final class TransactionDetailsCell: FlexCell {
     override func configureView() {
         super.configureView()
         contentView.backgroundColor = .white
+        selectionStyle = .none
         titleLabel.numberOfLines = 0
         valueLabel.numberOfLines = 0
     }

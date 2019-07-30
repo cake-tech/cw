@@ -3,10 +3,11 @@ import CakeWalletLib
 import CWMonero
 
 final class TransactionDetailsViewController: BaseViewController<TransactionDetailsView>, UITableViewDataSource, UITableViewDelegate {
+    var exchangeFlow: ExchangeFlow?
     private static let emptyPaymentId = "0000000000000000"
     private(set) var items: [TransactionDetailsCellItem]
     private let transactionDescription: TransactionDescription
-    
+
     init(transactionDescription: TransactionDescription) {
         self.transactionDescription = transactionDescription
         items = []
@@ -15,6 +16,9 @@ final class TransactionDetailsViewController: BaseViewController<TransactionDeta
     
     override func configureBinds() {
         title = NSLocalizedString("transaction_details", comment: "")
+        let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+        navigationItem.backBarButtonItem = backButton
+        
         contentView.table.dataSource = self
         contentView.table.delegate = self
         contentView.table.register(items: [TransactionDetailsCellItem.self])
@@ -57,6 +61,44 @@ final class TransactionDetailsViewController: BaseViewController<TransactionDeta
         UIPasteboard.general.string = item.value
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let item = items[indexPath.row]
+        
+        if item.row == .exchangeID {
+            showTradeDetails()
+        }
+    }
+    
+    func showTradeDetails() {
+        if let expectedTradeInfoJSON = ExchangeTransactions.shared.getTradeByTransactionID(by: transactionDescription.id) {
+            let tradeInfo = TradeInfo(json: expectedTradeInfoJSON)
+            
+            if (tradeInfo.provider.count != 0) {
+                exchangeFlow?.change(route: .tradeDetails(tradeInfo))
+                return
+            }
+            
+            presentExchangeProviderSelection(tradeInfo: tradeInfo)
+        }
+    }
+    
+    func presentExchangeProviderSelection(tradeInfo: TradeInfo) {
+        let pickerVC = PickerViewController(items: ExchangeProvider.allCases, selectedItem: .xmrto)
+        
+        pickerVC.pickerTitle = "Select exchange provider"
+        pickerVC.onPick = { [weak self] provider in
+            pickerVC.onDismissHandler = {
+                var withProvider = tradeInfo
+                withProvider.provider = provider.rawValue
+                
+                self?.exchangeFlow?.change(route: .tradeDetails(withProvider))
+            }
+        }
+        
+        pickerVC.modalPresentationStyle = .overFullScreen
+        present(pickerVC, animated: true)
+    }
+    
     private func update(transactionDescription: TransactionDescription) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMM d, yyyy HH:mm"
@@ -86,13 +128,15 @@ final class TransactionDetailsViewController: BaseViewController<TransactionDeta
             items.append(TransactionDetailsCellItem(row: .fee, value: fee))
         }
         
-        if let tradeID = ExchangeTransactions.shared.getTradeID(by: transactionDescription.id) {
+        if let tradeID = transactionDescription.tradeId() {
             items.append(TransactionDetailsCellItem(row: .exchangeID, value: tradeID))
         }
         
-        if
-            let transactionKey = getTransactionKey(for: transactionDescription.id),
-            !transactionKey.isEmpty {
+        if let exchangeProvider = transactionDescription.exchangeProvider() {
+            items.append(TransactionDetailsCellItem(row: .exchange, value: exchangeProvider))
+        }
+        
+        if let transactionKey = getTransactionKey(for: transactionDescription.id), !transactionKey.isEmpty {
             items.append(TransactionDetailsCellItem(row: .transactionKey , value: transactionKey))
         }
         
@@ -108,3 +152,4 @@ final class TransactionDetailsViewController: BaseViewController<TransactionDeta
         }
     }
 }
+

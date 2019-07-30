@@ -377,12 +377,15 @@ final class ExchangeResultViewController: BaseViewController<ExchangeResultView>
                             switch result {
                             case .success(_):
                                 self?.onTransactionCommited()
-
-                                if let tradeID = self?.trade.value.id {
+                                
+                                if let trade = self?.trade {
                                     try? ExchangeTransactions.shared.add(
-                                        tradeID: tradeID,
-                                        transactionID: transactionID)
+                                        tradeID: trade.value.id,
+                                        transactionID: transactionID,
+                                        provider: trade.value.provider.rawValue
+                                    )
                                 }
+
                             case let .failed(error):
                                 self?.showErrorAlert(error: error)
                                 break

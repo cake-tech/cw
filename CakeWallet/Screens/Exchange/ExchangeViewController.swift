@@ -94,7 +94,7 @@ public enum ExchangeTradeState: String, Formatted {
     }
 }
 
-public enum ExchangeProvider {
+public enum ExchangeProvider: String, CaseIterable {
     case morph, xmrto, changenow
 }
 
@@ -853,14 +853,6 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         }
         navigationItem.titleView = exchangeNameView
         
-//        let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
-//        navigationItem.backBarButtonItem = backButton
-        
-//        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Switch exchange", style: .plain, target: nil, action: nil)
-//        navigationItem.leftBarButtonItem?.rx.tap.subscribe(onNext: { [weak self] _ in
-//            self?.showExchangeSelection()
-//        }).disposed(by: disposeBag)
-        
         (contentView.receiveCardView.addressContainer.textView.originText <-> receiveAddress)
             .disposed(by: disposeBag)
 
@@ -990,6 +982,12 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
             target: self,
             action: #selector(clear))
         
+        let tradesHistoryButton = UIBarButtonItem(
+            title: "History",
+            style: .plain,
+            target: self,
+            action: #selector(navigateToTradeHistory))
+        
         clearButton.setTitleTextAttributes([
             NSAttributedStringKey.font: applyFont(ofSize: 16, weight: .regular),
             NSAttributedStringKey.foregroundColor: UIColor.wildDarkBlue], for: .normal)
@@ -997,6 +995,10 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
             NSAttributedStringKey.font: applyFont(ofSize: 16, weight: .regular),
             NSAttributedStringKey.foregroundColor: UIColor.wildDarkBlue], for: .highlighted)
         navigationItem.rightBarButtonItem = clearButton
+        
+        tradesHistoryButton.setTitleTextAttributes([NSAttributedStringKey.font: applyFont(ofSize: 16, weight: .regular)], for: .normal)
+        tradesHistoryButton.setTitleTextAttributes([NSAttributedStringKey.font: applyFont(ofSize: 16, weight: .regular)], for: .highlighted)
+        navigationItem.leftBarButtonItem = tradesHistoryButton
         XMRTOExchange.asyncUpdateUri()
     }
     
@@ -1005,10 +1007,7 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         store.subscribe(self, onlyOnChange: [
             \ApplicationState.exchangeState,
             \ApplicationState.walletState
-            ])
-//        store.dispatch(exchangeActionCreators.fetchRates()) {
-//            //
-//        }
+        ])
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -1302,6 +1301,11 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
     }
     
     @objc
+    func navigateToTradeHistory() {
+        exchangeFlow?.change(route: .tradesHistory)
+    }
+    
+    @objc
     private func exhcnage() {
         let refundAddress = store.state.walletState.walletType.currency == depositCrypto.value
             ? store.state.walletState.address
@@ -1517,18 +1521,40 @@ class ExchangeTransactions {
         json = ExchangeTransactions.load()
     }
     
+    func getAll() -> [JSON]? {
+        return json.array
+    }
+    
+    func getExchangeProvider(by transactionID: String) -> String? {
+        return json.array?.filter({ j -> Bool in
+            return j["txID"].stringValue == transactionID
+        }).first?["provider"].string
+    }
+    
     func getTradeID(by transactionID: String) -> String? {
         return json.array?.filter({ j -> Bool in
             return j["txID"].stringValue == transactionID
         }).first?["tradeID"].string
     }
     
-    func add(tradeID: String, transactionID: String) throws {
+    func getTradeByTransactionID(by transactionID: String) -> JSON? {
+        return json.array?.filter({ j -> Bool in
+            return j["txID"].stringValue == transactionID
+        }).first
+    }
+    
+    func add(tradeID: String, transactionID: String, provider: String) throws {
         guard getTradeID(by: transactionID) == nil else {
             return
         }
         
-        let item = JSON(["tradeID": tradeID, "txID": transactionID])
+        let item = JSON([
+            "tradeID": tradeID,
+            "txID": transactionID,
+            "provider": provider,
+            "date": Date().timeIntervalSince1970
+        ])
+        
         let array = json.arrayValue + [item]
         json = JSON(array)
         try save()

@@ -1,26 +1,30 @@
 import UIKit
 import FlexLayout
 
-final class TransactionDetailsView: BaseFlexView {
-    let cardView: CardView
+final class TradesHistoryView: BaseFlexView {
     let table: UITableView
     
     required init() {
-        cardView = CardView()
         table = UITableView()
+        
         super.init()
     }
     
     override func configureView() {
         super.configureView()
+        
         table.tableFooterView = UIView()
         table.backgroundColor = .clear
+        table.separatorStyle = .none
+        backgroundColor = .white
     }
     
-    
     override func configureConstraints() {
-        rootFlexContainer.flex.padding(20).backgroundColor(.clear).define { flex in
-            flex.addItem(table).width(100%).height(100%)
+        rootFlexContainer.flex
+            .paddingTop(10)
+            .backgroundColor(.white)
+            .define { flex in
+                flex.addItem(table).height(100%).width(100%)
         }
     }
 }
