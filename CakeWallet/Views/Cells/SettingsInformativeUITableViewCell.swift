@@ -16,11 +16,12 @@ final class SettingsInformativeUITableViewCell: FlexCell, UITextFieldDelegate {
         accessoryTextField.textColor = Theme.current.lightText
         accessoryTextField.backgroundColor = .white
         accessoryTextField.delegate = self
+        accessoryTextField.isUserInteractionEnabled = false
         backgroundColor = .white
     }
     
     override func configureConstraints() {
-        accessoryTextField.frame = CGRect(origin: .zero, size: CGSize(width: 200, height: 50))
+        accessoryTextField.frame = CGRect(origin: .zero, size: CGSize(width: 250, height: 50))
     }
     
     func configure(title: String, informativeText:String) {

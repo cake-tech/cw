@@ -166,7 +166,7 @@
 "change_pin" = "Change pin";
 "allow_biometric_authentication" = "Allow biometric authentication";
 "remember_pin" = "Remember pin";
-"current_node" = "Using node";
+"current_node" = "Current node";
 "manage_nodes" = "Manage remote nodes";
 "backup_password" = "Backup password";
 "show_backup_password" = "Show backup password";

@@ -37,7 +37,12 @@ final class TextViewUITableViewCell: FlexCell {
     }
 }
 
-final class SettingsViewController: BaseViewController<SettingsView>, UITableViewDelegate, UITableViewDataSource {
+private protocol ActionableCellItem {
+    var action: (() -> Void)? { get }
+}
+
+final class SettingsViewController: BaseViewController<SettingsView>, UITableViewDelegate, UITableViewDataSource, StoreSubscriber {
+    typealias StoreListenerState = ApplicationState
     enum SettingsSections: Int {
         case nodes, wallets, personal, backup, manualBackup, support
     }
@@ -54,7 +59,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         }
     }
     
-    struct SettingsCellItem: CellItem {
+    struct SettingsCellItem: CellItem, ActionableCellItem {
         let title: String
         let action: (() -> Void)?
         let image: UIImage?
@@ -129,13 +134,15 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         }
     }
     
-    struct SettingsInformativeCellItem: CellItem {
+    struct SettingsInformativeCellItem: CellItem, ActionableCellItem {
         let title: String
         let informativeText:String
+        let action: (() -> Void)?
         
-        init(title: String, informativeText:String) {
+        init(title: String, informativeText:String, action:(() -> Void)?) {
             self.title = title
             self.informativeText = informativeText
+            self.action = action
         }
         
         func setup(cell: SettingsInformativeUITableViewCell) {
@@ -171,15 +178,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
             image: UIImage(named: "settings_icon")?.resized(to: CGSize(width: 28, height: 28)).withRenderingMode(.alwaysOriginal),
             selectedImage: UIImage(named: "settings_selected_icon")?.resized(to: CGSize(width: 28, height: 28)).withRenderingMode(.alwaysOriginal)
         )
-        NotificationCenter.default.addObserver(self, selector: #selector(activeNodeChanged), name: Notification.Name("ActiveNodeChanged"), object: nil)
-    }
-    
-    //NotificationCenter calls this function when the active node changes
-    @objc func activeNodeChanged() {
-        DispatchQueue.main.sync {
-            self.configureBinds()
-            contentView.table.reloadData()
-        }
+        self.store.subscribe(self, onlyOnChange: [\ApplicationState.settingsState])
     }
     
     override func configureBinds() {
@@ -202,15 +201,11 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         navigationItem.backBarButtonItem = backButton
         
-        //node related cells
-        let currentNode = SettingsInformativeCellItem(title: NSLocalizedString("current_node", comment: ""), informativeText:self.store.state.settingsState.node!.uri)
-        
-        let nodeList = SettingsCellItem(
-            title: NSLocalizedString("manage_nodes", comment: ""),
+        let currentNode = SettingsInformativeCellItem(title: NSLocalizedString("current_node", comment: ""), informativeText:self.store.state.settingsState.node!.uri,
             action: { [weak self] in
-                self?.settingsFlow?.change(route: .nodes)
+                self?.settingsFlow?.change(route:.nodes)
         })
-        
+
         let fiatCurrencyCellItem = SettingsPickerCellItem<FiatCurrency>(
             title: NSLocalizedString("currency", comment: ""),
             pickerOptions: FiatCurrency.all,
@@ -437,8 +432,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         })
         
         sections[.nodes] = [
-            currentNode,
-            nodeList
+            currentNode
         ]
         
         sections[.wallets] = [
@@ -514,8 +508,17 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         title = NSLocalizedString("settings", comment: "")
     }
     
-    // MARK: UITableViewDataSource
+    // MARK: StoreSubscriber
+    private var displayedNodeHash:Int = 0
+    func onStateChange(_ state: ApplicationState) {
+        if (state.settingsState.node != nil && state.settingsState.node!.uri.hashValue != displayedNodeHash) {
+            self.configureBinds()
+            contentView.table.reloadData()
+            displayedNodeHash = state.settingsState.node!.uri.hashValue
+        }
+    }
     
+    // MARK: UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
@@ -593,7 +596,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard
             let section = SettingsSections(rawValue: indexPath.section),
-            let item = sections[section]?[indexPath.row] as? SettingsCellItem else {
+            let item = sections[section]?[indexPath.row] as? ActionableCellItem else {
                 tableView.deselectRow(at: indexPath, animated: true)
                 return
         }

@@ -83,10 +83,6 @@ public struct ChangeCurrentNodeHandler: Handler {
         UserDefaults.standard.set(node.login, forKey: Configurations.DefaultsKeys.nodeLogin)
         UserDefaults.standard.set(node.password, forKey: Configurations.DefaultsKeys.nodePassword)
         
-        //post a notification that the current node has changed
-        DispatchQueue.global(qos:.utility).async { NotificationCenter.default.post(name:Notification.Name("ActiveNodeChanged"), object:node.uri)
-        }
-        
         return SettingsState.Action.changeCurrentNode(node)
     }
 }

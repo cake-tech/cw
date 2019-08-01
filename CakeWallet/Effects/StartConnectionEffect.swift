@@ -99,11 +99,6 @@ func switchNode(skipNodes: [NodeDescription] = []) {
                 SettingsActions.changeCurrentNode(to: node)
             )
             
-            //post a notification that the current node has changed
-            DispatchQueue.global(qos:.utility).async {
-                NotificationCenter.default.post(name:Notification.Name("ActiveNodeChanged"), object:node.uri)
-            }
-            
             print("Connection to node: \(node)")
             return
         }
