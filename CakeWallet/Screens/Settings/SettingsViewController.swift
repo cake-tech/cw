@@ -203,7 +203,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         navigationItem.backBarButtonItem = backButton
         
-        let currentNode = SettingsInformativeCellItem(title: NSLocalizedString("current_node", comment: ""), informativeText:self.store.state.settingsState.node!.uri,
+        let currentNode = SettingsInformativeCellItem(title: NSLocalizedString("current_node", comment: ""), informativeText:(self.store.state.settingsState.node?.uri ?? ""),
             action: { [weak self] in
                 self?.settingsFlow?.change(route:.nodes)
         })
