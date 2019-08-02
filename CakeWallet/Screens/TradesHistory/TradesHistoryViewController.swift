@@ -10,7 +10,8 @@ final class TradeTableCell: FlexCell {
     static let height = 56 as CGFloat
     let idLabel = UILabel()
     let dateLabel = UILabel()
-    let leftViewWrapper = UIView()
+    let leftView = UIView()
+    let exchangeProviderIcon = UIImageView()
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -24,27 +25,40 @@ final class TradeTableCell: FlexCell {
         selectionStyle = .none
         
         idLabel.font = applyFont(ofSize: 16)
-        dateLabel.font = applyFont(ofSize: 16)
+        dateLabel.font = applyFont(ofSize: 15)
+        dateLabel.textColor = UIColor.grayBlue
     }
     
     override func configureConstraints() {
         super.configureConstraints()
         
+        leftView.flex
+            .direction(.row).justifyContent(.start).alignItems(.center)
+            .define { flex in
+                flex.addItem(exchangeProviderIcon).width(30).height(30).marginRight(15)
+                flex.addItem(idLabel)
+        }
+        
         contentView.flex
-            .direction(.row).alignItems(.center)
+            .direction(.row).justifyContent(.spaceBetween).alignItems(.center)
             .height(AddressTableCell.height).width(100%)
             .padding(5, 15, 5, 15)
             .define { flex in
-                flex.addItem(leftViewWrapper).define({ wrapperFlex in
-                    wrapperFlex.addItem(idLabel)
-                    wrapperFlex.addItem(dateLabel)
-                })
+                flex.addItem(leftView)
+                flex.addItem(dateLabel)
         }
     }
     
     func configure(tradeID: String, date: Double, provider: String) {
-        idLabel.text = tradeID
-        idLabel.flex.markDirty()
+        if let exchangeProvider = ExchangeProvider(rawValue: provider) {
+           let iconName = ExchangeProvider.iconName(exchangeProvider)
+            
+            exchangeProviderIcon.image = UIImage(named: iconName())
+            exchangeProviderIcon.flex.markDirty()
+            
+            idLabel.text = ExchangeProvider.formatted(exchangeProvider)()
+            idLabel.flex.markDirty()
+        }
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMM d, yyyy HH:mm"

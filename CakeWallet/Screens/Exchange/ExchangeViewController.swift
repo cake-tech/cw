@@ -96,6 +96,17 @@ public enum ExchangeTradeState: String, Formatted {
 
 public enum ExchangeProvider: String, CaseIterable {
     case morph, xmrto, changenow
+    
+    func iconName() -> String {
+        switch self {
+        case .morph:
+            return "morphtoken_logo"
+        case .xmrto:
+            return "xmr_to_logo"
+        case .changenow:
+            return "cn_logo"
+        }
+    }
 }
 
 extension ExchangeProvider: Formatted {
@@ -1124,17 +1135,14 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
 //        contentView.depositCardView.minLabel.isHidden = false
 //        contentView.depositCardView.maxLabel.isHidden = false
         
-        if isXMRTO {
-            exchange.fetchLimist(from: receiveCrypto.value, to: depositCrypto.value)
-                .bind(to: receiveLimits)
-                .disposed(by: disposeBag)
-            depositLimits.accept((min: nil, max: nil))
-        } else {
-            exchange.fetchLimist(from: depositCrypto.value, to: receiveCrypto.value)
-                .bind(to: depositLimits)
-                .disposed(by: disposeBag)
-            receiveLimits.accept((min: nil, max: nil))
-        }
+        let from = isXMRTO ? receiveCrypto.value : depositCrypto.value
+        let to = isXMRTO ? depositCrypto.value : receiveCrypto.value
+        
+        exchange.fetchLimist(from: from, to: to)
+            .catchErrorJustReturn((min: nil, max: nil))
+            .bind(to: receiveLimits)
+            .disposed(by: disposeBag)
+        depositLimits.accept((min: nil, max: nil))
         
 //        fetchLimits(for: receiveCrypto.value, and: depositCrypto.value) { [weak self] result in
 //            DispatchQueue.main.async {
@@ -1496,7 +1504,6 @@ class ExchangeTransactions {
     static let shared: ExchangeTransactions = ExchangeTransactions()
     
     private static let name = "exchange_transactions.txt"
-    
     private static var url: URL {
         return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent(name)
     }

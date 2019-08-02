@@ -3,6 +3,10 @@ import CakeWalletLib
 import CWMonero
 
 extension TransactionDescription {
+    func recipientAddress() -> String? {
+        return RecipientAddresses.shared.getRecipientAddress(by: id)
+    }
+    
     func tradeId() -> String? {
         return ExchangeTransactions.shared.getTradeID(by: id)
     }

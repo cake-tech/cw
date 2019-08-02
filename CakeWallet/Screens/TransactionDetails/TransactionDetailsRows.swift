@@ -2,7 +2,7 @@ import Foundation
 import CakeWalletLib
 
 enum TransactionDetailsRows: Stringify {
-    case id, paymentId, date, amount, height, fee, exchangeID, transactionKey, subaddresses, exchange
+    case id, paymentId, recipientAddress, date, amount, height, fee, exchangeID, transactionKey, subaddresses, exchange
     
     func string() -> String {
         switch self {
@@ -10,6 +10,9 @@ enum TransactionDetailsRows: Stringify {
             return NSLocalizedString("transaction_id", comment: "")
         case .paymentId:
             return NSLocalizedString("Payment ID", comment: "")
+        case .recipientAddress:
+            // TODO: translations
+            return "Recipient address"
         case .date:
             return NSLocalizedString("date", comment: "")
         case .amount:
