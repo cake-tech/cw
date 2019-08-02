@@ -167,6 +167,8 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         return try! KeychainStorageImpl.standart.fetch(forKey: .masterPassword)
     }
     
+    private var displayedNodeHash:Int = 0
+    
     init(store: Store<ApplicationState>, settingsFlow: SettingsFlow?, backupService: BackupServiceImpl) {
         self.store = store
         self.settingsFlow = settingsFlow
@@ -509,15 +511,14 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
     }
     
     // MARK: StoreSubscriber
-    private var displayedNodeHash:Int = 0
     func onStateChange(_ state: ApplicationState) {
-        if (state.settingsState.node != nil && state.settingsState.node!.uri.hashValue != displayedNodeHash) {
-            self.configureBinds()
+        if let node = state.settingsState.node,
+            node.uri.hashValue != displayedNodeHash {
+            configureBinds()
             contentView.table.reloadData()
-            displayedNodeHash = state.settingsState.node!.uri.hashValue
+            displayedNodeHash = node.uri.hashValue
         }
     }
-    
     // MARK: UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
