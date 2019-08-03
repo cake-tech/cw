@@ -115,7 +115,7 @@ class RecipientAddresses {
         do {
             var json = file.contentJSON() ?? JSON()
             json.dictionaryObject?[transactionId] = recipientAddress
-            try file.save(json)
+            try file.save(json: json)
         } catch {
             print(error)
         }
