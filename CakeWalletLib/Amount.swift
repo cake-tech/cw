@@ -4,6 +4,34 @@ public protocol Formatted {
     func formatted() -> String
 }
 
+public enum Balance: Formatted {
+    public static var all: [Balance] {
+        return [.full, .unlocked]
+    }
+    
+    case full, unlocked
+    
+    public init?(from string:String) {
+        switch string.uppercased() {
+        case "balance-display-type_full":
+            self = .full
+        case "balance-display-type_unlocked":
+            self = .unlocked
+        default:
+            return nil
+        }
+    }
+    
+    public func formatted() -> String {
+        switch self {
+        case .full:
+            return "balance-display-type_full"
+        case .unlocked:
+            return "balance-display-type_unlocked"
+        }
+    }
+}
+
 public protocol Currency: Formatted {}
 
 public protocol Amount: Formatted {

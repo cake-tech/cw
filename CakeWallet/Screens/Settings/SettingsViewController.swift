@@ -160,6 +160,10 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         return store.state.settingsState.fiatCurrency
     }
     
+    var balanceType: Balance {
+        return store.state.settingsState.displayBalance
+    }
+    
     private let store: Store<ApplicationState>
     private var sections: [SettingsSections: [CellAnyItem]]
     private let backupService: BackupServiceImpl
@@ -207,6 +211,12 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
             action: { [weak self] in
                 self?.settingsFlow?.change(route:.nodes)
         })
+        
+//        let displayBalances = SettingsPickerCellItem<Balance>(
+//            title: NSLocalizedString("balance_type", comment: ""),
+//            pickerOptions: Balance.all,
+//            selectedAtInted:
+//        )
 
         let fiatCurrencyCellItem = SettingsPickerCellItem<FiatCurrency>(
             title: NSLocalizedString("currency", comment: ""),
