@@ -159,7 +159,8 @@
 "change_pin" = "पिन बदलें";
 "allow_biometric_authentication" = " बॉयोमीट्रिक प्रमाणीकरण की अनुमति दें ";
 "remember_pin" = "पिन याद करें";
-"node_settings" = "डेमॉन सेटिंग ";
+"current_node" = "वर्तमान नोड";
+"manage_nodes" = "नोड्स प्रबंधित करें";
 "backup_password" = "बैकअप पासवर्ड";
 "generate_new_password" = "नया पैदा करो";
 "show_backup_password" = "बैकअप पासवर्ड सफल बदल गया है";

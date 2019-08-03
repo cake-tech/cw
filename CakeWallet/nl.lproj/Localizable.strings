@@ -167,7 +167,8 @@
 "change_pin" = "Pincode wijzigen";
 "allow_biometric_authentication" = "Biometrische authenticatie toestaan";
 "remember_pin" = "Pincode onthouden";
-"node_settings" = "Daemoninstellingen";
+"current_node" = "Huidige knooppunt";
+"manage_nodes" = "Beheer knooppunten";
 "backup_password" = "Back-upwachtwoord";
 "show_backup_password" = "Back-upwachtwoord is succesvol veranderd";
 "show_password" = "Laat wachtwoord zien";

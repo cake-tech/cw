@@ -166,7 +166,8 @@
 "change_pin" = "Cambiar PIN";
 "allow_biometric_authentication" = "Usar autenticación biométrica";
 "remember_pin" = "Recordar PIN";
-"node_settings" = "Configuración de demonio";
+"current_node" = "Nodo Actual";
+"manage_nodes" = "Gestionar Nodos";
 "backup_password" = "Contraseña de respaldo";
 "show_backup_password" = "La contraseña de respaldo ha cambiado exitosamente";
 "show_password" = "Mostrar contraseña";

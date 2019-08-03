@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -355,6 +355,7 @@
 		A591C677224112DF0051A4FE /* RecoverCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A591C676224112DF0051A4FE /* RecoverCardView.swift */; };
 		A591C67922414C420051A4FE /* UITextView+Placeholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A591C67822414C420051A4FE /* UITextView+Placeholder.swift */; };
 		A5980D2C1FFC9855647CF936 /* Pods_CWMonero.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 784D7BF72CC17977C433AE9E /* Pods_CWMonero.framework */; };
+		AEEA10E122EE79C200633C40 /* SettingsInformativeUITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEEA10E022EE79C200633C40 /* SettingsInformativeUITableViewCell.swift */; };
 		CA1D653F209A3EBB00A1FDDB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1D653E209A3EBB00A1FDDB /* AppDelegate.swift */; };
 		CA1D6554209A3EBC00A1FDDB /* CakeWalletTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1D6553209A3EBC00A1FDDB /* CakeWalletTests.swift */; };
 		CF597971B2D04B48B3BA7407 /* Pods_CakeWalletLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3BA9289B966EEF23CDA77D9 /* Pods_CakeWalletLib.framework */; };
@@ -878,6 +879,7 @@
 		A58B26C2223BA7E300AD0B97 /* CurrencyPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyPickerViewController.swift; sourceTree = "<group>"; };
 		A591C676224112DF0051A4FE /* RecoverCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverCardView.swift; sourceTree = "<group>"; };
 		A591C67822414C420051A4FE /* UITextView+Placeholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+Placeholder.swift"; sourceTree = "<group>"; };
+		AEEA10E022EE79C200633C40 /* SettingsInformativeUITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInformativeUITableViewCell.swift; sourceTree = "<group>"; };
 		B0344026ED1C3597BDD08DC1 /* Pods_CakeWallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CakeWallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA1D653B209A3EBB00A1FDDB /* CakeWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CakeWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA1D653E209A3EBB00A1FDDB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -1481,6 +1483,7 @@
 				6A212DA420DAA4DF00CD8594 /* WalletsKeysUITableViewCell.swift */,
 				6ADB035920DBFDED0050786A /* NodeTableCell.swift */,
 				0CDBEEC7227475860047A53C /* PickerTableCell.swift */,
+				AEEA10E022EE79C200633C40 /* SettingsInformativeUITableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -2336,45 +2339,12 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CakeWallet/Pods-CakeWallet-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
-				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/FlexLayout/FlexLayout.framework",
-				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/PinLayout/PinLayout.framework",
-				"${BUILT_PRODUCTS_DIR}/QRCode/QRCode.framework",
-				"${BUILT_PRODUCTS_DIR}/QRCodeReader.swift/QRCodeReader.framework",
-				"${BUILT_PRODUCTS_DIR}/RxAtomic/RxAtomic.framework",
-				"${BUILT_PRODUCTS_DIR}/RxBiBinding/RxBiBinding.framework",
-				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
-				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftSVG/SwiftSVG.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
-				"${BUILT_PRODUCTS_DIR}/SwipeCellKit/SwipeCellKit.framework",
-				"${BUILT_PRODUCTS_DIR}/VisualEffectView/VisualEffectView.framework",
-				"${BUILT_PRODUCTS_DIR}/ZIPFoundation/ZIPFoundation.framework",
-				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CakeWallet/Pods-CakeWallet-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FlexLayout.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PinLayout.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QRCode.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QRCodeReader.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxAtomic.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxBiBinding.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftSVG.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwipeCellKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VisualEffectView.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ZIPFoundation.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CakeWallet/Pods-CakeWallet-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2524,6 +2494,7 @@
 				64AA49D721457873002CE1FE /* EthereumAmount.swift in Sources */,
 				A5680F5621FF21E6005956DA /* RecoverFromKeysViewController.swift in Sources */,
 				D15BDBF522205129006320E0 /* Font.swift in Sources */,
+				AEEA10E122EE79C200633C40 /* SettingsInformativeUITableViewCell.swift in Sources */,
 				0CD650CC227B0417007D552C /* AddressTextField.swift in Sources */,
 				A5680F4C21FF07B0005956DA /* RecoverFromSeedViewCntroller.swift in Sources */,
 				0CCD600F2272E7810038B602 /* TransactionDescription+CellItem.swift in Sources */,

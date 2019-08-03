@@ -166,7 +166,8 @@
 "change_pin" = "Zmień PIN";
 "allow_biometric_authentication" = "Pozwól na biometryczną autoryzację";
 "remember_pin" = "Zapamiętaj PIN";
-"node_settings" = "Ustawienia demona";
+"current_node" = "Bieżący węzeł";
+"manage_nodes" = "Zarządzaj węzłami";
 "backup_password" = "Zapasowe hasło";
 "show_backup_password" = "Hasło zapasowe zmieniło się pomyślnie";
 "show_password" = "Pokaż hasło";
