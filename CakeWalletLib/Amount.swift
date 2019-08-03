@@ -4,19 +4,43 @@ public protocol Formatted {
     func formatted() -> String
 }
 
-public enum Balance: Formatted {
-    public static var all: [Balance] {
-        return [.full, .unlocked]
+public protocol LocalizedFormat: Formatted {
+    func localizedString() -> String
+}
+
+extension LocalizedFormat {
+    public func localizedString() -> String {
+        return NSLocalizedString(self.formatted(), comment:"")
+    }
+}
+
+public enum BalanceDisplay: Int, LocalizedFormat {
+    public static var all: [BalanceDisplay] {
+        return [.full, .unlocked, .hidden]
     }
     
-    case full, unlocked
+    public var rawValue: Int {
+        switch self {
+        case .full:
+            return 3
+        case .unlocked:
+            return 2
+        case .hidden:
+            return 1
+        }
+    }
     
-    public init?(from string:String) {
-        switch string.uppercased() {
-        case "balance-display-type_full":
+    case full, unlocked, hidden
+    
+    public init?(from raw:Int) {
+        switch raw {
+        case 3:
             self = .full
-        case "balance-display-type_unlocked":
+        case 2:
             self = .unlocked
+        case 1:
+            self = .hidden
+            
         default:
             return nil
         }
@@ -28,6 +52,8 @@ public enum Balance: Formatted {
             return "balance-display-type_full"
         case .unlocked:
             return "balance-display-type_unlocked"
+        case .hidden:
+            return "balance-display-type_hidden"
         }
     }
 }

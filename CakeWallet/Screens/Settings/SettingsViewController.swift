@@ -160,7 +160,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         return store.state.settingsState.fiatCurrency
     }
     
-    var balanceType: Balance {
+    var balanceType: BalanceDisplay {
         return store.state.settingsState.displayBalance
     }
     
@@ -193,6 +193,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
             SettingsCellItem.self,
             SettingsPickerCellItem<TransactionPriority>.self,
             SettingsPickerCellItem<FiatCurrency>.self,
+            SettingsPickerCellItem<BalanceDisplay>.self,
             SettingsInformativeCellItem.self
             ])
         contentView.table.delegate = self
@@ -212,11 +213,14 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
                 self?.settingsFlow?.change(route:.nodes)
         })
         
-//        let displayBalances = SettingsPickerCellItem<Balance>(
-//            title: NSLocalizedString("balance_type", comment: ""),
-//            pickerOptions: Balance.all,
-//            selectedAtInted:
-//        )
+        let displayBalances = SettingsPickerCellItem<BalanceDisplay>(
+            title: NSLocalizedString("balance_type", comment: ""),
+            pickerOptions: BalanceDisplay.all,
+            selectedAtIndex: BalanceDisplay.all.index(of:balanceType) ?? 0) { [weak store] newBalance in
+                store?.dispatch(
+                    SettingsActions.changeBalanceDisplayMode(to: newBalance)
+                )
+        }
 
         let fiatCurrencyCellItem = SettingsPickerCellItem<FiatCurrency>(
             title: NSLocalizedString("currency", comment: ""),
@@ -448,6 +452,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         ]
         
         sections[.wallets] = [
+            displayBalances,
             fiatCurrencyCellItem,
             feePriorityCellItem
         ]

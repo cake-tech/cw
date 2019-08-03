@@ -21,6 +21,7 @@ public struct SettingsState: StateType {
         case changeAutoSwitchNode(Bool)
         case changedFiatCurrency(FiatCurrency)
         case changedBiometricAuthentication(Bool)
+        case changedDisplayBalance(BalanceDisplay)
     }
     
     public let isPinCodeInstalled: Bool
@@ -30,9 +31,9 @@ public struct SettingsState: StateType {
     public let node: NodeDescription?
     public let isAutoSwitchNodeOn: Bool
     public let fiatCurrency: FiatCurrency
-    public let displayBalance:Balance
+    public let displayBalance:BalanceDisplay
     
-    public init(isPinCodeInstalled: Bool, isAuthenticated: Bool, isBiometricAuthenticationAllowed: Bool, transactionPriority: TransactionPriority, node: NodeDescription?, isAutoSwitchNodeOn: Bool, fiatCurrency: FiatCurrency, displayBalance:Balance) {
+    public init(isPinCodeInstalled: Bool, isAuthenticated: Bool, isBiometricAuthenticationAllowed: Bool, transactionPriority: TransactionPriority, node: NodeDescription?, isAutoSwitchNodeOn: Bool, fiatCurrency: FiatCurrency, displayBalance:BalanceDisplay) {
         self.isPinCodeInstalled = isPinCodeInstalled
         self.isAuthenticated = isAuthenticated
         self.isBiometricAuthenticationAllowed = isBiometricAuthenticationAllowed
@@ -59,6 +60,8 @@ public struct SettingsState: StateType {
             return SettingsState(isPinCodeInstalled: isPinCodeInstalled, isAuthenticated: isAuthenticated, isBiometricAuthenticationAllowed: isBiometricAuthenticationAllowed, transactionPriority: transactionPriority, node: node, isAutoSwitchNodeOn: isAutoSwitchNodeOn, fiatCurrency: fiatCurrency, displayBalance:displayBalance)
         case let .changedBiometricAuthentication(isAllowed):
             return SettingsState(isPinCodeInstalled: isPinCodeInstalled, isAuthenticated: isAuthenticated, isBiometricAuthenticationAllowed: isAllowed, transactionPriority: transactionPriority, node: node, isAutoSwitchNodeOn: isAutoSwitchNodeOn, fiatCurrency: fiatCurrency, displayBalance:displayBalance)
+        case let .changedDisplayBalance(displayConfig):
+            return SettingsState(isPinCodeInstalled: isPinCodeInstalled, isAuthenticated: isAuthenticated, isBiometricAuthenticationAllowed: isBiometricAuthenticationAllowed, transactionPriority: transactionPriority, node: node, isAutoSwitchNodeOn: isAutoSwitchNodeOn, fiatCurrency: fiatCurrency, displayBalance:displayConfig)
         }
     }
 }

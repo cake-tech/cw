@@ -43,24 +43,33 @@ final class SettingsPickerUITableViewCell<Item: Formatted>: FlexCell, UIPickerVi
         self.action = action
         pickerView.reloadAllComponents()
         pickerView.selectRow(selectedOption, inComponent: 0, animated: false)
-        pinckerTextField.text = pickerOptions[selectedOption].formatted()
+        pinckerTextField.text = stringForPickerOption(pickerOptions[selectedOption])
+    }
+    
+    //returns the localized string for inputItem if the Item supports LocalizedFormat, else returns formatted() value from
+    private func stringForPickerOption(_ inputItem:Item) -> String {
+        if let asLocalized = (inputItem as? LocalizedFormat) {
+            return asLocalized.localizedString()
+        } else {
+            return inputItem.formatted()
+        }
+
     }
     
     // MARK: UIPickerViewDelegate
-    
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         guard pickerOptions.count >= row else {
             return ""
         }
         
-        return pickerOptions[row].formatted()
+        return stringForPickerOption(pickerOptions[row])
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let selectedOption = pickerOptions[row]
-        self.selectedOption = selectedOption
-        pinckerTextField.text = selectedOption.formatted()
-        action?(selectedOption)
+        let selOp = pickerOptions[row]
+        selectedOption = selOp
+        pinckerTextField.text = stringForPickerOption(selOp)
+        action?(selOp)
     }
     
     // MARK: UIPickerViewDataSource

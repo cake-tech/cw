@@ -95,3 +95,10 @@ public struct ChangeCurrentFiatHandler: Handler {
     }
 }
 
+public struct ChangeBalanceDisplayHandler: Handler {
+    public func handle(action: SettingsActions, store:Store<ApplicationState>) -> AnyAction? {
+        guard case let .changeBalanceDisplayMode(newDisplayMode) = action else { return nil }
+        UserDefaults.standard.set(newDisplayMode.rawValue, forKey: Configurations.DefaultsKeys.displayedBalance.string())
+        return SettingsState.Action.changedDisplayBalance(newDisplayMode)
+    }
+}
