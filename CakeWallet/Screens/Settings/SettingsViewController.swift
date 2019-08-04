@@ -214,7 +214,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         })
         
         let displayBalances = SettingsPickerCellItem<BalanceDisplay>(
-            title: NSLocalizedString("balance_type", comment: ""),
+            title: NSLocalizedString("balance_type_title", comment: ""),
             pickerOptions: BalanceDisplay.all,
             selectedAtIndex: BalanceDisplay.all.index(of:balanceType) ?? 0) { [weak store] newBalance in
                 store?.dispatch(

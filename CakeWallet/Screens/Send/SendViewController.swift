@@ -260,13 +260,13 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
     private func updateWallet(type: WalletType) {
         let title = type.string()
             + " "
-            + NSLocalizedString("available_balance", comment: "")
+            + NSLocalizedString("balance-display-type_unlocked", comment: "")
         guard title != contentView.cryptoAmountTitleLabel.text else {
             return
         }
         contentView.cryptoAmountTitleLabel.text = type.currency.formatted()
             + " "
-            + NSLocalizedString("available_balance", comment: "")
+            + NSLocalizedString("balance-display-type_unlocked", comment: "")
         contentView.cryptoAmountTitleLabel.flex.markDirty()
         contentView.walletContainer.flex.markDirty()
         contentView.rootFlexContainer.flex.layout()

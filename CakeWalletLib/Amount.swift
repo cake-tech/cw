@@ -30,6 +30,15 @@ public enum BalanceDisplay: Int, LocalizedFormat {
         }
     }
     
+    public var isHidden: Bool {
+        switch self {
+        case .hidden:
+            return true
+        default:
+            return false
+        }
+    }
+    
     case full, unlocked, hidden
     
     public init?(from raw:Int) {
