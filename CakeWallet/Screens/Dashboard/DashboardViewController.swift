@@ -72,8 +72,21 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         insertNavigationItems()
     }
 
+
+    private func areTouchesValid(_ touches:Set<UITouch>, forEvent thisEvent:UIEvent?) -> Bool {
+        let touchPointsRec = touches.map { return $0.location(in:contentView.receiveButton) }
+        let touchPointsSnd = touches.map { return $0.location(in:contentView.sendButton) }
+        let insideRec = touchPointsRec.map { return contentView.receiveButton.point(inside: $0, with: thisEvent) }
+        let insideSnd = touchPointsSnd.map { return contentView.sendButton.point(inside: $0, with: thisEvent) }
+        if (insideRec.contains(true) || insideSnd.contains(true)) {
+            return false
+        } else {
+            return true
+        }
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if (fingerDown == false) {
+        if (fingerDown == false && areTouchesValid(touches, forEvent:event) == true) {
             Vibration.heavy.vibrate()
             fingerDown = true
             updateBalances()
