@@ -2,7 +2,7 @@ import Foundation
 import CakeWalletLib
 
 enum TradeDetailsRows: Stringify, CaseIterable {
-    case tradeID, exchangeProvider, date
+    case tradeID, exchangeProvider, date, state
     
     func string() -> String {
         switch self {
@@ -12,13 +12,15 @@ enum TradeDetailsRows: Stringify, CaseIterable {
             return "Date"
         case .exchangeProvider:
             return "Exchange provider"
+        case .state:
+            return "State"
         }
     }
 }
 
 struct TradeDetailsCellItem: CellItem {
-    let row: TradeDetailsRows
-    let value: String
+    var row: TradeDetailsRows
+    var value: String
     
     func setup(cell: TransactionDetailsCell) {
         cell.configure(title: row.string() + ":", value: value)

@@ -11,7 +11,6 @@ enum TransactionDetailsRows: Stringify {
         case .paymentId:
             return NSLocalizedString("Payment ID", comment: "")
         case .recipientAddress:
-            // TODO: translations
             return "Recipient address"
         case .date:
             return NSLocalizedString("date", comment: "")
