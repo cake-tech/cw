@@ -85,8 +85,8 @@
 // Balances
 "balance-display-type_full" = "Полный баланс";
 "balance-display-type_unlocked" = "Доступный баланс";
-"balance-display-type_hidden" = "скрытый"
-"balance_type_title" = "Показать баланс как"
+"balance-display-type_hidden" = "скрытый";
+"balance_type_title" = "Показать баланс как";
 
 // Wallet
 

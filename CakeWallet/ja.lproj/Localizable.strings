@@ -89,8 +89,8 @@
 // Balances
 "balance-display-type_unlocked" = "有効なバランス";
 "balance-display-type_full" = "フルバランス";
-"balance-display-type_hidden" = "隠された"
-"balance_type_title" = "表示バランス"
+"balance-display-type_hidden" = "隠された";
+"balance_type_title" = "表示バランス";
 
 // Wallet
 

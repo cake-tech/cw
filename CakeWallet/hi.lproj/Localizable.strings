@@ -83,8 +83,8 @@
 // Balances
 "balance-display-type_unlocked" = "उपलब्ध शेष राशि";
 "balance-display-type_full" = "पूर्ण संतुलन";
-"balance-display-type_hidden" = "छिपा हुआ"
-"balance_type_title" = "संतुलन के रूप में प्रदर्शित करें"
+"balance-display-type_hidden" = "छिपा हुआ";
+"balance_type_title" = "संतुलन के रूप में प्रदर्शित करें";
 
 // Wallet
 

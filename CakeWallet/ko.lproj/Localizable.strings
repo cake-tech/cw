@@ -89,8 +89,8 @@
 // Balances
 "balance-display-type_unlocked" = "잔여잔고";
 "balance-display-type_full" = "최대 잔액";
-"balance-display-type_hidden" = "숨겨진"
-"balance_type_title" = "디스플레이 잔액"
+"balance-display-type_hidden" = "숨겨진";
+"balance_type_title" = "디스플레이 잔액";
 
 // Wallet
 

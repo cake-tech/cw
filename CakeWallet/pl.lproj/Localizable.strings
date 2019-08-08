@@ -88,8 +88,8 @@
 // Balances
 "balance-display-type_unlocked" = "Dostępne Saldo";
 "balance-display-type_full" = "Pełne saldo";
-"balance-display-type_hidden" = "ukryty"
-"balance_type_title" = "Wyświetl saldo jako"
+"balance-display-type_hidden" = "ukryty";
+"balance_type_title" = "Wyświetl saldo jako";
 
 // Wallet
 

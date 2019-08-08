@@ -89,8 +89,8 @@
 // Balances
 "balance-display-type_unlocked" = "Beschikbaar saldo";
 "balance-display-type_full" = "Volledig saldo";
-"balance-display-type_hidden" = "verborgen"
-"balance_type_title" = "Weergavesaldo als"
+"balance-display-type_hidden" = "verborgen";
+"balance_type_title" = "Weergavesaldo als";
 
 
 // Wallet

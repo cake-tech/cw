@@ -84,8 +84,8 @@
 // Balances
 "balance-display-type_unlocked" = "全部余额";
 "balance-display-type_full" = "全部余额";
-"balance-display-type_hidden" = "隐"
-"balance_type_title" = "显示平衡为"
+"balance-display-type_hidden" = "隐";
+"balance_type_title" = "显示平衡为";
 
 // Wallet
 
