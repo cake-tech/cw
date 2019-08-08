@@ -85,6 +85,11 @@
 "synchronized" = "Sincronizado";
 "failed_connection_to_node" = "Conexión con el nódulo ha fallado";
 
+// Balances
+"balance-display-type_full" = "Saldo completo";
+"balance-display-type_unlocked" = "saldo disponible";
+"balance-display-type_hidden" = "oculto";
+"balance_type_title" = "Mostrar saldo como";
 
 // Wallet
 
@@ -269,7 +274,6 @@
 
 "save" = "salvar";
 "copy" = "dupdo";
-"full_balance" = "saldo completo";
 "node_address" = "Dirección del nodo";
 "node_port" = "Puerto de nodo";
 "node_new" = "Nuevo nodo";

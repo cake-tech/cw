@@ -80,9 +80,14 @@
 "synchronized" = "सिंक पूर्ण";
 "failed_connection_to_node" = "नोड से कनेक्शन विफल ";
 
+// Balances
+"balance-display-type_unlocked" = "उपलब्ध शेष राशि";
+"balance-display-type_full" = "पूर्ण संतुलन";
+"balance-display-type_hidden" = "छिपा हुआ";
+"balance_type_title" = "संतुलन के रूप में प्रदर्शित करें";
+
 // Wallet
 
-"available_balance" = " उपलब्ध शेष राशि ";
 "reconnection" = "फिर से कनेक्ट हो रहा है";
 "reconnect" = " पुनः कनेक्ट करें";
 "reconnect_alert_text" = "क्या आप फिर से कनेक्ट करना चाहते है?";
@@ -264,7 +269,6 @@
 
 "save" = "सहेजें";
 "copy" = "प्रतिलिपि";
-"full_balance" = "पूर्ण संतुलन";
 "node_address" = "नोड पता";
 "node_port" = "नोड पोर्ट";
 "node_new" = "नया नोड";

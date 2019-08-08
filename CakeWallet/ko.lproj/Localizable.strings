@@ -86,10 +86,14 @@
 "synchronized" = "싱크됨";
 "failed_connection_to_node" = "노드 연결 실패 ";
 
+// Balances
+"balance-display-type_unlocked" = "잔여잔고";
+"balance-display-type_full" = "최대 잔액";
+"balance-display-type_hidden" = "숨겨진";
+"balance_type_title" = "디스플레이 잔액";
 
 // Wallet
 
-"available_balance" = "잔여잔고";
 "reconnection" = "재연결";
 "reconnect" = "재연결";
 "reconnect_alert_text" = "재연결 하실건가요?";
@@ -272,7 +276,6 @@
 
 "save"= "저장";
 "copy"= "복사";
-"full_balance"= "최대 잔액";
 "node_address"= "노드 주소";
 "node_port"= "노드 포트";
 "node_new"= "새 노드";

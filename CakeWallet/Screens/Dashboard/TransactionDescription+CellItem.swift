@@ -6,6 +6,6 @@ extension TransactionDescription: CellItem {
         let price = store.state.balanceState.price
         let currency = store.state.settingsState.fiatCurrency
         let fiatAmount = calculateFiatAmount(currency, price: price, balance: totalAmount)
-        cell.configure(direction: direction, date: date, isPending: isPending, cryptoAmount: totalAmount, fiatAmount: fiatAmount.formatted())
+        cell.configure(direction: direction, date: date, isPending: isPending, cryptoAmount: totalAmount, fiatAmount: fiatAmount.formatted(), hidden:store.state.settingsState.displayBalance.isHidden)
     }
 }

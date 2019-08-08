@@ -87,10 +87,14 @@
 "synchronized" = "Synchronisiert";
 "failed_connection_to_node" = "Fehlgeschlagene Verbindung zum Knoten";
 
+// Balances
+"balance-display-type_unlocked" = "Verfügbares Guthaben";
+"balance-display-type_full" = "Volle Balance";
+"balance-display-type_hidden" = "versteckt";
+"balance_type_title" = "Kontostand anzeigen als";
 
 // Wallet
 
-"available_balance" = "Verfügbares Guthaben";
 "reconnection" = "Wiederverbindung";
 "reconnect" = "Erneut verbinden";
 "reconnect_alert_text" = "Sind Sie sicher?";
@@ -273,7 +277,6 @@
 
 "save" = "Speichern";
 "copy" = "Kopieren";
-"full_balance" = "Volle Balance";
 "node_address" = "Knotenadresse";
 "node_port" = "Knotenport";
 "node_new" = "Neuer Knoten";
