@@ -86,10 +86,14 @@
 "synchronized" = "同期済み";
 "failed_connection_to_node" = "ノードとの接続失敗";
 
+// Balances
+"balance-display-type_unlocked" = "有効なバランス";
+"balance-display-type_full" = "フルバランス";
+"balance-display-type_hidden" = "隠された"
+"balance_type_title" = "表示バランス"
 
 // Wallet
 
-"available_balance" = "有効なバランス";
 "reconnection" = "再接続";
 "reconnect" = "再接続";
 "reconnect_alert_text" = "再接続しますか？";
@@ -272,7 +276,6 @@
 
 "save" = "Save";
 "copy" = "コピー";
-"full_balance" = "フルバランス";
 "node_address" = "ノードアドレス";
 "node_port" = "ノードポート";
 "node_new" = "新しいノード";

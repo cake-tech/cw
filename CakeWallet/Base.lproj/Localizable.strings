@@ -90,6 +90,7 @@
 "balance-display-type_full" = "Full Balance";
 "balance-display-type_unlocked" = "Available Balance";
 "balance-display-type_hidden" = "Hidden";
+"balance_type_title" = "Display Balance As"
 
 // Wallet
 

@@ -86,10 +86,15 @@
 "synchronized" = "Gesynchroniseerd";
 "failed_connection_to_node" = "Mislukte connectie met de nodus";
 
+// Balances
+"balance-display-type_unlocked" = "Beschikbaar saldo";
+"balance-display-type_full" = "Volledig saldo";
+"balance-display-type_hidden" = "verborgen"
+"balance_type_title" = "Weergavesaldo als"
+
 
 // Wallet
 
-"available_balance" = "Beschikbaar saldo";
 "reconnection" = "Herverbinding";
 "reconnect" = "Opnieuw verbinden";
 "reconnect_alert_text" = "Wilt u opnieuw verbinden?";
@@ -272,7 +277,6 @@
 
 "save" = "Opslaan";
 "copy" = "Kopiëren";
-"full_balance" = "Volledig saldo";
 "node_address" = "Nodusadres";
 "node_port" = "Noduspoort";
 "node_new" = "Nieuwe nodus";

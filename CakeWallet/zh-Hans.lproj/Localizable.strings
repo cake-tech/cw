@@ -81,9 +81,14 @@
 "synchronized" = "已同步";
 "failed_connection_to_node" = "连接节点失败";
 
+// Balances
+"balance-display-type_unlocked" = "全部余额";
+"balance-display-type_full" = "全部余额";
+"balance-display-type_hidden" = "隐"
+"balance_type_title" = "显示平衡为"
+
 // Wallet
 
-"available_balance" = "可用余额";
 "reconnection" = "重新连接";
 "reconnect" = "重新连接";
 "reconnect_alert_text" = "你确定要重新连接吗 ?";
@@ -267,7 +272,6 @@
 "received" = "已接收";
 "save" = "保存";
 "copy" = "复制";
-"full_balance" = "全部余额";
 "node_address" = "节点地址";
 "node_port" = "节点端口";
 "node_new" = "新节点";
