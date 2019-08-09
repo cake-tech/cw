@@ -233,6 +233,13 @@
 "trade_not_found" = "Trade is not found";
 "amount_is_guaranteed" = "The receive amount is guaranteed";
 "amount_is_estimate" = "The receive amount is an estimate";
+"trades_history" = "Trades history";
+"no_trades" = "No trades yet";
+"exchange_provider" = "Exchange provider";
+"recipient_address" = "Recipient address";
+"transaction_key" = "Transaction key";
+"exchange_id" = "Exchange ID";
+"trade_id" = "Trade ID";
 
 
 // Auth

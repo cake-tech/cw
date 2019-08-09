@@ -94,8 +94,19 @@ public enum ExchangeTradeState: String, Formatted {
     }
 }
 
-public enum ExchangeProvider {
+public enum ExchangeProvider: String, CaseIterable {
     case morph, xmrto, changenow
+    
+    func iconName() -> String {
+        switch self {
+        case .morph:
+            return "morphtoken_logo"
+        case .xmrto:
+            return "xmr_to_logo"
+        case .changenow:
+            return "cn_logo"
+        }
+    }
 }
 
 extension ExchangeProvider: Formatted {
@@ -853,14 +864,6 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         }
         navigationItem.titleView = exchangeNameView
         
-//        let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
-//        navigationItem.backBarButtonItem = backButton
-        
-//        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Switch exchange", style: .plain, target: nil, action: nil)
-//        navigationItem.leftBarButtonItem?.rx.tap.subscribe(onNext: { [weak self] _ in
-//            self?.showExchangeSelection()
-//        }).disposed(by: disposeBag)
-        
         (contentView.receiveCardView.addressContainer.textView.originText <-> receiveAddress)
             .disposed(by: disposeBag)
 
@@ -990,6 +993,12 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
             target: self,
             action: #selector(clear))
         
+        let tradesHistoryButton = UIBarButtonItem(
+            title: "History",
+            style: .plain,
+            target: self,
+            action: #selector(navigateToTradeHistory))
+        
         clearButton.setTitleTextAttributes([
             NSAttributedStringKey.font: applyFont(ofSize: 16, weight: .regular),
             NSAttributedStringKey.foregroundColor: UIColor.wildDarkBlue], for: .normal)
@@ -997,6 +1006,10 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
             NSAttributedStringKey.font: applyFont(ofSize: 16, weight: .regular),
             NSAttributedStringKey.foregroundColor: UIColor.wildDarkBlue], for: .highlighted)
         navigationItem.rightBarButtonItem = clearButton
+        
+        tradesHistoryButton.setTitleTextAttributes([NSAttributedStringKey.font: applyFont(ofSize: 16, weight: .regular)], for: .normal)
+        tradesHistoryButton.setTitleTextAttributes([NSAttributedStringKey.font: applyFont(ofSize: 16, weight: .regular)], for: .highlighted)
+        navigationItem.leftBarButtonItem = tradesHistoryButton
         XMRTOExchange.asyncUpdateUri()
     }
     
@@ -1005,10 +1018,7 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         store.subscribe(self, onlyOnChange: [
             \ApplicationState.exchangeState,
             \ApplicationState.walletState
-            ])
-//        store.dispatch(exchangeActionCreators.fetchRates()) {
-//            //
-//        }
+        ])
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -1125,17 +1135,14 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
 //        contentView.depositCardView.minLabel.isHidden = false
 //        contentView.depositCardView.maxLabel.isHidden = false
         
-        if isXMRTO {
-            exchange.fetchLimist(from: receiveCrypto.value, to: depositCrypto.value)
-                .bind(to: receiveLimits)
-                .disposed(by: disposeBag)
-            depositLimits.accept((min: nil, max: nil))
-        } else {
-            exchange.fetchLimist(from: depositCrypto.value, to: receiveCrypto.value)
-                .bind(to: depositLimits)
-                .disposed(by: disposeBag)
-            receiveLimits.accept((min: nil, max: nil))
-        }
+        let from = isXMRTO ? receiveCrypto.value : depositCrypto.value
+        let to = isXMRTO ? depositCrypto.value : receiveCrypto.value
+        
+        exchange.fetchLimist(from: from, to: to)
+            .catchErrorJustReturn((min: nil, max: nil))
+            .bind(to: receiveLimits)
+            .disposed(by: disposeBag)
+        depositLimits.accept((min: nil, max: nil))
         
 //        fetchLimits(for: receiveCrypto.value, and: depositCrypto.value) { [weak self] result in
 //            DispatchQueue.main.async {
@@ -1299,6 +1306,11 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         contentView.receiveCardView.addressContainer.textView.text = receiveCrypto.value == .monero ? store.state.walletState.address : ""
         updateReceiveResult(with: makeAmount(0 as UInt64, currency: receiveCrypto.value))
         store.dispatch(ExchangeState.Action.changedTrade(nil))
+    }
+    
+    @objc
+    func navigateToTradeHistory() {
+        exchangeFlow?.change(route: .tradesHistory)
     }
     
     @objc
@@ -1492,7 +1504,6 @@ class ExchangeTransactions {
     static let shared: ExchangeTransactions = ExchangeTransactions()
     
     private static let name = "exchange_transactions.txt"
-    
     private static var url: URL {
         return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent(name)
     }
@@ -1517,18 +1528,40 @@ class ExchangeTransactions {
         json = ExchangeTransactions.load()
     }
     
+    func getAll() -> [JSON]? {
+        return json.array
+    }
+    
+    func getExchangeProvider(by transactionID: String) -> String? {
+        return json.array?.filter({ j -> Bool in
+            return j["txID"].stringValue == transactionID
+        }).first?["provider"].string
+    }
+    
     func getTradeID(by transactionID: String) -> String? {
         return json.array?.filter({ j -> Bool in
             return j["txID"].stringValue == transactionID
         }).first?["tradeID"].string
     }
     
-    func add(tradeID: String, transactionID: String) throws {
+    func getTradeByTransactionID(by transactionID: String) -> JSON? {
+        return json.array?.filter({ j -> Bool in
+            return j["txID"].stringValue == transactionID
+        }).first
+    }
+    
+    func add(tradeID: String, transactionID: String, provider: String) throws {
         guard getTradeID(by: transactionID) == nil else {
             return
         }
         
-        let item = JSON(["tradeID": tradeID, "txID": transactionID])
+        let item = JSON([
+            "tradeID": tradeID,
+            "txID": transactionID,
+            "provider": provider,
+            "date": Date().timeIntervalSince1970
+        ])
+        
         let array = json.arrayValue + [item]
         json = JSON(array)
         try save()

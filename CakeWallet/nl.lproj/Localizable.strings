@@ -233,6 +233,13 @@
 "trade_not_found" = "Omwisseling is niet gevonden";
 "amount_is_guaranteed" = "Het ontvangstbedrag is gegarandeerd";
 "amount_is_estimate" = "Het ontvangstbedrag is een schatting";
+"trades_history" = "Handelt geschiedenis";
+"no_trades" = "Nog geen transacties";
+"exchange_provider" = "Exchange provider";
+"recipient_address" = "Recipient address";
+"transaction_key" = "Transactiesleutel";
+"exchange_id" = "Exchange ID";
+"trade_id" = "Trade ID";
 
 
 // Auth

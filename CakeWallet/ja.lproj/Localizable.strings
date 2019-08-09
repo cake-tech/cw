@@ -232,6 +232,13 @@
 "trade_not_found" = "トレードが見つかりません";
 "amount_is_guaranteed" = "受け取り金額は保証されています";
 "amount_is_estimate" = "受け取り金額は概算です";
+"trades_history" = "取引履歴";
+"no_trades" = "まだ取引はありません";
+"exchange_provider" = "交換プロバイダー";
+"recipient_address" = "受取人の住所";
+"transaction_key" = "トランザクションキー";
+"exchange_id" = "取引所ID";
+"trade_id" = "取引ID";
 
 
 // Auth

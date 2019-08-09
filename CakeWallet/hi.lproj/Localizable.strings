@@ -225,6 +225,13 @@
 "trade_not_found" = "लेनदेन नही पाया गया";
 "amount_is_guaranteed" = "प्राप्त राशि की गारंटी है";
 "amount_is_estimate" = "प्राप्त राशि एक अनुमान है";
+"trades_history" = "इतिहास रचता है";
+"no_trades" = "अभी तक कोई ट्रेड नहीं";
+"exchange_provider" = "विनिमय प्रदाता";
+"recipient_address" = "प्राप्तकर्ता का पता";
+"transaction_key" = "लेन-देन की";
+"exchange_id" = "एक्सचेंज आईडी";
+"trade_id" = "ट्रेड आईडी";
 
 
 // Auth

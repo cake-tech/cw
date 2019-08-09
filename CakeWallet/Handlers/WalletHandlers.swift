@@ -140,7 +140,7 @@ public struct RescanHandler: AsyncHandler {
                     WalletIndex(name: name, type: .monero)
                 )
             )
-
+            
             try moneroWallet.rescan(from: height, password: password)
             
             handler(WalletState.Action.restored(currentWallet))

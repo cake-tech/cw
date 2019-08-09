@@ -233,6 +233,13 @@
 "trade_not_found" = "Wechsel nicht gefunden";
 "amount_is_guaranteed" = "Der empfangsbetrag ist garantiert";
 "amount_is_estimate" = "Der empfangene betrag ist eine schätzung";
+"trades_history" = "Trades Geschichte";
+"no_trades" = "Noch keine Trades";
+"exchange_provider" = "Exchange-Anbieter";
+"recipient_address" = "Empfängeradresse";
+"transaction_key" = "Transaktionsschlüssel";
+"exchange_id" = "Exchange ID";
+"trade_id" = "Geschäfts-ID";
 
 
 // Auth
