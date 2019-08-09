@@ -11,7 +11,7 @@ enum TransactionDetailsRows: Stringify {
         case .paymentId:
             return NSLocalizedString("Payment ID", comment: "")
         case .recipientAddress:
-            return "Recipient address"
+            return NSLocalizedString("recipient_address", comment: "")
         case .date:
             return NSLocalizedString("date", comment: "")
         case .amount:
@@ -19,15 +19,15 @@ enum TransactionDetailsRows: Stringify {
         case .height:
             return NSLocalizedString("height", comment: "")
         case .fee:
-            return  NSLocalizedString("fee", comment: "")
+            return NSLocalizedString("fee", comment: "")
         case .exchange:
-            return  "Exchange provider"
+            return  NSLocalizedString("exchange_provider", comment: "")
         case .exchangeID:
-            return "Exchange ID"
+            return NSLocalizedString("exchange_id", comment: "")
         case .transactionKey:
-            return "Transaction key"
+            return NSLocalizedString("transaction_key", comment: "")
         case .subaddresses:
-            return "Subaddresses"
+            return NSLocalizedString("subaddresses", comment: "")
         }
     }
 }

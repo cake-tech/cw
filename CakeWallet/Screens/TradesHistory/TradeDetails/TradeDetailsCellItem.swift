@@ -7,20 +7,20 @@ enum TradeDetailsRows: Stringify, CaseIterable {
     func string() -> String {
         switch self {
         case .tradeID:
-            return "Trade ID"
+            return  NSLocalizedString("trade_id", comment: "")
         case .date:
-            return "Date"
+            return NSLocalizedString("date", comment: "")
         case .exchangeProvider:
-            return "Exchange provider"
+            return  NSLocalizedString("exchange_provider", comment: "")
         case .state:
-            return "State"
+            return NSLocalizedString("state", comment: "")
         }
     }
 }
 
 struct TradeDetailsCellItem: CellItem {
-    var row: TradeDetailsRows
-    var value: String
+    let row: TradeDetailsRows
+    let value: String
     
     func setup(cell: TransactionDetailsCell) {
         cell.configure(title: row.string() + ":", value: value)

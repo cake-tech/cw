@@ -226,6 +226,13 @@
 "trade_not_found" = "Error con el cambio";
 "amount_is_guaranteed" = "El importe recibido está garantizado";
 "amount_is_estimate" = "La cantidad recibida es un estimado";
+"trades_history" = "Historia de los oficios";
+"no_trades" = "Aún no hay intercambios";
+"exchange_provider" = "Proveedor de intercambio";
+"recipient_address" = "Dirección del destinatario";
+"transaction_key" = "Clave de transacción";
+"exchange_id" = "ID de intercambio";
+"trade_id" = "Identificación comercial";
 
 
 // Auth

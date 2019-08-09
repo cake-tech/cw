@@ -71,11 +71,13 @@ final class TradeTableCell: FlexCell {
 
 struct TradeInfo: JSONInitializable {
     let tradeID: String
+    let transactionID: String
     let date: Double
     var provider: String
 
     init(json: JSON) {
         tradeID = json["tradeID"].stringValue
+        transactionID = json["txID"].stringValue
         date = json["date"].doubleValue
         provider = json["provider"].stringValue
     }
@@ -109,7 +111,7 @@ final class TradesHistoryViewController: BaseViewController<TradesHistoryView>, 
     
     override func configureBinds() {
         super.configureBinds()
-        title = "Trades history"
+        title = NSLocalizedString("trades_history", comment: "")
         
         let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         navigationItem.backBarButtonItem = backButton
@@ -157,7 +159,7 @@ final class TradesHistoryViewController: BaseViewController<TradesHistoryView>, 
     
     private func createNoDataLabel(with size: CGSize) -> UIView {
         let noDataLabel: UILabel = UILabel(frame: CGRect(origin: .zero, size: size))
-        noDataLabel.text = "No trades yet"
+        noDataLabel.text = NSLocalizedString("no_trades", comment: "")
         noDataLabel.textColor = UIColor(hex: 0x9bacc5)
         noDataLabel.textAlignment = .center
         

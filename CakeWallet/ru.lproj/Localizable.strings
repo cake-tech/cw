@@ -228,6 +228,13 @@
 "trade_not_found" = "Обмен не найден";
 "amount_is_guaranteed" = "Получаемая сумма гарантирована";
 "amount_is_estimate" = "Получаемая сумма является оценочной";
+"trades_history" = "История трейдов";
+"no_trades" = "Пока не было трейдов";
+"exchange_provider" = "Обменный провайдер";
+"recipient_address" = "Адрес получателя";
+"transaction_key" = "Ключ транзакции";
+"exchange_id" = "ID обменного сервиса";
+"trade_id" = "ID трейда";
 
 
 // Auth

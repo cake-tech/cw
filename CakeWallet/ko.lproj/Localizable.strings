@@ -227,6 +227,13 @@
 "trade_not_found" = "거래를 찾을 수 없습니다 ";
 "amount_is_guaranteed" = "수신 금액 보장";
 "amount_is_estimate" = "수신 금액은 예상 금액입니다";
+"trades_history" = "거래 내역";
+"no_trades" = "아직 거래가 없습니다";
+"exchange_provider" = "교환 제공자";
+"recipient_address" = "받는 사람 주소";
+"transaction_key" = "거래 키";
+"exchange_id" = "교환 ID";
+"trade_id" = "거래 ID";
 
 
 // Auth

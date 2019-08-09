@@ -225,6 +225,13 @@
 "trade_not_found" = "Operaç„o n„o encontrada";
 "amount_is_guaranteed" = "O valor de recebimento é garantido";
 "amount_is_estimate" = "O valor de recebimento é uma estimativa";
+"trades_history" = "Histórico de negociações";
+"no_trades" = "Nenhum negócio ainda";
+"exchange_provider" = "Provedor de troca";
+"recipient_address" = "Endereço do destinatário";
+"transaction_key" = "Chave de Transação";
+"exchange_id" = "ID da troca";
+"trade_id" = "ID comercial";
 
 
 // Auth

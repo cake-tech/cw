@@ -49,20 +49,19 @@ final class TradeDetailsViewController: BaseViewController<TransactionDetailsVie
         updateTradeStateTimer.fire()
         
         let tradeObserver = tradeDetails.asObservable()
-        tradeObserver.subscribe(onNext: { [weak self] trade in
-            if let this = self,
-                let trade = trade {
-                let itemsWithUpdatedStateInfo = this.items.map{ (i) -> TradeDetailsCellItem in
-                    if i.row == .state {
-                        return TradeDetailsCellItem(row: .state, value: trade.state.formatted())
-                    }
-                    
-                    return i
+        tradeObserver.map({ [weak self] trade -> [TradeDetailsCellItem] in
+            guard let this = self, let trade = trade else { return [] }
+            
+            return this.items.map{ item -> TradeDetailsCellItem in
+                if item.row == .state {
+                    return TradeDetailsCellItem(row: .state, value: trade.state.formatted())
                 }
-
-                this.items = itemsWithUpdatedStateInfo
-                this.contentView.table.reloadData()
+                
+                return item
             }
+        }).subscribe(onNext: { [weak self] items in
+            self?.items = items
+            self?.contentView.table.reloadData()
         }).disposed(by: disposeBag)
     }
     
@@ -76,11 +75,12 @@ final class TradeDetailsViewController: BaseViewController<TransactionDetailsVie
     }
     
     private func setRows(trade: TradeInfo) {
-        items.append(TradeDetailsCellItem(row: .tradeID, value: trade.tradeID))
-        
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMM d, yyyy HH:mm"
         let formattedDate = dateFormatter.string(from: Date(timeIntervalSince1970: trade.date))
+        
+        items.append(TradeDetailsCellItem(row: .tradeID, value: trade.tradeID))
+        
         items.append(TradeDetailsCellItem(row: .date, value: formattedDate))
         
         items.append(TradeDetailsCellItem(row: .exchangeProvider, value: trade.provider))
@@ -98,7 +98,7 @@ final class TradeDetailsViewController: BaseViewController<TransactionDetailsVie
             "uuid": trade.tradeID
         ]
         
-        try? request.httpBody = try bodyJSON.rawData(options: .prettyPrinted)
+        request.httpBody = try? bodyJSON.rawData(options: .prettyPrinted)
         
         Alamofire.request(request).responseData(completionHandler: { [weak self] response in
             guard response.response?.statusCode == 200 else {

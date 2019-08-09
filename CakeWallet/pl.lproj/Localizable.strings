@@ -227,6 +227,13 @@
 "trade_not_found" = "Nie można odnaleźć tej zamiany";
 "amount_is_guaranteed" = "Kwota odbioru jest gwarantowana";
 "amount_is_estimate" = "Kwota otrzymana jest szacunkowa";
+"trades_history" = "Historia handlu";
+"no_trades" = "Brak transakcji";
+"exchange_provider" = "Dostawca wymiany";
+"recipient_address" = "Adres odbiorcy";
+"transaction_key" = "Klucz transakcji";
+"exchange_id" = "ID wymiany";
+"trade_id" = "Identyfikator handlu";
 
 
 // Auth
