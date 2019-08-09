@@ -37,9 +37,14 @@ final class TextViewUITableViewCell: FlexCell {
     }
 }
 
-final class SettingsViewController: BaseViewController<SettingsView>, UITableViewDelegate, UITableViewDataSource {
+private protocol ActionableCellItem {
+    var action: (() -> Void)? { get }
+}
+
+final class SettingsViewController: BaseViewController<SettingsView>, UITableViewDelegate, UITableViewDataSource, StoreSubscriber {
+    typealias StoreListenerState = ApplicationState
     enum SettingsSections: Int {
-        case wallets, personal, backup, manualBackup, advanced, support
+        case nodes, wallets, personal, backup, manualBackup, support
     }
     
     struct SettingsTextViewCellItem: CellItem {
@@ -54,7 +59,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         }
     }
     
-    struct SettingsCellItem: CellItem {
+    struct SettingsCellItem: CellItem, ActionableCellItem {
         let title: String
         let action: (() -> Void)?
         let image: UIImage?
@@ -129,6 +134,22 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         }
     }
     
+    struct SettingsInformativeCellItem: CellItem, ActionableCellItem {
+        let title: String
+        let informativeText:String
+        let action: (() -> Void)?
+        
+        init(title: String, informativeText:String, action:(() -> Void)?) {
+            self.title = title
+            self.informativeText = informativeText
+            self.action = action
+        }
+        
+        func setup(cell: SettingsInformativeUITableViewCell) {
+            cell.configure(title: self.title, informativeText: self.informativeText)
+        }
+    }
+    
     weak var settingsFlow: SettingsFlow?
     
     var transactionPriority: TransactionPriority {
@@ -139,6 +160,10 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         return store.state.settingsState.fiatCurrency
     }
     
+    var balanceType: BalanceDisplay {
+        return store.state.settingsState.displayBalance
+    }
+    
     private let store: Store<ApplicationState>
     private var sections: [SettingsSections: [CellAnyItem]]
     private let backupService: BackupServiceImpl
@@ -146,17 +171,20 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         return try! KeychainStorageImpl.standart.fetch(forKey: .masterPassword)
     }
     
+    private var displayedNodeHash:Int = 0
+    
     init(store: Store<ApplicationState>, settingsFlow: SettingsFlow?, backupService: BackupServiceImpl) {
         self.store = store
         self.settingsFlow = settingsFlow
         self.backupService = backupService
-        sections = [.wallets: [], .personal: [], .advanced: []]
+        sections = [.wallets: [], .personal: []]
         super.init()
         tabBarItem = UITabBarItem(
             title: title,
             image: UIImage(named: "settings_icon")?.resized(to: CGSize(width: 28, height: 28)).withRenderingMode(.alwaysOriginal),
             selectedImage: UIImage(named: "settings_selected_icon")?.resized(to: CGSize(width: 28, height: 28)).withRenderingMode(.alwaysOriginal)
         )
+        self.store.subscribe(self, onlyOnChange: [\ApplicationState.settingsState])
     }
     
     override func configureBinds() {
@@ -164,7 +192,9 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
             SettingsTextViewCellItem.self,
             SettingsCellItem.self,
             SettingsPickerCellItem<TransactionPriority>.self,
-            SettingsPickerCellItem<FiatCurrency>.self
+            SettingsPickerCellItem<FiatCurrency>.self,
+            SettingsPickerCellItem<BalanceDisplay>.self,
+            SettingsInformativeCellItem.self
             ])
         contentView.table.delegate = self
         contentView.table.dataSource = self
@@ -178,6 +208,20 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         navigationItem.backBarButtonItem = backButton
         
+        let currentNode = SettingsInformativeCellItem(title: NSLocalizedString("current_node", comment: ""), informativeText:(self.store.state.settingsState.node?.uri ?? ""),
+            action: { [weak self] in
+                self?.settingsFlow?.change(route:.nodes)
+        })
+        
+        let displayBalances = SettingsPickerCellItem<BalanceDisplay>(
+            title: NSLocalizedString("balance_type_title", comment: ""),
+            pickerOptions: BalanceDisplay.all,
+            selectedAtIndex: BalanceDisplay.all.index(of:balanceType) ?? 0) { [weak store] newBalance in
+                store?.dispatch(
+                    SettingsActions.changeBalanceDisplayMode(to: newBalance)
+                )
+        }
+
         let fiatCurrencyCellItem = SettingsPickerCellItem<FiatCurrency>(
             title: NSLocalizedString("currency", comment: ""),
             pickerOptions: FiatCurrency.all,
@@ -220,17 +264,13 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
                     })
                 )
         })
-//        let rememberPasswordCellItem = SettingsSwitchCellItem(
-//            title: NSLocalizedString("remember_pin", comment: ""),
-//            isOn: false // accountSettings.isPasswordRemembered
-//        ) { [weak self] isOn, item in
-//            //                self?.accountSettings.isPasswordRemembered = isOn
-//        }
-        let daemonSettingsCellItem = SettingsCellItem(
-            title: NSLocalizedString("node_settings", comment: ""),
-            action: { [weak self] in
-                self?.settingsFlow?.change(route: .nodes)
-        })
+        //        let rememberPasswordCellItem = SettingsSwitchCellItem(
+        //            title: NSLocalizedString("remember_pin", comment: ""),
+        //            isOn: false // accountSettings.isPasswordRemembered
+        //        ) { [weak self] isOn, item in
+        //            //                self?.accountSettings.isPasswordRemembered = isOn
+        //        }
+        
         let termSettingsCellItem = SettingsCellItem(
             title: NSLocalizedString("terms", comment: ""),
             action: { [weak self] in
@@ -407,25 +447,30 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
                     actions: [cancelAction, changeAction])
         })
         
+        sections[.nodes] = [
+            currentNode
+        ]
+        
         sections[.wallets] = [
+            displayBalances,
             fiatCurrencyCellItem,
             feePriorityCellItem
         ]
+        
         sections[.personal] = [
             changePinCellItem,
             changeLanguage,
             biometricCellItem,
-//            rememberPasswordCellItem
+            //            rememberPasswordCellItem
         ]
-        sections[.advanced] = [
-            daemonSettingsCellItem
-        ]
+        
         sections[.backup] = [
             showMasterPasswordCellItem,
             changeMasterPassword,
             autoBackupSwitcher,
             backupNowCellItem
         ]
+        
         sections[.manualBackup] = [
             createBackupCellItem
         ]
@@ -480,8 +525,16 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         title = NSLocalizedString("settings", comment: "")
     }
     
+    // MARK: StoreSubscriber
+    func onStateChange(_ state: ApplicationState) {
+        if let node = state.settingsState.node,
+            node.uri.hashValue != displayedNodeHash {
+            configureBinds()
+            contentView.table.reloadData()
+            displayedNodeHash = node.uri.hashValue
+        }
+    }
     // MARK: UITableViewDataSource
-    
     func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
@@ -539,12 +592,12 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         view.addSubview(titleLabel)
         
         switch section {
+        case .nodes:
+            titleLabel.text = NSLocalizedString("nodes", comment: "")
         case .personal:
             titleLabel.text = NSLocalizedString("personal", comment: "")
         case .wallets:
             titleLabel.text = NSLocalizedString("wallets", comment: "")
-        case .advanced:
-            titleLabel.text = NSLocalizedString("advanced", comment: "")
         case .support:
             titleLabel.text = NSLocalizedString("support", comment: "")
         case .backup:
@@ -559,7 +612,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard
             let section = SettingsSections(rawValue: indexPath.section),
-            let item = sections[section]?[indexPath.row] as? SettingsCellItem else {
+            let item = sections[section]?[indexPath.row] as? ActionableCellItem else {
                 tableView.deselectRow(at: indexPath, animated: true)
                 return
         }

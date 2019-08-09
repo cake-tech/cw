@@ -82,9 +82,14 @@
 "failed_connection_to_node" = "Не удалось подключиться к удаленному узлу";
 
 
+// Balances
+"balance-display-type_full" = "Полный баланс";
+"balance-display-type_unlocked" = "Доступный баланс";
+"balance-display-type_hidden" = "скрытый";
+"balance_type_title" = "Показать баланс как";
+
 // Wallet
 
-"available_balance" = "Доступный баланс";
 "reconnection" = "Переподключение";
 "reconnect" = "Переподключиться";
 "reconnect_alert_text" = "Вы уверены, что хотите переподключиться ?";
@@ -167,7 +172,8 @@
 "change_pin" = "Изменить пин-код";
 "allow_biometric_authentication" = "Разрешить биометрическую аутентификацию";
 "remember_pin" = "Запомнить пин-код";
-"node_settings" = "Настройки удаленного узла";
+"current_node" = "текущий узел";
+"manage_nodes" = "управлять узлами";
 "backup_password" = "Пароль от бэкапа";
 "show_backup_password" = "Показать бэкап-пароль";
 "show_password" = "Показать пароль";
@@ -228,6 +234,13 @@
 "trade_not_found" = "Обмен не найден";
 "amount_is_guaranteed" = "Получаемая сумма гарантирована";
 "amount_is_estimate" = "Получаемая сумма является оценочной";
+"trades_history" = "История трейдов";
+"no_trades" = "Пока не было трейдов";
+"exchange_provider" = "Обменный провайдер";
+"recipient_address" = "Адрес получателя";
+"transaction_key" = "Ключ транзакции";
+"exchange_id" = "ID обменного сервиса";
+"trade_id" = "ID трейда";
 
 
 // Auth
@@ -272,7 +285,6 @@
 
 "save" = "Сохранить";
 "copy" = "Скопировать";
-"full_balance" = "Полный баланс";
 "node_address" = "Адрес узла";
 "node_port" = "Порт узла";
 "reset" = "Сбросить";

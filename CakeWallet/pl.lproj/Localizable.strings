@@ -85,10 +85,14 @@
 "synchronized" = "Zsynchronizowano";
 "failed_connection_to_node" = "Nie połączono się z węzłem";
 
+// Balances
+"balance-display-type_unlocked" = "Dostępne Saldo";
+"balance-display-type_full" = "Pełne saldo";
+"balance-display-type_hidden" = "ukryty";
+"balance_type_title" = "Wyświetl saldo jako";
 
 // Wallet
 
-"available_balance" = "Dostępne Saldo";
 "reconnection" = "Ponowne Połączenie";
 "reconnect" = "Połącz Ponownie";
 "reconnect_alert_text" = "Na pewno chcesz żeby połączyć ponownie ?";
@@ -166,7 +170,8 @@
 "change_pin" = "Zmień PIN";
 "allow_biometric_authentication" = "Pozwól na biometryczną autoryzację";
 "remember_pin" = "Zapamiętaj PIN";
-"node_settings" = "Ustawienia demona";
+"current_node" = "Bieżący węzeł";
+"manage_nodes" = "Zarządzaj węzłami";
 "backup_password" = "Zapasowe hasło";
 "show_backup_password" = "Hasło zapasowe zmieniło się pomyślnie";
 "show_password" = "Pokaż hasło";
@@ -227,6 +232,13 @@
 "trade_not_found" = "Nie można odnaleźć tej zamiany";
 "amount_is_guaranteed" = "Kwota odbioru jest gwarantowana";
 "amount_is_estimate" = "Kwota otrzymana jest szacunkowa";
+"trades_history" = "Historia handlu";
+"no_trades" = "Brak transakcji";
+"exchange_provider" = "Dostawca wymiany";
+"recipient_address" = "Adres odbiorcy";
+"transaction_key" = "Klucz transakcji";
+"exchange_id" = "ID wymiany";
+"trade_id" = "Identyfikator handlu";
 
 
 // Auth
@@ -274,7 +286,6 @@
 
 "save" = "Zachowaj";
 "copy" = "Skopiuj";
-"full_balance" = "Pełne saldo";
 "node_address" = "Adres węzła";
 "node_port" = "Port węzła";
 "node_new" = "Nowy węzeł";

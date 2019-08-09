@@ -86,10 +86,14 @@
 "synchronized" = "同期済み";
 "failed_connection_to_node" = "ノードとの接続失敗";
 
+// Balances
+"balance-display-type_unlocked" = "有効なバランス";
+"balance-display-type_full" = "フルバランス";
+"balance-display-type_hidden" = "隠された";
+"balance_type_title" = "表示バランス";
 
 // Wallet
 
-"available_balance" = "有効なバランス";
 "reconnection" = "再接続";
 "reconnect" = "再接続";
 "reconnect_alert_text" = "再接続しますか？";
@@ -167,7 +171,8 @@
 "change_pin" = "ピン変更";
 "allow_biometric_authentication" = "生体認証を許可";
 "remember_pin" = "ピンを記憶";
-"node_settings" = "デーモン設定";
+"current_node" = "現在のノード";
+"manage_nodes" = "ノードを管理する";
 "backup_password" = "バックアップパスワード";
 "show_backup_password" = "バックアップパスワードが正常に変更されました";
 "show_password" = "パスワードを表示";
@@ -227,6 +232,13 @@
 "trade_not_found" = "トレードが見つかりません";
 "amount_is_guaranteed" = "受け取り金額は保証されています";
 "amount_is_estimate" = "受け取り金額は概算です";
+"trades_history" = "取引履歴";
+"no_trades" = "まだ取引はありません";
+"exchange_provider" = "交換プロバイダー";
+"recipient_address" = "受取人の住所";
+"transaction_key" = "トランザクションキー";
+"exchange_id" = "取引所ID";
+"trade_id" = "取引ID";
 
 
 // Auth
@@ -271,7 +283,6 @@
 
 "save" = "Save";
 "copy" = "コピー";
-"full_balance" = "フルバランス";
 "node_address" = "ノードアドレス";
 "node_port" = "ノードポート";
 "node_new" = "新しいノード";

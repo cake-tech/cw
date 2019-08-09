@@ -98,6 +98,7 @@ func switchNode(skipNodes: [NodeDescription] = []) {
             store.dispatch(
                 SettingsActions.changeCurrentNode(to: node)
             )
+            
             print("Connection to node: \(node)")
             return
         }

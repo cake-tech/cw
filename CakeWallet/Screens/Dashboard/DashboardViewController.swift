@@ -8,7 +8,6 @@ import FlexLayout
 final class DashboardController: BaseViewController<DashboardView>, StoreSubscriber, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate {
     let walletNameView = WalletNameView()
     weak var dashboardFlow: DashboardFlow?
-    private var showAbleBalance: Bool
     private var sortedTransactions:  [DateComponents : [TransactionDescription]] = [:] {
         didSet {
             transactionsKeys = sort(dateComponents: Array(sortedTransactions.keys))
@@ -20,12 +19,22 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     private let calendar: Calendar
     private var scrollViewOffset: CGFloat = 0
     let store: Store<ApplicationState>
+    private var fingerDown:Bool = false
+    
+    typealias PartiallyAvailableBalance = (unlocked:Amount, full:Amount)
+    typealias CryptoFiatBalance = (crypto:PartiallyAvailableBalance, fiat:PartiallyAvailableBalance)
+    private var balances:CryptoFiatBalance {
+        return (crypto:(unlocked:store.state.balanceState.unlockedBalance, full:store.state.balanceState.balance), fiat:(unlocked:store.state.balanceState.unlockedFiatBalance, full:store.state.balanceState.fullFiatBalance))
+    }
+    
+    private var configuredBalanceDisplay:BalanceDisplay {
+        return store.state.settingsState.displayBalance
+    }
     
     init(store: Store<ApplicationState>, dashboardFlow: DashboardFlow?, calendar: Calendar = Calendar.current) {
         self.store = store
         self.dashboardFlow = dashboardFlow
         self.calendar = calendar
-        showAbleBalance = true
         initialHeight = 0
         refreshControl = UIRefreshControl()
         super.init()
@@ -50,10 +59,6 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     
         refreshControl.addTarget(self, action: #selector(refresh(_:)), for: UIControlEvents.valueChanged)
         
-        let onCryptoAmountTap = UITapGestureRecognizer(target: self, action: #selector(changeShownBalance))
-        contentView.cryptoAmountLabel.isUserInteractionEnabled = true
-        contentView.cryptoAmountLabel.addGestureRecognizer(onCryptoAmountTap)
-        
         let sendButtonTap = UITapGestureRecognizer(target: self, action: #selector(presentSend))
         contentView.sendButton.isUserInteractionEnabled = true
         contentView.sendButton.addGestureRecognizer(sendButtonTap)
@@ -62,7 +67,46 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         contentView.receiveButton.isUserInteractionEnabled = true
         contentView.receiveButton.addGestureRecognizer(receiveButtonTap)
         
+        contentView.fixedHeader.isUserInteractionEnabled = true
+        
         insertNavigationItems()
+    }
+
+
+    private func areTouchesValid(_ touches:Set<UITouch>, forEvent thisEvent:UIEvent?) -> Bool {
+        let touchPointsRec = touches.map { return $0.location(in:contentView.receiveButton) }
+        let touchPointsSnd = touches.map { return $0.location(in:contentView.sendButton) }
+        let insideRec = touchPointsRec.map { return contentView.receiveButton.point(inside: $0, with: thisEvent) }
+        let insideSnd = touchPointsSnd.map { return contentView.sendButton.point(inside: $0, with: thisEvent) }
+        if (insideRec.contains(true) || insideSnd.contains(true)) {
+            return false
+        } else {
+            return true
+        }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if (fingerDown == false && areTouchesValid(touches, forEvent:event) == true) {
+            Vibration.heavy.vibrate()
+            fingerDown = true
+            updateBalances()
+        }
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if (fingerDown == true) {
+            Vibration.light.vibrate()
+            fingerDown = false
+            updateBalances()
+        }
+    }
+    
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if (fingerDown == true) {
+            Vibration.light.vibrate()
+            fingerDown = false
+            updateBalances()
+        }
     }
     
     private func insertNavigationItems() {
@@ -73,6 +117,7 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         store.subscribe(self)
+        updateBalances()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -92,8 +137,7 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     
     func onStateChange(_ state: ApplicationState) {
         updateStatus(state.blockchainState.connectionStatus)
-        updateCryptoBalance(showAbleBalance ? state.balanceState.unlockedBalance : state.balanceState.balance)
-        updateFiatBalance(showAbleBalance ? state.balanceState.unlockedFiatBalance : state.balanceState.fullFiatBalance)
+        updateBalances()
         onWalletChange(state.walletState, state.blockchainState)
         updateTransactions(state.transactionsState.transactions)
         updateInitialHeight(state.blockchainState)
@@ -174,9 +218,7 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         animateFixedHeader(for: scrollView)
-        
-        updateCryptoBalance(store.state.balanceState.balance)
-        updateFiatBalance(store.state.balanceState.unlockedFiatBalance)
+        updateBalances()
     }
     
     private func animateFixedHeader(for scrollView: UIScrollView) {
@@ -234,9 +276,7 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         contentView.fixedHeader.flex.layout()
         
         guard scrollView.contentOffset.y > contentView.fixedHeader.frame.height else {
-            updateCryptoBalance(store.state.balanceState.balance)
-            updateFiatBalance(store.state.balanceState.unlockedFiatBalance)
-            
+            updateBalances()
             return
         }
     }
@@ -294,12 +334,6 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         DispatchQueue.main.async {
             self.present(alertViewController, animated: true)
         }
-    }
-    
-    @objc
-    private func changeShownBalance() {
-        showAbleBalance = !showAbleBalance
-        onStateChange(store.state)
     }
     
     private func getTransaction(by indexPath: IndexPath) -> TransactionDescription? {
@@ -412,6 +446,10 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     private func presentTransactionDetails(for tx: TransactionDescription) {
         let transactionDetailsViewController = TransactionDetailsViewController(transactionDescription: tx)
         let nav = UINavigationController(rootViewController: transactionDetailsViewController)
+        
+        let exchangeFlow = ExchangeFlow(navigationController: nav)
+        transactionDetailsViewController.exchangeFlow = exchangeFlow
+        
         tabBarController?.present(nav, animated: true)
     }
     
@@ -476,19 +514,39 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         contentView.updateStatus(text: NSLocalizedString("failed_connection_to_node", comment: ""))
     }
     
-    private func updateFiatBalance(_ amount: Amount) {
-        contentView.fiatAmountLabel.text = amount.formatted()
-        contentView.fiatAmountLabel.flex.markDirty()
+    func updateBalances() {
+        self.render(balances:balances, displaySettings: (fingerDown == true) ? ((configuredBalanceDisplay == .full) ? BalanceDisplay.unlocked : BalanceDisplay.full) : configuredBalanceDisplay)
     }
     
-    private func updateCryptoBalance(_ amount: Amount) {
-        contentView.cryptoTitleLabel.text = "XMR"
-            + " "
-            + (showAbleBalance ? NSLocalizedString("available_balance", comment: "") : NSLocalizedString("full_balance", comment: ""))
-        contentView.cryptoAmountLabel.text = amount.formatted()
+    private func render(balances:CryptoFiatBalance, displaySettings:BalanceDisplay) {
+        //adjust the content based on the display settings
+        switch displaySettings {
+        case .full:
+            contentView.cryptoTitleLabel.text = "XMR " + displaySettings.localizedString()
+            contentView.fiatAmountLabel.text = balances.fiat.full.formatted()
+            contentView.cryptoAmountLabel.text = balances.crypto.full.formatted()
+            contentView.cryptoTitleLabel.textColor = .turquoiseBlue
+        case .unlocked:
+            contentView.cryptoTitleLabel.text = "XMR " + displaySettings.localizedString()
+            contentView.fiatAmountLabel.text = balances.fiat.unlocked.formatted()
+            contentView.cryptoAmountLabel.text = balances.crypto.unlocked.formatted()
+            contentView.cryptoTitleLabel.textColor = .purpley
+        case .hidden:
+            contentView.cryptoTitleLabel.text = "XMR " + displaySettings.localizedString()
+            contentView.cryptoAmountLabel.text = "--"
+            contentView.fiatAmountLabel.text = "-"
+            contentView.cryptoTitleLabel.textColor = .gray
+        }
+
         contentView.cryptoAmountLabel.sizeToFit()
-        contentView.cryptoTitleLabel.flex.markDirty()
+        contentView.cryptoTitleLabel.sizeToFit()
+        contentView.fiatAmountLabel.sizeToFit()
+        
+        contentView.setNeedsLayout()
+        
+        contentView.fiatAmountLabel.flex.markDirty()
         contentView.cryptoAmountLabel.flex.markDirty()
+        contentView.cryptoTitleLabel.flex.markDirty()
     }
     
     private func updateTransactions(_ transactions: [TransactionDescription]) {

@@ -4,6 +4,69 @@ public protocol Formatted {
     func formatted() -> String
 }
 
+public protocol LocalizedFormat: Formatted {
+    func localizedString() -> String
+}
+
+extension LocalizedFormat {
+    public func localizedString() -> String {
+        return NSLocalizedString(self.formatted(), comment:"")
+    }
+}
+
+public enum BalanceDisplay: Int, LocalizedFormat {
+    public static var all: [BalanceDisplay] {
+        return [.full, .unlocked, .hidden]
+    }
+    
+    public var rawValue: Int {
+        switch self {
+        case .full:
+            return 3
+        case .unlocked:
+            return 2
+        case .hidden:
+            return 1
+        }
+    }
+    
+    public var isHidden: Bool {
+        switch self {
+        case .hidden:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    case full, unlocked, hidden
+    
+    public init?(from raw:Int) {
+        switch raw {
+        case 3:
+            self = .full
+        case 2:
+            self = .unlocked
+        case 1:
+            self = .hidden
+            
+        default:
+            return nil
+        }
+    }
+    
+    public func formatted() -> String {
+        switch self {
+        case .full:
+            return "balance-display-type_full"
+        case .unlocked:
+            return "balance-display-type_unlocked"
+        case .hidden:
+            return "balance-display-type_hidden"
+        }
+    }
+}
+
 public protocol Currency: Formatted {}
 
 public protocol Amount: Formatted {

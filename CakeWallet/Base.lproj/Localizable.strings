@@ -86,9 +86,14 @@
 "failed_connection_to_node" = "Failed connect to the node";
 
 
+// Balances
+"balance-display-type_full" = "Full Balance";
+"balance-display-type_unlocked" = "Available Balance";
+"balance-display-type_hidden" = "Hidden";
+"balance_type_title" = "Display Balance As";
+
 // Wallet
 
-"available_balance" = "Balance";
 "reconnection" = "Reconnection";
 "reconnect" = "Reconnect";
 "reconnect_alert_text" = "Are you sure to reconnect ?";
@@ -166,7 +171,8 @@
 "change_pin" = "Change pin";
 "allow_biometric_authentication" = "Allow biometric authentication";
 "remember_pin" = "Remember pin";
-"node_settings" = "Daemon settings";
+"current_node" = "Current node";
+"manage_nodes" = "Manage remote nodes";
 "backup_password" = "Backup password";
 "show_backup_password" = "Show backup password";
 "show_password" = "Show password";
@@ -227,6 +233,13 @@
 "trade_not_found" = "Trade is not found";
 "amount_is_guaranteed" = "The receive amount is guaranteed";
 "amount_is_estimate" = "The receive amount is an estimate";
+"trades_history" = "Trades history";
+"no_trades" = "No trades yet";
+"exchange_provider" = "Exchange provider";
+"recipient_address" = "Recipient address";
+"transaction_key" = "Transaction key";
+"exchange_id" = "Exchange ID";
+"trade_id" = "Trade ID";
 
 
 // Auth
@@ -274,7 +287,6 @@
 
 "save" = "Save";
 "copy" = "Copy";
-"full_balance" = "Full balance";
 "node_address" = "Node address";
 "node_port" = "Node port";
 "node_new" = "New node";

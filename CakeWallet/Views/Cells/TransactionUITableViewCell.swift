@@ -68,7 +68,7 @@ final class TransactionUITableViewCell: FlexCell {
         }
     }
     
-    func configure(direction: TransactionDirection, date: Date, isPending: Bool, cryptoAmount: Amount, fiatAmount: String) {
+    func configure(direction: TransactionDirection, date: Date, isPending: Bool, cryptoAmount: Amount, fiatAmount: String, hidden:Bool) {
         let color: UIColor
         var status = ""
         
@@ -89,10 +89,10 @@ final class TransactionUITableViewCell: FlexCell {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM-dd-yyyy, HH:mm"
         statusLabel.text = status
-        cryptoLabel.text = "\(cryptoAmount.formatted()) \(cryptoAmount.currency.formatted())"
+        cryptoLabel.text = (hidden == true) ? "--" : "\(cryptoAmount.formatted()) \(cryptoAmount.currency.formatted())"
         cryptoLabel.textColor = color
         dateLabel.text = dateFormatter.string(from: date)
-        fiatLabel.text = fiatAmount
+        fiatLabel.text = (hidden == true) ? "-" : fiatAmount
         
         statusLabel.flex.markDirty()
         cryptoLabel.flex.markDirty()

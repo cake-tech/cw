@@ -86,10 +86,14 @@
 "synchronized" = "싱크됨";
 "failed_connection_to_node" = "노드 연결 실패 ";
 
+// Balances
+"balance-display-type_unlocked" = "잔여잔고";
+"balance-display-type_full" = "최대 잔액";
+"balance-display-type_hidden" = "숨겨진";
+"balance_type_title" = "디스플레이 잔액";
 
 // Wallet
 
-"available_balance" = "잔여잔고";
 "reconnection" = "재연결";
 "reconnect" = "재연결";
 "reconnect_alert_text" = "재연결 하실건가요?";
@@ -167,7 +171,8 @@
 "change_pin" = "핀 변경 ";
 "allow_biometric_authentication" = "바이오메트릭 승인 ";
 "remember_pin" = "핀 기억하기 ";
-"node_settings" = "데몬 세팅 ";
+"current_node" = "현재 노드";
+"manage_nodes" = "노드 관리";
 "backup_password" = "백업 비밀번호";
 "show_backup_password" = "백업 비밀번호가 성공적으로 변경되었습니다.";
 "show_password" = "암호 표시";
@@ -227,6 +232,13 @@
 "trade_not_found" = "거래를 찾을 수 없습니다 ";
 "amount_is_guaranteed" = "수신 금액 보장";
 "amount_is_estimate" = "수신 금액은 예상 금액입니다";
+"trades_history" = "거래 내역";
+"no_trades" = "아직 거래가 없습니다";
+"exchange_provider" = "교환 제공자";
+"recipient_address" = "받는 사람 주소";
+"transaction_key" = "거래 키";
+"exchange_id" = "교환 ID";
+"trade_id" = "거래 ID";
 
 
 // Auth
@@ -271,7 +283,6 @@
 
 "save"= "저장";
 "copy"= "복사";
-"full_balance"= "최대 잔액";
 "node_address"= "노드 주소";
 "node_port"= "노드 포트";
 "node_new"= "새 노드";
