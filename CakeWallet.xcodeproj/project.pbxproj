@@ -355,6 +355,8 @@
 		A591C677224112DF0051A4FE /* RecoverCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A591C676224112DF0051A4FE /* RecoverCardView.swift */; };
 		A591C67922414C420051A4FE /* UITextView+Placeholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A591C67822414C420051A4FE /* UITextView+Placeholder.swift */; };
 		A5980D2C1FFC9855647CF936 /* Pods_CWMonero.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 784D7BF72CC17977C433AE9E /* Pods_CWMonero.framework */; };
+		AE728B2122F65702000A9F2E /* Vibrate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE728B2022F65701000A9F2E /* Vibrate.swift */; };
+		AEEA10E122EE79C200633C40 /* SettingsInformativeUITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEEA10E022EE79C200633C40 /* SettingsInformativeUITableViewCell.swift */; };
 		CA1D653F209A3EBB00A1FDDB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1D653E209A3EBB00A1FDDB /* AppDelegate.swift */; };
 		CA1D6554209A3EBC00A1FDDB /* CakeWalletTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1D6553209A3EBC00A1FDDB /* CakeWalletTests.swift */; };
 		CF597971B2D04B48B3BA7407 /* Pods_CakeWalletLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3BA9289B966EEF23CDA77D9 /* Pods_CakeWalletLib.framework */; };
@@ -884,6 +886,8 @@
 		A58B26C2223BA7E300AD0B97 /* CurrencyPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyPickerViewController.swift; sourceTree = "<group>"; };
 		A591C676224112DF0051A4FE /* RecoverCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverCardView.swift; sourceTree = "<group>"; };
 		A591C67822414C420051A4FE /* UITextView+Placeholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+Placeholder.swift"; sourceTree = "<group>"; };
+		AE728B2022F65701000A9F2E /* Vibrate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vibrate.swift; sourceTree = "<group>"; };
+		AEEA10E022EE79C200633C40 /* SettingsInformativeUITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInformativeUITableViewCell.swift; sourceTree = "<group>"; };
 		B0344026ED1C3597BDD08DC1 /* Pods_CakeWallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CakeWallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA1D653B209A3EBB00A1FDDB /* CakeWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CakeWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA1D653E209A3EBB00A1FDDB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -1493,6 +1497,7 @@
 				6A212DA420DAA4DF00CD8594 /* WalletsKeysUITableViewCell.swift */,
 				6ADB035920DBFDED0050786A /* NodeTableCell.swift */,
 				0CDBEEC7227475860047A53C /* PickerTableCell.swift */,
+				AEEA10E022EE79C200633C40 /* SettingsInformativeUITableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1592,6 +1597,7 @@
 				0C43C7C2228867A900F71CB3 /* WalletValidationError.swift */,
 				D100A4F422F0679C0006AEA9 /* TransactionDescription+tradeDetails.swift */,
 				D1F91B0E22F2F3E20001D979 /* File.swift */,
+				AE728B2022F65701000A9F2E /* Vibrate.swift */,
 			);
 			path = Lib;
 			sourceTree = "<group>";
@@ -1634,8 +1640,8 @@
 		6AAF1E9F20B60391000E4E02 /* Dashboard */ = {
 			isa = PBXGroup;
 			children = (
-				6AAF1E8C20B5CDA6000E4E02 /* DashboardViewController.swift */,
 				6AAF1EA220B603D0000E4E02 /* DashboardView.swift */,
+				6AAF1E8C20B5CDA6000E4E02 /* DashboardViewController.swift */,
 				0CCD600E2272E7810038B602 /* TransactionDescription+CellItem.swift */,
 			);
 			path = Dashboard;
@@ -2525,6 +2531,7 @@
 				64AA49D721457873002CE1FE /* EthereumAmount.swift in Sources */,
 				A5680F5621FF21E6005956DA /* RecoverFromKeysViewController.swift in Sources */,
 				D15BDBF522205129006320E0 /* Font.swift in Sources */,
+				AEEA10E122EE79C200633C40 /* SettingsInformativeUITableViewCell.swift in Sources */,
 				0CD650CC227B0417007D552C /* AddressTextField.swift in Sources */,
 				A5680F4C21FF07B0005956DA /* RecoverFromSeedViewCntroller.swift in Sources */,
 				0CCD600F2272E7810038B602 /* TransactionDescription+CellItem.swift in Sources */,
@@ -2596,6 +2603,7 @@
 				64F8AB3C20EAA58D00C59254 /* WalletsActions.swift in Sources */,
 				0CCD605022731DF20038B602 /* MorphTrade.swift in Sources */,
 				6413ACCB20E9450B004922AD /* SettingsState.swift in Sources */,
+				AE728B2122F65702000A9F2E /* Vibrate.swift in Sources */,
 				64AA49C3214570A7002CE1FE /* PasteButton.swift in Sources */,
 				640A2AA621761DB20047E60C /* Bytes.swift in Sources */,
 				6A36FD4720BB623800B3502E /* SeedViewController.swift in Sources */,
