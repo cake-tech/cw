@@ -55,9 +55,10 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         contentView.transactionsTableView.register(items: [TransactionDescription.self])
         contentView.transactionsTableView.delegate = self
         contentView.transactionsTableView.dataSource = self
-        contentView.transactionsTableView.addSubview(refreshControl)
-    
+        
         refreshControl.addTarget(self, action: #selector(refresh(_:)), for: UIControlEvents.valueChanged)
+        contentView.transactionsTableView.refreshControl = refreshControl
+
         
         let sendButtonTap = UITapGestureRecognizer(target: self, action: #selector(presentSend))
         contentView.sendButton.isUserInteractionEnabled = true
@@ -597,8 +598,11 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     }
     
     @objc
-    private func refresh(_ refreshControl: UIRefreshControl) {
+    private func refresh(_ refCont: UIRefreshControl) {
         store.dispatch(TransactionsActions.askToUpdate)
         refreshControl.endRefreshing()
+        DispatchQueue.main.async {
+            refCont.endRefreshing()
+        }
     }
 }
