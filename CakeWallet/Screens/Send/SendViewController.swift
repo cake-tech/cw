@@ -202,7 +202,7 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
     func onStateChange(_ state: ApplicationState) {
         updateWallet(name: state.walletState.name)
         updateWallet(type: state.walletState.walletType)
-        updateWallet(balance: state.balanceState.unlockedBalance)
+        updateWallet(balance: state.balanceState.unlockedBalance, balanceDisplayMode: state.settingsState.displayBalance)
         updateSendingStage(state.transactionsState.sendingStage)
         updateFiat(state.settingsState.fiatCurrency)
         updateEstimatedFee(state.transactionsState.estimatedFee)
@@ -279,12 +279,21 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
         contentView.rootFlexContainer.flex.layout()
     }
     
-    private func updateWallet(balance: Amount) {
-        let balance = balance.formatted()
-        guard balance != contentView.cryptoAmountTitleLabel.text else {
+    private func updateWallet(balance: Amount, balanceDisplayMode balanceDisplay: BalanceDisplay) {
+        let formattedBalance: String
+        
+        switch balanceDisplay {
+        case .hidden:
+            formattedBalance = "---"
+        default:
+            formattedBalance = balance.formatted()
+        }
+        
+        guard formattedBalance != contentView.cryptoAmountTitleLabel.text else {
             return
         }
-        contentView.cryptoAmountValueLabel.text = balance
+        
+        contentView.cryptoAmountValueLabel.text = formattedBalance
         contentView.cryptoAmountValueLabel.flex.markDirty()
         contentView.walletContainer.flex.layout()
         contentView.rootFlexContainer.flex.layout()
