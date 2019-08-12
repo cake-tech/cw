@@ -3,18 +3,21 @@ import FlexLayout
 
 final class ProgressBar: BaseFlexView {
     let progressView: UIView
+    let textContainer: UIView
     let imageHolder: UIImageView
     let syncImage: UIImage
     var progressLabel: UILabel
     var statusLabel: UILabel
+    var asOfLabel: UILabel
     
     required init() {
         progressView = UIView()
+        textContainer = UIView()
         imageHolder = UIImageView()
         syncImage = UIImage(named: "refresh_icon")!.resized(to: CGSize(width: 12, height: 12))
         progressLabel = UILabel(text: "0%")
         statusLabel = UILabel(text: "SYNCING BLOCKCHAIN")
-        
+        asOfLabel = UILabel(text:"AS OF")
         super.init()
         
         animateSyncImage()
@@ -26,8 +29,11 @@ final class ProgressBar: BaseFlexView {
         imageHolder.image = syncImage
         progressLabel.font = applyFont(ofSize: 12)
         progressLabel.textColor = UIColor.wildDarkBlue
-        statusLabel.font = applyFont(ofSize: 10)
+        statusLabel.font = applyFont(ofSize: 12)
         statusLabel.textColor = UIColor.wildDarkBlue
+        asOfLabel.font = applyFont(ofSize:10)
+        asOfLabel.textColor = UIColor.wildDarkBlue
+        asOfLabel.textAlignment = .center
     }
     
     override func layoutSubviews() {
@@ -37,13 +43,18 @@ final class ProgressBar: BaseFlexView {
     }
     
     override func configureConstraints() {
+        textContainer.flex.alignItems(.center).justifyContent(.center).define { flex in
+            flex.addItem(statusLabel).alignSelf(.center).width(100%)
+            flex.addItem(asOfLabel).alignSelf(.center).width(100%)
+        }
+        
         progressView.flex
             .direction(.row).alignItems(.center).justifyContent(.center)
             .backgroundColor(UIColor(red: 245, green: 246, blue: 249))
-            .height(21)
+            .height(42)
             .define { flex in
                 flex.addItem(imageHolder).marginRight(7)
-                flex.addItem(statusLabel)
+                flex.addItem(textContainer).alignSelf(.center)
         }
         
         rootFlexContainer.flex
