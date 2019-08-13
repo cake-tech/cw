@@ -217,6 +217,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
             title: NSLocalizedString("balance_type_title", comment: ""),
             pickerOptions: BalanceDisplay.all,
             selectedAtIndex: BalanceDisplay.all.index(of:balanceType) ?? 0) { [weak store] newBalance in
+                print("newBalance \(newBalance)")
                 store?.dispatch(
                     SettingsActions.changeBalanceDisplayMode(to: newBalance)
                 )

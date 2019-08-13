@@ -74,6 +74,10 @@ struct TradeInfo: JSONInitializable {
     let transactionID: String
     let date: Double
     var provider: String
+    
+    var exchangeProvider: ExchangeProvider? {
+        return ExchangeProvider(rawValue: provider)
+    }
 
     init(json: JSON) {
         tradeID = json["tradeID"].stringValue
