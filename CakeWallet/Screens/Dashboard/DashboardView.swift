@@ -1,6 +1,7 @@
 import UIKit
 import PinLayout
 import FlexLayout
+import SwiftDate
 
 enum DashboardActionType {
     case send, receive
@@ -106,6 +107,8 @@ final class DashboardView: BaseScrollFlexView {
     static let minHeaderButtonsHeight = 45 as CGFloat
     static let headerMinHeight: CGFloat = 195
     static let fixedHeaderHeight = 330 as CGFloat
+    private var lastDoneDate:Date
+    
     let fixedHeader: UIView
     let fiatAmountLabel, cryptoAmountLabel, cryptoTitleLabel, transactionTitleLabel: UILabel
     let progressBar: ProgressBar
@@ -128,12 +131,19 @@ final class DashboardView: BaseScrollFlexView {
         transactionsTableView = UITableView.init(frame: CGRect.zero, style: .grouped)
         cardViewCoreDataWrapper = UIView()
         buttonsRowPadding = 10
-        
+        lastDoneDate = Date()
         super.init()
     }
     
     override func configureView() {
         super.configureView()
+        Timer.scheduledTimer(withTimeInterval: 2, repeats: true, block: { [weak self] timer in
+            guard let self = self else {
+                timer.invalidate()
+                return
+            }
+            self.updateAsOf()
+        })
         scrollView.showsVerticalScrollIndicator = false
         cryptoAmountLabel.font = applyFont(ofSize: 40)
         cryptoAmountLabel.textAlignment = .center
@@ -208,22 +218,39 @@ final class DashboardView: BaseScrollFlexView {
     func updateStatus(text: String, done: Bool = false) {
         progressBar.statusLabel.text = text.uppercased()
         progressBar.statusLabel.flex.markDirty()
-        
         progressBar.animateSyncImage()
         
         if done {
+            lastDoneDate = Date()
+            
             progressBar.progressView.backgroundColor = UIColor(red: 244, green: 239, blue: 253)
             progressBar.progressView.layer.borderWidth = 0.7
             progressBar.progressView.layer.borderColor = UIColor.purpleyBorder.cgColor
             progressBar.statusLabel.textColor = .black
+            
+            lastDoneDate = Date()
+            progressBar.asOfLabel.isHidden = false
+            updateAsOf()
             
             progressBar.imageHolder.flex.height(0).width(0).markDirty()
             progressBar.imageHolder.isHidden = true
             
             progressBar.progressLabel.flex.height(0).markDirty()
             progressBar.progressLabel.isHidden = true
+            
+        } else {
+            progressBar.asOfLabel.text = ""
+            progressBar.asOfLabel.isHidden = true
         }
         
         progressBar.flex.layout()
+    }
+    
+    private func updateAsOf() {
+        if (progressBar.asOfLabel.isHidden == false) {
+            let relativeDate = RelativeFormatter.format(date:lastDoneDate, style:RelativeFormatter.Style(flavours: [.longTime], gradation: RelativeFormatter.Gradation.canonical()), locale:Locale.current)
+            progressBar.asOfLabel.text = relativeDate
+            progressBar.asOfLabel.flex.markDirty()
+        }
     }
 }

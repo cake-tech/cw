@@ -15,7 +15,6 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     }
     private var transactionsKeys: [DateComponents] = []
     private var initialHeight: UInt64
-    private var refreshControl: UIRefreshControl
     private let calendar: Calendar
     private var scrollViewOffset: CGFloat = 0
     let store: Store<ApplicationState>
@@ -36,7 +35,6 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         self.dashboardFlow = dashboardFlow
         self.calendar = calendar
         initialHeight = 0
-        refreshControl = UIRefreshControl()
         super.init()
         tabBarItem = UITabBarItem(
             title: title,
@@ -55,9 +53,6 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         contentView.transactionsTableView.register(items: [TransactionDescription.self])
         contentView.transactionsTableView.delegate = self
         contentView.transactionsTableView.dataSource = self
-        contentView.transactionsTableView.addSubview(refreshControl)
-    
-        refreshControl.addTarget(self, action: #selector(refresh(_:)), for: UIControlEvents.valueChanged)
         
         let sendButtonTap = UITapGestureRecognizer(target: self, action: #selector(presentSend))
         contentView.sendButton.isUserInteractionEnabled = true
@@ -67,18 +62,23 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         contentView.receiveButton.isUserInteractionEnabled = true
         contentView.receiveButton.addGestureRecognizer(receiveButtonTap)
         
+        let progressTap = UITapGestureRecognizer(target:self, action: #selector(refresh(_:)))
+        contentView.progressBar.isUserInteractionEnabled = true
+        contentView.progressBar.addGestureRecognizer(progressTap)
+        
         contentView.fixedHeader.isUserInteractionEnabled = true
         
         insertNavigationItems()
     }
 
-
     private func areTouchesValid(_ touches:Set<UITouch>, forEvent thisEvent:UIEvent?) -> Bool {
         let touchPointsRec = touches.map { return $0.location(in:contentView.receiveButton) }
         let touchPointsSnd = touches.map { return $0.location(in:contentView.sendButton) }
+        let touchPointsProg = touches.map { return $0.location(in:contentView.progressBar) }
         let insideRec = touchPointsRec.map { return contentView.receiveButton.point(inside: $0, with: thisEvent) }
         let insideSnd = touchPointsSnd.map { return contentView.sendButton.point(inside: $0, with: thisEvent) }
-        if (insideRec.contains(true) || insideSnd.contains(true)) {
+        let insideProg = touchPointsProg.map { return contentView.progressBar.point(inside: $0, with: thisEvent) }
+        if (insideRec.contains(true) || insideSnd.contains(true) || insideProg.contains(true)) {
             return false
         } else {
             return true
@@ -550,9 +550,6 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     }
     
     private func updateTransactions(_ transactions: [TransactionDescription]) {
-        if refreshControl.isRefreshing {
-            refreshControl.endRefreshing()
-        }
 
         contentView.transactionTitleLabel.isHidden = transactions.count <= 0
         
@@ -597,8 +594,8 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     }
     
     @objc
-    private func refresh(_ refreshControl: UIRefreshControl) {
+    private func refresh(_ refCont: UIRefreshControl) {
         store.dispatch(TransactionsActions.askToUpdate)
-        refreshControl.endRefreshing()
+        Vibration.success.vibrate()
     }
 }
