@@ -28,15 +28,33 @@ public struct UpdateTransactionsHandler: Handler {
     }
 }
 
+public struct AskToUpdateHandler: AsyncHandler {
+    public func handle(action: TransactionsActions, store: Store<ApplicationState>, handler: @escaping (AnyAction?) -> Void) {
+        guard case .askToUpdate = action else { return }
+        
+        workQueue.async {
+            let transactionHistory = currentWallet.transactions()
+            transactionHistory.refresh()
+            handler(nil)
+        }
+    }
+}
+
+
+
+
+
+
+
 //public struct UpdateTransactionHistoryHandler: AsyncHandler {
 //    public func handle(action: TransactionsActions, store: Store<ApplicationState>, handler: @escaping (AnyAction?) -> Void) {
 //        guard case let .updateTransactionHistory(transactionHistory, addressIndex) = action else { return }
-//        
+//
 //        workQueue.async {
 //            let transactions = store.state.transactionsState.transactions
 //            transactionHistory.refresh()
 //            let refreshedTransactions = transactionHistory.transactions.filter { $0.accountIndex == addressIndex }
-//            
+//
 //            if
 //                transactions.count != refreshedTransactions.count || transactions.filter({ $0.isPending }).count > 0 {
 //                let transactions = refreshedTransactions.sorted(by: { $0.date > $1.date })
@@ -59,15 +77,3 @@ public struct UpdateTransactionsHandler: Handler {
 //        }
 //    }
 //}
-
-public struct AskToUpdateHandler: AsyncHandler {
-    public func handle(action: TransactionsActions, store: Store<ApplicationState>, handler: @escaping (AnyAction?) -> Void) {
-        guard case .askToUpdate = action else { return }
-        
-        workQueue.async {
-            let transactionHistory = currentWallet.transactions()
-            transactionHistory.refresh()
-            handler(nil)
-        }
-    }
-}

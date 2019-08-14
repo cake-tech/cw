@@ -1137,10 +1137,11 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         
         let from = isXMRTO ? receiveCrypto.value : depositCrypto.value
         let to = isXMRTO ? depositCrypto.value : receiveCrypto.value
+        let limits = isXMRTO ? receiveLimits : depositLimits
         
         exchange.fetchLimist(from: from, to: to)
             .catchErrorJustReturn((min: nil, max: nil))
-            .bind(to: receiveLimits)
+            .bind(to: limits)
             .disposed(by: disposeBag)
         depositLimits.accept((min: nil, max: nil))
         

@@ -267,7 +267,7 @@ final class WalletsViewController: BaseViewController<WalletsView>, UITableViewD
                 
             } catch {
                 print(error)
-                self?.showErrorAlert(error: error)
+                authController?.showErrorAlert(error: error)
             }
         }
         

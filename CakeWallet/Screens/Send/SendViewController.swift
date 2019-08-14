@@ -134,6 +134,11 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
     var priority: TransactionPriority {
         return store.state.settingsState.transactionPriority
     }
+    
+    private var configuredBalanceDisplay:BalanceDisplay {
+        return store.state.settingsState.displayBalance
+    }
+    
     private weak var alert: UIAlertController?
     private var price: Double {
         return store.state.balanceState.price
@@ -207,7 +212,7 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
     func onStateChange(_ state: ApplicationState) {
         updateWallet(name: state.walletState.name)
         updateWallet(type: state.walletState.walletType)
-        updateWallet(balance: state.balanceState.unlockedBalance, balanceDisplayMode: state.settingsState.displayBalance)
+        updateWalletBalance()
         updateSendingStage(state.transactionsState.sendingStage)
         updateFiat(state.settingsState.fiatCurrency)
         updateEstimatedFee(state.transactionsState.estimatedFee)
@@ -284,21 +289,12 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
         contentView.rootFlexContainer.flex.layout()
     }
     
-    private func updateWallet(balance: Amount, balanceDisplayMode balanceDisplay: BalanceDisplay) {
-        let formattedBalance: String
-        
-        switch balanceDisplay {
-        case .hidden:
-            formattedBalance = "---"
-        default:
-            formattedBalance = balance.formatted()
-        }
-        
-        guard formattedBalance != contentView.cryptoAmountTitleLabel.text else {
+    private func updateWalletBalance() {
+        let newBalanceText = (configuredBalanceDisplay).isHidden == true ? "--" : store.state.balanceState.unlockedBalance.formatted()
+        guard newBalanceText != contentView.cryptoAmountTitleLabel.text else {
             return
         }
-        
-        contentView.cryptoAmountValueLabel.text = formattedBalance
+        contentView.cryptoAmountValueLabel.text = newBalanceText
         contentView.cryptoAmountValueLabel.flex.markDirty()
         contentView.walletContainer.flex.layout()
         contentView.rootFlexContainer.flex.layout()
