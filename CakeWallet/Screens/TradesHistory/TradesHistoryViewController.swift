@@ -73,13 +73,21 @@ struct TradeInfo: JSONInitializable {
     let tradeID: String
     let transactionID: String
     let date: Double
+    let from: CryptoCurrency?
+    let to: CryptoCurrency?
     var provider: String
+    
+    var exchangeProvider: ExchangeProvider? {
+        return ExchangeProvider(rawValue: provider)
+    }
 
     init(json: JSON) {
         tradeID = json["tradeID"].stringValue
         transactionID = json["txID"].stringValue
         date = json["date"].doubleValue
         provider = json["provider"].stringValue
+        from = CryptoCurrency(from: json["from"].stringValue)
+        to = CryptoCurrency(from: json["to"].stringValue)
     }
 }
 
@@ -149,12 +157,7 @@ final class TradesHistoryViewController: BaseViewController<TradesHistoryView>, 
     }
     
     private func loadTrades() {
-        guard let tradesJSON = ExchangeTransactions.shared.getAll() else { return }
-        
-        for tradeJSON in tradesJSON {
-            let trade = TradeInfo(json: tradeJSON)
-            trades.append(trade)
-        }
+        trades = TradesList.shared.list().sorted(by: { $0.date > $1.date })
     }
     
     private func createNoDataLabel(with size: CGSize) -> UIView {

@@ -29,8 +29,8 @@ final class MorphExchange: Exchange {
             }.flatMap { $0 }
     }()
     static let provider = ExchangeProvider.morph
+    static let morphTokenUri = "https://api.morphtoken.com"
     private static let ref = "cakewallet"
-    private static let morphTokenUri = "https://api.morphtoken.com"
     private static let rateURI = String(format: "%@/rates", morphTokenUri)
     private static let createTradeURI = String(format: "%@/morph", morphTokenUri)
     
@@ -63,9 +63,7 @@ final class MorphExchange: Exchange {
                     ]],
                     "tag": MorphExchange.ref
                 ]
-                
-                print("bodyJSON", bodyJSON)
-                
+                                
                 do {
                     urlRequest.httpBody = try bodyJSON.rawData(options: .prettyPrinted)
                 } catch {
@@ -130,17 +128,6 @@ final class MorphExchange: Exchange {
                         extraId: nil,
                         provider: .morph,
                         outputTransaction: nil)
-                    
-//                    let trade = ExchangeTrade(
-//                        id: id,
-//                        inputCurrency: request.to,
-//                        outputCurrency: request.to,
-//                        inputAddress: depositAddress,
-//                        min: min,
-//                        max: max,
-//                        status: ExchangeTradeState(rawValue: json["state"].stringValue.lowercased()) ?? .pending,
-//                        provider: .morph
-//                    )
                     
                     o.onNext(trade)
                 })

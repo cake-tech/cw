@@ -102,7 +102,12 @@ class RecipientAddresses {
 
     let file: File
 
-    init(file: File = EncryptedFile(url: RecipientAddresses.url, cipher: try! ChaCha20(key: RecipientAddresses.key, iv: RecipientAddresses.iv))) {
+    init(file: File = EncryptedFile(
+        url: RecipientAddresses.url,
+        cipherBuiler: {
+            let key = try! PKCS5.PBKDF2(password: RecipientAddresses.key, salt:  RecipientAddresses.iv, iterations: 4096, variant: .sha256).calculate()
+            return try! Blowfish(key: key, padding: .pkcs7)
+    })) {
         self.file = file
     }
 

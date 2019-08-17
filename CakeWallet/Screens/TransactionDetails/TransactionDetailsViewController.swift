@@ -133,11 +133,15 @@ final class TransactionDetailsViewController: BaseViewController<TransactionDeta
         }
         
         if let tradeID = transactionDescription.tradeId() {
-            items.append(TransactionDetailsCellItem(row: .exchangeID, value: tradeID))
-        }
-        
-        if let exchangeProvider = transactionDescription.exchangeProvider() {
-            items.append(TransactionDetailsCellItem(row: .exchange, value: exchangeProvider))
+            var value = ""
+            
+            if let exchangeProvider = transactionDescription.exchangeProvider() {
+                value += exchangeProvider.uppercased() + ": "
+            }
+            
+            value += tradeID
+            
+            items.append(TransactionDetailsCellItem(row: .exchangeID, value: value))
         }
         
         if let transactionKey = getTransactionKey(for: transactionDescription.id), !transactionKey.isEmpty {

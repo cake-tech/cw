@@ -8,13 +8,13 @@ final class SettingsPickerUITableViewCell<Item: Formatted>: FlexCell, UIPickerVi
     let pinckerTextField: UITextField
     private(set) var pickerOptions: [Item]
     private var action: Action
-    private var selectedOption: Item?
+    private let initialSelectedOption: Item?
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         pickerView = UIPickerView()
         pinckerTextField = UITextField()
         pickerOptions = []
-        selectedOption = nil
+        initialSelectedOption = nil
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
@@ -67,7 +67,6 @@ final class SettingsPickerUITableViewCell<Item: Formatted>: FlexCell, UIPickerVi
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let selOp = pickerOptions[row]
-        selectedOption = selOp
         pinckerTextField.text = stringForPickerOption(selOp)
         action?(selOp)
     }
@@ -85,9 +84,9 @@ final class SettingsPickerUITableViewCell<Item: Formatted>: FlexCell, UIPickerVi
     // MARK: UITextFieldDelegate
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if let selectedOption = selectedOption {
-            onFinish?(selectedOption)
-        }
+        let selectedRow = pickerView.selectedRow(inComponent: 0)
+        let selectedOption = pickerOptions[selectedRow]
+        onFinish?(selectedOption)
     }
     
     @objc

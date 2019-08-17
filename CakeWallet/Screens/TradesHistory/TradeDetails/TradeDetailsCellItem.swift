@@ -2,7 +2,7 @@ import Foundation
 import CakeWalletLib
 
 enum TradeDetailsRows: Stringify, CaseIterable {
-    case tradeID, exchangeProvider, date, state
+    case tradeID, exchangeProvider, date, state, pair
     
     func string() -> String {
         switch self {
@@ -14,6 +14,8 @@ enum TradeDetailsRows: Stringify, CaseIterable {
             return  NSLocalizedString("exchange_provider", comment: "")
         case .state:
             return NSLocalizedString("state", comment: "")
+        case .pair:
+            return NSLocalizedString("pair", comment: "")
         }
     }
 }

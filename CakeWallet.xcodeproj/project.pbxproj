@@ -48,6 +48,7 @@
 		0C782005226E34CE009FDB62 /* SubaddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C782004226E34CE009FDB62 /* SubaddressView.swift */; };
 		0C9B94A921B014FE001F9868 /* DisclaimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9B94A821B014FE001F9868 /* DisclaimerView.swift */; };
 		0C9B94AB21B01506001F9868 /* DisclaimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9B94AA21B01506001F9868 /* DisclaimerViewController.swift */; };
+		0CA192BA2306C2B900502AF9 /* TradesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA192B92306C2B900502AF9 /* TradesList.swift */; };
 		0CAF2BA5221441420092A720 /* libeasylogging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CAF2BA1221441420092A720 /* libeasylogging.a */; };
 		0CAF2BA6221441420092A720 /* libunbound.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CAF2BA2221441420092A720 /* libunbound.a */; };
 		0CAF2BA7221441420092A720 /* libwallet_merged.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CAF2BA3221441420092A720 /* libwallet_merged.a */; };
@@ -503,6 +504,7 @@
 		0C782004226E34CE009FDB62 /* SubaddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubaddressView.swift; sourceTree = "<group>"; };
 		0C9B94A821B014FE001F9868 /* DisclaimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclaimerView.swift; sourceTree = "<group>"; };
 		0C9B94AA21B01506001F9868 /* DisclaimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclaimerViewController.swift; sourceTree = "<group>"; };
+		0CA192B92306C2B900502AF9 /* TradesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradesList.swift; sourceTree = "<group>"; };
 		0CA88B262189D1FE000BF96F /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		0CA88B272189D1FE000BF96F /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Main.strings; sourceTree = "<group>"; };
 		0CA88B282189D1FE000BF96F /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -1037,6 +1039,7 @@
 				0CCD604522731DC30038B602 /* Morph */,
 				0CDBEEC922747A140047A53C /* ExchangeList.swift */,
 				0CDF00FE2278799900AD8276 /* ExchangeLimits.swift */,
+				0CA192B92306C2B900502AF9 /* TradesList.swift */,
 			);
 			path = Exchange;
 			sourceTree = "<group>";
@@ -2646,6 +2649,7 @@
 				A5178DFA2231365D00EC4829 /* LoadingButton.swift in Sources */,
 				0C43C7C3228867A900F71CB3 /* WalletValidationError.swift in Sources */,
 				64F8AB2E20EA449B00C59254 /* UIImage+resized.swift in Sources */,
+				0CA192BA2306C2B900502AF9 /* TradesList.swift in Sources */,
 				64FBC8412124758D00EFC474 /* NewNodeView.swift in Sources */,
 				0C5EFB8E22022F8C0069AF7F /* BackupError.swift in Sources */,
 				645195CE2131620700F2FE8F /* DashboardFlow.swift in Sources */,

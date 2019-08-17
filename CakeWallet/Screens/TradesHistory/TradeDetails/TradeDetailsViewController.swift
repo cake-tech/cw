@@ -8,6 +8,8 @@ import RxBiBinding
 import RxCocoa
 
 final class TradeDetailsViewController: BaseViewController<TransactionDetailsView>, UITableViewDataSource, UITableViewDelegate {
+    private static let arrowRightSymbol = "→"
+    
     private(set) var items: [TradeDetailsCellItem] = []
     private let trade: TradeInfo
     private var tradeDetails: BehaviorRelay<Trade?>
@@ -38,6 +40,7 @@ final class TradeDetailsViewController: BaseViewController<TransactionDetailsVie
     }
     
     override func configureBinds() {
+        super.configureBinds()
         title = "Trade details"
         let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         navigationItem.backBarButtonItem = backButton
@@ -80,64 +83,41 @@ final class TradeDetailsViewController: BaseViewController<TransactionDetailsVie
         let formattedDate = dateFormatter.string(from: Date(timeIntervalSince1970: trade.date))
         
         items.append(TradeDetailsCellItem(row: .tradeID, value: trade.tradeID))
-        
         items.append(TradeDetailsCellItem(row: .date, value: formattedDate))
-        
         items.append(TradeDetailsCellItem(row: .exchangeProvider, value: trade.provider))
-        
         items.append(TradeDetailsCellItem(row: .state, value: "Fetching..."))
+        
+        if
+            let from = trade.from,
+            let to = trade.to {
+            let pair = from.formatted() + TradeDetailsViewController.arrowRightSymbol + to.formatted()
+            items.append(TradeDetailsCellItem(row: .pair, value: pair))
+        }
     }
     
     private func fetchTradeDetails() {
-        let url = URLComponents(string: String(format: "%@/order_status_query/", XMRTOExchange.uri))!
-        var request = URLRequest(url: url.url!)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("CakeWallet/XMR iOS", forHTTPHeaderField: "User-Agent")
-        let bodyJSON: JSON = [
-            "uuid": trade.tradeID
-        ]
+        guard let provider = trade.exchangeProvider else {
+            return
+        }
         
-        request.httpBody = try? bodyJSON.rawData(options: .prettyPrinted)
+        findTradeByID(id: trade.tradeID, provider: provider)
+            .bind(to: tradeDetails)
+            .disposed(by: disposeBag)
+    }
+    
+    private func findTradeByID(id: String, provider: ExchangeProvider) -> Observable<Trade> {
+        let trade: Observable<Trade>
         
-        Alamofire.request(request).responseData(completionHandler: { [weak self] response in
-            guard response.response?.statusCode == 200 else {
-                return
-            }
-            
-            guard
-                let data = response.data,
-                let json = try? JSON(data: data) else {
-                    return
-            }
-            
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-            
-            let address = json["xmr_receiving_integrated_address"].stringValue
-            let paymentId = json["xmr_required_payment_id_short"].stringValue
-            let totalAmount = json["xmr_amount_total"].stringValue
-            let amount = MoneroAmount(from: totalAmount)
-            let stateString = json["state"].stringValue
-            let state = ExchangeTradeState(fromXMRTO: stateString) ?? .notFound
-            let expiredAt = dateFormatter.date(from: json["expires_at"].stringValue)
-            let outputTransaction = json["btc_transaction_id"].string
-            
-            if let this = self {
-                let tradeDetails = XMRTOTrade(
-                    id: this.trade.tradeID,
-                    from: CryptoCurrency.monero,
-                    to: CryptoCurrency.bitcoin,
-                    state: state,
-                    inputAddress: address,
-                    amount: amount,
-                    extraId: paymentId,
-                    expiredAt: expiredAt,
-                    outputTransaction: outputTransaction)
-                
-                this.tradeDetails.accept(tradeDetails)
-            }
-        })
+        switch provider {
+        case .morph:
+            trade = MorphTrade.findBy(id: id)
+        case .changenow:
+            trade = ChangeNowTrade.findBy(id: id)
+        case .xmrto:
+            trade = XMRTOTrade.findBy(id: id)
+        }
+        
+        return trade
     }
     
     private func updateTradeDetails() {

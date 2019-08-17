@@ -304,3 +304,5 @@
 "please_save_sec_key" = "Please copy or write down the trade ID to continue.\n\nTrade ID: %@";
 "edit" = "संपादित करें";
 "trade_is_powered" = "यह व्यापार द्वारा संचालित है %@";
+
+"pair" = "जोड़ा";
