@@ -1038,7 +1038,7 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
     // MARK: StoreSubscriber
     
     func onStateChange(_ state: ApplicationState) {
-        changedWallet(type: state.walletState.walletType)
+        changedWallet(state.walletState)
     }
     
     // MARK: CurrencyPickerDelegate
@@ -1082,16 +1082,14 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         
         if store.state.walletState.walletType.currency == crypto {
             contentView.depositCardView.pickerButtonView.walletNameLabel.text = store.state.walletState.name
-            
-            if !didSetCurrentAddressForDeposit {
-                didSetCurrentAddressForDeposit = true
-                contentView.depositCardView.addressContainer.textView.originText.accept(store.state.walletState.address)
-            }
+            contentView.depositCardView.addressContainer.textView.originText.accept(store.state.walletState.address)
         } else {
-            didSetCurrentAddressForDeposit = false
+            depositRefundAddress.accept("")
             contentView.depositCardView.pickerButtonView.walletNameLabel.text = nil
             contentView.depositCardView.addressContainer.textView.text = nil
         }
+        
+        contentView.depositCardView.addressContainer.isUserInteractionEnabled = store.state.walletState.walletType.currency != crypto
         
         let amount = Double(receiveAmountString.value) ?? 0
         exchange.calculateAmount(amount, from: crypto, to: receiveCrypto.value)
@@ -1187,23 +1185,40 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         
         if store.state.walletState.walletType.currency == crypto {
             contentView.receiveCardView.pickerButtonView.walletNameLabel.text = store.state.walletState.name
-            
-            if !didSetCurrentAddressForReceive {
-                didSetCurrentAddressForReceive = true
-                receiveAddress.accept(store.state.walletState.address)
-//                contentView.receiveCardView.addressContainer.textView.change(text: store.state.walletState.address)
-            }
+            receiveAddress.accept(store.state.walletState.address)
         } else {
-            didSetCurrentAddressForReceive = false
+            receiveAddress.accept("")
             contentView.receiveCardView.pickerButtonView.walletNameLabel.text = nil
             contentView.receiveCardView.addressContainer.textView.text = nil
         }
+        
+        contentView.receiveCardView.addressContainer.isUserInteractionEnabled = store.state.walletState.walletType.currency != crypto
         
         setProviderTitle()
         updateLimits()
     }
     
-    private func changedWallet(type: WalletType) {
+    private func changedWallet(_ walletState: WalletState) {
+        if depositCrypto.value == walletState.walletType.currency {
+            if depositRefundAddress.value != walletState.address {
+                depositRefundAddress.accept(walletState.address)
+            }
+            
+            if contentView.depositCardView.pickerButtonView.walletNameLabel.text != walletState.name {
+                contentView.depositCardView.pickerButtonView.walletNameLabel.text = walletState.name
+            }
+        }
+        
+        if receiveCrypto.value == walletState.walletType.currency {
+            if receiveAddress.value != walletState.address {
+                receiveAddress.accept(walletState.address)
+            }
+            
+            if contentView.receiveCardView.pickerButtonView.walletNameLabel.text != walletState.name {
+                contentView.receiveCardView.pickerButtonView.walletNameLabel.text = walletState.name
+            }
+        }
+        
         contentView.setNeedsLayout()
     }
     
@@ -1276,7 +1291,7 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
             icon = "cn_logo"
         case .morph:
             title = "Powered by Morphtoken"
-            icon = "xmr_to_logo"
+            icon = "morphtoken_logo"
         case .xmrto:
             title = "Powered by XMR.to"
             icon = "xmr_to_logo"
@@ -1422,6 +1437,14 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
     }
     
     private func onTradeCreated(_ trade: Trade, amount: Amount) {
+        
+        TradesList.shared.add(
+            tradeID: trade.id,
+            date: Date(),
+            provider: exchange.provider,
+            from: depositCrypto.value,
+            to: receiveCrypto.value)
+        
         let alert = ExchangeAlertViewController()
         alert.onDone = { [weak self] in
             self?.exchangeFlow?.change(route: .exchangeResult(trade, amount))

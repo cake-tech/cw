@@ -26,14 +26,14 @@ struct MorphTrade: Trade {
                             o.onError(ExchangerError.tradeNotFould(id))
                             return
                     }
-                    
+
+                    let toRaw = json["output"].arrayValue.first!["asset"].stringValue
                     let from = CryptoCurrency(from: json["input"]["asset"].stringValue)!
-                    let to = CryptoCurrency(from: json["output"]["asset"].stringValue)!
-                    let inputAddress = json["input"]["address"].stringValue
-                    let outputAddress = json["output"]["address"].stringValue
+                    let to = CryptoCurrency(from: toRaw)!
+                    let inputAddress = json["input"]["deposit_address"].stringValue
+                    let outputAddress = json["output"].arrayValue.first!["address"].stringValue
                     let min = makeAmount(json["input"]["limits"]["min"].doubleValue, currency: from)
                     let max = makeAmount(json["input"]["limits"]["max"].doubleValue, currency: from)
-                    
                     
                     let trade = MorphTrade(
                         id: id,

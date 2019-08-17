@@ -72,7 +72,7 @@ struct ChangeNowTrade: Trade {
                     from: $0.from,
                     to: $0.to,
                     inputAddress: $0.inputAddress,
-                    amount: $0.amount,
+                    amount: self.amount,
                     payoutAddress: $0.payoutAddress,
                     refundAddress: self.refundAddress,
                     state: $0.state,

@@ -136,7 +136,6 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     }
     
     func onStateChange(_ state: ApplicationState) {
-        print("store.state.settingsState.displayBalance \(store.state.settingsState.displayBalance)")
         updateStatus(state.blockchainState.connectionStatus)
         updateBalances()
         onWalletChange(state.walletState, state.blockchainState)
