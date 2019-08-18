@@ -110,7 +110,7 @@ final class DashboardView: BaseScrollFlexView {
     private var lastDoneDate:Date
     
     let fixedHeader: UIView
-    let fiatAmountLabel, cryptoAmountLabel, cryptoTitleLabel, transactionTitleLabel: UILabel
+    let fiatAmountLabel, cryptoAmountLabel, cryptoTitleLabel, transactionTitleLabel, blockUnlockLabel: UILabel
     let progressBar: ProgressBar
     let buttonsRow: UIView
     let receiveButton, sendButton: DashboardActionButton
@@ -124,6 +124,7 @@ final class DashboardView: BaseScrollFlexView {
         cryptoAmountLabel = UILabel()
         fiatAmountLabel = UILabel.withLightText(fontSize: 17)
         cryptoTitleLabel = UILabel(fontSize: 16)
+        blockUnlockLabel = UILabel(fontSize: 13)
         receiveButton = DashboardActionButton(type: .receive)
         sendButton = DashboardActionButton(type: .send)
         buttonsRow = UIView()
@@ -153,6 +154,9 @@ final class DashboardView: BaseScrollFlexView {
         cryptoTitleLabel.textColor = UIColor.purpley
         transactionsTableView.separatorStyle = .none
         cryptoTitleLabel.textAlignment = .center
+        blockUnlockLabel.textAlignment = .center
+        blockUnlockLabel.textColor = .mildPinkish
+
         transactionsTableView.tableFooterView = UIView()
         transactionsTableView.isScrollEnabled = false
         transactionsTableView.layoutMargins = .zero
@@ -178,6 +182,7 @@ final class DashboardView: BaseScrollFlexView {
                 flex.addItem(cryptoTitleLabel).width(100%).height(20).marginBottom(10)
                 flex.addItem(cryptoAmountLabel).alignSelf(.center).marginBottom(10)
                 flex.addItem(fiatAmountLabel).width(100%).height(20)
+                flex.addItem(blockUnlockLabel).width(100%).alignSelf(.center).marginTop(7)
         }
         
         buttonsRow.flex
@@ -254,3 +259,4 @@ final class DashboardView: BaseScrollFlexView {
         }
     }
 }
+

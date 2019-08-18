@@ -4,6 +4,7 @@ import CakeWalletCore
 import CWMonero
 import FlexLayout
 
+fileprivate let blockDelay = 10 as UInt64
 
 final class DashboardController: BaseViewController<DashboardView>, StoreSubscriber, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate {
     let walletNameView = WalletNameView()
@@ -29,6 +30,9 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     private var configuredBalanceDisplay:BalanceDisplay {
         return store.state.settingsState.displayBalance
     }
+    
+    private var lastTransactionHeight:UInt64? = nil
+    private var showingBlockUnlock:Bool = false
     
     init(store: Store<ApplicationState>, dashboardFlow: DashboardFlow?, calendar: Calendar = Calendar.current) {
         self.store = store
@@ -141,7 +145,7 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         onWalletChange(state.walletState, state.blockchainState)
         updateTransactions(state.transactionsState.transactions)
         updateInitialHeight(state.blockchainState)
-        
+        updateBlocksToUnlock()
         walletNameView.title = state.walletState.name
         walletNameView.subtitle = state.walletState.account.label
     }
@@ -518,6 +522,36 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         self.render(balances:balances, displaySettings: (fingerDown == true) ? ((configuredBalanceDisplay == .full) ? BalanceDisplay.unlocked : BalanceDisplay.full) : configuredBalanceDisplay)
     }
     
+    func updateBlocksToUnlock() {
+        func hideIt() {
+            contentView.blockUnlockLabel.isHidden = true
+            showingBlockUnlock = false
+        }
+        func showIt() {
+            contentView.isHidden = false
+            showingBlockUnlock = true
+        }
+        guard   store.state.blockchainState.blockchainHeight != 0,
+                let lastTxHeight = lastTransactionHeight else {
+            if (showingBlockUnlock) {
+                hideIt()
+            }
+            return
+        }
+        
+        let lastTxHeightDiff = store.state.blockchainState.blockchainHeight - lastTxHeight
+        if (lastTxHeightDiff < blockDelay) {
+            contentView.blockUnlockLabel.text = (blockDelay - lastTxHeightDiff).asLocalizedUnlockString()
+            showIt()
+        } else if (showingBlockUnlock) {
+            hideIt()
+        }
+        
+        contentView.blockUnlockLabel.sizeToFit()
+        contentView.setNeedsLayout()
+        contentView.blockUnlockLabel.flex.markDirty()
+    }
+    
     private func render(balances:CryptoFiatBalance, displaySettings:BalanceDisplay) {
         //adjust the content based on the display settings
         switch displaySettings {
@@ -557,9 +591,16 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
             return calendar.dateComponents([.day, .year, .month], from: ($0.date))
         }
 
+        var heightSortedTransactions = transactions.sorted { t1, t2 in
+            return t1.height > t2.height
+        }
+
         self.sortedTransactions = sortedTransactions
         
         if self.sortedTransactions.count > 0 {
+            lastTransactionHeight = heightSortedTransactions[0].height
+            updateBlocksToUnlock()
+            
             if contentView.transactionTitleLabel.isHidden {
                 contentView.transactionTitleLabel.isHidden = false
             }
@@ -597,5 +638,11 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     private func refresh(_ refCont: UIRefreshControl) {
         store.dispatch(TransactionsActions.askToUpdate)
         Vibration.success.vibrate()
+    }
+}
+
+fileprivate extension UInt64 {
+    func asLocalizedUnlockString() -> String {
+        return String(self) + " " + NSLocalizedString("n_blocks_to_unlock", comment:"")
     }
 }
