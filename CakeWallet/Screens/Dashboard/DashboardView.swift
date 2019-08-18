@@ -107,7 +107,7 @@ final class DashboardView: BaseScrollFlexView {
     static let minHeaderButtonsHeight = 45 as CGFloat
     static let headerMinHeight: CGFloat = 195
     static let fixedHeaderHeight = 330 as CGFloat
-    private var lastDoneDate:Date
+    public var lastDoneDate:Date
     
     let fixedHeader: UIView
     let fiatAmountLabel, cryptoAmountLabel, cryptoTitleLabel, transactionTitleLabel, blockUnlockLabel: UILabel
@@ -253,9 +253,10 @@ final class DashboardView: BaseScrollFlexView {
     
     private func updateAsOf() {
         if (progressBar.asOfLabel.isHidden == false) {
-            let relativeDate = RelativeFormatter.format(date:lastDoneDate, style:RelativeFormatter.Style(flavours: [.longTime], gradation: RelativeFormatter.Gradation.canonical()), locale:Locale.current)
-            progressBar.asOfLabel.text = relativeDate
-            progressBar.asOfLabel.flex.markDirty()
+            let relativeDate = RelativeFormatter.format(date:lastDoneDate, style:RelativeFormatter.Style(flavours: [.longTime], gradation: RelativeFormatter.Gradation.twitter()), locale:Locale.current)
+            progressBar.asOfLabel.text = NSLocalizedString("last_block_received", comment:"") + " " + relativeDate
+            progressBar.asOfLabel.sizeToFit()
+            progressBar.flex.markDirty()
         }
     }
 }

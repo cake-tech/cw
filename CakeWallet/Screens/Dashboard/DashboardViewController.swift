@@ -20,6 +20,7 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     private var scrollViewOffset: CGFloat = 0
     let store: Store<ApplicationState>
     private var fingerDown:Bool = false
+    private var currentHeight:UInt64 = 0
     
     typealias PartiallyAvailableBalance = (unlocked:Amount, full:Amount)
     typealias CryptoFiatBalance = (crypto:PartiallyAvailableBalance, fiat:PartiallyAvailableBalance)
@@ -145,7 +146,10 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         onWalletChange(state.walletState, state.blockchainState)
         updateTransactions(state.transactionsState.transactions)
         updateInitialHeight(state.blockchainState)
-        updateBlocksToUnlock()
+        if (state.blockchainState.currentHeight > currentHeight) {
+            currentHeight = state.blockchainState.currentHeight
+            updateBlocksToUnlock(latestBlockHeight: currentHeight)
+        }
         walletNameView.title = state.walletState.name
         walletNameView.subtitle = state.walletState.account.label
     }
@@ -348,6 +352,17 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     private func onWalletChange(_ walletState: WalletState, _ blockchainState: BlockchainState) {
         initialHeight = 0
         updateTitle(walletState.name)
+        currentWallet.onNewBlock = { [weak self] oldBlockHeight in
+            guard let self = self else {
+                return
+            }
+            self.currentHeight = oldBlockHeight + 1
+            DispatchQueue.main.async {
+                self.updateBlocksToUnlock(latestBlockHeight: self.currentHeight)
+                self.contentView.lastDoneDate = Date()
+            }
+            
+        }
     }
     
     private func showSeedAction(for wallet: WalletIndex) {
@@ -518,11 +533,11 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         contentView.updateStatus(text: NSLocalizedString("failed_connection_to_node", comment: ""))
     }
     
-    func updateBalances() {
+    private func updateBalances() {
         self.render(balances:balances, displaySettings: (fingerDown == true) ? ((configuredBalanceDisplay == .full) ? BalanceDisplay.unlocked : BalanceDisplay.full) : configuredBalanceDisplay)
     }
     
-    func updateBlocksToUnlock() {
+    private func updateBlocksToUnlock(latestBlockHeight:UInt64) {
         func hideIt() {
             contentView.blockUnlockLabel.isHidden = true
             showingBlockUnlock = false
@@ -531,17 +546,18 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
             contentView.isHidden = false
             showingBlockUnlock = true
         }
-        guard   store.state.blockchainState.blockchainHeight != 0,
-                let lastTxHeight = lastTransactionHeight else {
+        guard   latestBlockHeight != 0,
+                let lastTxHeight = lastTransactionHeight,
+                lastTxHeight < latestBlockHeight else {
             if (showingBlockUnlock) {
                 hideIt()
             }
             return
         }
         
-        let lastTxHeightDiff = store.state.blockchainState.blockchainHeight - lastTxHeight
+        let lastTxHeightDiff = latestBlockHeight - lastTxHeight
         if (lastTxHeightDiff < blockDelay) {
-            contentView.blockUnlockLabel.text = (blockDelay - lastTxHeightDiff).asLocalizedUnlockString()
+            contentView.blockUnlockLabel.text = (blockDelay - lastTxHeightDiff).asLocalizedUnlockString(forHeight:currentHeight)
             showIt()
         } else if (showingBlockUnlock) {
             hideIt()
@@ -599,7 +615,7 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         
         if self.sortedTransactions.count > 0 {
             lastTransactionHeight = heightSortedTransactions[0].height
-            updateBlocksToUnlock()
+            updateBlocksToUnlock(latestBlockHeight: currentHeight)
             
             if contentView.transactionTitleLabel.isHidden {
                 contentView.transactionTitleLabel.isHidden = false
@@ -642,7 +658,7 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
 }
 
 fileprivate extension UInt64 {
-    func asLocalizedUnlockString() -> String {
+    func asLocalizedUnlockString(forHeight:UInt64) -> String {
         return String(self) + " " + NSLocalizedString("n_blocks_to_unlock", comment:"")
     }
 }
