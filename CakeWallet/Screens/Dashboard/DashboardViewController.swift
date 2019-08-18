@@ -359,7 +359,7 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
             self.currentHeight = oldBlockHeight + 1
             DispatchQueue.main.async {
                 self.updateBlocksToUnlock(latestBlockHeight: self.currentHeight)
-                self.contentView.lastDoneDate = Date()
+                self.contentView.progressBar.lastBlockDate = Date()
             }
             
         }
@@ -557,7 +557,7 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         
         let lastTxHeightDiff = latestBlockHeight - lastTxHeight
         if (lastTxHeightDiff < blockDelay) {
-            contentView.blockUnlockLabel.text = (blockDelay - lastTxHeightDiff).asLocalizedUnlockString(forHeight:currentHeight)
+            contentView.blockUnlockLabel.text = (blockDelay - lastTxHeightDiff).asLocalizedUnlockString()
             showIt()
         } else if (showingBlockUnlock) {
             hideIt()
@@ -658,7 +658,7 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
 }
 
 fileprivate extension UInt64 {
-    func asLocalizedUnlockString(forHeight:UInt64) -> String {
+    func asLocalizedUnlockString() -> String {
         return String(self) + " " + NSLocalizedString("n_blocks_to_unlock", comment:"")
     }
 }

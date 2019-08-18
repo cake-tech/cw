@@ -1,5 +1,6 @@
 import UIKit
 import FlexLayout
+import SwiftDate
 
 final class ProgressBar: BaseFlexView {
     let progressView: UIView
@@ -10,6 +11,46 @@ final class ProgressBar: BaseFlexView {
     var statusLabel: UILabel
     var asOfLabel: UILabel
     
+    public var isLastBlockDateVisible:Bool {
+        get {
+            return !asOfLabel.isHidden
+        }
+        set {
+            if (newValue == false) {
+                asOfLabel.isHidden = true
+                asOfLabel.text = ""
+                asOfLabel.flex.markDirty()
+                rootFlexContainer.flex.layout()
+            } else {
+                asOfLabel.isHidden = false
+                asOfLabel.text = lastBlockRelativeString()
+                asOfLabel.flex.markDirty()
+                rootFlexContainer.flex.layout()
+            }
+        }
+    }
+    private var _lastBlock:Date = Date()
+    public var lastBlockDate:Date {
+        set {
+            _lastBlock = newValue
+            updateLastBlockRelativeString()
+        }
+        get {
+            return _lastBlock
+        }
+    }
+    private var _datePrefix = NSLocalizedString("last_block_received", comment:"")
+    public var lastBlockDatePrefix:String {
+        set {
+            _datePrefix = newValue
+            updateLastBlockRelativeString()
+        }
+        get {
+            return _datePrefix
+        }
+    }
+    private var timerLaunched = false
+    
     required init() {
         progressView = UIView()
         textContainer = UIView()
@@ -18,6 +59,7 @@ final class ProgressBar: BaseFlexView {
         progressLabel = UILabel(text: "0%")
         statusLabel = UILabel(text: "SYNCING BLOCKCHAIN")
         asOfLabel = UILabel(text:"AS OF")
+        
         super.init()
         
         animateSyncImage()
@@ -34,6 +76,31 @@ final class ProgressBar: BaseFlexView {
         asOfLabel.font = applyFont(ofSize:10)
         asOfLabel.textColor = UIColor.wildDarkBlue
         asOfLabel.textAlignment = .center
+        
+        if (timerLaunched == false) {
+            self.launchRelativeDateDisplayTimer()
+        }
+    }
+    
+    private func launchRelativeDateDisplayTimer() {
+        if (timerLaunched == false) {
+            Timer.scheduledTimer(withTimeInterval: 2, repeats: true, block: { [weak self] timer in
+                guard let self = self else {
+                    timer.invalidate()
+                    return
+                }
+                
+                guard self.timerLaunched == true else {
+                    timer.invalidate()
+                    return
+                }
+                
+                if (self.isLastBlockDateVisible) {
+                    self.updateLastBlockRelativeString()
+                }
+            })
+            timerLaunched = true
+        }
     }
     
     override func layoutSubviews() {
@@ -86,5 +153,20 @@ final class ProgressBar: BaseFlexView {
         animation.keyTimes = moments
         
         imageHolder.layer.add(animation, forKey: "rotate")
+    }
+    
+    private func lastBlockRelativeString() -> String {
+        if (_datePrefix.count == 0) {
+            return RelativeFormatter.format(date:lastBlockDate, style:RelativeFormatter.Style(flavours: [.longTime], gradation: RelativeFormatter.Gradation.twitter()), locale:Locale.current)
+        } else {
+            return _datePrefix + " " + RelativeFormatter.format(date:lastBlockDate, style:RelativeFormatter.Style(flavours: [.longTime], gradation: RelativeFormatter.Gradation.twitter()), locale:Locale.current)
+        }
+        
+    }
+    
+    private func updateLastBlockRelativeString() {
+        asOfLabel.text = lastBlockRelativeString()
+        asOfLabel.flex.markDirty()
+        rootFlexContainer.flex.layout()
     }
 }

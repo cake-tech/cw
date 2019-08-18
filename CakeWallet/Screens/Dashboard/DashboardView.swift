@@ -138,13 +138,7 @@ final class DashboardView: BaseScrollFlexView {
     
     override func configureView() {
         super.configureView()
-        Timer.scheduledTimer(withTimeInterval: 2, repeats: true, block: { [weak self] timer in
-            guard let self = self else {
-                timer.invalidate()
-                return
-            }
-            self.updateAsOf()
-        })
+        
         scrollView.showsVerticalScrollIndicator = false
         cryptoAmountLabel.font = applyFont(ofSize: 40)
         cryptoAmountLabel.textAlignment = .center
@@ -226,16 +220,12 @@ final class DashboardView: BaseScrollFlexView {
         progressBar.animateSyncImage()
         
         if done {
-            lastDoneDate = Date()
-            
             progressBar.progressView.backgroundColor = UIColor(red: 244, green: 239, blue: 253)
             progressBar.progressView.layer.borderWidth = 0.7
             progressBar.progressView.layer.borderColor = UIColor.purpleyBorder.cgColor
             progressBar.statusLabel.textColor = .black
             
-            lastDoneDate = Date()
-            progressBar.asOfLabel.isHidden = false
-            updateAsOf()
+            progressBar.isLastBlockDateVisible = true
             
             progressBar.imageHolder.flex.height(0).width(0).markDirty()
             progressBar.imageHolder.isHidden = true
@@ -244,20 +234,10 @@ final class DashboardView: BaseScrollFlexView {
             progressBar.progressLabel.isHidden = true
             
         } else {
-            progressBar.asOfLabel.text = ""
-            progressBar.asOfLabel.isHidden = true
+            progressBar.isLastBlockDateVisible = false
         }
         
         progressBar.flex.layout()
-    }
-    
-    private func updateAsOf() {
-        if (progressBar.asOfLabel.isHidden == false) {
-            let relativeDate = RelativeFormatter.format(date:lastDoneDate, style:RelativeFormatter.Style(flavours: [.longTime], gradation: RelativeFormatter.Gradation.twitter()), locale:Locale.current)
-            progressBar.asOfLabel.text = NSLocalizedString("last_block_received", comment:"") + " " + relativeDate
-            progressBar.asOfLabel.sizeToFit()
-            progressBar.flex.markDirty()
-        }
     }
 }
 
