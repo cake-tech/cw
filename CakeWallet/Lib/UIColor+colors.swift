@@ -33,6 +33,10 @@ extension UIColor {
         return UIColor(red: 240, green: 241, blue: 244)
     }
     
+    static var syncronizingGray: UIColor {
+        return UIColor(red: 245, green: 246, blue: 249)
+    }
+    
     static var purpley: UIColor {
         return UIColor(red: 124, green: 83, blue: 240)
     }

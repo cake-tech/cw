@@ -1,7 +1,6 @@
 import UIKit
 import PinLayout
 import FlexLayout
-import SwiftDate
 
 enum DashboardActionType {
     case send, receive
@@ -212,32 +211,6 @@ final class DashboardView: BaseScrollFlexView {
         super.layoutSubviews()
         fixedHeader.pin.top(pin.safeArea.top).left(pin.safeArea.left).right(pin.safeArea.right)
         fixedHeader.flex.layout()
-    }
-    
-    func updateStatus(text: String, done: Bool = false) {
-        progressBar.statusLabel.text = text.uppercased()
-        progressBar.statusLabel.flex.markDirty()
-        progressBar.animateSyncImage()
-        
-        if done {
-            progressBar.progressView.backgroundColor = UIColor(red: 244, green: 239, blue: 253)
-            progressBar.progressView.layer.borderWidth = 0.7
-            progressBar.progressView.layer.borderColor = UIColor.purpleyBorder.cgColor
-            progressBar.statusLabel.textColor = .black
-            
-            progressBar.isLastBlockDateVisible = true
-            
-            progressBar.imageHolder.flex.height(0).width(0).markDirty()
-            progressBar.imageHolder.isHidden = true
-            
-            progressBar.progressLabel.flex.height(0).markDirty()
-            progressBar.progressLabel.isHidden = true
-            
-        } else {
-            progressBar.isLastBlockDateVisible = false
-        }
-        
-        progressBar.flex.layout()
     }
 }
 

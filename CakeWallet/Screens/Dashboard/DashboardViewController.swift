@@ -70,7 +70,7 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         let progressTap = UITapGestureRecognizer(target:self, action: #selector(refresh(_:)))
         contentView.progressBar.isUserInteractionEnabled = true
         contentView.progressBar.addGestureRecognizer(progressTap)
-        
+        contentView.progressBar.lastBlockDatePrefix = NSLocalizedString("last_block_received", comment:"")
         contentView.fixedHeader.isUserInteractionEnabled = true
         
         insertNavigationItems()
