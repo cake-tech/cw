@@ -354,17 +354,6 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     private func onWalletChange(_ walletState: WalletState, _ blockchainState: BlockchainState) {
         initialHeight = 0
         updateTitle(walletState.name)
-//        currentWallet.onNewBlock = { [weak self] oldBlockHeight in
-//            guard let self = self else {
-//                return
-//            }
-//            self.currentHeight = oldBlockHeight + 1
-//            DispatchQueue.main.async {
-//                self.updateBlocksToUnlock(latestBlockHeight: self.currentHeight)
-//                self.contentView.progressBar.lastBlockDate = Date()
-//            }
-//
-//        }
     }
     
     private func showSeedAction(for wallet: WalletIndex) {

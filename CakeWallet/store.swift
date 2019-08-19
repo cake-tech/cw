@@ -148,7 +148,8 @@ let store = Store<ApplicationState>(
         OnNewSubaddressAddedEffect(),
         OnSubaddressCahngedEffect(),
         OnAccountChangedEffect(),
-        OnNewSubaddressAddedEffect()
+        OnNewSubaddressAddedEffect(),
+        OnNewBlockEffect()
     ]
 )
 

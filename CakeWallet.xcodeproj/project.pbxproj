@@ -357,6 +357,7 @@
 		A591C67922414C420051A4FE /* UITextView+Placeholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A591C67822414C420051A4FE /* UITextView+Placeholder.swift */; };
 		A5980D2C1FFC9855647CF936 /* Pods_CWMonero.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 784D7BF72CC17977C433AE9E /* Pods_CWMonero.framework */; };
 		AE728B2122F65702000A9F2E /* Vibrate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE728B2022F65701000A9F2E /* Vibrate.swift */; };
+		AE728B2A230A7BDE000A9F2E /* OnNewBlockEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE728B29230A7BDE000A9F2E /* OnNewBlockEffect.swift */; };
 		AEEA10E122EE79C200633C40 /* SettingsInformativeUITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEEA10E022EE79C200633C40 /* SettingsInformativeUITableViewCell.swift */; };
 		CA1D653F209A3EBB00A1FDDB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1D653E209A3EBB00A1FDDB /* AppDelegate.swift */; };
 		CA1D6554209A3EBC00A1FDDB /* CakeWalletTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1D6553209A3EBC00A1FDDB /* CakeWalletTests.swift */; };
@@ -889,6 +890,7 @@
 		A591C676224112DF0051A4FE /* RecoverCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverCardView.swift; sourceTree = "<group>"; };
 		A591C67822414C420051A4FE /* UITextView+Placeholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+Placeholder.swift"; sourceTree = "<group>"; };
 		AE728B2022F65701000A9F2E /* Vibrate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vibrate.swift; sourceTree = "<group>"; };
+		AE728B29230A7BDE000A9F2E /* OnNewBlockEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnNewBlockEffect.swift; sourceTree = "<group>"; };
 		AEEA10E022EE79C200633C40 /* SettingsInformativeUITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInformativeUITableViewCell.swift; sourceTree = "<group>"; };
 		B0344026ED1C3597BDD08DC1 /* Pods_CakeWallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CakeWallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA1D653B209A3EBB00A1FDDB /* CakeWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CakeWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1458,6 +1460,7 @@
 				0C51C10D2279DB1800F54BFF /* OnSubaddressCahngedEffect.swift */,
 				0C6DEB512281906400536AA1 /* OnAccountChangedEffect.swift */,
 				0C6DEB612281B34D00536AA1 /* OnAccountAddedEffect.swift */,
+				AE728B29230A7BDE000A9F2E /* OnNewBlockEffect.swift */,
 			);
 			path = Effects;
 			sourceTree = "<group>";
@@ -2638,6 +2641,7 @@
 				0CDF00FB2278794F00AD8276 /* ChangeNowTradeRequest.swift in Sources */,
 				0C5EFB8622022ECF0069AF7F /* RestoreFromCloudVC.swift in Sources */,
 				0CDF010122787A4000AD8276 /* makeAmount.swift in Sources */,
+				AE728B2A230A7BDE000A9F2E /* OnNewBlockEffect.swift in Sources */,
 				64C28A602104E7C000327509 /* AddressView.swift in Sources */,
 				6A6B0C0B20BEFC8D004B5DFF /* WalletsViewController.swift in Sources */,
 				0CCD606022731DFC0038B602 /* Rates.swift in Sources */,
