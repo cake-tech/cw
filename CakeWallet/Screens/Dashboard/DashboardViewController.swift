@@ -3,8 +3,10 @@ import CakeWalletLib
 import CakeWalletCore
 import CWMonero
 import FlexLayout
+import SwiftDate
 
 fileprivate let blockDelay = 10 as UInt64
+fileprivate let progressBarSyncUpdateTimeThreshold = 900000.nanoseconds.timeInterval
 
 final class DashboardController: BaseViewController<DashboardView>, StoreSubscriber, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate {
     let walletNameView = WalletNameView()
@@ -21,6 +23,7 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     let store: Store<ApplicationState>
     private var fingerDown:Bool = false
     private var currentHeight:UInt64 = 0
+    private var lastRefreshedProgressBar:Date? = nil
     
     typealias PartiallyAvailableBalance = (unlocked:Amount, full:Amount)
     typealias CryptoFiatBalance = (crypto:PartiallyAvailableBalance, fiat:PartiallyAvailableBalance)
@@ -78,10 +81,10 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     private func areTouchesValid(_ touches:Set<UITouch>, forEvent thisEvent:UIEvent?) -> Bool {
         let touchPointsRec = touches.map { return $0.location(in:contentView.receiveButton) }
         let touchPointsSnd = touches.map { return $0.location(in:contentView.sendButton) }
-        let touchPointsProg = touches.map { return $0.location(in:contentView.progressBar) }
+        let touchPointsProg = touches.map { return $0.location(in:contentView.progressBar.progressView) }
         let insideRec = touchPointsRec.map { return contentView.receiveButton.point(inside: $0, with: thisEvent) }
         let insideSnd = touchPointsSnd.map { return contentView.sendButton.point(inside: $0, with: thisEvent) }
-        let insideProg = touchPointsProg.map { return contentView.progressBar.point(inside: $0, with: thisEvent) }
+        let insideProg = touchPointsProg.map { return contentView.progressBar.progressView.point(inside: $0, with: thisEvent) }
         if (insideRec.contains(true) || insideSnd.contains(true) || insideProg.contains(true)) {
             return false
         } else {
@@ -351,17 +354,17 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     private func onWalletChange(_ walletState: WalletState, _ blockchainState: BlockchainState) {
         initialHeight = 0
         updateTitle(walletState.name)
-        currentWallet.onNewBlock = { [weak self] oldBlockHeight in
-            guard let self = self else {
-                return
-            }
-            self.currentHeight = oldBlockHeight + 1
-            DispatchQueue.main.async {
-                self.updateBlocksToUnlock(latestBlockHeight: self.currentHeight)
-                self.contentView.progressBar.lastBlockDate = Date()
-            }
-            
-        }
+//        currentWallet.onNewBlock = { [weak self] oldBlockHeight in
+//            guard let self = self else {
+//                return
+//            }
+//            self.currentHeight = oldBlockHeight + 1
+//            DispatchQueue.main.async {
+//                self.updateBlocksToUnlock(latestBlockHeight: self.currentHeight)
+//                self.contentView.progressBar.lastBlockDate = Date()
+//            }
+//
+//        }
     }
     
     private func showSeedAction(for wallet: WalletIndex) {
@@ -478,11 +481,15 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
             let track = blockchainHeight - initialHeight
             let _currentHeight = currentHeight > initialHeight ? currentHeight - initialHeight : 0
             let remaining = track > _currentHeight ? track - _currentHeight : 0
-            guard currentHeight != 0 && track != 0 && _currentHeight >= initialHeight else { return }
-            let val = Float(_currentHeight-initialHeight) / Float(track)
+            guard currentHeight != 0 && track != 0 else { return }
+            let val = Float(_currentHeight) / Float(track)
             let prg = Int(val * 100)
-            contentView.progressBar.configuration = .inProgress(NSLocalizedString("blocks_remaining", comment: ""), NSLocalizedString("blocks_remaining", comment: ""), (progressed:_currentHeight-initialHeight, track:track))
             
+            //this basic time-based logic will ensure the blocks remaining are only redrawn a certain number per second. this reduces cpu load and actually results in faster visual refresh of the progress bar
+            if (lastRefreshedProgressBar == nil || lastRefreshedProgressBar!.compareCloseTo(Date(), precision: progressBarSyncUpdateTimeThreshold) == false) {
+                lastRefreshedProgressBar = Date()
+                contentView.progressBar.configuration = .inProgress(NSLocalizedString("syncronizing", comment: ""), NSLocalizedString("blocks_remaining", comment: ""), (remaining:remaining, track:track))
+            }
         }
     }
     

@@ -41,6 +41,10 @@ extension UIColor {
         return UIColor(red: 124, green: 83, blue: 240)
     }
     
+    static var lightPinkish: UIColor {
+        return UIColor(red:216, green: 192, blue: 209)
+    }
+    
     static var mildPinkish: UIColor {
         return UIColor(red: 194, green: 78, blue: 149)
     }

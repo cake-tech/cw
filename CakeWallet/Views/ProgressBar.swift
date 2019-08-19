@@ -2,6 +2,8 @@ import UIKit
 import FlexLayout
 import SwiftDate
 
+let syncImageSize = CGSize(width: 12, height: 12)
+
 final class ProgressBar: BaseFlexView {
     let progressView: UIView
     let textContainer: UIView
@@ -10,7 +12,7 @@ final class ProgressBar: BaseFlexView {
     var primaryLabel: UILabel
     var secondaryLabel: UILabel
     
-    public typealias ProgressInformation = (progressed:UInt64, track:UInt64)
+    public typealias ProgressInformation = (remaining:UInt64, track:UInt64)
     public enum ProgressBarDisplayConfiguration {
         case syncronized(String, String)
         case inProgress(String, String, ProgressInformation)
@@ -29,20 +31,26 @@ final class ProgressBar: BaseFlexView {
             return currentDisplayConfiguration
         }
     }
-    
+    private var _syncIndicatorVisible = false
     private var isSyncIndicatorVisible:Bool {
         get {
             return !imageHolder.isHidden
         }
         set {
-            imageHolder.isHidden = !newValue
-            if imageHolder.isHidden == false {
+            if (newValue == false) {
+                imageHolder.flex.height(0).width(0).marginLeft(0).markDirty()
+                secondaryLabel.flex.width(100%).markDirty()
+                imageHolder.isHidden = true
+            } else {
+                imageHolder.flex.height(syncImageSize.height).width(syncImageSize.width).marginLeft(21).markDirty()
+                secondaryLabel.flex.width(90%).markDirty()
+                imageHolder.isHidden = false
                 animateSyncImage()
             }
+            progressView.flex.layout()
         }
     }
-    
-    public var isLastBlockDateVisible:Bool {
+    private var isLastBlockDateVisible:Bool {
         get {
             return !secondaryLabel.isHidden
         }
@@ -54,9 +62,7 @@ final class ProgressBar: BaseFlexView {
                 rootFlexContainer.flex.layout()
             } else {
                 secondaryLabel.isHidden = false
-                secondaryLabel.text = lastBlockRelativeString()
-                secondaryLabel.flex.markDirty()
-                rootFlexContainer.flex.layout()
+                updateLastBlockRelativeString()
             }
         }
     }
@@ -77,7 +83,7 @@ final class ProgressBar: BaseFlexView {
         progressView = UIView()
         textContainer = UIView()
         imageHolder = UIImageView()
-        syncImage = UIImage(named: "refresh_icon")!.resized(to: CGSize(width: 12, height: 12))
+        syncImage = UIImage(named: "refresh_icon")!.resized(to:syncImageSize)
         primaryLabel = UILabel(text: "SYNCING BLOCKCHAIN")
         secondaryLabel = UILabel(text:"AS OF")
         
@@ -89,10 +95,12 @@ final class ProgressBar: BaseFlexView {
         
         imageHolder.image = syncImage
         primaryLabel.font = applyFont(ofSize: 12)
-        primaryLabel.textColor = UIColor.wildDarkBlue
+        primaryLabel.textColor = UIColor.gray
+        primaryLabel.textAlignment = .center
         secondaryLabel.font = applyFont(ofSize:10)
-        secondaryLabel.textColor = UIColor.wildDarkBlue
+        secondaryLabel.textColor = UIColor.gray
         secondaryLabel.textAlignment = .center
+        progressView.layer.borderWidth = 1
         
         if (timerLaunched == false) {
             self.launchRelativeDateDisplayTimer()
@@ -113,17 +121,16 @@ final class ProgressBar: BaseFlexView {
         
         progressView.flex
             .direction(.row).alignItems(.center).justifyContent(.center)
-            .height(42)
-            .define { flex in
-                flex.addItem(imageHolder).marginRight(7)
-                flex.addItem(textContainer).alignItems(.center)
+            .height(42).define { flex in
+                flex.addItem(imageHolder).marginLeft(21)
+                flex.addItem(textContainer).width(90%)
         }
         
         rootFlexContainer.flex
             .alignItems(.center).justifyContent(.center)
             .width(100%)
             .define { flex in
-                flex.addItem(progressView).width(200)
+                flex.addItem(progressView).width(210)
         }
     }
     
@@ -144,52 +151,58 @@ final class ProgressBar: BaseFlexView {
         imageHolder.layer.add(animation, forKey: "rotate")
     }
     
-    private typealias Theme = (border:UIColor, fill:UIColor)
+    
+    private typealias Theme = (border:UIColor, fill:UIColor, text:UIColor)
     private func themeForConfiguration() -> Theme {
         switch currentDisplayConfiguration {
         case .syncronized(_, _):
-            return (border:UIColor.purpley, fill:UIColor.purpleyLight)
+            return (border:UIColor(red: 209, green: 189, blue: 245), fill:UIColor(red: 244, green: 239, blue: 253), text:UIColor.wildDarkBlue)
         case .error(_):
-            return (border:UIColor.mildPinkish, fill:UIColor.purpleyLight)
+            return (border:UIColor.mildPinkish, fill:UIColor.lightPinkish, text:UIColor.mildPinkish)
         case .inProgress(_, _, _):
-            return (border:UIColor.darkGray, fill:UIColor.syncronizingGray)
+            return (border:UIColor.darkGray, fill:UIColor.whiteSmoke, text:UIColor.wildDarkBlue)
         case .indeterminantMessage(_):
-            return (border:UIColor.darkGray, fill:UIColor.syncronizingGray)
+            return (border:UIColor.wildDarkBlue, fill:UIColor.whiteSmoke, text:UIColor.wildDarkBlue)
         case .indeterminantSync(_):
-            return (border:UIColor.darkGray, fill:UIColor.syncronizingGray)
+            return (border:UIColor.wildDarkBlue, fill:UIColor.whiteSmoke, text:UIColor.wildDarkBlue)
         }
     }
+    
     private func displayConfigurationChanged() {
+        let colors = themeForConfiguration()
+        progressView.flex.backgroundColor(colors.fill)
+        progressView.layer.borderColor = colors.border.cgColor
+        primaryLabel.textColor = colors.text
+        secondaryLabel.textColor = colors.text
+        
         switch currentDisplayConfiguration {
         case let .syncronized(primaryLocalized, secondaryLocalizedPrefix):
-            progressView.flex.backgroundColor(themeForConfiguration().fill)
             primaryLabel.text = primaryLocalized
+            primaryLabel.textColor = UIColor.darkGray
             secondaryLabel.text = secondaryLocalizedPrefix + " " + lastBlockRelativeString()
             isLastBlockDateVisible = true
             isSyncIndicatorVisible = false
         case let .error(primaryLocalized):
-            progressView.flex.backgroundColor(themeForConfiguration().fill)
             primaryLabel.text = primaryLocalized
             isLastBlockDateVisible = false
             isSyncIndicatorVisible = false
         case let .inProgress(primaryLocalized, secondaryLocalized, progressInformation):
-            progressView.flex.backgroundColor(themeForConfiguration().fill)
             primaryLabel.text = primaryLocalized
-            secondaryLabel.text = String(progressInformation.progressed) + " / " + String(progressInformation.track) + secondaryLocalized
-            isLastBlockDateVisible = false
+            secondaryLabel.text = String(progressInformation.remaining) + " " + secondaryLocalized
+            isLastBlockDateVisible = true
             isSyncIndicatorVisible = true
         case let .indeterminantMessage(message):
-            progressView.flex.backgroundColor(themeForConfiguration().fill)
             primaryLabel.text = message
             isLastBlockDateVisible = false
             isSyncIndicatorVisible = false
         case let .indeterminantSync(message):
-            progressView.flex.backgroundColor(themeForConfiguration().fill)
             primaryLabel.text = message
             isLastBlockDateVisible = false
             isSyncIndicatorVisible = true
             return
         }
+        primaryLabel.flex.markDirty()
+        secondaryLabel.flex.markDirty()
         
         rootFlexContainer.flex.layout()
     }
