@@ -70,7 +70,6 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         let progressTap = UITapGestureRecognizer(target:self, action: #selector(refresh(_:)))
         contentView.progressBar.isUserInteractionEnabled = true
         contentView.progressBar.addGestureRecognizer(progressTap)
-        contentView.progressBar.lastBlockDatePrefix = NSLocalizedString("last_block_received", comment:"")
         contentView.fixedHeader.isUserInteractionEnabled = true
         
         insertNavigationItems()
@@ -479,14 +478,11 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
             let track = blockchainHeight - initialHeight
             let _currentHeight = currentHeight > initialHeight ? currentHeight - initialHeight : 0
             let remaining = track > _currentHeight ? track - _currentHeight : 0
-            guard currentHeight != 0 && track != 0 else { return }
-            let val = Float(_currentHeight) / Float(track)
+            guard currentHeight != 0 && track != 0 && _currentHeight >= initialHeight else { return }
+            let val = Float(_currentHeight-initialHeight) / Float(track)
             let prg = Int(val * 100)
-            contentView.progressBar.updateProgress(prg)
-            contentView.updateStatus(text: NSLocalizedString("blocks_remaining", comment: "")
-                + ": "
-                + String(remaining)
-                + "(\(prg)%)")
+            contentView.progressBar.configuration = .inProgress(NSLocalizedString("blocks_remaining", comment: ""), NSLocalizedString("blocks_remaining", comment: ""), (progressed:_currentHeight-initialHeight, track:track))
+            
         }
     }
     
@@ -508,29 +504,23 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     }
     
     private func updateStatusConnection() {
-        contentView.progressBar.updateProgress(0)
-        contentView.updateStatus(text: NSLocalizedString("connecting", comment: ""))
+        contentView.progressBar.configuration = .indeterminantMessage(NSLocalizedString("connecting", comment: ""))
     }
     
     private func updateStatusNotConnected() {
-        contentView.progressBar.updateProgress(0)
-        contentView.updateStatus(text: NSLocalizedString("not_connected", comment: ""))
+        contentView.progressBar.configuration = .error(NSLocalizedString("not_connected", comment: ""))
     }
     
     private func updateStatusstartingSync() {
-        contentView.progressBar.updateProgress(0)
-        contentView.updateStatus(text: NSLocalizedString("starting_sync", comment: ""))
-        contentView.rootFlexContainer.flex.layout(mode: .adjustHeight)
+        contentView.progressBar.configuration = .indeterminantSync(NSLocalizedString("starting_sync", comment: ""))
     }
     
     private func updateStatusSynced() {
-        contentView.progressBar.updateProgress(100)
-        contentView.updateStatus(text: NSLocalizedString("synchronized", comment: ""), done: true)
+        contentView.progressBar.configuration = .syncronized(NSLocalizedString("synchronized", comment: ""), NSLocalizedString("last_block_received", comment:""))
     }
     
     private func updateStatusFailed() {
-        contentView.progressBar.updateProgress(0)
-        contentView.updateStatus(text: NSLocalizedString("failed_connection_to_node", comment: ""))
+        contentView.progressBar.configuration = .error(NSLocalizedString("failed_connection_to_node", comment: ""))
     }
     
     private func updateBalances() {
