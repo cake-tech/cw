@@ -148,7 +148,6 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         onWalletChange(state.walletState, state.blockchainState)
         updateTransactions(state.transactionsState.transactions)
         updateInitialHeight(state.blockchainState)
-print("STATE \(state.blockchainState.blockchainHeight)")
         if (state.blockchainState.blockchainHeight > currentHeight) {
             currentHeight = state.blockchainState.blockchainHeight
             updateBlocksToUnlock(latestBlockHeight: currentHeight)
