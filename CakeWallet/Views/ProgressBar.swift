@@ -144,37 +144,54 @@ final class ProgressBar: BaseFlexView {
         imageHolder.layer.add(animation, forKey: "rotate")
     }
     
+    private typealias Theme = (border:UIColor, fill:UIColor)
+    private func themeForConfiguration() -> Theme {
+        switch currentDisplayConfiguration {
+        case .syncronized(_, _):
+            return (border:UIColor.purpley, fill:UIColor.purpleyLight)
+        case .error(_):
+            return (border:UIColor.mildPinkish, fill:UIColor.purpleyLight)
+        case .inProgress(_, _, _):
+            return (border:UIColor.darkGray, fill:UIColor.syncronizingGray)
+        case .indeterminantMessage(_):
+            return (border:UIColor.darkGray, fill:UIColor.syncronizingGray)
+        case .indeterminantSync(_):
+            return (border:UIColor.darkGray, fill:UIColor.syncronizingGray)
+        }
+    }
     private func displayConfigurationChanged() {
         switch currentDisplayConfiguration {
         case let .syncronized(primaryLocalized, secondaryLocalizedPrefix):
-            progressView.flex.backgroundColor(UIColor.purpley)
+            progressView.flex.backgroundColor(themeForConfiguration().fill)
             primaryLabel.text = primaryLocalized
             secondaryLabel.text = secondaryLocalizedPrefix + " " + lastBlockRelativeString()
             isLastBlockDateVisible = true
             isSyncIndicatorVisible = false
         case let .error(primaryLocalized):
-            progressView.flex.backgroundColor(UIColor.mildPinkish)
+            progressView.flex.backgroundColor(themeForConfiguration().fill)
             primaryLabel.text = primaryLocalized
             isLastBlockDateVisible = false
             isSyncIndicatorVisible = false
         case let .inProgress(primaryLocalized, secondaryLocalized, progressInformation):
-            progressView.flex.backgroundColor(UIColor.syncronizingGray)
+            progressView.flex.backgroundColor(themeForConfiguration().fill)
             primaryLabel.text = primaryLocalized
             secondaryLabel.text = String(progressInformation.progressed) + " / " + String(progressInformation.track) + secondaryLocalized
             isLastBlockDateVisible = false
             isSyncIndicatorVisible = true
         case let .indeterminantMessage(message):
-            progressView.flex.backgroundColor(UIColor.purpleyLight)
+            progressView.flex.backgroundColor(themeForConfiguration().fill)
             primaryLabel.text = message
             isLastBlockDateVisible = false
             isSyncIndicatorVisible = false
         case let .indeterminantSync(message):
-            progressView.flex.backgroundColor(UIColor.purpleyLight)
+            progressView.flex.backgroundColor(themeForConfiguration().fill)
             primaryLabel.text = message
             isLastBlockDateVisible = false
             isSyncIndicatorVisible = true
             return
         }
+        
+        rootFlexContainer.flex.layout()
     }
     
     private func lastBlockRelativeString() -> String {
