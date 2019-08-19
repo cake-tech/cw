@@ -148,9 +148,11 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         onWalletChange(state.walletState, state.blockchainState)
         updateTransactions(state.transactionsState.transactions)
         updateInitialHeight(state.blockchainState)
-        if (state.blockchainState.currentHeight > currentHeight) {
-            currentHeight = state.blockchainState.currentHeight
+print("STATE \(state.blockchainState.blockchainHeight)")
+        if (state.blockchainState.blockchainHeight > currentHeight) {
+            currentHeight = state.blockchainState.blockchainHeight
             updateBlocksToUnlock(latestBlockHeight: currentHeight)
+            contentView.progressBar.lastBlockDate = Date()
         }
         walletNameView.title = state.walletState.name
         walletNameView.subtitle = state.walletState.account.label
@@ -469,7 +471,7 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         } else {
             let track = blockchainHeight - initialHeight
             let _currentHeight = currentHeight > initialHeight ? currentHeight - initialHeight : 0
-            let remaining = track > _currentHeight ? track - _currentHeight : 0
+            let remaining = blockchainHeight - currentHeight
             guard currentHeight != 0 && track != 0 else { return }
             let val = Float(_currentHeight) / Float(track)
             let prg = Int(val * 100)
@@ -477,7 +479,7 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
             //this basic time-based logic will ensure the blocks remaining are only redrawn a certain number per second. this reduces cpu load and actually results in faster visual refresh of the progress bar
             if (lastRefreshedProgressBar == nil || lastRefreshedProgressBar!.compareCloseTo(Date(), precision: progressBarSyncUpdateTimeThreshold) == false) {
                 lastRefreshedProgressBar = Date()
-                contentView.progressBar.configuration = .inProgress(NSLocalizedString("syncronizing", comment: ""), NSLocalizedString("blocks_remaining", comment: ""), (remaining:remaining, track:track))
+                contentView.progressBar.configuration = .inProgress(NSLocalizedString("syncronizing", comment: ""), NSLocalizedString("blocks_remaining", comment: ""), (remaining:remaining, track:blockchainHeight))
             }
         }
     }

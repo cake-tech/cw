@@ -160,7 +160,7 @@ final class ProgressBar: BaseFlexView {
         case .error(_):
             return (border:UIColor.mildPinkish, fill:UIColor.lightPinkish, text:UIColor.mildPinkish)
         case .inProgress(_, _, _):
-            return (border:UIColor.darkGray, fill:UIColor.whiteSmoke, text:UIColor.wildDarkBlue)
+            return (border:UIColor.wildDarkBlue, fill:UIColor.whiteSmoke, text:UIColor.wildDarkBlue)
         case .indeterminantMessage(_):
             return (border:UIColor.wildDarkBlue, fill:UIColor.whiteSmoke, text:UIColor.wildDarkBlue)
         case .indeterminantSync(_):
@@ -188,6 +188,7 @@ final class ProgressBar: BaseFlexView {
             isSyncIndicatorVisible = false
         case let .inProgress(primaryLocalized, secondaryLocalized, progressInformation):
             primaryLabel.text = primaryLocalized
+            primaryLabel.textColor = UIColor.darkGray
             secondaryLabel.text = String(progressInformation.remaining) + " " + secondaryLocalized
             isLastBlockDateVisible = true
             isSyncIndicatorVisible = true
