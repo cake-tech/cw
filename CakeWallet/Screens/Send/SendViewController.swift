@@ -474,7 +474,9 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
     }
     
     private func saveRecipientAddress(transactionId id: String, address: String ) {
-        RecipientAddresses.shared.save(forTransactionId: id, andRecipientAddress: address)
+        if (store.state.settingsState.saveRecipientAddresses) {
+            RecipientAddresses.shared.save(forTransactionId: id, andRecipientAddress: address)
+        }
     }
     
     private func onTransactionCommited() {

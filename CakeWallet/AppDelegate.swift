@@ -47,6 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         register(handler: ChangeCurrentNodeHandler())
         register(handler: ChangeCurrentFiatHandler())
         register(handler: ChangeBalanceDisplayHandler())
+        register(handler: ChangeShouldSaveRecipientAddress())
         register(handler: CheckConnectionHandler())
         register(handler: UpdateFiatPriceHandler())
         register(handler: UpdateFiatBalanceHandler())
