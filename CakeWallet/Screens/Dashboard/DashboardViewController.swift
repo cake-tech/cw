@@ -644,8 +644,10 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     }
 }
 
+let averageBlocktimeSeconds:UInt64 = 2
+
 fileprivate extension UInt64 {
     func asLocalizedUnlockString() -> String {
-        return String(self) + " " + NSLocalizedString("n_blocks_to_unlock", comment:"")
+        return String(self*averageBlocktimeSeconds) + " " + NSLocalizedString("minutes_to_unlock", comment:"")
     }
 }

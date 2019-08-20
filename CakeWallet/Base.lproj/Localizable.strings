@@ -103,7 +103,7 @@
 "transactions" = "Transactions";
 "sent" = "Sent";
 "pending" = "pending";
-"n_blocks_to_unlock" = "blocks to unlock";
+"minutes_to_unlock" = "minutes to unlock";
 
 // Address book
 
