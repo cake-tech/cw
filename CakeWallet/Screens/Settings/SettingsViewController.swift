@@ -250,7 +250,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         })
         
         let saveRecipientAddress = SettingsSwitchCellItem(
-            title: NSLocalizedString("save_recipient_transaction", comment:""),
+            title: NSLocalizedString("save_recipient_address", comment:""),
             isOn: store.state.settingsState.saveRecipientAddresses,
             action: { [weak store] shouldStore, item in
                 guard shouldStore != store?.state.settingsState.saveRecipientAddresses else {
