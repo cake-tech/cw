@@ -187,7 +187,7 @@
 "backup_uploaded" = "Backup enviado";
 "backup_uploaded_icloud" = "O backup foi enviado para o seu iCloud";
 "change_backup_warning" = "Se você alterar a senha de backup para backups, os backups manuais anteriores não funcionarão com a nova senha. Os backups automçticos continuarão funcionando com a nova senha.";
-
+"save_recipient_address" = "Salvar endereço do destinatário";
 
 // Settings sections
 

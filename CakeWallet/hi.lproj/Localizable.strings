@@ -183,7 +183,7 @@
 "backup_uploaded" = "बैकअप अपलोड किया गया";
 "backup_uploaded_icloud" = "बैकअप ने आपके iCloud पर अपलोड कर दिया है";
 "change_backup_warning" = "यदि आप बैकअप के लिए बैकअप पासवर्ड को बदल देंगे, तो पिछले MANUAL बैकअप नए पासवर्ड के साथ काम नहीं करेंगे। नए पासवर्ड के साथ ऑटो बैकअप काम करना जारी रखेगा।";
-
+"save_recipient_address" = "प्राप्तकर्ता का पता सहेजें";
 
 // Settings sections
 
