@@ -5,7 +5,11 @@ import CWMonero
 import FlexLayout
 import SwiftDate
 
-fileprivate let blockDelay = 10 as UInt64
+
+
+fileprivate let averageBlocktimeMinutes = 2 as UInt64  //how many minutes per block?
+fileprivate let pendingBlocks = 3 as UInt64  //how many blocks will pass (roughly) before a pending transaction is accepted in the blockchain?
+fileprivate let blockDelay = 10 as UInt64   //how many blocks are funds locked?
 fileprivate let progressBarSyncUpdateTimeThreshold = 900000.nanoseconds.timeInterval
 
 final class DashboardController: BaseViewController<DashboardView>, StoreSubscriber, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate {
@@ -35,6 +39,7 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         return store.state.settingsState.displayBalance
     }
     
+    private var isLastTransactionPending = false
     private var lastTransactionHeight:UInt64? = nil
     private var showingBlockUnlock:Bool = false
     
@@ -472,9 +477,7 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
             let _currentHeight = currentHeight > initialHeight ? currentHeight - initialHeight : 0
             let remaining = blockchainHeight - currentHeight
             guard currentHeight != 0 && track != 0 else { return }
-            let val = Float(_currentHeight) / Float(track)
-            let prg = Int(val * 100)
-            
+
             //this basic time-based logic will ensure the blocks remaining are only redrawn a certain number per second. this reduces cpu load and actually results in faster visual refresh of the progress bar
             if (lastRefreshedProgressBar == nil || lastRefreshedProgressBar!.compareCloseTo(Date(), precision: progressBarSyncUpdateTimeThreshold) == false) {
                 lastRefreshedProgressBar = Date()
@@ -533,21 +536,32 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
             contentView.isHidden = false
             showingBlockUnlock = true
         }
-        guard   latestBlockHeight != 0,
-                let lastTxHeight = lastTransactionHeight,
-                lastTxHeight < latestBlockHeight else {
-            if (showingBlockUnlock) {
-                hideIt()
-            }
+        
+        guard balances.crypto.full.value > 0 else {
+            hideIt()
             return
         }
         
-        let lastTxHeightDiff = latestBlockHeight - lastTxHeight
-        if (lastTxHeightDiff < blockDelay) {
-            contentView.blockUnlockLabel.text = (blockDelay - lastTxHeightDiff).asLocalizedUnlockString()
+        if (isLastTransactionPending == true) {
+            contentView.blockUnlockLabel.text = (blockDelay + pendingBlocks).asLocalizedUnlockString()
             showIt()
-        } else if (showingBlockUnlock) {
-            hideIt()
+        } else {
+            guard   latestBlockHeight != 0,
+                let lastTxHeight = lastTransactionHeight,
+                lastTxHeight < latestBlockHeight else {
+                    if (showingBlockUnlock) {
+                        hideIt()
+                    }
+                    return
+            }
+            
+            let lastTxHeightDiff = latestBlockHeight - lastTxHeight
+            if (lastTxHeightDiff < blockDelay) {
+                contentView.blockUnlockLabel.text = (blockDelay - lastTxHeightDiff).asLocalizedUnlockString()
+                showIt()
+            } else if (showingBlockUnlock) {
+                hideIt()
+            }
         }
         
         contentView.blockUnlockLabel.sizeToFit()
@@ -593,17 +607,20 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         let sortedTransactions = Dictionary(grouping: transactions) {
             return calendar.dateComponents([.day, .year, .month], from: ($0.date))
         }
-
-        var heightSortedTransactions = transactions.sorted { t1, t2 in
-            return t1.height > t2.height
-        }
-
         self.sortedTransactions = sortedTransactions
         
-        if self.sortedTransactions.count > 0 {
+        let doesHavePending = transactions.contains(where: { transaction in
+            return transaction.isPending
+        })
+        isLastTransactionPending = doesHavePending
+        
+        let heightSortedTransactions = transactions.sorted { t1, t2 in
+            return t1.height > t2.height
+        }
+        
+        if (isLastTransactionPending == true || sortedTransactions.count > 0) {
             lastTransactionHeight = heightSortedTransactions[0].height
             updateBlocksToUnlock(latestBlockHeight: currentHeight)
-            
             if contentView.transactionTitleLabel.isHidden {
                 contentView.transactionTitleLabel.isHidden = false
             }
@@ -644,10 +661,8 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     }
 }
 
-let averageBlocktimeSeconds:UInt64 = 2
-
 fileprivate extension UInt64 {
     func asLocalizedUnlockString() -> String {
-        return String(self*averageBlocktimeSeconds) + " " + NSLocalizedString("minutes_to_unlock", comment:"")
+        return String(self*averageBlocktimeMinutes) + " " + NSLocalizedString("minutes_to_unlock", comment:"")
     }
 }
