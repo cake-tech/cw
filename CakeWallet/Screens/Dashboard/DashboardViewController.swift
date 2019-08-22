@@ -536,7 +536,7 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
             showingBlockUnlock = false
         }
         func showIt() {
-            contentView.isHidden = false
+            contentView.blockUnlockLabel.isHidden = false
             showingBlockUnlock = true
         }
 
@@ -622,7 +622,6 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
             }
         })
         isLastTransactionPending = doesHavePending
-        pendingTransactionSumValues = pendingValues
         
         let heightSortedTransactions = transactions.sorted { t1, t2 in
             return t1.height > t2.height

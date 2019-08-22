@@ -17,8 +17,7 @@ public struct BalanceState: StateType {
         case changedUnlockedFiatBalance(Amount)
         case changedFullFiatBalance(Amount)
         case changedRate(Double)
-        case changePendingFiatBalance(Amount)
-        case changePendingBalance(Amount)
+
     }
     
     public let balance: Amount
@@ -27,38 +26,30 @@ public struct BalanceState: StateType {
     public let unlockedFiatBalance: Amount
     public let fullFiatBalance: Amount
     public let rate: Double
-    public let pendingFiatBalance: Amount
-    public let pendingBalance: Amount
     
-    public init(balance: Amount, unlockedBalance: Amount, price: Double, fiatBalance: Amount, fullFiatBalance: Amount, rate: Double, pendingFiatBalance: Amount, pendingBalance: Amount) {
+    public init(balance: Amount, unlockedBalance: Amount, price: Double, fiatBalance: Amount, fullFiatBalance: Amount, rate: Double) {
         self.balance = balance
         self.unlockedBalance = unlockedBalance
         self.fullFiatBalance = fullFiatBalance
         self.price = price
         self.unlockedFiatBalance = fiatBalance
         self.rate = rate
-        self.pendingFiatBalance = pendingFiatBalance
-        self.pendingBalance = pendingBalance
     }
     
     public func reduce(_ action: BalanceState.Action) -> BalanceState {
         switch action {
         case let .changedBalance(balance):
-            return BalanceState(balance: balance, unlockedBalance: unlockedBalance, price: price, fiatBalance: unlockedFiatBalance, fullFiatBalance: fullFiatBalance, rate: rate, pendingFiatBalance: pendingFiatBalance, pendingBalance: pendingBalance)
+            return BalanceState(balance: balance, unlockedBalance: unlockedBalance, price: price, fiatBalance: unlockedFiatBalance, fullFiatBalance: fullFiatBalance, rate: rate)
         case let .changedUnlockedFiatBalance(fiatBalance):
-            return BalanceState(balance: balance, unlockedBalance: unlockedBalance, price: price, fiatBalance: fiatBalance, fullFiatBalance: fullFiatBalance, rate: rate, pendingFiatBalance: pendingFiatBalance, pendingBalance: pendingBalance)
+            return BalanceState(balance: balance, unlockedBalance: unlockedBalance, price: price, fiatBalance: fiatBalance, fullFiatBalance: fullFiatBalance, rate: rate)
         case let .changedFullFiatBalance(fullFiatBalance):
-            return BalanceState(balance: balance, unlockedBalance: unlockedBalance, price: price, fiatBalance: unlockedFiatBalance, fullFiatBalance: fullFiatBalance, rate: rate, pendingFiatBalance: pendingFiatBalance, pendingBalance: pendingBalance)
+            return BalanceState(balance: balance, unlockedBalance: unlockedBalance, price: price, fiatBalance: unlockedFiatBalance, fullFiatBalance: fullFiatBalance, rate: rate)
         case let .changedPrice(price):
-            return BalanceState(balance: balance, unlockedBalance: unlockedBalance, price: price, fiatBalance: unlockedFiatBalance, fullFiatBalance: fullFiatBalance, rate: rate, pendingFiatBalance: pendingFiatBalance, pendingBalance: pendingBalance)
+            return BalanceState(balance: balance, unlockedBalance: unlockedBalance, price: price, fiatBalance: unlockedFiatBalance, fullFiatBalance: fullFiatBalance, rate: rate)
         case let .changedUnlockedBalance(unlockedBalance):
-            return BalanceState(balance: balance, unlockedBalance: unlockedBalance, price: price, fiatBalance: unlockedFiatBalance, fullFiatBalance: fullFiatBalance, rate: rate, pendingFiatBalance: pendingFiatBalance, pendingBalance: pendingBalance)
+            return BalanceState(balance: balance, unlockedBalance: unlockedBalance, price: price, fiatBalance: unlockedFiatBalance, fullFiatBalance: fullFiatBalance, rate: rate)
         case let .changedRate(rate):
-            return BalanceState(balance: balance, unlockedBalance: unlockedBalance, price: price, fiatBalance: unlockedFiatBalance, fullFiatBalance: fullFiatBalance, rate: rate, pendingFiatBalance: pendingFiatBalance, pendingBalance: pendingBalance)
-        case let .changePendingBalance(newValue):
-            return BalanceState(balance:balance, unlockedBalance: unlockedBalance, price:price, fiatBalance: unlockedFiatBalance, fullFiatBalance: fullFiatBalance, rate: rate, pendingFiatBalance: pendingFiatBalance, pendingBalance: newValue)
-        case let.changePendingFiatBalance(newValue):
-            return BalanceState(balance:balance, unlockedBalance: unlockedBalance, price:price, fiatBalance: unlockedFiatBalance, fullFiatBalance: fullFiatBalance, rate: rate, pendingFiatBalance: newValue, pendingBalance: pendingBalance)
+            return BalanceState(balance: balance, unlockedBalance: unlockedBalance, price: price, fiatBalance: unlockedFiatBalance, fullFiatBalance: fullFiatBalance, rate: rate)
         }
     }
 }

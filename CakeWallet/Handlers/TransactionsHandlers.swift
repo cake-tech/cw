@@ -24,16 +24,7 @@ public struct UpdateTransactionsHandler: Handler {
     public func handle(action: TransactionsActions, store: Store<ApplicationState>) -> AnyAction? {
         guard case let .updateTransactions(transactions, account) = action else { return nil }
         let filteredTransactions = transactions.filter { $0.accountIndex == account }
-        let sortedByBlock = filteredTransactions.sorted { t1, t2 in
-            return t1.height > t2.height
-        }
-        var totalPending = 0 as UInt64
-        for (_, curTrans) in sortedByBlock.enumerated() {
-            if (curTrans.isPending) {
-                totalPending += curTrans.totalAmount.value
-            }
-        }
-        return TransactionsState.Action.reset(sortedByBlock)
+        return TransactionsState.Action.reset(filteredTransactions)
     }
 }
 
