@@ -26,7 +26,7 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     private var scrollViewOffset: CGFloat = 0
     let store: Store<ApplicationState>
     private var fingerDown:Bool = false
-    private var currentHeight:UInt64 = 0
+    private var live_bc_height:UInt64 = 0
     private var lastRefreshedProgressBar:Date? = nil
     
     typealias PartiallyAvailableBalance = (unlocked:Amount, full:Amount)
@@ -39,6 +39,7 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         return store.state.settingsState.displayBalance
     }
     
+    private var pendingTransactionSumValues:UInt64 = 0
     private var isLastTransactionPending = false
     private var lastTransactionHeight:UInt64? = nil
     private var showingBlockUnlock:Bool = false
@@ -153,11 +154,13 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         onWalletChange(state.walletState, state.blockchainState)
         updateTransactions(state.transactionsState.transactions)
         updateInitialHeight(state.blockchainState)
-        if (state.blockchainState.blockchainHeight > currentHeight) {
-            currentHeight = state.blockchainState.blockchainHeight
-            updateBlocksToUnlock(latestBlockHeight: currentHeight)
+        if (state.blockchainState.blockchainHeight > live_bc_height) {
+            live_bc_height = state.blockchainState.blockchainHeight
             contentView.progressBar.lastBlockDate = Date()
+        } else if (state.blockchainState.currentHeight > live_bc_height) {
+            live_bc_height = state.blockchainState.currentHeight
         }
+        updateBlocksToUnlock()
         walletNameView.title = state.walletState.name
         walletNameView.subtitle = state.walletState.account.label
     }
@@ -527,7 +530,7 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         self.render(balances:balances, displaySettings: (fingerDown == true) ? ((configuredBalanceDisplay == .full) ? BalanceDisplay.unlocked : BalanceDisplay.full) : configuredBalanceDisplay)
     }
     
-    private func updateBlocksToUnlock(latestBlockHeight:UInt64) {
+    private func updateBlocksToUnlock() {
         func hideIt() {
             contentView.blockUnlockLabel.isHidden = true
             showingBlockUnlock = false
@@ -536,26 +539,26 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
             contentView.isHidden = false
             showingBlockUnlock = true
         }
-        
+
         guard balances.crypto.full.value > 0 else {
             hideIt()
             return
         }
-        
+
         if (isLastTransactionPending == true) {
             contentView.blockUnlockLabel.text = (blockDelay + pendingBlocks).asLocalizedUnlockString()
             showIt()
         } else {
-            guard   latestBlockHeight != 0,
+            guard   live_bc_height != 0,
                 let lastTxHeight = lastTransactionHeight,
-                lastTxHeight < latestBlockHeight else {
+                lastTxHeight < live_bc_height else {
                     if (showingBlockUnlock) {
                         hideIt()
                     }
                     return
             }
             
-            let lastTxHeightDiff = latestBlockHeight - lastTxHeight
+            let lastTxHeightDiff = live_bc_height - lastTxHeight
             if (lastTxHeightDiff < blockDelay) {
                 contentView.blockUnlockLabel.text = (blockDelay - lastTxHeightDiff).asLocalizedUnlockString()
                 showIt()
@@ -609,10 +612,17 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         }
         self.sortedTransactions = sortedTransactions
         
+        var pendingValues = 0 as UInt64
         let doesHavePending = transactions.contains(where: { transaction in
-            return transaction.isPending
+            if (transaction.isPending) {
+                pendingValues += transaction.totalAmount.value
+                return true
+            } else {
+                return false
+            }
         })
         isLastTransactionPending = doesHavePending
+        pendingTransactionSumValues = pendingValues
         
         let heightSortedTransactions = transactions.sorted { t1, t2 in
             return t1.height > t2.height
@@ -620,7 +630,7 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         
         if (isLastTransactionPending == true || sortedTransactions.count > 0) {
             lastTransactionHeight = heightSortedTransactions[0].height
-            updateBlocksToUnlock(latestBlockHeight: currentHeight)
+            updateBlocksToUnlock()
             if contentView.transactionTitleLabel.isHidden {
                 contentView.transactionTitleLabel.isHidden = false
             }
@@ -662,7 +672,11 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
 }
 
 fileprivate extension UInt64 {
-    func asLocalizedUnlockString() -> String {
-        return String(self*averageBlocktimeMinutes) + " " + NSLocalizedString("minutes_to_unlock", comment:"")
+    func asLocalizedUnlockString(asTime:Bool = true) -> String {
+        if (asTime) {
+            return String(self*averageBlocktimeMinutes) + " " + NSLocalizedString("minutes_to_unlock", comment:"")
+        } else {
+            return String(self) + " " + NSLocalizedString("blocks_to_unlock", comment:"")
+        }
     }
 }

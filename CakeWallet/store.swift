@@ -114,7 +114,9 @@ let store = Store<ApplicationState>(
             price: 0,
             fiatBalance: FiatAmount(from: "0.0", currency: getSavedFiatCurrency()),
             fullFiatBalance: FiatAmount(from: "0.0", currency: getSavedFiatCurrency()),
-            rate: 1.0
+            rate: 1.0,
+            pendingFiatBalance: FiatAmount(from: "0.0", currency: getSavedFiatCurrency()),
+            pendingBalance: MoneroAmount(value:0)
         ), blockchainState: BlockchainState(
             connectionStatus: .notConnected,
             blockchainHeight: 0,
