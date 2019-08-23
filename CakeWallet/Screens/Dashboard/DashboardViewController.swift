@@ -40,7 +40,7 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     }
     
     private var pendingTransactionSumValues:UInt64 = 0
-    private var isLastTransactionPending = false
+    private var areTransactionsPending = false
     private var lastTransactionHeight:UInt64? = nil
     private var showingBlockUnlock:Bool = false
     
@@ -534,37 +534,45 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         func hideIt() {
             contentView.blockUnlockLabel.isHidden = true
             showingBlockUnlock = false
+            print("hideit")
         }
         func showIt() {
             contentView.blockUnlockLabel.isHidden = false
             showingBlockUnlock = true
+            print("showit")
         }
 
+        print("updating blocks to unlock")
         guard balances.crypto.full.value > 0 else {
             hideIt()
+            print("hidden due to no balance")
             return
         }
-
-        if (isLastTransactionPending == true) {
-            contentView.blockUnlockLabel.text = (blockDelay + pendingBlocks).asLocalizedUnlockString()
-            showIt()
-        } else {
-            guard   live_bc_height != 0,
-                let lastTxHeight = lastTransactionHeight,
-                lastTxHeight < live_bc_height else {
-                    if (showingBlockUnlock) {
-                        hideIt()
-                    }
+        
+        if (balances.crypto.full.value != balances.crypto.unlocked.value || areTransactionsPending == true) {
+            guard
+                live_bc_height != 0,
+                let lastTxHeight = lastTransactionHeight else {
+                print("no valid data pertaining to last unlocked block.")
+                hideIt()
                     return
             }
             
-            let lastTxHeightDiff = live_bc_height - lastTxHeight
-            if (lastTxHeightDiff < blockDelay) {
-                contentView.blockUnlockLabel.text = (blockDelay - lastTxHeightDiff).asLocalizedUnlockString()
+            if (areTransactionsPending == true) {
+                print("pending mode")
+                contentView.blockUnlockLabel.text = (blockDelay + pendingBlocks).asLocalizedUnlockString()
                 showIt()
-            } else if (showingBlockUnlock) {
-                hideIt()
+            } else if (lastTxHeight <= live_bc_height && (live_bc_height - lastTxHeight) <= blockDelay) {
+                print("progress mode")
+                contentView.blockUnlockLabel.text = (blockDelay - (live_bc_height - lastTxHeight)).asLocalizedUnlockString()
+                showIt()
+            } else if (balances.crypto.full.value != balances.crypto.unlocked.value) {
+                print("About to dissapear mode")
+                contentView.blockUnlockLabel.text = (1 as UInt64).asLocalizedUnlockString()
+                showIt()
             }
+        } else if (balances.crypto.full.value == balances.crypto.unlocked.value) {
+            hideIt()
         }
         
         contentView.blockUnlockLabel.sizeToFit()
@@ -621,13 +629,13 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
                 return false
             }
         })
-        isLastTransactionPending = doesHavePending
+        areTransactionsPending = doesHavePending
         
         let heightSortedTransactions = transactions.sorted { t1, t2 in
             return t1.height > t2.height
         }
         
-        if (isLastTransactionPending == true || sortedTransactions.count > 0) {
+        if (areTransactionsPending == true || sortedTransactions.count > 0) {
             lastTransactionHeight = heightSortedTransactions[0].height
             updateBlocksToUnlock()
             if contentView.transactionTitleLabel.isHidden {
