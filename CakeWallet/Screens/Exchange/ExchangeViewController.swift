@@ -1049,6 +1049,11 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
             depositCrypto.accept(item)
         case .receive:
             receiveCrypto.accept(item)
+            if (item == CryptoCurrency.monero) {
+                contentView.receiveCardView.addressContainer.availablePickers = [.qrScan, .addressBook, .subaddress]
+            } else {
+                contentView.receiveCardView.addressContainer.availablePickers = [.qrScan, .addressBook, .subaddress]
+            }
         case .unknown:
             return
         }

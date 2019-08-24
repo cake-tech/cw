@@ -9,7 +9,7 @@ final class RecoverCardView: BaseFlexView {
         walletNameField = CWTextField(placeholder: NSLocalizedString("wallet_name", comment: ""), fontSize: 16)
         restoreHeightField = CWTextField(fontSize: 16)
         restoreDateField = CWTextField(fontSize: 16)
-        seedView = AddressView(hideAddressBookButton: true)
+        seedView = AddressView(placeholder: "", pickers:[AddressViewPickers.qrScan])
         
         super.init()
     }
