@@ -3,6 +3,9 @@ import FlexLayout
 import QRCodeReader
 
 public enum AddressViewPickers:UInt8 {
+    static var all:[AddressViewPickers] {
+        return [.qrScan, .addressBook, .subaddress]
+    }
     case qrScan
     case addressBook
     case subaddress
@@ -19,8 +22,7 @@ final class AddressView: BaseFlexView {
     public var availablePickers:[AddressViewPickers] {
         set {
             _pickers = newValue
-            configureConstraints()
-            rootFlexContainer.setNeedsLayout()
+            layoutButtons()
         }
         get {
             return _pickers
@@ -66,7 +68,7 @@ final class AddressView: BaseFlexView {
         return QRCodeReaderVC
     }()
     
-    required init(placeholder: String = "", pickers:[AddressViewPickers] = [AddressViewPickers.qrScan]) {
+    required init(placeholder: String = "") {
         self.placeholder = placeholder
         textView = AddressTextField()
         borderView = UIView()
@@ -74,7 +76,7 @@ final class AddressView: BaseFlexView {
         qrScanButton = UIButton()
         addressBookButton = UIButton()
         subaddressButton = UIButton()
-        _pickers = pickers.sorted(by: { return $0.rawValue > $1.rawValue })
+        _pickers = AddressViewPickers.all.sorted(by: { return $0.rawValue > $1.rawValue })
         super.init()
     }
     
@@ -86,7 +88,7 @@ final class AddressView: BaseFlexView {
         qrScanButton = UIButton()
         addressBookButton = UIButton()
         subaddressButton = UIButton()
-        _pickers = [AddressViewPickers.qrScan]
+        _pickers = AddressViewPickers.all
         super.init()
     }
     
@@ -122,6 +124,7 @@ final class AddressView: BaseFlexView {
         
         qrScanButton.addTarget(self, action: #selector(scanQr), for: .touchUpInside)
         addressBookButton.addTarget(self, action: #selector(fromAddressBook), for: .touchUpInside)
+        subaddressButton.addTarget(self, action: #selector(fromSubaddress), for: .touchUpInside)
         
         textView.font = applyFont(ofSize: 15, weight: .regular)
         textView.attributedPlaceholder = NSAttributedString(
@@ -132,72 +135,71 @@ final class AddressView: BaseFlexView {
             ]
         )
 
-        textView.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 40*availablePickers.count, height: 0))
-        textView.rightView?.backgroundColor = .red
+        textView.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 40*_pickers.count, height: 0))
         textView.rightViewMode = .always
         backgroundColor = .clear
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
         textView.change(text: textView.originText.value)
-        
-        buttonsView.flex.width(CGFloat(40*availablePickers.count))
-        
-        if (availablePickers.contains(.qrScan)) {
-            qrScanButton.flex.width(35).height(35).marginLeft(5)
-            qrScanButton.isHidden = false
-        } else {
-            qrScanButton.flex.width(0).height(0).marginLeft(0)
-            qrScanButton.isHidden = true
-        }
-        
-        if (availablePickers.contains(.addressBook)) {
-            addressBookButton.flex.width(35).height(35).marginLeft(5)
-            addressBookButton.isHidden = false
-        } else {
-            addressBookButton.flex.width(0).height(0).marginLeft(0)
-            addressBookButton.isHidden = true
-        }
-
-        if (availablePickers.contains(.subaddress)) {
-            subaddressButton.flex.width(35).height(35).marginLeft(5)
-            addressBookButton.isHidden = false
-        } else {
-            subaddressButton.flex.width(0).height(0).marginLeft(0)
-            addressBookButton.isHidden = true
-        }
-
     }
     
     override func configureConstraints() {        
         buttonsView.flex
-            .direction(.row)
-            .justifyContent(.spaceBetween).alignItems(.end)
-            .width(CGFloat(40*availablePickers.count))
+            .direction(.row).justifyContent(.spaceEvenly).alignItems(.stretch)
+            .width(CGFloat(40*availablePickers.count)).paddingLeft(5)
             .define{ flex in
-                    
-                for (_, curPicker) in availablePickers.enumerated() {
-                    switch curPicker {
-                    case .qrScan:
-                        flex.addItem(qrScanButton).width(35).height(35).marginLeft(5)
-                    case .addressBook:
-                        flex.addItem(addressBookButton).width(35).height(35).marginLeft(5)
-                    case .subaddress:
-                        flex.addItem(subaddressButton).width(35).height(35).marginLeft(5)
-                    }
-                }
+                    flex.addItem(qrScanButton).width(35).height(35)
+                    flex.addItem(addressBookButton).width(35).height(35)
+                    flex.addItem(subaddressButton).width(35).height(35)
         }
         
         rootFlexContainer.flex
             .width(100%)
             .backgroundColor(.clear)
             .define{ flex in
-                flex.addItem(textView).backgroundColor(.clear).width(100%).marginBottom(11)
+                flex.addItem(textView).backgroundColor(.clear).width(100%).paddingRight(CGFloat(40*_pickers.count)).marginBottom(11)
                 flex.addItem(borderView).height(1.5).width(100%).backgroundColor(UIColor.veryLightBlue)
                 flex.addItem(buttonsView).position(.absolute).top(-10).right(0)
         }
+    }
+    
+    private func layoutButtons() {
+        textView.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 40*_pickers.count, height: 0))
+        textView.flex.paddingRight(CGFloat(40*_pickers.count)).markDirty()
+        
+        textView.change(text: textView.originText.value) //this is a hack to get the text field to redraw to its new size
+        
+        if (_pickers.contains(.qrScan)) {
+            qrScanButton.flex.width(35).height(35).markDirty()
+            qrScanButton.isHidden = false
+        } else {
+            qrScanButton.flex.width(0).height(0).markDirty()
+            qrScanButton.isHidden = true
+        }
+        
+        if (_pickers.contains(.addressBook)) {
+            addressBookButton.flex.width(35).height(35).markDirty()
+            addressBookButton.isHidden = false
+        } else {
+            addressBookButton.flex.width(0).height(0).markDirty()
+            addressBookButton.isHidden = true
+        }
+        
+        if (_pickers.contains(.subaddress)) {
+            subaddressButton.flex.width(35).height(35).marginLeft(0).markDirty()
+            subaddressButton.isHidden = false
+        } else {
+            subaddressButton.flex.width(0).height(0).marginLeft(0).markDirty()
+            subaddressButton.isHidden = true
+        }
+        
+        textView.flex.layout()
+        buttonsView.flex.width(CGFloat(40*_pickers.count)).markDirty()
+        buttonsView.flex.layout()
+        rootFlexContainer.flex.layout()
+
     }
     
     @objc
@@ -217,10 +219,13 @@ final class AddressView: BaseFlexView {
     }
     
     @objc private func fromSubaddress() {
-        let subaddressVC = AddressPickerViewController(store:store, isReadOnly: true)
+        let subaddressVC = SubaddressPickerViewController(store:store, isReadOnly: true)
         subaddressVC.doneHandler = { [weak self] address in
-            self?.textView.originText.accept(address)
+            self?.textView.originText.accept(String(address))
         }
+        
+        let sendNavigation = UINavigationController(rootViewController: subaddressVC)
+        presenter?.present(sendNavigation, animated: true)
     }
     
     private func updateAddress(from uri: QRUri) {

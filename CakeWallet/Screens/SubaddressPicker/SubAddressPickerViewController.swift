@@ -5,7 +5,7 @@ import FlexLayout
 import CWMonero
 import SwipeCellKit
 
-final class AddressPickerViewController: BaseViewController<AddressPickerView>, UITableViewDelegate, UITableViewDataSource {
+final class SubaddressPickerViewController: BaseViewController<SubaddressPickerView>, UITableViewDelegate, UITableViewDataSource, StoreSubscriber {
     let store: Store<ApplicationState>
     let isReadOnly: Bool
     var doneHandler: ((String) -> Void)?
@@ -15,29 +15,41 @@ final class AddressPickerViewController: BaseViewController<AddressPickerView>, 
     init(store: Store<ApplicationState>, isReadOnly:Bool = false) {
         self.store = store
         self.isReadOnly = isReadOnly
+        store.dispatch(SubaddressesActions.update)
         super.init()
     }
     
     override func configureBinds() {
         super.configureBinds()
         title = NSLocalizedString("subaddresses", comment: "")
-        
+        store.subscribe(self, onlyOnChange: [\ApplicationState.subaddressesState])
         let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         navigationItem.backBarButtonItem = backButton
         
         contentView.table.delegate = self
         contentView.table.dataSource = self
-        contentView.table.register(items: [Contact.self])
+        contentView.table.register(items: [Subaddress.self])
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        refresh()
-        
+
         let isModal = self.isModal
         renderActionButtons(for: isModal)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        refresh()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        store.unsubscribe(self)
+    }
+    
+    func onStateChange(_ state: ApplicationState) {
+        refresh()
+    }
+
     public func refresh() {
         subaddresses = store.state.subaddressesState.subaddresses
         contentView.table.reloadData()
@@ -79,8 +91,8 @@ final class AddressPickerViewController: BaseViewController<AddressPickerView>, 
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        doneHandler?(subaddresses[indexPath.row].address)
         dismissAction()
-        doneHandler?(subaddresses[indexPath.row].label)
     }
     
     private func createNoDataLabel(with size: CGSize) -> UIView {

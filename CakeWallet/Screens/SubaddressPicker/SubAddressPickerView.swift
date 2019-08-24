@@ -1,7 +1,7 @@
 import UIKit
 import FlexLayout
 
-final class AddressPickerView: BaseFlexView {
+final class SubaddressPickerView: BaseFlexView {
     let table: UITableView
     required init() {
         table = UITableView()

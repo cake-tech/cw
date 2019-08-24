@@ -1024,6 +1024,18 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         highlightNeededFields()
+        
+        if (depositCrypto.value == CryptoCurrency.monero) {
+            contentView.depositCardView.addressContainer.availablePickers = [.subaddress]
+        } else {
+            contentView.depositCardView.addressContainer.availablePickers = [.qrScan]
+        }
+        
+        if (receiveCrypto.value == CryptoCurrency.monero) {
+            contentView.receiveCardView.addressContainer.availablePickers = [.qrScan, .addressBook, .subaddress]
+        } else {
+            contentView.receiveCardView.addressContainer.availablePickers = [.qrScan]
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -1047,12 +1059,18 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         switch pickerType {
         case .deposit:
             depositCrypto.accept(item)
+            if (item == CryptoCurrency.monero) {
+                contentView.depositCardView.addressContainer.availablePickers = [.subaddress]
+            } else {
+                contentView.depositCardView.addressContainer.availablePickers = [.qrScan]
+            }
+
         case .receive:
             receiveCrypto.accept(item)
             if (item == CryptoCurrency.monero) {
                 contentView.receiveCardView.addressContainer.availablePickers = [.qrScan, .addressBook, .subaddress]
             } else {
-                contentView.receiveCardView.addressContainer.availablePickers = [.qrScan, .addressBook, .subaddress]
+                contentView.receiveCardView.addressContainer.availablePickers = [.qrScan]
             }
         case .unknown:
             return
@@ -1087,14 +1105,15 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         
         if store.state.walletState.walletType.currency == crypto {
             contentView.depositCardView.pickerButtonView.walletNameLabel.text = store.state.walletState.name
-            contentView.depositCardView.addressContainer.textView.originText.accept(store.state.walletState.address)
+           
+           contentView.depositCardView.addressContainer.textView.originText.accept(store.state.walletState.address)
         } else {
             depositRefundAddress.accept("")
             contentView.depositCardView.pickerButtonView.walletNameLabel.text = nil
             contentView.depositCardView.addressContainer.textView.text = nil
         }
         
-        contentView.depositCardView.addressContainer.isUserInteractionEnabled = store.state.walletState.walletType.currency != crypto
+        contentView.depositCardView.addressContainer.textView.isUserInteractionEnabled = store.state.walletState.walletType.currency != crypto
         
         let amount = Double(receiveAmountString.value) ?? 0
         exchange.calculateAmount(amount, from: crypto, to: receiveCrypto.value)
@@ -1196,8 +1215,8 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
             contentView.receiveCardView.pickerButtonView.walletNameLabel.text = nil
             contentView.receiveCardView.addressContainer.textView.text = nil
         }
-        
-        contentView.receiveCardView.addressContainer.isUserInteractionEnabled = store.state.walletState.walletType.currency != crypto
+
+        contentView.receiveCardView.addressContainer.textView.isUserInteractionEnabled = store.state.walletState.walletType.currency != crypto
         
         setProviderTitle()
         updateLimits()
@@ -1323,8 +1342,8 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
     private func clear() {
         depositAmountString.accept("")
         receiveAmountString.accept("")
-        contentView.depositCardView.addressContainer.textView.text = depositCrypto.value == .monero ? store.state.walletState.address : ""
-        contentView.receiveCardView.addressContainer.textView.text = receiveCrypto.value == .monero ? store.state.walletState.address : ""
+        depositRefundAddress.accept(depositCrypto.value == .monero ? store.state.walletState.address : "")
+        receiveAddress.accept(receiveCrypto.value == .monero ? store.state.walletState.address : "")
         updateReceiveResult(with: makeAmount(0 as UInt64, currency: receiveCrypto.value))
         store.dispatch(ExchangeState.Action.changedTrade(nil))
     }
