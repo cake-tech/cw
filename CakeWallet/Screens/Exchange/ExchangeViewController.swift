@@ -1029,7 +1029,7 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         highlightNeededFields()
         
         if (depositCrypto.value == CryptoCurrency.monero) {
-            contentView.depositCardView.addressContainer.availablePickers = [.subaddress, .addressBook, .qrScan]
+            contentView.depositCardView.addressContainer.availablePickers = [.addressBook, .qrScan]
         } else {
             contentView.depositCardView.addressContainer.availablePickers = [.qrScan]
         }
@@ -1063,7 +1063,7 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         case .deposit:
             depositCrypto.accept(item)
             if (item == CryptoCurrency.monero) {
-                contentView.depositCardView.addressContainer.availablePickers = [.subaddress, .addressBook, .qrScan]
+                contentView.depositCardView.addressContainer.availablePickers = [.addressBook, .qrScan]
             } else {
                 contentView.depositCardView.addressContainer.availablePickers = [.qrScan]
             }
