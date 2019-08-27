@@ -104,7 +104,7 @@ final class DashboardView: BaseScrollFlexView {
     static let fixedHeaderTopOffset = 45 as CGFloat
     static let headerButtonsHeight = 60 as CGFloat
     static let minHeaderButtonsHeight = 45 as CGFloat
-    static let headerMinHeight: CGFloat = 195
+    static let headerMinHeight: CGFloat = 215
     static let fixedHeaderHeight = 330 as CGFloat
     public var lastDoneDate:Date
     
