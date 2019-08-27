@@ -77,6 +77,38 @@ final class TradeDetailsViewController: BaseViewController<TransactionDetailsVie
         return tableView.dequeueReusableCell(withItem: item, for: indexPath)
     }
     
+    func tableView(_ tableView: UITableView, shouldShowMenuForRowAt indexPath: IndexPath) -> Bool {
+        var indices = [Int]()
+        
+        for (index, item) in items.enumerated() {
+            switch item.row {
+            case .tradeID, .exchangeProvider:
+                indices.append(index)
+            default:
+                continue
+            }
+        }
+        
+        guard let _ = indices.index(of: indexPath.row) else {
+            return false
+        }
+        
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, canPerformAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
+        if (action == #selector(UIResponderStandardEditActions.copy(_:))) {
+            return true
+        }
+        
+        return false
+    }
+    
+    func tableView(_ tableView: UITableView, performAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) {
+        let item = items[indexPath.row]
+        UIPasteboard.general.string = item.value
+    }
+    
     private func setRows(trade: TradeInfo) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMM d, yyyy HH:mm"
