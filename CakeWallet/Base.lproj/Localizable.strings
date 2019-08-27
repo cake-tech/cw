@@ -84,7 +84,7 @@
 "starting_sync" = "Starting sync";
 "synchronized" = "Synchronized";
 "failed_connection_to_node" = "Failed connect to the node";
-
+"last_block_received" = "Last block received:";
 
 // Balances
 "balance-display-type_full" = "Full Balance";
@@ -96,14 +96,14 @@
 
 "reconnection" = "Reconnection";
 "reconnect" = "Reconnect";
-"reconnect_alert_text" = "Are you sure to reconnect ?";
+"reconnect_alert_text" = "Are you sure to reconnect?";
 "cancel" = "Cancel";
 "receive" = "Receive";
 "send" = "Send";
 "transactions" = "Transactions";
 "sent" = "Sent";
 "pending" = "pending";
-
+"minutes_to_unlock" = "minutes to unlock";
 
 // Address book
 

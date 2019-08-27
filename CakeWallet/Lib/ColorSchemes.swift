@@ -27,8 +27,3 @@ struct PinKeyReversedScheme {
 struct CardScheme {
     let background: UIColor
 }
-
-struct ProgressBarScheme {
-    let value: UIColor
-    let background: UIColor
-}
