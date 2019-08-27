@@ -1126,8 +1126,7 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
             .bind(to: receiveAmountString)
             .disposed(by: disposeBag)
         
-        
-        
+        contentView.depositCardView.addressContainer.isUserInteractionEnabled = store.state.walletState.walletType.currency != crypto
         
 //        receiveAmountString.accept(receiveAmount)
 //        contentView.receiveCardView.amountTextField.text = receiveAmount
