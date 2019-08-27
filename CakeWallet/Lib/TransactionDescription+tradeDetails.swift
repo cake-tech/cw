@@ -4,8 +4,7 @@ import CWMonero
 
 extension TransactionDescription {
     func recipientAddress() -> String? {
-        return nil
-//        return RecipientAddresses.shared.getRecipientAddress(by: id)
+        return RecipientAddresses.shared.getRecipientAddress(by: id)
     }
     
     func tradeId() -> String? {

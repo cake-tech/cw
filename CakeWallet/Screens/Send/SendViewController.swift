@@ -424,7 +424,7 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
                         switch result {
                         case .success(_):
                             self?.onTransactionCommited()
-//                            self?.saveRecipientAddress(transactionId: id)
+                            self?.saveRecipientAddress(transactionId: id)
                         case let .failed(error):
                             self?.showErrorAlert(error: error)
                         }
@@ -433,14 +433,16 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
         )
     }
 
-//    private func saveRecipientAddress(transactionId id: String) {
-//        let address = contentView.addressView.textView.originText.value
-//        saveRecipientAddress(transactionId: id, address: address)
-//    }
+    private func saveRecipientAddress(transactionId id: String) {
+        let address = contentView.addressView.textView.originText.value
+        saveRecipientAddress(transactionId: id, address: address)
+    }
     
-//    private func saveRecipientAddress(transactionId id: String, address: String ) {
-//        RecipientAddresses.shared.save(forTransactionId: id, andRecipientAddress: address)
-//    }
+    private func saveRecipientAddress(transactionId id: String, address: String ) {
+        if (store.state.settingsState.saveRecipientAddresses) {
+            RecipientAddresses.shared.save(forTransactionId: id, andRecipientAddress: address)
+        }
+    }
     
     private func onTransactionCommited() {
         showOKInfoAlert(title: NSLocalizedString("transaction_created", comment: "")) { [weak self] in
