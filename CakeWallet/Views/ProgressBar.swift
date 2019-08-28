@@ -32,12 +32,12 @@ final class ProgressBar: BaseFlexView {
         }
     }
     private var _syncIndicatorVisible = false
-    private var isSyncIndicatorVisible:Bool {
+    private var isSyncIndicatorVisible: Bool {
         get {
             return !imageHolder.isHidden
         }
         set {
-            if (newValue == false) {
+            if !newValue {
                 imageHolder.flex.height(0).width(0).marginLeft(0).markDirty()
                 secondaryLabel.flex.width(100%).markDirty()
                 imageHolder.isHidden = true
@@ -122,8 +122,8 @@ final class ProgressBar: BaseFlexView {
         progressView.flex
             .direction(.row).alignItems(.center).justifyContent(.center)
             .height(42).define { flex in
-                flex.addItem(imageHolder).marginLeft(21)
-                flex.addItem(textContainer).width(90%)
+                flex.addItem(imageHolder).left(0).position(.absolute)
+                flex.addItem(textContainer).width(100%)
         }
         
         rootFlexContainer.flex
