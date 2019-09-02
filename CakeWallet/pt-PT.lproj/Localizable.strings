@@ -82,6 +82,8 @@
 "starting_sync" = "Iniciando a sincronização";
 "synchronized" = "Sincronizado";
 "failed_connection_to_node" = "Falha ao ligar ao node";
+"last_block_received" = "Último bloco recebido:";
+"synchronizing" = "Sincronizando";
 
 // Balances
 "balance-display-type_unlocked" = "Saldo disponível";

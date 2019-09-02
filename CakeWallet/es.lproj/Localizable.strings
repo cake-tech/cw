@@ -84,6 +84,8 @@
 "starting_sync" = "Empezando sincronización";
 "synchronized" = "Sincronizado";
 "failed_connection_to_node" = "Conexión con el nódulo ha fallado";
+"last_block_received" = "Último bloque recibido:";
+"synchronizing" = "Sincronizando";
 
 // Balances
 "balance-display-type_full" = "Saldo completo";

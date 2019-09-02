@@ -80,6 +80,8 @@
 "starting_sync" = "开始同步";
 "synchronized" = "已同步";
 "failed_connection_to_node" = "连接节点失败";
+"last_block_received" = "收到的最后一块：";
+"synchronizing" = "同步";
 
 // Balances
 "balance-display-type_unlocked" = "全部余额";

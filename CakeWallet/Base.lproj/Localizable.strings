@@ -104,7 +104,7 @@
 "transactions" = "Transactions";
 "sent" = "Sent";
 "pending" = "pending";
-"minutes_to_unlock" = "minutes to unlock";
+"minutes_to_unlock" = "minutes to unlock full balance";
 
 // Address book
 
