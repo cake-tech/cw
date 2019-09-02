@@ -559,7 +559,7 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
                 print("pending mode")
                 contentView.blockUnlockLabel.text = (blockDelay + pendingBlocks).asLocalizedUnlockString()
                 showIt()
-            } else if (lastTxHeight <= live_bc_height && (live_bc_height - lastTxHeight) <= blockDelay) {
+            } else if (lastTxHeight < live_bc_height && (live_bc_height - lastTxHeight) < blockDelay) {
                 print("progress mode")
                 contentView.blockUnlockLabel.text = (blockDelay - (live_bc_height - lastTxHeight)).asLocalizedUnlockString()
                 showIt()
