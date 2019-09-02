@@ -480,11 +480,10 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
             let _currentHeight = currentHeight > initialHeight ? currentHeight - initialHeight : 0
             let remaining = blockchainHeight - currentHeight
             guard currentHeight != 0 && track != 0 else { return }
-
             //this basic time-based logic will ensure the blocks remaining are only redrawn a certain number per second. this reduces cpu load and actually results in faster visual refresh of the progress bar
             if (lastRefreshedProgressBar == nil || lastRefreshedProgressBar!.compareCloseTo(Date(), precision: progressBarSyncUpdateTimeThreshold) == false) {
                 lastRefreshedProgressBar = Date()
-                contentView.progressBar.configuration = .inProgress(NSLocalizedString("syncronizing", comment: ""), NSLocalizedString("blocks_remaining", comment: ""), (remaining:remaining, track:blockchainHeight))
+                contentView.progressBar.configuration = .inProgress(NSLocalizedString("synchronizing", comment: ""), NSLocalizedString("blocks_remaining", comment: ""), (remaining:remaining, track:blockchainHeight))
             }
         }
     }
@@ -528,6 +527,50 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     
     private func updateBalances() {
         self.render(balances:balances, displaySettings: (fingerDown == true) ? ((configuredBalanceDisplay == .full) ? BalanceDisplay.unlocked : BalanceDisplay.full) : configuredBalanceDisplay)
+    }
+
+    private func updateBlocksToUnlock() {
+        func hideIt() {
+            contentView.blockUnlockLabel.isHidden = true
+            showingBlockUnlock = false
+        }
+        func showIt() {
+            contentView.blockUnlockLabel.isHidden = false
+            showingBlockUnlock = true
+        }
+
+        guard balances.crypto.full.value > 0 else {
+            hideIt()
+            return
+        }
+        
+        if (balances.crypto.full.value != balances.crypto.unlocked.value || areTransactionsPending == true) {
+            guard
+                live_bc_height != 0,
+                let lastTxHeight = lastTransactionHeight else {
+                hideIt()
+                return
+            }
+            
+            if (areTransactionsPending == true) {
+                contentView.blockUnlockLabel.text = (blockDelay + pendingBlocks).asLocalizedUnlockString()
+                showIt()
+            } else if (lastTxHeight < live_bc_height && (live_bc_height - lastTxHeight) < blockDelay) {
+                print("progress mode")
+                contentView.blockUnlockLabel.text = (blockDelay - (live_bc_height - lastTxHeight)).asLocalizedUnlockString()
+                showIt()
+            } else if (balances.crypto.full.value != balances.crypto.unlocked.value) {
+                print("About to dissapear mode")
+                contentView.blockUnlockLabel.text = "THIS IS VERY BAD"
+                showIt()
+            }
+        } else if (balances.crypto.full.value == balances.crypto.unlocked.value) {
+            hideIt()
+        }
+        
+        contentView.blockUnlockLabel.sizeToFit()
+        contentView.setNeedsLayout()
+        contentView.blockUnlockLabel.flex.markDirty()
     }
     
     private func updateBlocksToUnlock() {
@@ -673,8 +716,14 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     
     @objc
     private func refresh(_ refCont: UIRefreshControl) {
-        store.dispatch(TransactionsActions.askToUpdate)
-        Vibration.success.vibrate()
+        if (store.state.blockchainState.connectionStatus == .synced) {
+            store.dispatch(
+                BlockchainState.Action.changedConnectionStatus(.syncing(live_bc_height))
+            )
+            
+            store.dispatch(TransactionsActions.askToUpdate)
+            Vibration.selection.vibrate()
+        }
     }
 }
 

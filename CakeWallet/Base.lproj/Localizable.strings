@@ -85,6 +85,7 @@
 "synchronized" = "Synchronized";
 "failed_connection_to_node" = "Failed connect to the node";
 "last_block_received" = "Last block received:";
+"synchronizing" = "Synchronizing";
 
 // Balances
 "balance-display-type_full" = "Full Balance";
