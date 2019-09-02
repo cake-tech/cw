@@ -537,55 +537,9 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         func showIt() {
             contentView.blockUnlockLabel.isHidden = false
             showingBlockUnlock = true
+
         }
 
-        guard balances.crypto.full.value > 0 else {
-            hideIt()
-            return
-        }
-        
-        if (balances.crypto.full.value != balances.crypto.unlocked.value || areTransactionsPending == true) {
-            guard
-                live_bc_height != 0,
-                let lastTxHeight = lastTransactionHeight else {
-                hideIt()
-                return
-            }
-            
-            if (areTransactionsPending == true) {
-                contentView.blockUnlockLabel.text = (blockDelay + pendingBlocks).asLocalizedUnlockString()
-                showIt()
-            } else if (lastTxHeight < live_bc_height && (live_bc_height - lastTxHeight) < blockDelay) {
-                print("progress mode")
-                contentView.blockUnlockLabel.text = (blockDelay - (live_bc_height - lastTxHeight)).asLocalizedUnlockString()
-                showIt()
-            } else if (balances.crypto.full.value != balances.crypto.unlocked.value) {
-                print("About to dissapear mode")
-                contentView.blockUnlockLabel.text = "THIS IS VERY BAD"
-                showIt()
-            }
-        } else if (balances.crypto.full.value == balances.crypto.unlocked.value) {
-            hideIt()
-        }
-        
-        contentView.blockUnlockLabel.sizeToFit()
-        contentView.setNeedsLayout()
-        contentView.blockUnlockLabel.flex.markDirty()
-    }
-    
-    private func updateBlocksToUnlock() {
-        func hideIt() {
-            contentView.blockUnlockLabel.isHidden = true
-            showingBlockUnlock = false
-            print("hideit")
-        }
-        func showIt() {
-            contentView.blockUnlockLabel.isHidden = false
-            showingBlockUnlock = true
-            print("showit")
-        }
-
-        print("updating blocks to unlock")
         guard balances.crypto.full.value > 0 else {
             hideIt()
             print("hidden due to no balance")
