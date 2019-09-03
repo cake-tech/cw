@@ -603,7 +603,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
                 size: CGSize(width: tableView.frame.width, height: 60)))
         let titleLabel = UILabel(frame: CGRect(origin: CGPoint(x: 20, y: 5), size: CGSize(width: view.frame.width - 20, height: view.frame.height)))
         titleLabel.font = applyFont(ofSize: 16)
-        titleLabel.textColor = Theme.current.lightText
+        titleLabel.textColor = UserInterfaceTheme.current.textVariants.dim
         view.backgroundColor =  contentView.backgroundColor
         view.addSubview(titleLabel)
         
@@ -689,7 +689,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
     }
     
     private func toggleNightMode(isOn: Bool) {
-        NotificationCenter.default.post(name: Notification.Name("changeTheme"), object: isOn ? Theme.night : Theme.def)
+        NotificationCenter.default.post(name: Notification.Name("changeTheme"), object: isOn ? UserInterfaceTheme.dark : UserInterfaceTheme.light )
     }
     
     private func showICloudIsNotEnabledAlert() {
