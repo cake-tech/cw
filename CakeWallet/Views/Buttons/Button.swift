@@ -44,9 +44,9 @@ class Button: UIButton {
     
     override func configureView() {
         super.configureView()
-        
-        backgroundColor = Theme.current.primaryButton.background
-        setTitleColor(Theme.current.primaryButton.text, for: .normal)
+        //tstag
+        backgroundColor = UserInterfaceTheme.current.purple.main
+        setTitleColor(UserInterfaceTheme.current.purple.highlight, for: .normal)
         layer.masksToBounds = false
         layer.shadowRadius = 20
         layer.shadowOffset = CGSize(width: 2, height: 1)

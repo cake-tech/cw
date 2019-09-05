@@ -13,9 +13,9 @@ final class AccountsView: BaseFlexView {
         table.separatorStyle = .none
         newSubaddressButton = UIButton()
         newSubaddressTextiField = CWTextField(placeholder: NSLocalizedString("new_account_label", comment: ""))
-        
-        newSubaddressButton.backgroundColor = Theme.current.container.background
-        newSubaddressButton.imageView?.backgroundColor = Theme.current.container.background
+        //tstag
+        newSubaddressButton.backgroundColor = UserInterfaceTheme.current.background
+        newSubaddressButton.imageView?.backgroundColor = UserInterfaceTheme.current.background
         newSubaddressButton.setImage(UIImage(named: "add_icon_purple")?.resized(to: CGSize(width: 30, height: 30)), for: .normal)
         
         newSubaddressContiner = UIView()
@@ -47,7 +47,7 @@ final class AccountsView: BaseFlexView {
             .justifyContent(.spaceBetween)
             .alignItems(.center)
             .width(100%)
-            .backgroundColor(Theme.current.container.background)
+            .backgroundColor(UserInterfaceTheme.current.background)
             .define { flex in
                 flex.addItem(newSubaddressTextiField).height(40)
                 flex.addItem(newSubaddressButton).height(35).backgroundColor(.whiteSmoke)

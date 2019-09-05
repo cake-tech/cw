@@ -16,7 +16,8 @@ final class PinCodeIndicatorView: BaseView {
         innerCircleView.layer.cornerRadius = 5
         addSubview(rootFlexContainer)
         addSubview(innerCircleView)
-        backgroundColor = Theme.current.pin.background
+        //tstag
+        backgroundColor = UserInterfaceTheme.current.background
         
         innerCircleView.layer.borderWidth = 0.7
         innerCircleView.layer.borderColor = UIColor.wildDarkBlue.cgColor

@@ -171,7 +171,8 @@ class CWBaseAlertView: BaseFlexView {
     override func configureView() {
         super.configureView()
         isOpaque = true
-        rootFlexContainer.backgroundColor = Theme.current.container.background
+        //tstag
+        rootFlexContainer.backgroundColor = UserInterfaceTheme.current.background
         
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 0

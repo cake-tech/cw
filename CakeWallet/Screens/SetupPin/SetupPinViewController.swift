@@ -38,12 +38,13 @@ final class SetupPinViewController: BaseViewController<BaseFlexView> {
     }
     
     override func configureBinds() {
+        //tstag
         togglePingLengthBtn.setTitleTextAttributes([
             NSAttributedStringKey.font: UIFont(name: "Lato-Regular", size: 16)!,
-            NSAttributedStringKey.foregroundColor: Theme.current.lightText], for: .normal)
+            NSAttributedStringKey.foregroundColor: UserInterfaceTheme.current.textVariants.dim], for: .normal)
         togglePingLengthBtn.setTitleTextAttributes([
             NSAttributedStringKey.font: UIFont(name: "Lato-Regular", size: 16)!,
-            NSAttributedStringKey.foregroundColor: Theme.current.lightText], for: .highlighted)
+            NSAttributedStringKey.foregroundColor: UserInterfaceTheme.current.textVariants.dim], for: .highlighted)
         
         let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         navigationItem.backBarButtonItem = backButton

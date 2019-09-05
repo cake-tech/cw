@@ -60,14 +60,16 @@ final class DisclaimerView: BaseFlexView {
         }
         
         bottomView.flex.define { flex in
-            flex.addItem(gradientView).position(.absolute).top(-35).backgroundColor(Theme.current.container.background)
+            //tstag
+            flex.addItem(gradientView).position(.absolute).top(-35).backgroundColor(UserInterfaceTheme.current.background)
             flex.addItem(checkBoxWrapper)
             flex.addItem(acceptButton).height(56).width(100%)
         }
         
         rootFlexContainer.flex.alignItems(.center).padding(0, 15, 0, 15).define{ flex in
             flex.addItem(textView).marginBottom(10).marginBottom(100)
-            flex.addItem(bottomView).height(130).position(.absolute).bottom(0).width(100%).backgroundColor(Theme.current.container.background)
+            //tstag
+            flex.addItem(bottomView).height(130).position(.absolute).bottom(0).width(100%).backgroundColor(UserInterfaceTheme.current.background)
         }
     }
 }

@@ -151,47 +151,4 @@ enum UserInterfaceTheme: Int, Theme {
             return ButtonColorScheme(background: .whiteSmoke, text: .vividBlue)
         }
     }
-    
-    var secondaryButton: ButtonColorScheme {
-        switch self {
-        case .light:
-            return ButtonColorScheme(background: .grayBackground, text: .white)
-        case .dark:
-            return ButtonColorScheme(background: .whiteSmoke, text: .wildDarkBlue)
-        }
-    }
-    
-    var pin: PinIndicatorScheme {
-        return PinIndicatorScheme(background: .white, value: .turquoiseBlue)
-    }
-    
-    var pinKey: PinKeyScheme {
-        return PinKeyScheme(background: .grayBackground, text: .grayBlue)
-    }
-    
-    var pinKeyReversed: PinKeyReversedScheme {
-        return PinKeyReversedScheme(background: .white, text: .spaceViolet)
-    }
-    
-    var card: CardScheme {
-        return CardScheme(background: .white)
-    }
-    
-    var text: UIColor {
-        switch self {
-        case .light:
-            return .spaceViolet
-        case .dark:
-            return .whiteSmoke
-        }
-    }
-    
-    var lightText: UIColor {
-        switch self {
-        case .light:
-            return .wildDarkBlue
-        case .dark:
-            return .whiteSmoke
-        }
-    }
 }

@@ -13,6 +13,7 @@ final class SettingsInformativeUITableViewCell: FlexCell, UITextFieldDelegate {
         super.configureView()
         accessoryView = accessoryTextField
         accessoryTextField.textAlignment = .right
+        //TSTAG
         accessoryTextField.textColor = UserInterfaceTheme.current.textVariants.dim
         accessoryTextField.backgroundColor = .white
         accessoryTextField.delegate = self

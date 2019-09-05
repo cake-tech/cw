@@ -31,7 +31,7 @@ final class WalletUITableViewCell: FlexCell {
             nameLabel.textColor = .vividBlue
             accessoryType = .checkmark
         } else {
-            nameLabel.textColor = Theme.current.text
+            nameLabel.textColor = UserInterfaceTheme.current.text
             accessoryType = .none
         }
         

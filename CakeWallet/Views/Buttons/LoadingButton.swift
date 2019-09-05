@@ -47,8 +47,9 @@ class LoadingButton: UIButton {
     override func configureView() {
         super.configureView()
         
-        backgroundColor = Theme.current.primaryButton.background
-        setTitleColor(Theme.current.primaryButton.text, for: .normal)
+        backgroundColor =
+            UserInterfaceTheme.current.primaryButton.background
+        setTitleColor(UserInterfaceTheme.current.purple.main, for: .normal)
         layer.cornerRadius = 10
         layer.masksToBounds = false
         layer.shadowRadius = 20

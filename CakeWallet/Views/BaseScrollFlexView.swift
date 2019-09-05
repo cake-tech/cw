@@ -22,7 +22,8 @@ class BaseScrollFlexView: BaseView {
     
     override func configureView() {
         super.configureView()
-        rootFlexContainer.flex.backgroundColor(Theme.current.container.background)
+        //tstag
+        rootFlexContainer.flex.backgroundColor(UserInterfaceTheme.current.background)
         scrollView.addSubview(rootFlexContainer)
         addSubview(scrollView)
     }
@@ -64,7 +65,8 @@ class BaseScrollFlexViewWithBottomSection: BaseView {
     
     override func configureView() {
         super.configureView()
-        rootFlexContainer.flex.backgroundColor(Theme.current.container.background)
+        //tstag
+        rootFlexContainer.flex.backgroundColor(UserInterfaceTheme.current.background)
         contentView.addSubview(rootFlexContainer)
         scrollView.addSubview(contentView)
         addSubview(scrollView)

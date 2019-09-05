@@ -27,7 +27,9 @@ final class RecoverFromKeysView: BaseFlexView {
     override func configureConstraints() {
         var adaptiveMargin: CGFloat
         cardWrapper.layer.cornerRadius = 12
-        cardWrapper.backgroundColor = Theme.current.card.background
+        
+        //tstag
+        cardWrapper.backgroundColor = UserInterfaceTheme.current.background
         
         adaptiveMargin = adaptiveLayout.getSize(forLarge: 34, forBig: 32, defaultSize: 30)
         

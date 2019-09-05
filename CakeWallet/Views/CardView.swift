@@ -11,7 +11,8 @@ class CardView: BaseView {
         super.configureView()
         
         applyCardSketchShadow()
-        backgroundColor = Theme.current.card.background
+        //TSTAG
+        backgroundColor = UserInterfaceTheme.current.background
     }
     
     override func layoutSublayers(of layer: CALayer) {

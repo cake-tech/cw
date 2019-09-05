@@ -44,8 +44,9 @@ final class PinCodeKeyboard: BaseView {
                         flex.addItem(key).maxWidth(25%).height(maxSize).aspectRatio(1)
                         
                         if $0 == .empty || $0 == .del {
-                            key.backgroundColor = Theme.current.pinKeyReversed.background
-                            key.setTitleColor(Theme.current.pinKeyReversed.text, for: .normal)
+                            //tstag
+                            key.backgroundColor = UserInterfaceTheme.current.gray.dim
+                            key.setTitleColor(UserInterfaceTheme.current.gray.highlight, for: .normal)
                         }
                     }
                 })

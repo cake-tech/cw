@@ -23,7 +23,8 @@ class BaseView: UIView {
     
     override func configureView() {
         super.configureView()
-        backgroundColor = Theme.current.container.background
+        //tstag
+        backgroundColor = UserInterfaceTheme.current.background
     }
 }
 

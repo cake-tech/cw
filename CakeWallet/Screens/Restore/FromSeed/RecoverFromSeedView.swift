@@ -30,7 +30,8 @@ final class RecoverFromSeedView: BaseFlexView {
     
     override func configureConstraints() {
         cardWrapper.layer.cornerRadius = 12
-        cardWrapper.backgroundColor = Theme.current.card.background
+        //tstag
+        cardWrapper.backgroundColor = UserInterfaceTheme.current.background
  
         seedContainer.flex
             .define { flex in
