@@ -191,6 +191,7 @@
 "backup_uploaded_icloud" = "iCloud에 백업이 업로드되었습니다.";
 "change_backup_warning" = "백업용 백업 비밀번호를 변경하면 이전 수동 백업은 새 비밀번호로 작동하지 않습니다. 자동 백업은 새 비밀번호로 계속 작동합니다.";
 "save_recipient_address" = "수신자 주소 저장";
+"dark_mode_setting_title" = "다크 모드";
 
 // Settings sections
 

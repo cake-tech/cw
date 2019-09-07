@@ -192,6 +192,7 @@
 "backup_uploaded_icloud" = "Back-up is geüpload naar uw iCloud";
 "change_backup_warning" = "Als u het back-upwachtwoord voor back-ups wilt wijzigen, werken de vorige MANUAL-back-ups niet met het nieuwe wachtwoord. Automatische back-ups blijven werken met het nieuwe wachtwoord.";
 "save_recipient_address" = "Adres ontvanger opslaan";
+"dark_mode_setting_title" = "Donkere modus";
 
 // Settings sections
 

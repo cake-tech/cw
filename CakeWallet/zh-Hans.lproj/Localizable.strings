@@ -186,6 +186,7 @@
 "backup_uploaded_icloud" = "备份已上传到您的iCloud";
 "change_backup_warning" = "如果要更改备份的备份密码，则以前的MANUAL备份将无法使用新密码。自动备份将继续使用新密码。";
 "save_recipient_address" = "保存收件人地址";
+"dark_mode_setting_title" = "黑暗模式";
 
 // Settings sections
 

@@ -190,6 +190,7 @@
 "backup_uploaded_icloud" = "Kopia zapasowa została przesłana do Twojej iCloud";
 "change_backup_warning" = "Jeśli zmienisz hasło kopii zapasowej dla kopii zapasowych, poprzednie kopie zapasowe RĘCZNE nie będą działać z nowym hasłem. Automatyczne kopie zapasowe będą nadal działać z nowym hasłem.";
 "save_recipient_address" = "Zapisz adres odbiorcy";
+"dark_mode_setting_title" = "Tryb ciemny";
 
 // Settings sections
 

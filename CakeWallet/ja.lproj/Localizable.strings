@@ -191,6 +191,7 @@
 "backup_uploaded_icloud" = "バックアップがiCloudにアップロードされました";
 "change_backup_warning" = "バックアップ用のバックアップパスワードを変更した場合、以前のMANUALバックアップは新しいパスワードでは機能しません。自動バックアップは新しいパスワードでも引き続き機能します。";
 "save_recipient_address" = "受信者のアドレスを保存";
+"dark_mode_setting_title" = "ダークモード";
 
 // Settings sections
 

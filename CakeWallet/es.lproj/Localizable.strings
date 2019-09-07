@@ -191,6 +191,7 @@
 "backup_uploaded_icloud" = "La copia de seguridad se ha cargado en tu iCloud";
 "change_backup_warning" = "Si cambia la contraseña de respaldo para los respaldos, los respaldos MANUALES anteriores no funcionarán con el nuevo código. Las copias de seguridad automáticas continuarán funcionando con la nueva contraseña.";
 "save_recipient_address" = "Guardar dirección del destinatario";
+"dark_mode_setting_title" = "Modo oscuro";
 
 // Settings sections
 

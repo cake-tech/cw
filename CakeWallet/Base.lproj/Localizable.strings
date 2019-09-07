@@ -191,6 +191,7 @@
 "backup_uploaded_icloud" = "Backup has uploaded to your iCloud";
 "change_backup_warning" = "If you will change the Backup password for backups, the previous MANUAL backups will not work with the new password. Auto backups will continue to work with the new password.";
 "save_recipient_address" = "Save recipient address";
+"dark_mode_setting_title" = "Dark mode";
 
 // Settings sections
 
