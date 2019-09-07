@@ -59,7 +59,6 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     
     override func configureBinds() {
         super.configureBinds()
-        navigationController?.navigationBar.backgroundColor = .clear
         
         let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         navigationItem.backBarButtonItem = backButton  
@@ -82,6 +81,10 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         contentView.fixedHeader.isUserInteractionEnabled = true
         
         insertNavigationItems()
+    }
+    
+    override func themeChanged() {
+        navigationController?.navigationBar.backgroundColor = currentTheme.background
     }
 
     private func areTouchesValid(_ touches:Set<UITouch>, forEvent thisEvent:UIEvent?) -> Bool {
@@ -191,7 +194,7 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         let dateFormatter = DateFormatter()
         let label = UILabel(frame: CGRect(origin: .zero, size: CGSize(width: tableView.frame.size.width, height: DashboardView.tableSectionHeaderHeight)))
         let date = NSCalendar.current.date(from: key)!
-        label.textColor = UIColor(hex: 0x9BACC5)
+        label.textColor = currentTheme.textVariants.main
         label.font = applyFont(ofSize: 14, weight: .semibold)
         label.textAlignment = .center
         
@@ -587,17 +590,17 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
             contentView.cryptoTitleLabel.text = "XMR " + displaySettings.localizedString()
             contentView.fiatAmountLabel.text = balances.fiat.full.formatted()
             contentView.cryptoAmountLabel.text = balances.crypto.full.formatted()
-            contentView.cryptoTitleLabel.textColor = .turquoiseBlue
+            contentView.cryptoTitleLabel.textColor = currentTheme.blue.highlight
         case .unlocked:
             contentView.cryptoTitleLabel.text = "XMR " + displaySettings.localizedString()
             contentView.fiatAmountLabel.text = balances.fiat.unlocked.formatted()
             contentView.cryptoAmountLabel.text = balances.crypto.unlocked.formatted()
-            contentView.cryptoTitleLabel.textColor = .purpley
+            contentView.cryptoTitleLabel.textColor = currentTheme.purple.highlight
         case .hidden:
             contentView.cryptoTitleLabel.text = "XMR " + displaySettings.localizedString()
             contentView.cryptoAmountLabel.text = "--"
             contentView.fiatAmountLabel.text = "-"
-            contentView.cryptoTitleLabel.textColor = .gray
+            contentView.cryptoTitleLabel.textColor = currentTheme.textVariants.main
         }
 
         contentView.cryptoAmountLabel.sizeToFit()

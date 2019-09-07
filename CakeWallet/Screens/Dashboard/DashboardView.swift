@@ -42,7 +42,9 @@ enum DashboardActionType {
     }
 }
 
-final class DashboardActionButton: BaseFlexView {
+final class DashboardActionButton: BaseFlexView, ThemedView {
+    var currentTheme = UserInterfaceTheme.current
+    
     let type: DashboardActionType
     let wrapper: UIView
     let label: UILabel
@@ -97,9 +99,16 @@ final class DashboardActionButton: BaseFlexView {
                 flex.addItem(wrapper).width(100%).height(100%)
         }
     }
+    
+    func themeChanged() {
+        wrapper.layer.borderColor = type.borderColor.cgColor
+        wrapper.flex.backgroundColor(type.backgroundColor).markDirty()
+    }
 }
 
-final class DashboardView: BaseScrollFlexView {
+final class DashboardView: BaseScrollFlexView, ThemedView {
+    var currentTheme = UserInterfaceTheme.current
+    
     static let tableSectionHeaderHeight = 45 as CGFloat
     static let fixedHeaderTopOffset = 45 as CGFloat
     static let headerButtonsHeight = 60 as CGFloat
@@ -144,22 +153,24 @@ final class DashboardView: BaseScrollFlexView {
         fiatAmountLabel.textAlignment = .center
         fiatAmountLabel.font = applyFont(ofSize: 17)
         cryptoTitleLabel.font = applyFont(ofSize: 16, weight: .semibold)
-        cryptoTitleLabel.textColor = UIColor.purpley
+        cryptoTitleLabel.textColor = currentTheme.purple.dim
         transactionsTableView.separatorStyle = .none
         cryptoTitleLabel.textAlignment = .center
         blockUnlockLabel.textAlignment = .center
-        blockUnlockLabel.textColor = .mildPinkish
-
+        blockUnlockLabel.textColor = currentTheme.red.main
+        
         transactionsTableView.tableFooterView = UIView()
         transactionsTableView.isScrollEnabled = false
         transactionsTableView.layoutMargins = .zero
         transactionsTableView.separatorInset = .zero
-        transactionsTableView.backgroundColor = .white
+        transactionsTableView.backgroundColor = currentTheme.background
+        
         transactionTitleLabel.text = NSLocalizedString("transactions", comment: "")
         transactionTitleLabel.textAlignment = .center
         transactionsTableView.layer.masksToBounds = false
         rootFlexContainer.layer.masksToBounds = true
-        backgroundColor = .white
+        backgroundColor = currentTheme.background
+        
         fixedHeader.applyCardSketchShadow()
         addSubview(fixedHeader)
         bringSubview(toFront: fixedHeader)
@@ -192,7 +203,7 @@ final class DashboardView: BaseScrollFlexView {
             .justifyContent(.spaceBetween)
             .width(100%)
             .height(DashboardView.fixedHeaderHeight)
-            .backgroundColor(.white)
+            .backgroundColor(currentTheme.background)
             .paddingBottom(31)
             .define { flex in
                 flex.addItem(cardViewCoreDataWrapper).width(100%).marginTop(DashboardView.fixedHeaderTopOffset)
@@ -201,10 +212,16 @@ final class DashboardView: BaseScrollFlexView {
         }
         
         rootFlexContainer.flex
-            .backgroundColor(.white)
+            .backgroundColor(currentTheme.background)
             .define { flex in
                 flex.addItem(transactionsTableView).width(100%).minWidth(200).grow(1).marginTop(DashboardView.fixedHeaderHeight - 10)
         }
+    }
+    
+    func themeChanged() {
+        transactionsTableView.backgroundColor = currentTheme.background
+        fixedHeader.flex.backgroundColor(currentTheme.background).markDirty()
+        rootFlexContainer.flex.backgroundColor(currentTheme.background).markDirty()
     }
     
     override func layoutSubviews() {
