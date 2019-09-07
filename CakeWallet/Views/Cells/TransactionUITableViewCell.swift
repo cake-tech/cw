@@ -1,7 +1,8 @@
 import UIKit
 import CakeWalletLib
 
-final class TransactionUITableViewCell: FlexCell {
+final class TransactionUITableViewCell: FlexCell, ThemedView {
+    var currentTheme = UserInterfaceTheme.current
     static let height = 70 as CGFloat
     let statusLabel: UILabel
     let dateLabel: UILabel
@@ -34,8 +35,17 @@ final class TransactionUITableViewCell: FlexCell {
     override func configureView() {
         super.configureView()
         layoutMargins = .zero
-        contentView.backgroundColor = .white
-        backgroundColor = .white
+        contentView.backgroundColor = currentTheme.background
+        backgroundColor = currentTheme.background
+    }
+    
+    func themeChanged() {
+        contentView.backgroundColor = currentTheme.background
+        backgroundColor = currentTheme.background
+        cryptoLabel.textColor = currentTheme.textVariants.highlight
+        statusLabel.textColor = currentTheme.textVariants.highlight
+        dateLabel.textColor = currentTheme.textVariants.main
+        fiatLabel.textColor = currentTheme.textVariants.main
     }
     
     override func configureConstraints() {
@@ -69,16 +79,13 @@ final class TransactionUITableViewCell: FlexCell {
     }
     
     func configure(direction: TransactionDirection, date: Date, isPending: Bool, cryptoAmount: Amount, fiatAmount: String, hidden:Bool) {
-        let color: UIColor
         var status = ""
         
         if direction == .incoming {
             status = NSLocalizedString("receive", comment: "") // FIXME: Hardcoded value
-            color = .black
             imageView?.image = UIImage(named: "arrow_down_green_icon")?.resized(to: CGSize(width: 26, height: 26))
         } else {
             status = NSLocalizedString("sent", comment: "") // FIXME: Hardcoded value
-            color = .black
             imageView?.image = UIImage(named: "arrow_top_purple_icon")?.resized(to: CGSize(width: 26, height: 26))
         }
         
@@ -89,11 +96,11 @@ final class TransactionUITableViewCell: FlexCell {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM-dd-yyyy, HH:mm"
         statusLabel.text = status
+        statusLabel.textColor = currentTheme.textVariants.highlight
         cryptoLabel.text = (hidden == true) ? "--" : "\(cryptoAmount.formatted()) \(cryptoAmount.currency.formatted())"
-        cryptoLabel.textColor = color
         dateLabel.text = dateFormatter.string(from: date)
         fiatLabel.text = (hidden == true) ? "-" : fiatAmount
-        
+        themeChanged()
         statusLabel.flex.markDirty()
         cryptoLabel.flex.markDirty()
         dateLabel.flex.markDirty()
@@ -101,13 +108,14 @@ final class TransactionUITableViewCell: FlexCell {
         contentView.flex.layout()
     }
     
+    
     func addSeparator() {
         let height = 1 as CGFloat
         let y = frame.size.height - height
         let leftOffset = 20 as CGFloat
         let rightOffset = 20 as CGFloat
         let width = frame.size.width - leftOffset - rightOffset
-        let color = UIColor(red: 248, green: 250, blue: 253)
+        let color = currentTheme.gray.main
         addSeparator(frame: CGRect(x: leftOffset, y: y, width: width, height: height), color: color)
     }
 }
