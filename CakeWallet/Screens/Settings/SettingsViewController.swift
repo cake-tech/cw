@@ -262,6 +262,22 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
                 )
             }
         )
+        
+        let darkmodeCellItem = SettingsSwitchCellItem(
+            title: NSLocalizedString("dark_mode_setting_title", comment: ""),
+            isOn: UserInterfaceTheme.current == .dark,
+            action: { isDarkMode, item in
+                guard ((isDarkMode == true) ? UserInterfaceTheme.dark : UserInterfaceTheme.light) != UserInterfaceTheme.current else {
+                    return
+                }
+                switch UserInterfaceTheme.current {
+                case .dark:
+                    UserInterfaceTheme.current = .light
+                case .light:
+                    UserInterfaceTheme.current = .dark
+                }
+                
+        })
 
         let biometricCellItem = SettingsSwitchCellItem(
             title: NSLocalizedString("allow_biometric_authentication", comment: ""),
@@ -477,7 +493,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
             changePinCellItem,
             changeLanguage,
             biometricCellItem,
-            //            rememberPasswordCellItem
+            darkmodeCellItem
         ]
         
         sections[.backup] = [
@@ -491,8 +507,6 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
             createBackupCellItem
         ]
         
-        
-        //fixme
         let email = "support@cakewallet.io"
         let telegram = "https://t.me/cake_wallet"
         let twitter = "cakewalletXMR"

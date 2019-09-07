@@ -33,12 +33,20 @@ enum UserInterfaceTheme: Int, Theme {
     case light, dark
     
     static var current: UserInterfaceTheme {
-        if
-            let theme = UserInterfaceTheme(rawValue: UserDefaults.standard.integer(forKey: Configurations.DefaultsKeys.currentTheme)) {
-            return theme
+        get {
+            if let theme = UserInterfaceTheme(rawValue: UserDefaults.standard.integer(forKey: Configurations.DefaultsKeys.currentTheme)) {
+                return theme
+            }
+            
+            return .dark
         }
-        
-        return .dark
+        set {
+            let currentValue = UserInterfaceTheme(rawValue: UserDefaults.standard.integer(forKey: Configurations.DefaultsKeys.currentTheme)) ?? .dark
+            UserDefaults.standard.set(newValue.rawValue, forKey: Configurations.DefaultsKeys.currentTheme)
+            if currentValue.rawValue != newValue.rawValue {
+                return
+            }
+        }
     }
     
     var background: UIColor {
