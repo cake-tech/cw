@@ -4,7 +4,7 @@ import CakeWalletLib
 import CakeWalletCore
 import VisualEffectView
 
-class BaseViewController<View: BaseView>: AnyBaseViewController {
+class BaseViewController<View: BaseView>: AnyBaseThemedViewController {
     var contentView: View { return view as! View }
     
     override init() {

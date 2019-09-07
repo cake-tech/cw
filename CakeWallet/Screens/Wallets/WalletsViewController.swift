@@ -7,7 +7,7 @@ protocol WalletActionsPresentable {
     func presentSeed(for wallet: WalletIndex, withConfig walletConfig: WalletConfig)
 }
 
-extension WalletActionsPresentable where Self: AnyBaseViewController {
+extension WalletActionsPresentable where Self: AnyBaseThemedViewController {
     func presentKeys() {
         let authController = AuthenticationViewController(store: store, authentication: AuthenticationImpl())
         let navController = UINavigationController(rootViewController: authController)

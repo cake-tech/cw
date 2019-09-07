@@ -1,11 +1,69 @@
 import UIKit
+import Foundation
 
-//main dark
-//UIColor(red: 0.15, green: 0.16, blue: 0.2, alpha: 1)
+class AnyBaseThemedViewController: AnyBaseViewController, Themed {
+    var currentTheme = UserInterfaceTheme.current
+    
+    override init() {
+        super.init()
+        NotificationCenter.default.addObserver(self, selector: #selector(themeReconfigured), name: UserInterfaceTheme.notificationName, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    private func searchSubviews(_ theseViews:[UIView]) {
+        for (_, thisSubview) in theseViews.enumerated() {
+            if var themedView = thisSubview as? Themed {
+                themedView.currentTheme = currentTheme
+                themedView.themeChanged()
+            }
+            if thisSubview.subviews.count > 0 {
+                searchSubviews(thisSubview.subviews)
+            }
+        }
+    }
+    
+    private func configureIfNecessary() {
+        let nowTheme = UserInterfaceTheme.current
+        if (currentTheme != nowTheme) {
+            currentTheme = nowTheme
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                self.searchSubviews(self.view.subviews)
+                if var themedView = self.view as? Themed {
+                    themedView.currentTheme = self.currentTheme
+                    themedView.themeChanged()
+                }
+                self.view.backgroundColor = nowTheme.background
+            }
+            
+            themeChanged()
+        }
+    }
+   
+    @objc func themeReconfigured() {
+        configureIfNecessary()
+    }
+    
+    //for overriding
+    public func themeChanged() {
+        return
+    }
+}
+
+protocol Themed {
+    var currentTheme:UserInterfaceTheme { get set }
+    func themeChanged()
+}
+
 public struct Colorset {
-    public let highlight:UIColor
-    public let main:UIColor
-    public let dim:UIColor
+    public let highlight:UIColor    //high contrast against background
+    public let main:UIColor         //medium contrast against background
+    public let dim:UIColor          //low contrast against background
 }
 
 protocol Theme {
@@ -21,6 +79,7 @@ protocol Theme {
 }
 
 enum UserInterfaceTheme: Int, Theme {
+    fileprivate static let notificationName = Notification.Name("UIThemeConfigurationChanged")
     var rawValue:Int {
         switch self {
         case .light:
@@ -42,9 +101,11 @@ enum UserInterfaceTheme: Int, Theme {
         }
         set {
             let currentValue = UserInterfaceTheme(rawValue: UserDefaults.standard.integer(forKey: Configurations.DefaultsKeys.currentTheme)) ?? .dark
-            UserDefaults.standard.set(newValue.rawValue, forKey: Configurations.DefaultsKeys.currentTheme)
             if currentValue.rawValue != newValue.rawValue {
-                return
+                UserDefaults.standard.set(newValue.rawValue, forKey: Configurations.DefaultsKeys.currentTheme)
+                DispatchQueue.main.async {
+                   NotificationCenter.default.post(name:self.notificationName, object: nil)
+                }
             }
         }
     }
