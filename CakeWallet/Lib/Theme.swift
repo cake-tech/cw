@@ -1,7 +1,7 @@
 import UIKit
 import Foundation
 
-class AnyBaseThemedViewController: AnyBaseViewController, Themed {
+class AnyBaseThemedViewController: AnyBaseViewController {
     var currentTheme = UserInterfaceTheme.current
     
     override init() {
@@ -15,7 +15,7 @@ class AnyBaseThemedViewController: AnyBaseViewController, Themed {
     
     private func searchSubviews(_ theseViews:[UIView]) {
         for (_, thisSubview) in theseViews.enumerated() {
-            if var themedView = thisSubview as? Themed {
+            if var themedView = thisSubview as? ThemedView {
                 themedView.currentTheme = currentTheme
                 themedView.themeChanged()
             }
@@ -34,7 +34,7 @@ class AnyBaseThemedViewController: AnyBaseViewController, Themed {
                     return
                 }
                 self.searchSubviews(self.view.subviews)
-                if var themedView = self.view as? Themed {
+                if var themedView = self.view as? ThemedView {
                     themedView.currentTheme = self.currentTheme
                     themedView.themeChanged()
                 }
@@ -55,7 +55,7 @@ class AnyBaseThemedViewController: AnyBaseViewController, Themed {
     }
 }
 
-protocol Themed {
+protocol ThemedView: UIView {
     var currentTheme:UserInterfaceTheme { get set }
     func themeChanged()
 }
