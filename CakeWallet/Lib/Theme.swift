@@ -1,62 +1,7 @@
 import UIKit
 import Foundation
 
-class AnyBaseThemedViewController: AnyBaseViewController {
-    var currentTheme = UserInterfaceTheme.current
-    
-    override init() {
-        super.init()
-        NotificationCenter.default.addObserver(self, selector: #selector(themeReconfigured), name: UserInterfaceTheme.notificationName, object: nil)
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    private func searchSubviews(_ theseViews:[UIView]) {
-        for (_, thisSubview) in theseViews.enumerated() {
-            if var themedView = thisSubview as? ThemedView {
-                themedView.currentTheme = currentTheme
-                themedView.themeChanged()
-            }
-            if thisSubview.subviews.count > 0 {
-                searchSubviews(thisSubview.subviews)
-            }
-        }
-    }
-    
-    private func configureIfNecessary() {
-        let nowTheme = UserInterfaceTheme.current
-        if (currentTheme != nowTheme) {
-            currentTheme = nowTheme
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else {
-                    return
-                }
-                self.searchSubviews(self.view.subviews)
-                if var themedView = self.view as? ThemedView {
-                    themedView.currentTheme = self.currentTheme
-                    themedView.themeChanged()
-                }
-                self.view.backgroundColor = nowTheme.background
-            }
-            
-            themeChanged()
-        }
-    }
-   
-    @objc func themeReconfigured() {
-        configureIfNecessary()
-    }
-    
-    //for overriding
-    public func themeChanged() {
-        return
-    }
-}
-
-protocol ThemedView: UIView {
-    var currentTheme:UserInterfaceTheme { get set }
+protocol Themed {
     func themeChanged()
 }
 
@@ -78,8 +23,10 @@ protocol Theme {
     var gray:Colorset { get }
 }
 
+fileprivate var currentCached:UserInterfaceTheme? = nil
+
 enum UserInterfaceTheme: Int, Theme {
-    fileprivate static let notificationName = Notification.Name("UIThemeConfigurationChanged")
+    static let notificationName = Notification.Name("UIThemeConfigurationChanged")
     var rawValue:Int {
         switch self {
         case .light:
@@ -93,15 +40,20 @@ enum UserInterfaceTheme: Int, Theme {
     
     static var current: UserInterfaceTheme {
         get {
+            if let cacheTest = currentCached {
+                return cacheTest
+            }
             if let theme = UserInterfaceTheme(rawValue: UserDefaults.standard.integer(forKey: Configurations.DefaultsKeys.currentTheme)) {
+                currentCached = theme
                 return theme
             }
-            
+            currentCached = .dark
             return .dark
         }
         set {
             let currentValue = UserInterfaceTheme(rawValue: UserDefaults.standard.integer(forKey: Configurations.DefaultsKeys.currentTheme)) ?? .dark
             if currentValue.rawValue != newValue.rawValue {
+                currentCached = newValue
                 UserDefaults.standard.set(newValue.rawValue, forKey: Configurations.DefaultsKeys.currentTheme)
                 DispatchQueue.main.async {
                    NotificationCenter.default.post(name:self.notificationName, object: nil)

@@ -4,13 +4,15 @@ import CakeWalletLib
 import CakeWalletCore
 import VisualEffectView
 
-class BaseViewController<View: BaseView>: AnyBaseThemedViewController {
+class BaseViewController<View: BaseView>: AnyBaseViewController {
     var contentView: View { return view as! View }
     
     override init() {
         super.init()
         setTitle()
-        
+        NotificationCenter.default.addObserver(forName: UserInterfaceTheme.notificationName, object:nil, queue:nil) { [weak self] notification in
+            self?.loadView()
+        }
         NotificationCenter.default.addObserver(forName: Notification.Name("langChanged"), object: nil, queue: nil) { [weak self] notification in
             self?.loadView()
             

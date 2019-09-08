@@ -1,8 +1,7 @@
 import UIKit
 import CakeWalletLib
 
-final class TransactionUITableViewCell: FlexCell, ThemedView {
-    var currentTheme = UserInterfaceTheme.current
+final class TransactionUITableViewCell: FlexCell {
     static let height = 70 as CGFloat
     let statusLabel: UILabel
     let dateLabel: UILabel
@@ -35,17 +34,14 @@ final class TransactionUITableViewCell: FlexCell, ThemedView {
     override func configureView() {
         super.configureView()
         layoutMargins = .zero
-        contentView.backgroundColor = currentTheme.background
-        backgroundColor = currentTheme.background
-    }
-    
-    func themeChanged() {
-        contentView.backgroundColor = currentTheme.background
-        backgroundColor = currentTheme.background
-        cryptoLabel.textColor = currentTheme.textVariants.highlight
-        statusLabel.textColor = currentTheme.textVariants.highlight
-        dateLabel.textColor = currentTheme.textVariants.main
-        fiatLabel.textColor = currentTheme.textVariants.main
+        contentView.backgroundColor = UserInterfaceTheme.current.background
+        backgroundColor = UserInterfaceTheme.current.background
+        contentView.backgroundColor = UserInterfaceTheme.current.background
+        backgroundColor = UserInterfaceTheme.current.background
+        cryptoLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
+        statusLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
+        dateLabel.textColor = UserInterfaceTheme.current.textVariants.main
+        fiatLabel.textColor = UserInterfaceTheme.current.textVariants.main
     }
     
     override func configureConstraints() {
@@ -96,7 +92,7 @@ final class TransactionUITableViewCell: FlexCell, ThemedView {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM-dd-yyyy, HH:mm"
         statusLabel.text = status
-        statusLabel.textColor = currentTheme.textVariants.highlight
+        statusLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
         cryptoLabel.text = (hidden == true) ? "--" : "\(cryptoAmount.formatted()) \(cryptoAmount.currency.formatted())"
         dateLabel.text = dateFormatter.string(from: date)
         fiatLabel.text = (hidden == true) ? "-" : fiatAmount
@@ -116,7 +112,7 @@ final class TransactionUITableViewCell: FlexCell, ThemedView {
         let leftOffset = 20 as CGFloat
         let rightOffset = 20 as CGFloat
         let width = frame.size.width - leftOffset - rightOffset
-        let color = currentTheme.gray.main
+        let color = UserInterfaceTheme.current.gray.main
         addSeparator(frame: CGRect(x: leftOffset, y: y, width: width, height: height), color: color)
     }
 }

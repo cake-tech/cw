@@ -82,10 +82,6 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         
         insertNavigationItems()
     }
-    
-    override func themeChanged() {
-        navigationController?.navigationBar.backgroundColor = currentTheme.background
-    }
 
     private func areTouchesValid(_ touches:Set<UITouch>, forEvent thisEvent:UIEvent?) -> Bool {
         let touchPointsRec = touches.map { return $0.location(in:contentView.receiveButton) }
@@ -194,7 +190,7 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         let dateFormatter = DateFormatter()
         let label = UILabel(frame: CGRect(origin: .zero, size: CGSize(width: tableView.frame.size.width, height: DashboardView.tableSectionHeaderHeight)))
         let date = NSCalendar.current.date(from: key)!
-        label.textColor = currentTheme.textVariants.main
+        label.textColor = UserInterfaceTheme.current.textVariants.main
         label.font = applyFont(ofSize: 14, weight: .semibold)
         label.textAlignment = .center
         
@@ -590,17 +586,17 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
             contentView.cryptoTitleLabel.text = "XMR " + displaySettings.localizedString()
             contentView.fiatAmountLabel.text = balances.fiat.full.formatted()
             contentView.cryptoAmountLabel.text = balances.crypto.full.formatted()
-            contentView.cryptoTitleLabel.textColor = currentTheme.blue.highlight
+            contentView.cryptoTitleLabel.textColor = UserInterfaceTheme.current.blue.highlight
         case .unlocked:
             contentView.cryptoTitleLabel.text = "XMR " + displaySettings.localizedString()
             contentView.fiatAmountLabel.text = balances.fiat.unlocked.formatted()
             contentView.cryptoAmountLabel.text = balances.crypto.unlocked.formatted()
-            contentView.cryptoTitleLabel.textColor = currentTheme.purple.highlight
+            contentView.cryptoTitleLabel.textColor = UserInterfaceTheme.current.purple.highlight
         case .hidden:
             contentView.cryptoTitleLabel.text = "XMR " + displaySettings.localizedString()
             contentView.cryptoAmountLabel.text = "--"
             contentView.fiatAmountLabel.text = "-"
-            contentView.cryptoTitleLabel.textColor = currentTheme.textVariants.main
+            contentView.cryptoTitleLabel.textColor = UserInterfaceTheme.current.textVariants.main
         }
 
         contentView.cryptoAmountLabel.sizeToFit()

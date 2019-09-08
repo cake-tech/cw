@@ -26,25 +26,23 @@ enum DashboardActionType {
     var borderColor: UIColor {
         switch self {
         case .send:
-            return UIColor(red: 209, green: 189, blue: 245)
+            return UserInterfaceTheme.current.purple.highlight
         case .receive:
-            return UIColor(red: 152, green: 228, blue: 227)
+            return UserInterfaceTheme.current.blue.highlight
         }
     }
     
     var backgroundColor: UIColor {
         switch self {
         case .send:
-            return UIColor(red: 244, green: 239, blue: 253)
+            return UserInterfaceTheme.current.purple.dim
         case .receive:
-            return UIColor(red: 235, green: 248, blue: 250)
+            return UserInterfaceTheme.current.blue.dim
         }
     }
 }
 
-final class DashboardActionButton: BaseFlexView, ThemedView {
-    var currentTheme = UserInterfaceTheme.current
-    
+final class DashboardActionButton: BaseFlexView {
     let type: DashboardActionType
     let wrapper: UIView
     let label: UILabel
@@ -106,9 +104,7 @@ final class DashboardActionButton: BaseFlexView, ThemedView {
     }
 }
 
-final class DashboardView: BaseScrollFlexView, ThemedView {
-    var currentTheme = UserInterfaceTheme.current
-    
+final class DashboardView: BaseScrollFlexView {
     static let tableSectionHeaderHeight = 45 as CGFloat
     static let fixedHeaderTopOffset = 45 as CGFloat
     static let headerButtonsHeight = 60 as CGFloat
@@ -153,23 +149,23 @@ final class DashboardView: BaseScrollFlexView, ThemedView {
         fiatAmountLabel.textAlignment = .center
         fiatAmountLabel.font = applyFont(ofSize: 17)
         cryptoTitleLabel.font = applyFont(ofSize: 16, weight: .semibold)
-        cryptoTitleLabel.textColor = currentTheme.purple.dim
+        cryptoTitleLabel.textColor = UserInterfaceTheme.current.purple.dim
         transactionsTableView.separatorStyle = .none
         cryptoTitleLabel.textAlignment = .center
         blockUnlockLabel.textAlignment = .center
-        blockUnlockLabel.textColor = currentTheme.red.main
+        blockUnlockLabel.textColor = UserInterfaceTheme.current.red.main
         
         transactionsTableView.tableFooterView = UIView()
         transactionsTableView.isScrollEnabled = false
         transactionsTableView.layoutMargins = .zero
         transactionsTableView.separatorInset = .zero
-        transactionsTableView.backgroundColor = currentTheme.background
+        transactionsTableView.backgroundColor = UserInterfaceTheme.current.background
         
         transactionTitleLabel.text = NSLocalizedString("transactions", comment: "")
         transactionTitleLabel.textAlignment = .center
         transactionsTableView.layer.masksToBounds = false
         rootFlexContainer.layer.masksToBounds = true
-        backgroundColor = currentTheme.background
+        backgroundColor = UserInterfaceTheme.current.background
         
         fixedHeader.applyCardSketchShadow()
         addSubview(fixedHeader)
@@ -203,7 +199,7 @@ final class DashboardView: BaseScrollFlexView, ThemedView {
             .justifyContent(.spaceBetween)
             .width(100%)
             .height(DashboardView.fixedHeaderHeight)
-            .backgroundColor(currentTheme.background)
+            .backgroundColor(UserInterfaceTheme.current.background)
             .paddingBottom(31)
             .define { flex in
                 flex.addItem(cardViewCoreDataWrapper).width(100%).marginTop(DashboardView.fixedHeaderTopOffset)
@@ -212,16 +208,16 @@ final class DashboardView: BaseScrollFlexView, ThemedView {
         }
         
         rootFlexContainer.flex
-            .backgroundColor(currentTheme.background)
+            .backgroundColor(UserInterfaceTheme.current.background)
             .define { flex in
                 flex.addItem(transactionsTableView).width(100%).minWidth(200).grow(1).marginTop(DashboardView.fixedHeaderHeight - 10)
         }
     }
     
     func themeChanged() {
-        transactionsTableView.backgroundColor = currentTheme.background
-        fixedHeader.flex.backgroundColor(currentTheme.background).markDirty()
-        rootFlexContainer.flex.backgroundColor(currentTheme.background).markDirty()
+        transactionsTableView.backgroundColor = UserInterfaceTheme.current.background
+        fixedHeader.flex.backgroundColor(UserInterfaceTheme.current.background).markDirty()
+        rootFlexContainer.flex.backgroundColor(UserInterfaceTheme.current.background).markDirty()
     }
     
     override func layoutSubviews() {
