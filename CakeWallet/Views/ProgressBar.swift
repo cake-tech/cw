@@ -5,6 +5,8 @@ import SwiftDate
 let syncImageSize = CGSize(width: 12, height: 12)
 
 final class ProgressBar: BaseFlexView {
+    var currentTheme = UserInterfaceTheme.current
+    
     let progressView: UIView
     let textContainer: UIView
     let imageHolder: UIImageView
@@ -38,16 +40,18 @@ final class ProgressBar: BaseFlexView {
         }
         set {
             if (newValue == false) {
-                imageHolder.flex.height(0).width(0).marginLeft(0).markDirty()
+                imageHolder.layer.removeAllAnimations()
+                imageHolder.flex.backgroundColor(.clear).height(0).width(0).marginLeft(0).markDirty()
                 secondaryLabel.flex.width(100%).markDirty()
                 imageHolder.isHidden = true
+
             } else {
-                imageHolder.flex.height(syncImageSize.height).width(syncImageSize.width).marginLeft(21).markDirty()
+                imageHolder.flex.backgroundColor(.clear).height(syncImageSize.height).width(syncImageSize.width).marginLeft(21).markDirty()
                 secondaryLabel.flex.width(90%).markDirty()
                 imageHolder.isHidden = false
                 animateSyncImage()
             }
-            progressView.flex.layout()
+            imageHolder.flex.markDirty()
         }
     }
     private var isLastBlockDateVisible:Bool {
@@ -94,14 +98,15 @@ final class ProgressBar: BaseFlexView {
         super.configureView()
         
         imageHolder.image = syncImage
+        imageHolder.backgroundColor = .clear
         primaryLabel.font = applyFont(ofSize: 12)
-        primaryLabel.textColor = UIColor.gray
+        primaryLabel.textColor = currentTheme.textVariants.highlight
         primaryLabel.textAlignment = .center
         secondaryLabel.font = applyFont(ofSize:10)
-        secondaryLabel.textColor = UIColor.gray
+        secondaryLabel.textColor = currentTheme.textVariants.main
         secondaryLabel.textAlignment = .center
         progressView.layer.borderWidth = 1
-        
+        progressView.isOpaque = true
         if (timerLaunched == false) {
             self.launchRelativeDateDisplayTimer()
         }
@@ -114,24 +119,30 @@ final class ProgressBar: BaseFlexView {
     }
     
     override func configureConstraints() {
-        textContainer.flex.alignItems(.center).justifyContent(.center).define { flex in
+        textContainer.flex.backgroundColor(.clear).alignItems(.center).justifyContent(.center).define { flex in
             flex.addItem(primaryLabel).alignSelf(.center).width(100%)
             flex.addItem(secondaryLabel).alignSelf(.center).width(100%)
         }
         
         progressView.flex
-            .direction(.row).alignItems(.center).justifyContent(.center)
+            .direction(.row).backgroundColor(.clear).alignItems(.center).justifyContent(.center)
             .height(42).define { flex in
                 flex.addItem(imageHolder).marginLeft(21)
                 flex.addItem(textContainer).width(90%)
         }
         
         rootFlexContainer.flex
-            .alignItems(.center).justifyContent(.center)
+            .alignItems(.center).backgroundColor(.clear).justifyContent(.center)
             .width(100%)
             .define { flex in
                 flex.addItem(progressView).width(210)
         }
+    }
+    
+    public func themeChanged() {
+        configureConstraints()
+        displayConfigurationChanged()
+        animateSyncImage()
     }
     
     private func animateSyncImage() {
@@ -152,33 +163,31 @@ final class ProgressBar: BaseFlexView {
     }
     
     
-    private typealias Theme = (border:UIColor, fill:UIColor, text:UIColor)
-    private func themeForConfiguration() -> Theme {
+    private typealias Colors = (border:UIColor, fill:UIColor)
+    private func themeForConfiguration() -> Colors {
         switch currentDisplayConfiguration {
         case .syncronized(_, _):
-            return (border:UIColor(red: 209, green: 189, blue: 245), fill:UIColor(red: 244, green: 239, blue: 253), text:UIColor.wildDarkBlue)
+            return (border:currentTheme.purple.highlight, fill:currentTheme.purple.dim)
         case .error(_):
-            return (border:UIColor.mildPinkish, fill:UIColor.lightPinkish, text:UIColor.mildPinkish)
+            return (border:UIColor.mildPinkish, fill:UIColor.lightPinkish)
         case .inProgress(_, _, _):
-            return (border:UIColor.wildDarkBlue, fill:UIColor.whiteSmoke, text:UIColor.wildDarkBlue)
+            return (border:currentTheme.gray.highlight, fill:currentTheme.gray.dim)
         case .indeterminantMessage(_):
-            return (border:UIColor.wildDarkBlue, fill:UIColor.whiteSmoke, text:UIColor.wildDarkBlue)
+            return (border:currentTheme.gray.highlight, fill:currentTheme.gray.dim)
         case .indeterminantSync(_):
-            return (border:UIColor.wildDarkBlue, fill:UIColor.whiteSmoke, text:UIColor.wildDarkBlue)
+            return (border:currentTheme.gray.highlight, fill:currentTheme.gray.dim)
         }
     }
     
     private func displayConfigurationChanged() {
         let colors = themeForConfiguration()
-        progressView.flex.backgroundColor(colors.fill)
-        progressView.layer.borderColor = colors.border.cgColor
-        primaryLabel.textColor = colors.text
-        secondaryLabel.textColor = colors.text
+        
+        primaryLabel.textColor = currentTheme.textVariants.highlight
+        secondaryLabel.textColor = currentTheme.textVariants.main
         
         switch currentDisplayConfiguration {
         case let .syncronized(primaryLocalized, secondaryLocalizedPrefix):
             primaryLabel.text = primaryLocalized
-            primaryLabel.textColor = UIColor.darkGray
             secondaryLabel.text = secondaryLocalizedPrefix + " " + lastBlockRelativeString()
             isLastBlockDateVisible = true
             isSyncIndicatorVisible = false
@@ -188,7 +197,6 @@ final class ProgressBar: BaseFlexView {
             isSyncIndicatorVisible = false
         case let .inProgress(primaryLocalized, secondaryLocalized, progressInformation):
             primaryLabel.text = primaryLocalized
-            primaryLabel.textColor = UIColor.darkGray
             secondaryLabel.text = String(progressInformation.remaining) + " " + secondaryLocalized
             isLastBlockDateVisible = true
             isSyncIndicatorVisible = true
@@ -200,12 +208,18 @@ final class ProgressBar: BaseFlexView {
             primaryLabel.text = message
             isLastBlockDateVisible = false
             isSyncIndicatorVisible = true
-            return
         }
+        progressView.layer.backgroundColor = colors.fill.cgColor
+        progressView.layer.borderColor = colors.border.cgColor
+
         primaryLabel.flex.markDirty()
         secondaryLabel.flex.markDirty()
+        textContainer.flex.markDirty()
+        progressView.flex.markDirty()
+        imageHolder.flex.markDirty()
         
         rootFlexContainer.flex.layout()
+        rootFlexContainer.flex.markDirty()
     }
     
     private func lastBlockRelativeString() -> String {
@@ -216,7 +230,7 @@ final class ProgressBar: BaseFlexView {
         switch currentDisplayConfiguration {
         case let .syncronized(_, secondaryLocalization):
             secondaryLabel.text = secondaryLocalization + " " + lastBlockRelativeString()
-            secondaryLabel.flex.markDirty
+            secondaryLabel.flex.markDirty()
             rootFlexContainer.flex.layout()
         default:
             return
