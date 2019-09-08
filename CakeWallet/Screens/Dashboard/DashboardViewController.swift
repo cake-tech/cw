@@ -12,7 +12,7 @@ fileprivate let pendingBlocks = 3 as UInt64  //how many blocks will pass (roughl
 fileprivate let blockDelay = 10 as UInt64   //how many blocks are funds locked?
 fileprivate let progressBarSyncUpdateTimeThreshold = 900000.nanoseconds.timeInterval
 
-final class DashboardController: BaseViewController<DashboardView>, StoreSubscriber, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate {
+final class DashboardController: BaseViewController<DashboardView>, StoreSubscriber, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, Themed {
     let walletNameView = WalletNameView()
     weak var dashboardFlow: DashboardFlow?
     private var sortedTransactions:  [DateComponents : [TransactionDescription]] = [:] {
@@ -123,7 +123,19 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     
     private func insertNavigationItems() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "more")?.resized(to: CGSize(width: 28, height: 28)), style: .plain, target: self, action: #selector(presentWalletActions))
+        navigationItem.leftBarButtonItem?.tintColor = UserInterfaceTheme.current.text
         navigationItem.titleView = walletNameView
+        navigationItem.titleView?.tintColor = UserInterfaceTheme.current.text
+        
+        walletNameView.titleLabel.textColor = UserInterfaceTheme.current.text
+        walletNameView.subtitleLabel.textColor = UserInterfaceTheme.current.textVariants.main
+    }
+    
+    func themeChanged() {
+        walletNameView.titleLabel.textColor = UserInterfaceTheme.current.text
+        walletNameView.subtitleLabel.textColor = UserInterfaceTheme.current.textVariants.main
+        navigationItem.leftBarButtonItem?.tintColor = UserInterfaceTheme.current.text
+
     }
     
     override func viewWillAppear(_ animated: Bool) {

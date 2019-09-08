@@ -7,11 +7,24 @@ import VisualEffectView
 class BaseViewController<View: BaseView>: AnyBaseViewController {
     var contentView: View { return view as! View }
     
+    override var preferredStatusBarStyle:UIStatusBarStyle {
+        switch UserInterfaceTheme.current {
+        case .light:
+                return .default
+        case .dark:
+                return .lightContent
+        }
+    }
+    
     override init() {
         super.init()
         setTitle()
         NotificationCenter.default.addObserver(forName: UserInterfaceTheme.notificationName, object:nil, queue:nil) { [weak self] notification in
             self?.loadView()
+            self?.setBarStyle()
+            if let conformingSelf = self as? Themed {
+                conformingSelf.themeChanged()
+            }
         }
         NotificationCenter.default.addObserver(forName: Notification.Name("langChanged"), object: nil, queue: nil) { [weak self] notification in
             self?.loadView()
@@ -31,7 +44,11 @@ class BaseViewController<View: BaseView>: AnyBaseViewController {
         view = View()
         configureBinds()
         setTitle()
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setNeedsStatusBarAppearanceUpdate()
     }
     
     override func viewDidLoad() {
@@ -39,8 +56,20 @@ class BaseViewController<View: BaseView>: AnyBaseViewController {
         guard let navController = self.navigationController else {
             return
         }
- 
+        setBarStyle()
         navController.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: applyFont(ofSize: 16)]
+    }
+    
+    private func setBarStyle() {
+        guard let navController = self.navigationController else {
+            return
+        }
+        switch UserInterfaceTheme.current {
+        case .dark:
+            navController.navigationBar.barStyle = UIBarStyle.black
+        case .light:
+            navController.navigationBar.barStyle = UIBarStyle.default
+        }
     }
     
     func setTitle() {}

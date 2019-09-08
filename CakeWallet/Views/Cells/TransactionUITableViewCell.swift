@@ -96,8 +96,7 @@ final class TransactionUITableViewCell: FlexCell {
         cryptoLabel.text = (hidden == true) ? "--" : "\(cryptoAmount.formatted()) \(cryptoAmount.currency.formatted())"
         dateLabel.text = dateFormatter.string(from: date)
         fiatLabel.text = (hidden == true) ? "-" : fiatAmount
-    
-        themeChanged()
+
         statusLabel.flex.markDirty()
         cryptoLabel.flex.markDirty()
         dateLabel.flex.markDirty()
