@@ -1,9 +1,8 @@
 import UIKit
 
-final class StandartButton: Button {
+final class StandardButton: Button {
     override func configureView() {
         super.configureView()
-        backgroundColor = .clear
-        setTitleColor(UIColor.spaceViolet, for: .normal)
+        setTitleColor(UserInterfaceTheme.current.text, for: .normal)
     }
 }

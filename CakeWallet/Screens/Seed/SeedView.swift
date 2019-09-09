@@ -40,7 +40,7 @@ final class SeedView: BaseFlexView {
             flex.addItem(separatorView)
                 .height(1).width(100%)
                 .margin(UIEdgeInsets(top: 0, left: -20, bottom: 0, right: -20))
-                .backgroundColor(UIColor.init(red: 224, green: 233, blue: 246))
+                .backgroundColor(UserInterfaceTheme.current.background)
             flex.addItem(dateLabel).width(100%)
             flex.addItem(seedLabel).width(100%).margin(UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0))
         }

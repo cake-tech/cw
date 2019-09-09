@@ -18,10 +18,10 @@ final class AccountCell: FlexCell {
     
     override func configureView() {
         super.configureView()
-        contentView.backgroundColor = .white
+        contentView.backgroundColor = UserInterfaceTheme.current.gray.dim
         backgroundColor = .clear
         selectionStyle = .none
-        
+        nameLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
         nameLabel.font = applyFont(ofSize: 16)
     }
     
@@ -42,7 +42,6 @@ final class AccountCell: FlexCell {
     func configure(name: String) {
         nameLabel.text = name
         nameLabel.flex.markDirty()
-        
         contentView.flex.layout()
     }
 }
@@ -51,6 +50,8 @@ final class AccountCell: FlexCell {
 extension Account: CellItem {
     func setup(cell: AccountCell) {
         cell.configure(name: label)
+        
+        
     }
 }
 

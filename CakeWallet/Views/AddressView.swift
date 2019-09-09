@@ -98,17 +98,17 @@ final class AddressView: BaseFlexView {
         qrScanButton.imageEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5)
         qrScanButton.backgroundColor = .clear
         qrScanButton.layer.cornerRadius = 5
-        qrScanButton.backgroundColor = UIColor.whiteSmoke
+        qrScanButton.backgroundColor = UserInterfaceTheme.current.gray.dim
         
         addressBookButton.imageEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5)
         addressBookButton.backgroundColor = .clear
         addressBookButton.layer.cornerRadius = 5
-        addressBookButton.backgroundColor = UIColor.whiteSmoke
+        addressBookButton.backgroundColor = UserInterfaceTheme.current.gray.dim
         
         subaddressButton.imageEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5)
         subaddressButton.backgroundColor = .clear
         subaddressButton.layer.cornerRadius = 5
-        subaddressButton.backgroundColor = UIColor.whiteSmoke
+        subaddressButton.backgroundColor = UserInterfaceTheme.current.gray.dim
         
         if let qrScanImage = UIImage(named: "qr_code_icon") {
             qrScanButton.setImage(qrScanImage, for: .normal)
@@ -130,11 +130,11 @@ final class AddressView: BaseFlexView {
         textView.attributedPlaceholder = NSAttributedString(
             string: placeholder,
             attributes: [
-                NSAttributedString.Key.foregroundColor: UIColor.wildDarkBlue,
+                NSAttributedString.Key.foregroundColor: UserInterfaceTheme.current.textVariants.dim,
                 NSAttributedStringKey.font: UIFont(name: "Lato-Regular", size: CGFloat(15))!
             ]
         )
-
+        textView.textColor = UserInterfaceTheme.current.text
         textView.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 40*_pickers.count, height: 0))
         textView.rightViewMode = .always
         backgroundColor = .clear
@@ -160,7 +160,7 @@ final class AddressView: BaseFlexView {
             .backgroundColor(.clear)
             .define{ flex in
                 flex.addItem(textView).backgroundColor(.clear).width(100%).paddingRight(CGFloat(40*_pickers.count)).marginBottom(11)
-                flex.addItem(borderView).height(1.5).width(100%).backgroundColor(UIColor.veryLightBlue)
+                flex.addItem(borderView).height(1.5).width(100%).backgroundColor(UserInterfaceTheme.current.gray.main)
                 flex.addItem(buttonsView).position(.absolute).top(-10).right(0)
         }
     }

@@ -36,7 +36,7 @@ class CWTextField: UITextField {
     override func configureView() {
         super.configureView()
         borderStyle = .none
-        bottomBorder.backgroundColor = UIColor.veryLightBlue.cgColor
+        bottomBorder.backgroundColor = UserInterfaceTheme.current.gray.main.cgColor
         font = applyFont(ofSize: fontSize)
         layer.addSublayer(bottomBorder)
     }
@@ -66,7 +66,7 @@ class CWTextField: UITextField {
         attributedPlaceholder = NSAttributedString(
             string: placeholder,
             attributes: [
-                NSAttributedString.Key.foregroundColor: UIColor.wildDarkBlue,
+                NSAttributedString.Key.foregroundColor: UserInterfaceTheme.current.textVariants.dim,
                 NSAttributedStringKey.font: UIFont(name: "Lato-Regular", size: fontSize)!
             ]
         )

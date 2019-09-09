@@ -26,8 +26,8 @@ final class SettingsPickerUITableViewCell<Item: Formatted>: FlexCell, UIPickerVi
         
         //tstag
         pinckerTextField.textColor = UserInterfaceTheme.current.textVariants.highlight
-        pinckerTextField.backgroundColor = .white
-        backgroundColor = .white
+        pinckerTextField.backgroundColor = UserInterfaceTheme.current.background
+        backgroundColor = UserInterfaceTheme.current.background
         pickerView.delegate = self
         pickerView.dataSource = self
         pinckerTextField.delegate = self

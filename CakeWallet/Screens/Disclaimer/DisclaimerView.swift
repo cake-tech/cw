@@ -28,7 +28,7 @@ final class DisclaimerView: BaseFlexView {
         super.configureView()
         textView.font = applyFont(ofSize: 14)
         textView.isEditable = false
-        checkBoxTitleButton.setTitleColor(.black, for: .normal)
+        checkBoxTitleButton.setTitleColor(UserInterfaceTheme.current.text, for: .normal)
         checkBoxTitleButton.titleLabel?.font = applyFont(ofSize: 13, weight: .semibold)
         textView.backgroundColor = .clear
         

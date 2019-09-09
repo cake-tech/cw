@@ -36,6 +36,6 @@ class IconedCopyButton: UIButton {
         
         layer.cornerRadius = 5
         imageEdgeInsets = UIEdgeInsetsMake(9, 9, 9, 9)
-        backgroundColor = UIColor.whiteSmoke
+        backgroundColor = UserInterfaceTheme.current.gray.dim
     }
 }

@@ -100,7 +100,7 @@ final class ExchangeResultView: BaseScrollFlexView {
         descriptionTextView.isScrollEnabled = false
         descriptionTextView.isEditable = false
         idLabel.numberOfLines = 0
-        idLabel.textColor = .spaceViolet
+        idLabel.textColor = UserInterfaceTheme.current.textVariants.main
         
         idLabel.font = applyFont(ofSize: 15)
         amountLabel.font = applyFont(ofSize: 15)
@@ -109,16 +109,16 @@ final class ExchangeResultView: BaseScrollFlexView {
         timeoutLabel.font = applyFont(ofSize: 15)
         
         amountLabel.numberOfLines = 0
-        amountLabel.textColor = .spaceViolet
+        amountLabel.textColor = UserInterfaceTheme.current.purple.highlight
         
         addressLabel.numberOfLines = 0
         addressLabel.textAlignment = .center
         addressLabel.font = applyFont(ofSize: 13)
-        addressLabel.textColor = .purpley
+        addressLabel.textColor = UserInterfaceTheme.current.purple.main
         
         copyAddressButton.titleLabel?.font = applyFont(ofSize: 13)
         copyIdButton.titleLabel?.font = applyFont(ofSize: 13)
-        descriptionTextView.textColor = .wildDarkBlue
+        descriptionTextView.textColor = UserInterfaceTheme.current.gray.main
         descriptionTextView.font = applyFont(ofSize: 12)
         descriptionTextView.isEditable = false
         

@@ -4,8 +4,8 @@ class SecondaryButton: Button {
     override func configureView() {
         super.configureView()
         //tstag
-        backgroundColor = UserInterfaceTheme.current.gray.main
+        backgroundColor = UserInterfaceTheme.current.gray.dim
         layer.borderWidth = 0.75
-        layer.borderColor = UIColor.grayBorder.cgColor
+        layer.borderColor = UserInterfaceTheme.current.gray.highlight.cgColor
     }
 }

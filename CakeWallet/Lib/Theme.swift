@@ -13,18 +13,18 @@ public struct Colorset {
 
 protocol Theme {
     var background:UIColor { get }
-    
+
     var text:UIColor { get }
     var textVariants:Colorset { get }
-    
+
     var purple:Colorset { get }
     var blue:Colorset { get }
     var red:Colorset { get }
     var gray:Colorset { get }
 }
 
-fileprivate var currentCached:UserInterfaceTheme? = nil
 
+fileprivate var currentCached:UserInterfaceTheme? = nil
 enum UserInterfaceTheme: Int, Theme {
     static let notificationName = Notification.Name("UIThemeConfigurationChanged")
     var rawValue:Int {
@@ -37,7 +37,7 @@ enum UserInterfaceTheme: Int, Theme {
         
     }
     case light, dark
-    
+    static var `default` = UserInterfaceTheme.dark
     static var current: UserInterfaceTheme {
         get {
             if let cacheTest = currentCached {
@@ -47,11 +47,11 @@ enum UserInterfaceTheme: Int, Theme {
                 currentCached = theme
                 return theme
             }
-            currentCached = .dark
-            return .dark
+            currentCached = self.`default`
+            return self.`default`
         }
         set {
-            let currentValue = UserInterfaceTheme(rawValue: UserDefaults.standard.integer(forKey: Configurations.DefaultsKeys.currentTheme)) ?? .dark
+            let currentValue = UserInterfaceTheme(rawValue: UserDefaults.standard.integer(forKey: Configurations.DefaultsKeys.currentTheme)) ?? self.`default`
             if currentValue.rawValue != newValue.rawValue {
                 currentCached = newValue
                 UserDefaults.standard.set(newValue.rawValue, forKey: Configurations.DefaultsKeys.currentTheme)
@@ -67,7 +67,7 @@ enum UserInterfaceTheme: Int, Theme {
         case .light:
             return UIColor.white
         case .dark:
-            return UIColor(red: 0.15, green: 0.16, blue: 0.2, alpha: 1)
+            return UIColor(red:0.02, green:0.02, blue:0.03, alpha:1.0)
         }
     }
     
@@ -152,24 +152,6 @@ enum UserInterfaceTheme: Int, Theme {
             let norm = UIColor(red: 0.77, green: 0.81, blue: 0.93, alpha: 0.4)
             let low = UIColor(red: 0.85, green: 0.87, blue: 0.96, alpha: 0.1)
             return Colorset(highlight:high, main:norm, dim:low)
-        }
-    }
-    
-    var container: ContainerColorScheme {
-        switch self {
-        case .light:
-            return ContainerColorScheme(background: .white)
-        case .dark:
-            return ContainerColorScheme(background: .wildDarkBlue)
-        }
-    }
-    
-    var primaryButton: ButtonColorScheme {
-        switch self {
-        case .light:
-            return ButtonColorScheme(background: .purpleyLight, text: .black)
-        case .dark:
-            return ButtonColorScheme(background: .whiteSmoke, text: .vividBlue)
         }
     }
 }

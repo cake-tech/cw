@@ -25,10 +25,10 @@ final class WalletUITableViewCell: FlexCell {
     func configure(wallet: WalletIndex, isCurrent: Bool) {
         self.wallet = wallet
         nameLabel.text = wallet.name
-        backgroundColor = .white
+        backgroundColor = UserInterfaceTheme.current.background
         
         if isCurrent {
-            nameLabel.textColor = .vividBlue
+            nameLabel.textColor = UserInterfaceTheme.current.blue.highlight
             accessoryType = .checkmark
         } else {
             nameLabel.textColor = UserInterfaceTheme.current.text

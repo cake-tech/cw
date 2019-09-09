@@ -10,9 +10,9 @@ class BaseViewController<View: BaseView>: AnyBaseViewController {
     override var preferredStatusBarStyle:UIStatusBarStyle {
         switch UserInterfaceTheme.current {
         case .light:
-                return .default
+            return .default
         case .dark:
-                return .lightContent
+            return .lightContent
         }
     }
     
@@ -22,6 +22,7 @@ class BaseViewController<View: BaseView>: AnyBaseViewController {
         NotificationCenter.default.addObserver(forName: UserInterfaceTheme.notificationName, object:nil, queue:nil) { [weak self] notification in
             self?.loadView()
             self?.setBarStyle()
+            
             if let conformingSelf = self as? Themed {
                 conformingSelf.themeChanged()
             }
@@ -44,11 +45,17 @@ class BaseViewController<View: BaseView>: AnyBaseViewController {
         view = View()
         configureBinds()
         setTitle()
+        setBarStyle()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNeedsStatusBarAppearanceUpdate()
+        setBarStyle()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
     }
     
     override func viewDidLoad() {
@@ -56,8 +63,8 @@ class BaseViewController<View: BaseView>: AnyBaseViewController {
         guard let navController = self.navigationController else {
             return
         }
-        setBarStyle()
         navController.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: applyFont(ofSize: 16)]
+        setBarStyle()
     }
     
     private func setBarStyle() {
@@ -70,6 +77,8 @@ class BaseViewController<View: BaseView>: AnyBaseViewController {
         case .light:
             navController.navigationBar.barStyle = UIBarStyle.default
         }
+        navigationController?.navigationBar.backgroundColor = UserInterfaceTheme.current.background
+        contentView.backgroundColor = UserInterfaceTheme.current.background
     }
     
     func setTitle() {}

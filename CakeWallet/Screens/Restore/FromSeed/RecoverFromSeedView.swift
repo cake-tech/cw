@@ -26,13 +26,16 @@ final class RecoverFromSeedView: BaseFlexView {
         super.configureView()
         seedField.isScrollEnabled = false
         seedField.delegate = self
-    }
-    
-    override func configureConstraints() {
         cardWrapper.layer.cornerRadius = 12
         //tstag
         cardWrapper.backgroundColor = UserInterfaceTheme.current.background
- 
+        seedField.textColor = UserInterfaceTheme.current.textVariants.main
+        seedField.backgroundColor = UserInterfaceTheme.current.background
+        walletNameField.textColor = UserInterfaceTheme.current.textVariants.main
+    }
+    
+    override func configureConstraints() {
+
         seedContainer.flex
             .define { flex in
                 flex.addItem(seedField).width(100%).paddingRight(30)

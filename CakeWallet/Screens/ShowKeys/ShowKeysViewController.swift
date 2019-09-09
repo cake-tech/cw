@@ -50,11 +50,13 @@ final class ShowKeysViewController: BaseViewController<ShowKeysView>, UITableVie
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let doneButton = StandartButton.init(image: UIImage(named: "close_symbol")?.resized(to: CGSize(width: 12, height: 12)))
-        doneButton.frame = CGRect(origin: .zero, size: CGSize(width: 37, height: 37))
-        doneButton.addTarget(self, action: #selector(dismissAction), for: .touchUpInside)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: doneButton)
-        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(named:"close_symbol")?.resized(to:CGSize(width: 12, height: 12)),
+            style: .plain,
+            target: self,
+            action: #selector(dismissAction)
+        )
+
         if let keys = store.state.walletState.walletKeys {
             updateKeys(keys)
         }

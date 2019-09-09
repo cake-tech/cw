@@ -27,9 +27,9 @@ final class PinCodeKeyButton: UIButton {
     override func configureView() {
         showsTouchWhenHighlighted = false
         contentHorizontalAlignment = .center
-        setTitleColor(.white, for: .normal)
+        setTitleColor(UserInterfaceTheme.current.text, for: .normal)
         titleLabel?.font = applyFont(ofSize: 26, weight: .regular)
-        backgroundColor = UIColor(hex: 0xf5f6f9)
+        backgroundColor = UserInterfaceTheme.current.background
     }
     
     override func layoutSublayers(of layer: CALayer) {

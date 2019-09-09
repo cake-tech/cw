@@ -25,8 +25,8 @@ class FlexCell: SwipeTableViewCell {
     
     override func configureView() {
         super.configureView()
-        contentView.backgroundColor = .white
-        backgroundColor = .clear
+        contentView.backgroundColor = UserInterfaceTheme.current.background
+        backgroundColor = UserInterfaceTheme.current.background
     }
     
     override func sizeThatFits(_ size: CGSize) -> CGSize {
@@ -37,7 +37,7 @@ class FlexCell: SwipeTableViewCell {
     }
     
     override func configureConstraints() {
-        contentView.flex.addItem(separatorView).position(.absolute).bottom(0).height(0.6).width(100%).backgroundColor(UIColor.separatorGrey)
+        contentView.flex.addItem(separatorView).position(.absolute).bottom(0).height(0.6).width(100%).backgroundColor(UserInterfaceTheme.current.gray.dim)
     }
     
     func layout() {

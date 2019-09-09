@@ -50,7 +50,7 @@ final class AccountsView: BaseFlexView {
             .backgroundColor(UserInterfaceTheme.current.background)
             .define { flex in
                 flex.addItem(newSubaddressTextiField).height(40)
-                flex.addItem(newSubaddressButton).height(35).backgroundColor(.whiteSmoke)
+                flex.addItem(newSubaddressButton).height(35).backgroundColor(UserInterfaceTheme.current.gray.dim)
         }
         
         cardView.flex
@@ -63,5 +63,6 @@ final class AccountsView: BaseFlexView {
         rootFlexContainer.flex.alignItems(.start).define { flex in
             flex.addItem(cardView).grow(1).width(100%)
         }
+        
     }
 }

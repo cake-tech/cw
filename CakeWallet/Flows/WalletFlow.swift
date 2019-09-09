@@ -22,9 +22,9 @@ final class CustomTabBarController: UITabBarController {
         
         tabBar.clipsToBounds = true
     
-        tabBar.backgroundColor = UIColor.white
-        tabBar.layer.backgroundColor = UIColor.white.cgColor
-        tabBar.barTintColor = UIColor.white
+        tabBar.backgroundColor = UserInterfaceTheme.current.background
+        tabBar.layer.backgroundColor = UserInterfaceTheme.current.background.cgColor
+        tabBar.barTintColor = UserInterfaceTheme.current.background
         tabBar.layer.applySketchShadow(color: UIColor(red: 52, green: 115, blue: 176), alpha: 0.2, x: 0, y: 18, blur: 44, spread: 18)
         tabBar.layer.masksToBounds = false
     }

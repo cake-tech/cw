@@ -12,10 +12,10 @@ final class SubaddressPickerView: BaseFlexView {
         table.tableFooterView = UIView()
         table.backgroundColor = .clear
         table.separatorStyle = .none
-        backgroundColor = .white
+        backgroundColor = UserInterfaceTheme.current.background
     }
     override func configureConstraints() {
-        rootFlexContainer.flex.paddingTop(10).backgroundColor(.white).define { flex in
+        rootFlexContainer.flex.paddingTop(10).backgroundColor(UserInterfaceTheme.current.background).define { flex in
             flex.addItem(table).height(100%).width(100%)
         }
     }

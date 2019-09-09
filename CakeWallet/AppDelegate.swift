@@ -62,6 +62,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         register(handler: UpdateAccountHandler())
         register(handler: UpdateSubaddressHandler())
         
+        NotificationCenter.default.addObserver(forName: UserInterfaceTheme.notificationName, object:nil, queue:nil) { [weak self] notification in
+            guard let self = self else {
+                return
+            }
+            self.setAppearance()
+        }
+
+        
         window = UIWindow(frame: UIScreen.main.bounds)
         
         let termsOfUseAccepted = UserDefaults.standard.bool(forKey: Configurations.DefaultsKeys.termsOfUseAccepted)
@@ -207,7 +215,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func setAppearance() {
         UITabBar.appearance().layer.borderWidth = 0.0
 
-        UITabBar.appearance().backgroundColor = .white
+        UITabBar.appearance().backgroundColor = UserInterfaceTheme.current.background
         UITabBar.appearance().shadowImage = UIImage()
         UITabBar.appearance().backgroundImage = UIImage()
         UITabBar.appearance().layer.borderColor = UIColor.clear.cgColor
@@ -215,8 +223,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        UITabBar.appearance().tintColor = .vividBlue
 //        UITabBar.appearance().unselectedItemTintColor = UIColor(hex: 0xC0D4E2)
 
-        UINavigationBar.appearance().tintColor = .black
-        UINavigationBar.appearance().backgroundColor = .clear
+        UINavigationBar.appearance().tintColor = UserInterfaceTheme.current.text
+        UINavigationBar.appearance().backgroundColor = UserInterfaceTheme.current.background
 
 //        UINavigationItem
 //        UINavigationBar.appearance()
@@ -234,7 +242,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().shadowImage = UIImage()
         
         UINavigationBar.appearance().titleTextAttributes = [
-            NSAttributedStringKey.foregroundColor: UIColor.black,
+            NSAttributedStringKey.foregroundColor: UserInterfaceTheme.current.textVariants.highlight,
             NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16)
         ]
     }

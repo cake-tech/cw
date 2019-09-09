@@ -134,8 +134,6 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     func themeChanged() {
         walletNameView.titleLabel.textColor = UserInterfaceTheme.current.text
         walletNameView.subtitleLabel.textColor = UserInterfaceTheme.current.textVariants.main
-        navigationItem.leftBarButtonItem?.tintColor = UserInterfaceTheme.current.text
-
     }
     
     override func viewWillAppear(_ animated: Bool) {

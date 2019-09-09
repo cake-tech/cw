@@ -57,7 +57,7 @@ final class SendView: BaseScrollFlexViewWithBottomSection {
     override func configureView() {
         super.configureView()
         
-        backgroundColor = .white
+        backgroundColor = UserInterfaceTheme.current.background
 
         walletNameLabel.font = applyFont()
         estimatedFeeValueLabel.numberOfLines = 0
@@ -67,7 +67,9 @@ final class SendView: BaseScrollFlexViewWithBottomSection {
         cryptoAmountTitleLabel.textAlignment = .right
         
         walletTitleLabel.font = applyFont(ofSize: 14)
-        walletTitleLabel.textColor = .purpley
+        walletTitleLabel.textColor = UserInterfaceTheme.current.purple.highlight
+        
+        walletNameLabel.textColor = UserInterfaceTheme.current.text
         
         cryptoAmountValueLabel.textAlignment = .right
         cryptoAmountValueLabel.font = applyFont(ofSize: 26)
@@ -76,12 +78,13 @@ final class SendView: BaseScrollFlexViewWithBottomSection {
         let cryptoAmountTextFieldLeftView = UILabel(text: "XMR:")
         cryptoAmountTextFieldLeftView.font = applyFont()
         cryptoAmountTextFieldLeftView.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-        
+        cryptoAmountTextFieldLeftView.textColor = UserInterfaceTheme.current.textVariants.dim
         let cryptoAmountTextFieldRightView = UIView()
         cryptoAmountTextFieldRightView.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
         
         cryptoAmountTextField.leftView = cryptoAmountTextFieldLeftView
         cryptoAmountTextField.leftViewMode = .always
+        cryptoAmountTextField.textColor = UserInterfaceTheme.current.text
         
         cryptoAmountTextField.rightView = cryptoAmountTextFieldRightView
         cryptoAmountTextField.rightViewMode = .always
@@ -89,22 +92,27 @@ final class SendView: BaseScrollFlexViewWithBottomSection {
        
         fiatAmountTextFieldLeftView.font = applyFont()
         fiatAmountTextFieldLeftView.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        fiatAmountTextFieldLeftView.textColor = UserInterfaceTheme.current.textVariants.dim
         
         fiatAmountTextField.keyboardType = .decimalPad
         fiatAmountTextField.leftView = fiatAmountTextFieldLeftView
         fiatAmountTextField.leftViewMode = .always
+        fiatAmountTextField.textColor = UserInterfaceTheme.current.text
         
-        sendAllButton.setTitleColor(UIColor.wildDarkBlue, for: .normal)
+        sendAllButton.setTitleColor(UserInterfaceTheme.current.textVariants.main, for: .normal)
         sendAllButton.titleLabel?.font = applyFont(ofSize: 11)
 
         sendButton.setTitle(NSLocalizedString("send", comment: ""), for: .normal)
         scanQrForPaymentId.setImage(UIImage(named: "qr_code_icon"), for: .normal)
         scanQrForPaymentId.imageEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5)
         scanQrForPaymentId.layer.cornerRadius = 5
-        scanQrForPaymentId.backgroundColor = UIColor.whiteSmoke
+        scanQrForPaymentId.layer.backgroundColor = UserInterfaceTheme.current.gray.dim.cgColor
+        
+        scanQrForPaymentId.tintColor = UserInterfaceTheme.current.gray.highlight
         
         paymentIdTextField.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
         paymentIdTextField.rightViewMode = .always
+        paymentIdTextField.textColor = UserInterfaceTheme.current.text
     }
     
     override func configureConstraints() {
@@ -123,14 +131,11 @@ final class SendView: BaseScrollFlexViewWithBottomSection {
             .width(100%)
             .paddingTop(30)
             .paddingBottom(15)
-            .backgroundColor(.white)
-            .define { flex in
-                flex.addItem(UIView()).width(100%).height(1).backgroundColor(UIColor.separatorGrey).position(.absolute).top(10).left(0)
+            .backgroundColor(UserInterfaceTheme.current.background)
+            .define { flex in flex.addItem(UIView()).width(100%).height(1).backgroundColor(UserInterfaceTheme.current.gray.main).position(.absolute).top(10).left(0)
                 flex.addItem(walletNameContainer).marginHorizontal(20)
                 flex.addItem(cryptoAmonutContainer).marginHorizontal(20)
         }
-        
-        walletContainer.applyCardSketchShadow()
         
         currenciesContainer.flex
             .justifyContent(.spaceBetween)
@@ -171,9 +176,9 @@ final class SendView: BaseScrollFlexViewWithBottomSection {
         bottomSectionView.flex
             .padding(20)
             .define { flex in
-                sendButton.layer.borderColor = UIColor.grayBorder.cgColor
+                sendButton.layer.borderColor = UserInterfaceTheme.current.gray.highlight.cgColor
             
-                flex.addItem(sendButton).height(56).backgroundColor(.grayBackground)
+                flex.addItem(sendButton).height(56).backgroundColor(UserInterfaceTheme.current.gray.dim)
         }
     }
 }

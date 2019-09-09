@@ -45,12 +45,13 @@ class Button: UIButton {
     override func configureView() {
         super.configureView()
         //tstag
-        backgroundColor = UserInterfaceTheme.current.purple.main
-        setTitleColor(UserInterfaceTheme.current.purple.highlight, for: .normal)
+        backgroundColor = UserInterfaceTheme.current.purple.dim
+        setTitleColor(UserInterfaceTheme.current.textVariants.highlight, for: .normal)
         layer.masksToBounds = false
         layer.shadowRadius = 20
         layer.shadowOffset = CGSize(width: 2, height: 1)
         layer.shadowOpacity = 0.3
+        layer.borderColor = UserInterfaceTheme.current.purple.highlight.cgColor
         layer.shadowColor = UIColor.lightGray.cgColor
         contentHorizontalAlignment = .center
         titleLabel?.font = applyFont()

@@ -20,13 +20,13 @@ final class TradeTableCell: FlexCell {
     override func configureView() {
         super.configureView()
         contentView.layer.masksToBounds = false
-        contentView.backgroundColor = .white
+        contentView.backgroundColor = UserInterfaceTheme.current.background
         backgroundColor = .clear
         selectionStyle = .none
         
         idLabel.font = applyFont(ofSize: 16)
         dateLabel.font = applyFont(ofSize: 15)
-        dateLabel.textColor = UIColor.grayBlue
+        dateLabel.textColor = UserInterfaceTheme.current.gray.main
     }
     
     override func configureConstraints() {
@@ -122,7 +122,9 @@ final class TradesHistoryViewController: BaseViewController<TradesHistoryView>, 
         title = NSLocalizedString("trades_history", comment: "")
         
         let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+        backButton.tintColor = UserInterfaceTheme.current.text
         navigationItem.backBarButtonItem = backButton
+        
         
         contentView.table.delegate = self
         contentView.table.dataSource = self

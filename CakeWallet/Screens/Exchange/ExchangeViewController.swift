@@ -1004,10 +1004,10 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         
         clearButton.setTitleTextAttributes([
             NSAttributedStringKey.font: applyFont(ofSize: 16, weight: .regular),
-            NSAttributedStringKey.foregroundColor: UIColor.wildDarkBlue], for: .normal)
+            NSAttributedStringKey.foregroundColor: UserInterfaceTheme.current.text], for: .normal)
         clearButton.setTitleTextAttributes([
             NSAttributedStringKey.font: applyFont(ofSize: 16, weight: .regular),
-            NSAttributedStringKey.foregroundColor: UIColor.wildDarkBlue], for: .highlighted)
+            NSAttributedStringKey.foregroundColor: UserInterfaceTheme.current.gray.main], for: .highlighted)
         navigationItem.rightBarButtonItem = clearButton
         
         tradesHistoryButton.setTitleTextAttributes([NSAttributedStringKey.font: applyFont(ofSize: 16, weight: .regular)], for: .normal)
@@ -1089,8 +1089,8 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
     
     private func highlightNeededFields() {
         let isXMRTO = self.isXMRTO
-        contentView.depositCardView.amountTextField.bottomBorder.backgroundColor = !isXMRTO ? UIColor(red: 126, green: 92, blue: 250).cgColor : UIColor.veryLightBlue.cgColor
-        contentView.receiveCardView.amountTextField.bottomBorder.backgroundColor = isXMRTO ? UIColor(red: 126, green: 92, blue: 250).cgColor : UIColor.veryLightBlue.cgColor
+        contentView.depositCardView.amountTextField.bottomBorder.backgroundColor = !isXMRTO ? UserInterfaceTheme.current.purple.highlight.cgColor : UserInterfaceTheme.current.gray.dim.cgColor
+        contentView.receiveCardView.amountTextField.bottomBorder.backgroundColor = isXMRTO ? UserInterfaceTheme.current.purple.highlight.cgColor : UserInterfaceTheme.current.gray.dim.cgColor
     }
     
     private func changeExchange(deposit: CryptoCurrency, receive: CryptoCurrency) {
@@ -1512,12 +1512,12 @@ class ExchangeContentAlertView: BaseFlexView {
     
     override func configureView() {
         super.configureView()
-        copyButton.backgroundColor = .vividBlue
+        copyButton.backgroundColor = UserInterfaceTheme.current.blue.highlight
         messageLabel.textAlignment = .center
         messageLabel.numberOfLines = 0
         messageLabel.font = applyFont(ofSize: 16)
         copiedLabel.textAlignment = .center
-        copiedLabel.textColor = .wildDarkBlue
+        copiedLabel.textColor = UserInterfaceTheme.current.text
         backgroundColor = .clear
     }
     

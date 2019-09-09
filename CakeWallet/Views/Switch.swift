@@ -27,10 +27,10 @@ final class SwitchView: BaseView {
         super.configureView()
         onValueChange(withAnimation: false)
         let onTapGesture = UITapGestureRecognizer(target: self, action: #selector(onTapHandler))
-        backgroundColor = UIColor(red: 228, green: 231, blue: 240)
+        backgroundColor = UserInterfaceTheme.current.gray.dim
         layer.masksToBounds = false
         layer.borderWidth = 1
-        layer.borderColor = UIColor.lightBlueGrey.cgColor
+        layer.borderColor = UserInterfaceTheme.current.gray.main.cgColor
         
         indicatorImageView.layer.masksToBounds = false
         indicatorView.addSubview(indicatorImageView)
@@ -40,7 +40,8 @@ final class SwitchView: BaseView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        layer.cornerRadius = frame.size.height * 0.4
+
+        layer.cornerRadius = frame.size.height * 0.2
         indicatorView.layer.cornerRadius = indicatorImageView.frame.size.height * 0.5
     }
     
@@ -63,12 +64,12 @@ final class SwitchView: BaseView {
         
         if isOn {
             image = UIImage(named: "check_mark")
-            backgroundColor = .vividBlue
+            backgroundColor = UserInterfaceTheme.current.blue.highlight
             let x = frame.size.width - indicatorSize.width - 5
             indicatorFrame = CGRect(origin: CGPoint(x: x, y: 5), size: indicatorSize)
         } else {
             image = UIImage(named: "close_icon_white")
-            backgroundColor = .wildDarkBlue
+            backgroundColor = UserInterfaceTheme.current.gray.main
             indicatorFrame = CGRect(origin: CGPoint(x: 5, y: 5), size: indicatorSize)
         }
         

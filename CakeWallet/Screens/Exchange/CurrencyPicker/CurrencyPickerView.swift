@@ -31,7 +31,7 @@ final class CurrencyPickerTableCell: FlexCell {
     
     func configure(crypto: String, isSelected: Bool) {
         cryptoLabel.text = crypto
-        cryptoLabel.textColor = isSelected ? UIColor(red: 138, green: 80, blue: 255) : .black
+        cryptoLabel.textColor = isSelected ? UserInterfaceTheme.current.purple.highlight : UserInterfaceTheme.current.text
         contentView.flex.layout()
     }
 }
@@ -62,7 +62,7 @@ final class CurrencyPickerView: BaseFlexView {
     
     override func configureConstraints() {
         pickerHolderView.flex
-            .backgroundColor(.white)
+            .backgroundColor(UserInterfaceTheme.current.background)
             .define{ flex in
                 flex.addItem(picker)
         }

@@ -36,7 +36,7 @@ class CheckBox: BaseFlexView, UIGestureRecognizerDelegate {
         
         wrapper.layer.borderWidth = 1
         wrapper.layer.cornerRadius = 8
-        wrapper.layer.borderColor = UIColor.wildDarkBlue.cgColor
+        wrapper.layer.borderColor = UserInterfaceTheme.current.gray.highlight.cgColor
         
         iconImage.isHidden = true
     }

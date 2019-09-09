@@ -10,8 +10,8 @@ final class WalletsView: BaseScrollFlexViewWithBottomSection {
     required init() {
         walletsTableView = UITableView()
         walletsCardView = CardView()
-        createWalletButton = StandartButton(title: NSLocalizedString("create_new_wallet", comment: ""))
-        restoreWalletButton = StandartButton(title: NSLocalizedString("restore_wallet", comment: ""))
+        createWalletButton = StandardButton(title: NSLocalizedString("create_new_wallet", comment: ""))
+        restoreWalletButton = StandardButton(title: NSLocalizedString("restore_wallet", comment: ""))
         super.init()
     }
     
@@ -24,12 +24,18 @@ final class WalletsView: BaseScrollFlexViewWithBottomSection {
         createWalletButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
         createWalletButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
         createWalletButton.contentHorizontalAlignment = .left
+        createWalletButton.layer.backgroundColor = UserInterfaceTheme.current.purple.dim.cgColor
+        createWalletButton.layer.borderColor = UserInterfaceTheme.current.purple.highlight.cgColor
+        createWalletButton.layer.borderWidth = 1
         restoreWalletButton.setImage(UIImage(named: "recover_icon"), for: .normal)
+
         restoreWalletButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
         restoreWalletButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
         restoreWalletButton.contentHorizontalAlignment = .left
-        
-        backgroundColor = .white
+        restoreWalletButton.layer.backgroundColor = UserInterfaceTheme.current.blue.dim.cgColor
+        restoreWalletButton.layer.borderColor = UserInterfaceTheme.current.blue.main.cgColor
+        restoreWalletButton.layer.borderWidth = 1
+        backgroundColor = UserInterfaceTheme.current.background
 //        contentView.backgroundColor = .white
 //        scrollView.backgroundColor = .white
     }
@@ -37,13 +43,13 @@ final class WalletsView: BaseScrollFlexViewWithBottomSection {
     override func configureConstraints() {
         let adaptivePadding = adaptiveLayout.getSize(forLarge: 40, forBig: 35, defaultSize: 30)
         
-        rootFlexContainer.flex.backgroundColor(.white).padding(0, 20, 20, adaptivePadding).define { flex in
+        rootFlexContainer.flex.backgroundColor(UserInterfaceTheme.current.background).padding(0, 20, 20, adaptivePadding).define { flex in
             flex.addItem(walletsTableView).marginTop(20)
         }
         
         bottomSectionView.flex.padding(0, 15, 0, 15).define { flex in
-            flex.addItem(createWalletButton).height(72).backgroundColor(.purpleyLight)
-            flex.addItem(restoreWalletButton).height(72).marginTop(10).backgroundColor(UIColor(hex: 0xD8DFF7))
+            flex.addItem(createWalletButton).height(72)
+            flex.addItem(restoreWalletButton).height(72).marginTop(10)
         }
     }
 }

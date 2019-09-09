@@ -136,17 +136,23 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
         contentView.addressView.updateResponsible = self
         contentView.scanQrForPaymentId.addTarget(self, action: #selector(scanPaymnetIdQr), for: .touchUpInside)
         updateEstimatedFee(for: store.state.settingsState.transactionPriority)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(named:"close_symbol")?.resized(to:CGSize(width: 12, height: 12)),
+            style: .plain,
+            target: self,
+            action: #selector(dismissAction)
+        )
+        
+        if let navController = navigationController {
+            navController.navigationItem.leftBarButtonItem?.tintColor = UserInterfaceTheme.current.text
+            navController.navigationItem.rightBarButtonItem?.tintColor = UserInterfaceTheme.current.text
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        let doneButton = StandartButton(image: UIImage(named: "close_symbol")?.resized(to: CGSize(width: 12, height: 12)))
-        doneButton.frame = CGRect(origin: .zero, size: CGSize(width: 32, height: 32))
-        doneButton.addTarget(self, action: #selector(dismissAction), for: .touchUpInside)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: doneButton)
+        navigationItem.leftBarButtonItem?.tintColor = UserInterfaceTheme.current.text
         contentView.sendButton.addTarget(self, action: #selector(sendAction), for: .touchUpInside)
-        
         store.subscribe(self, onlyOnChange: [
             \ApplicationState.balanceState,
             \ApplicationState.transactionsState,

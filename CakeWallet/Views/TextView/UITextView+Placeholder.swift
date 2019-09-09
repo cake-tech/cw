@@ -42,7 +42,7 @@ extension UITextView {
         placeholderLabel.sizeToFit()
 
         placeholderLabel.font = applyFont(ofSize: 16)
-        placeholderLabel.textColor = UIColor.wildDarkBlue
+        placeholderLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
         placeholderLabel.tag = UITextView.placeholderTag
 
         placeholderLabel.isHidden = self.text.count > 0

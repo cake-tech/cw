@@ -13,6 +13,8 @@ final class TextViewUITableViewCell: FlexCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         textView = UITextView()
+        textView.textColor = UserInterfaceTheme.current.text
+        textView.backgroundColor = UserInterfaceTheme.current.background
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureView()
         configureConstraints()
@@ -72,8 +74,11 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         
         func setup(cell: UITableViewCell) {
             cell.textLabel?.text = title
+            cell.textLabel?.textColor = UserInterfaceTheme.current.textVariants.highlight
+            cell.backgroundColor = UserInterfaceTheme.current.background
             cell.imageView?.image = image
             cell.accessoryView = UIImageView(image: UIImage(named: "arrow_right")?.resized(to: CGSize(width: 6, height: 10)))
+            cell.accessoryView?.tintColor = UserInterfaceTheme.current.blue.main
         }
     }
     
@@ -93,8 +98,10 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         
         func setup(cell: UITableViewCell) {
             cell.textLabel?.text = title
+            cell.textLabel?.textColor = UserInterfaceTheme.current.textVariants.highlight
             cell.imageView?.image = image
             cell.accessoryView = switcher
+            cell.backgroundColor = UserInterfaceTheme.current.background
             switcher.onChangeHandler = { isOn in
                 self.action?(isOn, self)
             }
@@ -518,6 +525,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         paragraphStyle.lineSpacing = 5
         let attributes = [
             NSAttributedStringKey.font : UIFont.systemFont(ofSize: 15),
+            NSAttributedStringKey.foregroundColor: UserInterfaceTheme.current.text,
             NSAttributedStringKey.paragraphStyle: paragraphStyle
         ]
         let attributedString = NSMutableAttributedString(
@@ -617,8 +625,9 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
                 size: CGSize(width: tableView.frame.width, height: 60)))
         let titleLabel = UILabel(frame: CGRect(origin: CGPoint(x: 20, y: 5), size: CGSize(width: view.frame.width - 20, height: view.frame.height)))
         titleLabel.font = applyFont(ofSize: 16)
-        titleLabel.textColor = UserInterfaceTheme.current.textVariants.dim
-        view.backgroundColor =  contentView.backgroundColor
+        titleLabel.textColor = UserInterfaceTheme.current.textVariants.main
+        view.backgroundColor =  UserInterfaceTheme.current.background
+
         view.addSubview(titleLabel)
         
         switch section {

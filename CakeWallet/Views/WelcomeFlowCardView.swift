@@ -46,19 +46,18 @@ final class WelcomeFlowCardView: BaseFlexView {
         title.numberOfLines = 1
         
         descriptionText.font = applyFont(ofSize: descriptionFontSize)
-        descriptionText.textColor = .grayBlue
+        descriptionText.textColor = UserInterfaceTheme.current.gray.main
         descriptionText.numberOfLines = 2
         descriptionText.textAlignment = .center
         
         buttonText.font = applyFont(ofSize: buttonFontSize, weight: .semibold)
-        buttonText.textColor = .white
+        buttonText.textColor = UserInterfaceTheme.current.text
     }
     
     override func configureConstraints() {
         rootFlexContainer.layer.cornerRadius = 12
         rootFlexContainer.layer.borderWidth = 0.75
-        rootFlexContainer.layer.borderColor = UIColor.grayBorder.cgColor
-        //tstag
+        rootFlexContainer.layer.borderColor = UserInterfaceTheme.current.gray.highlight.cgColor
         rootFlexContainer.backgroundColor = UserInterfaceTheme.current.background
         rootFlexContainer.layer.masksToBounds = true
         
@@ -91,7 +90,7 @@ final class WelcomeFlowCardView: BaseFlexView {
                 flex.addItem(separatorView)
                     .position(.absolute).bottom(getButtonHeight)
                     .width(100%).height(1)
-                    .backgroundColor(.veryLightBlue)
+                    .backgroundColor(UserInterfaceTheme.current.gray.highlight)
                 flex.addItem(button)
                     .backgroundColor(textColor)
                     .position(.absolute).bottom(0)

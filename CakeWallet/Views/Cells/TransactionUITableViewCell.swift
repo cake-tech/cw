@@ -20,7 +20,7 @@ final class TransactionUITableViewCell: FlexCell {
         
         cryptoLabel = UILabel(fontSize: 14)
         cryptoLabel.font = applyFont(ofSize: 14)
-        cryptoLabel.textColor = .black
+        cryptoLabel.textColor = UserInterfaceTheme.current.text
         
         fiatLabel = UILabel.withLightText(fontSize: 12)
         fiatLabel.font = applyFont(ofSize: 12)
@@ -111,7 +111,7 @@ final class TransactionUITableViewCell: FlexCell {
         let leftOffset = 20 as CGFloat
         let rightOffset = 20 as CGFloat
         let width = frame.size.width - leftOffset - rightOffset
-        let color = UserInterfaceTheme.current.gray.main
+        let color = UserInterfaceTheme.current.gray.dim
         addSeparator(frame: CGRect(x: leftOffset, y: y, width: width, height: height), color: color)
     }
 }

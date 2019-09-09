@@ -167,9 +167,9 @@ final class ProgressBar: BaseFlexView {
     private func themeForConfiguration() -> Colors {
         switch currentDisplayConfiguration {
         case .syncronized(_, _):
-            return (border:currentTheme.purple.highlight, fill:currentTheme.purple.dim)
+            return (border:UserInterfaceTheme.current.red.dim, fill:UserInterfaceTheme.current.red.highlight)
         case .error(_):
-            return (border:UIColor.mildPinkish, fill:UIColor.lightPinkish)
+            return (border:UserInterfaceTheme.current.red.dim, fill:UserInterfaceTheme.current.red.highlight)
         case .inProgress(_, _, _):
             return (border:currentTheme.gray.highlight, fill:currentTheme.gray.dim)
         case .indeterminantMessage(_):

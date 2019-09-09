@@ -17,7 +17,7 @@ final class RestoreRootView: BaseScrollFlexView {
             imageView: restoreWalletImageView,
             titleText: NSLocalizedString("restore_from_seed_keys", comment: ""),
             descriptionText: NSLocalizedString("restore_from_seed_keys_long", comment: ""),
-            textColor: .purpley
+            textColor: UserInterfaceTheme.current.purple.highlight
         )
         
         restoreAppImageView = FlexView()
@@ -26,7 +26,7 @@ final class RestoreRootView: BaseScrollFlexView {
             imageView: restoreAppImageView,
             titleText: NSLocalizedString("restore_from_backup", comment: ""),
             descriptionText: NSLocalizedString("restore_from_backup_long", comment: ""),
-            textColor: .turquoiseBlue
+            textColor: UserInterfaceTheme.current.blue.highlight
         )
         
         super.init()

@@ -48,16 +48,17 @@ class LoadingButton: UIButton {
         super.configureView()
         
         backgroundColor =
-            UserInterfaceTheme.current.primaryButton.background
-        setTitleColor(UserInterfaceTheme.current.purple.main, for: .normal)
+            UserInterfaceTheme.current.purple.dim
+        
+        setTitleColor(UserInterfaceTheme.current.textVariants.main, for: .normal)
         layer.cornerRadius = 10
         layer.masksToBounds = false
         layer.shadowRadius = 20
         layer.shadowOffset = CGSize(width: 2, height: 1)
-        layer.shadowOpacity = 0.3
+        layer.shadowOpacity = 0.0
         layer.shadowColor = UIColor.lightGray.cgColor
         layer.borderWidth = 0.75
-        layer.borderColor = UIColor.purpleyBorder.cgColor
+        layer.borderColor = UserInterfaceTheme.current.purple.highlight.cgColor
         contentHorizontalAlignment = .center
         titleLabel?.font = applyFont(ofSize: 17)
         titleLabel?.numberOfLines = 0

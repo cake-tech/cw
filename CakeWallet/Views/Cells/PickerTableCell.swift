@@ -32,7 +32,7 @@ final class PickerTableCell: FlexCell {
     
     func configure(text: String, isSelected: Bool) {
         titleLabel.text = text
-        titleLabel.textColor = isSelected ? UIColor(red: 138, green: 80, blue: 255) : .black
+        titleLabel.textColor = isSelected ? UserInterfaceTheme.current.blue.highlight : UserInterfaceTheme.current.textVariants.highlight
         contentView.flex.layout()
     }
 }

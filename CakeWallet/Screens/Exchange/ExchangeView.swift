@@ -33,11 +33,11 @@ final class ExchangePickerItemView: BaseView {
     }
     
     func select() {
-        label.textColor = .white
+        label.textColor = UserInterfaceTheme.current.text
     }
 
     func unselect() {
-        label.textColor = .spaceViolet
+        label.textColor = UserInterfaceTheme.current.purple.main
     }
 }
 
@@ -94,8 +94,8 @@ final class ExchangePickerView: BaseFlexView {
         pickerView.tag = 202
         selectedItemView.layer.masksToBounds = false
         selectedItemView.layer.cornerRadius = 15
-        selectedItemView.backgroundColor = .vividBlue
-        selectedItemView.layer.applySketchShadow(color: .vividBlue, alpha: 0.34, x: 0, y: 10, blur: 20, spread: -10)
+        selectedItemView.backgroundColor = UserInterfaceTheme.current.blue.highlight
+        selectedItemView.layer.applySketchShadow(color: UserInterfaceTheme.current.background, alpha: 0.34, x: 0, y: 10, blur: 20, spread: -10)
         backgroundColor = .clear
     }
     
@@ -139,18 +139,17 @@ final class DepositExchangeCardView: BaseFlexView, ExchangableCardView {
         titleLabel.textAlignment = .center
         amountTextField.keyboardType = .decimalPad
         layer.applySketchShadow(color: UIColor(hex: 0x29174d), alpha: 0.16, x: 0, y: 16, blur: 46, spread: -5)
-        backgroundColor = .white
+        backgroundColor = UserInterfaceTheme.current.background
         walletNameLabel.textAlignment = .center
-        minLabel.textColor = .wildDarkBlue
-        maxLabel.textColor = .wildDarkBlue
-        walletNameLabel.textColor = .wildDarkBlue
-        amountLabel.textColor = .spaceViolet
+        minLabel.textColor = UserInterfaceTheme.current.textVariants.main
+        maxLabel.textColor = UserInterfaceTheme.current.textVariants.main
+        walletNameLabel.textColor = UserInterfaceTheme.current.textVariants.main
+        amountLabel.textColor = UserInterfaceTheme.current.textVariants.main
         amountTitleLabel.text = NSLocalizedString("you_will_send", comment: "")
         amountLabel.text = "0"
         amountTitleLabel.textAlignment = .center
         amountLabel.textAlignment = .center
-        amountTitleLabel.textColor = . wildDarkBlue
-        amountLabel.textColor = .spaceViolet
+        amountTitleLabel.textColor = UserInterfaceTheme.current.textVariants.main
         amountTitleLabel.isHidden = true
         amountLabel.isHidden = true
     }
@@ -209,18 +208,18 @@ final class ReceiveExchangeCardView: BaseFlexView, ExchangableCardView {
         super.configureView()
         titleLabel.text = NSLocalizedString("receive", comment: "")
         titleLabel.textAlignment = .center
-        amountTitleLabel.textColor = . wildDarkBlue
-        amountLabel.textColor = .spaceViolet
+        amountTitleLabel.textColor = UserInterfaceTheme.current.textVariants.main
+        amountLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
         layer.applySketchShadow(color: UIColor(hex: 0x29174d), alpha: 0.16, x: 0, y: 16, blur: 46, spread: -5)
         amountTitleLabel.text = NSLocalizedString("you_will_receive", comment: "")
         amountLabel.text = "0"
         amountTitleLabel.textAlignment = .center
         amountLabel.textAlignment = .center
-        backgroundColor = .white
+        backgroundColor = UserInterfaceTheme.current.background
         walletNameLabel.textAlignment = .center
-        walletNameLabel.textColor = .wildDarkBlue
-        minLabel.textColor = .wildDarkBlue
-        maxLabel.textColor = .wildDarkBlue
+        walletNameLabel.textColor = UserInterfaceTheme.current.textVariants.main
+        minLabel.textColor = UserInterfaceTheme.current.textVariants.main
+        maxLabel.textColor = UserInterfaceTheme.current.textVariants.main
         amountTextField.keyboardType = .decimalPad
     }
     
@@ -286,11 +285,11 @@ final class ExchangeView: BaseScrollFlexView {
     override func configureView() {
         super.configureView()
         depositCardView.addressContainer.tag = 2000
-        exchangeDescriptionLabel.textColor = .wildDarkBlue
+        exchangeDescriptionLabel.textColor = UserInterfaceTheme.current.textVariants.main
         dispclaimerLabel.textColor = .lightGray
         dispclaimerLabel.textAlignment = .center
         exchangeButton.setTitle(NSLocalizedString("exchange", comment: ""), for: .normal)
-        backgroundColor = .white
+        backgroundColor = UserInterfaceTheme.current.background
     }
     
     override func configureConstraints() {
@@ -303,7 +302,7 @@ final class ExchangeView: BaseScrollFlexView {
             flex.addItem(exchangeDescriptionLabel).marginLeft(10).height(20)
         }
         
-        rootFlexContainer.flex.padding(20, 15, 20, 20).backgroundColor(.white).define { flex in
+        rootFlexContainer.flex.padding(20, 15, 20, 20).backgroundColor(UserInterfaceTheme.current.background).define { flex in
             flex.addItem(depositCardView).marginBottom(25)
             flex.addItem(receiveCardView).marginBottom(10)
             flex.addItem(dispclaimerLabel).width(100%).height(20).marginBottom(25)

@@ -17,14 +17,14 @@ final class AddressTableCell: FlexCell {
     override func configureView() {
         super.configureView()
         contentView.layer.masksToBounds = false
-        contentView.backgroundColor = .white
+        contentView.backgroundColor = UserInterfaceTheme.current.background
         backgroundColor = .clear
         selectionStyle = .none
         
         nameLabel.font = applyFont(ofSize: 16)
         typeLabel.font = applyFont(ofSize: 12, weight: .bold)
         
-        typeLabel.textColor = .white
+        typeLabel.textColor = UserInterfaceTheme.current.text
         typeView.layer.cornerRadius = 8
         typeView.layer.masksToBounds = true
     }
