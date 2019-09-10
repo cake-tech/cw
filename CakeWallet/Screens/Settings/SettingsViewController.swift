@@ -74,11 +74,12 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         
         func setup(cell: UITableViewCell) {
             cell.textLabel?.text = title
-            cell.textLabel?.textColor = UserInterfaceTheme.current.textVariants.highlight
+            cell.textLabel?.textColor = UserInterfaceTheme.current.text
             cell.backgroundColor = UserInterfaceTheme.current.background
             cell.imageView?.image = image
-            cell.accessoryView = UIImageView(image: UIImage(named: "arrow_right")?.resized(to: CGSize(width: 6, height: 10)))
-            cell.accessoryView?.tintColor = UserInterfaceTheme.current.blue.main
+            let rightArrowImage = UIImage(named: "arrow_right")
+            cell.accessoryView = UIImageView(image:rightArrowImage?.resized(to: CGSize(width: 6, height: 10)).withRenderingMode(.alwaysTemplate))
+            cell.accessoryView?.tintColor = UserInterfaceTheme.current.blue.highlight
         }
     }
     
@@ -98,10 +99,9 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         
         func setup(cell: UITableViewCell) {
             cell.textLabel?.text = title
-            cell.textLabel?.textColor = UserInterfaceTheme.current.textVariants.highlight
+            cell.textLabel?.textColor = UserInterfaceTheme.current.text
             cell.imageView?.image = image
             cell.accessoryView = switcher
-            cell.backgroundColor = UserInterfaceTheme.current.background
             switcher.onChangeHandler = { isOn in
                 self.action?(isOn, self)
             }
@@ -136,6 +136,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         
         func setup(cell: SettingsPickerUITableViewCell<PickerItem>) {
             cell.configure(title: title, pickerOptions: pickerOptions, selectedOption: selectedIndex, action: action)
+            cell.textLabel?.textColor = UserInterfaceTheme.current.text
             cell.imageView?.image = image
             cell.onFinish = onFinish
         }
@@ -595,6 +596,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         }
         let cell = tableView.dequeueReusableCell(withItem: item, for: indexPath)
         cell.textLabel?.font = UIFont.systemFont(ofSize: 15)
+        cell.backgroundColor = UserInterfaceTheme.current.cardColor
         return cell
     }
     

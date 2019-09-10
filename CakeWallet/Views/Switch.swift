@@ -30,7 +30,7 @@ final class SwitchView: BaseView {
         backgroundColor = UserInterfaceTheme.current.gray.dim
         layer.masksToBounds = false
         layer.borderWidth = 1
-        layer.borderColor = UserInterfaceTheme.current.gray.main.cgColor
+        layer.borderColor = UserInterfaceTheme.current.gray.highlight.cgColor
         
         indicatorImageView.layer.masksToBounds = false
         indicatorView.addSubview(indicatorImageView)
@@ -69,7 +69,7 @@ final class SwitchView: BaseView {
             indicatorFrame = CGRect(origin: CGPoint(x: x, y: 5), size: indicatorSize)
         } else {
             image = UIImage(named: "close_icon_white")
-            backgroundColor = UserInterfaceTheme.current.gray.main
+            backgroundColor = UserInterfaceTheme.current.gray.highlight
             indicatorFrame = CGRect(origin: CGPoint(x: 5, y: 5), size: indicatorSize)
         }
         

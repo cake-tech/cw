@@ -21,7 +21,7 @@ final class AccountCell: FlexCell {
         contentView.backgroundColor = UserInterfaceTheme.current.gray.dim
         backgroundColor = .clear
         selectionStyle = .none
-        nameLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
+        nameLabel.textColor = UserInterfaceTheme.current.text
         nameLabel.font = applyFont(ofSize: 16)
     }
     

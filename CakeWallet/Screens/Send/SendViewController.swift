@@ -281,6 +281,7 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
         contentView.cryptoAmountTitleLabel.text = type.currency.formatted()
             + " "
             + NSLocalizedString("balance-display-type_unlocked", comment: "")
+        
         contentView.cryptoAmountTitleLabel.flex.markDirty()
         contentView.walletContainer.flex.markDirty()
         contentView.rootFlexContainer.flex.layout()

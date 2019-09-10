@@ -62,12 +62,32 @@ enum UserInterfaceTheme: Int, Theme {
         }
     }
     
+    var navigationBar: UIColor {
+        switch self {
+        case .light:
+            return UIColor.white
+        case .dark:
+            return UIColor.black
+        }
+    }
+    
+    var cardColor: UIColor {
+        switch self {
+        case .light:
+            return UIColor(red:0.98, green:0.98, blue:0.99, alpha:1.0)
+        case .dark:
+            return UIColor(red:0.08, green:0.10, blue:0.15, alpha:1.0)
+        }
+
+    }
+    
     var background: UIColor {
         switch self {
         case .light:
             return UIColor.white
         case .dark:
-            return UIColor(red:0.02, green:0.02, blue:0.03, alpha:1.0)
+            return UIColor(red: 0.03, green: 0.04, blue: 0.05, alpha: 1)
+
         }
     }
     
@@ -83,14 +103,14 @@ enum UserInterfaceTheme: Int, Theme {
     var textVariants: Colorset {
         switch self {
         case .light:
-            let high = UIColor(red: 0.13, green: 0.16, blue: 0.29, alpha: 1)
-            let norm = UIColor(red: 0.61, green: 0.67, blue: 0.77, alpha: 1)
-            let low = UIColor(red: 0.75, green: 0.79, blue: 0.84, alpha: 1)
+            let high = UIColor(red: 0.23, green: 0.26, blue: 0.39, alpha: 1)
+            let norm = UIColor(red: 0.71, green: 0.77, blue: 0.87, alpha: 1)
+            let low = UIColor(red: 0.85, green: 0.89, blue: 0.94, alpha: 1)
             return Colorset(highlight:high, main:norm, dim:low)
         case .dark:
-            let high = UIColor(red: 0.61, green: 0.67, blue: 0.77, alpha: 1)
-            let norm = UIColor(red: 0.52, green: 0.6, blue: 0.73, alpha: 1)
-            let low = UIColor(red: 0.39, green: 0.45, blue: 0.54, alpha: 1)
+            let high = UIColor(red: 0.81, green: 0.87, blue: 0.97, alpha: 1)
+            let norm = UIColor(red: 0.72, green: 0.8, blue: 0.93, alpha: 1)
+            let low = UIColor(red: 0.59, green: 0.65, blue: 0.74, alpha: 1)
             return Colorset(highlight:high, main:norm, dim:low)
         }
     }

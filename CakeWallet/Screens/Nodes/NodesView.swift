@@ -20,6 +20,7 @@ final class NodesView: BaseFlexView {
         super.configureView()
         table.tableFooterView = UIView()
         table.backgroundColor = .clear
+        autoNodeSwitchLabel.textColor = UserInterfaceTheme.current.text
         table.separatorStyle = .none
         backgroundColor = UserInterfaceTheme.current.background
     }

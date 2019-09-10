@@ -16,7 +16,7 @@ final class SendView: BaseScrollFlexViewWithBottomSection {
     let estimatedFeeValueLabel: UILabel
     let estimatedFeeContriner: UIView
     let estimatedDescriptionLabel: UILabel
-    let sendButton: PrimaryLoadingButton
+    let sendButton: LoadingButton
     let walletContainer: UIView
     let walletTitleLabel, walletNameLabel: UILabel
     let cryptoAmountValueLabel: UILabel
@@ -41,7 +41,7 @@ final class SendView: BaseScrollFlexViewWithBottomSection {
         estimatedFeeValueLabel = UILabel(fontSize: 12)
         estimatedFeeContriner = UIView()
         estimatedDescriptionLabel = UILabel.withLightText(fontSize: 12)
-        sendButton = PrimaryLoadingButton()
+        sendButton = LoadingButton()
         walletContainer = UIView()
         walletTitleLabel = UILabel(text: NSLocalizedString("your_wallet", comment: ""))
         walletNameLabel = UILabel()
@@ -173,12 +173,8 @@ final class SendView: BaseScrollFlexViewWithBottomSection {
             flex.addItem(mainContentHolder).marginTop(20)
         }
         
-        bottomSectionView.flex
-            .padding(20)
-            .define { flex in
-                sendButton.layer.borderColor = UserInterfaceTheme.current.gray.highlight.cgColor
-            
-                flex.addItem(sendButton).height(56).backgroundColor(UserInterfaceTheme.current.gray.dim)
+        bottomSectionView.flex.padding(20).define { flex in
+            flex.addItem(sendButton).height(56)
         }
     }
 }

@@ -50,7 +50,7 @@ class LoadingButton: UIButton {
         backgroundColor =
             UserInterfaceTheme.current.purple.dim
         
-        setTitleColor(UserInterfaceTheme.current.textVariants.main, for: .normal)
+        setTitleColor(UserInterfaceTheme.current.textVariants.highlight, for: .normal)
         layer.cornerRadius = 10
         layer.masksToBounds = false
         layer.shadowRadius = 20
@@ -63,15 +63,5 @@ class LoadingButton: UIButton {
         titleLabel?.font = applyFont(ofSize: 17)
         titleLabel?.numberOfLines = 0
         titleLabel?.textAlignment = .center
-    }
-}
-
-final class PrimaryLoadingButton: LoadingButton {
-    override func configureView() {
-        super.configureView()
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
     }
 }

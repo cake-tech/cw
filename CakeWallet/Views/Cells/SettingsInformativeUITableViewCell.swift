@@ -12,14 +12,13 @@ final class SettingsInformativeUITableViewCell: FlexCell, UITextFieldDelegate {
     override func configureView() {
         super.configureView()
         accessoryView = accessoryTextField
-        textLabel?.textColor = UserInterfaceTheme.current.textVariants.highlight
+        textLabel?.textColor = UserInterfaceTheme.current.text
         accessoryTextField.textAlignment = .right
         //TSTAG
-        accessoryTextField.textColor = UserInterfaceTheme.current.textVariants.dim
-        accessoryTextField.backgroundColor = UserInterfaceTheme.current.background
+        accessoryTextField.textColor = UserInterfaceTheme.current.textVariants.main
+        accessoryTextField.backgroundColor = .clear
         accessoryTextField.delegate = self
         accessoryTextField.isUserInteractionEnabled = false
-        backgroundColor = UserInterfaceTheme.current.background
     }
     
     override func configureConstraints() {

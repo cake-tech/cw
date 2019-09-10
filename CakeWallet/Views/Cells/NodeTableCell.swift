@@ -79,7 +79,7 @@ final class LangTableCcell: FlexCell {
     
     func configure(lang: Languages, isCurrent: Bool) {
         textLabel?.text = lang.formatted()
-        contentView.backgroundColor = isCurrent ? UserInterfaceTheme.current.purple.main : UserInterfaceTheme.current.gray.dim
+        contentView.backgroundColor = isCurrent ? UserInterfaceTheme.current.purple.dim : UserInterfaceTheme.current.gray.dim
         textLabel?.textColor = isCurrent ? UserInterfaceTheme.current.text : UserInterfaceTheme.current.textVariants.main
         contentView.flex.layout()
     }

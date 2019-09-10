@@ -23,14 +23,13 @@ final class SettingsPickerUITableViewCell<Item: Formatted>: FlexCell, UIPickerVi
         accessoryView = pinckerTextField
         pinckerTextField.textAlignment = .right
         pinckerTextField.inputView = pickerView
-        
-        //tstag
-        pinckerTextField.textColor = UserInterfaceTheme.current.textVariants.highlight
-        pinckerTextField.backgroundColor = UserInterfaceTheme.current.background
-        backgroundColor = UserInterfaceTheme.current.background
+        pinckerTextField.textColor = UserInterfaceTheme.current.textVariants.main
+        pinckerTextField.backgroundColor = .clear
         pickerView.delegate = self
         pickerView.dataSource = self
         pinckerTextField.delegate = self
+        backgroundColor = UserInterfaceTheme.current.cardColor
+        
         let onTapGesture = UITapGestureRecognizer(target: self, action: #selector(onTap))
         addGestureRecognizer(onTapGesture)
     }

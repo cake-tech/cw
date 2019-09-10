@@ -51,7 +51,7 @@ final class ExchangeResultView: BaseScrollFlexView {
     let qrImageView: UIImageView
     let copyAddressButton: CopyButton
     let copyIdButton: CopyButton
-    let confirmButton: PrimaryLoadingButton
+    let confirmButton: LoadingButton
     let resultDescriptionLabel: UILabel
     let descriptionTextView: UITextView
     let cardView: UIView
@@ -76,7 +76,7 @@ final class ExchangeResultView: BaseScrollFlexView {
         qrImageView = UIImageView(image: nil)
         copyAddressButton = CopyButton(title: NSLocalizedString("copy_address", comment: ""))
         copyIdButton = CopyButton(title: NSLocalizedString("copy_id", comment: ""))
-        confirmButton = PrimaryLoadingButton()
+        confirmButton = LoadingButton()
         resultDescriptionLabel = UILabel(fontSize: 14)
         descriptionTextView = UITextView(frame: .zero)
         cardView = UIView()

@@ -8,6 +8,7 @@ final class AccountView: BaseFlexView {
     required init() {
         labelContainer = CWTextField(placeholder: "Account")
         labelContainer.font = applyFont(ofSize: 17)
+        labelContainer.textColor = UserInterfaceTheme.current.text
         editButton = PrimaryButton(title: NSLocalizedString("edit", comment: ""))
         super.init()
     }

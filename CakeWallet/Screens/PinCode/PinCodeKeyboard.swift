@@ -50,6 +50,7 @@ final class PinCodeKeyboard: BaseView {
                         if $0 == .empty || $0 == .del {
                             //tstag
                             key.backgroundColor = UserInterfaceTheme.current.gray.dim
+                            
                             key.setTitleColor(UserInterfaceTheme.current.gray.highlight, for: .normal)
                         }
                     }

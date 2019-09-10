@@ -273,7 +273,7 @@ final class ExchangeView: BaseScrollFlexView {
         )
         arrowDownImageView = UIImageView(image: UIImage(named: "arrow_down_dotted"))
         clearButton = SecondaryButton(title: NSLocalizedString("clear", comment: ""))
-        exchangeButton = PrimaryLoadingButton()
+        exchangeButton = LoadingButton()
         buttonsRow = UIView()
         exchangeDescriptionLabel = UILabel(fontSize: 14)
         descriptionView = UIView()

@@ -63,7 +63,7 @@ class BaseViewController<View: BaseView>: AnyBaseViewController {
         guard let navController = self.navigationController else {
             return
         }
-        navController.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: applyFont(ofSize: 16)]
+        navController.navigationBar.titleTextAttributes = [NSAttributedStringKey.font:applyFont(ofSize: 16)]
         setBarStyle()
     }
     
@@ -79,6 +79,8 @@ class BaseViewController<View: BaseView>: AnyBaseViewController {
         }
         navigationController?.navigationBar.backgroundColor = UserInterfaceTheme.current.background
         contentView.backgroundColor = UserInterfaceTheme.current.background
+        
+        navigationController?.navigationItem.backBarButtonItem?.tintColor = UserInterfaceTheme.current.text
     }
     
     func setTitle() {}

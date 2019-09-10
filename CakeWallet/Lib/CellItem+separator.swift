@@ -3,7 +3,7 @@ import UIKit
 extension UITableViewCell {
     private static let speparatorTag = 292
     
-    func addSeparator(height: CGFloat = 1, x: CGFloat = 0, color: UIColor = UserInterfaceTheme.current.gray.main) {
+    func addSeparator(height: CGFloat = 1, x: CGFloat = 0, color: UIColor = UserInterfaceTheme.current.gray.dim) {
         guard viewWithTag(UITableViewCell.speparatorTag) == nil else {
             return
         }
@@ -14,7 +14,7 @@ extension UITableViewCell {
         addSeparator(frame: frame, color: color)
     }
     
-    func addSeparator(frame: CGRect, color: UIColor = UserInterfaceTheme.current.gray.main) {
+    func addSeparator(frame: CGRect, color: UIColor = UserInterfaceTheme.current.gray.dim) {
         guard viewWithTag(UITableViewCell.speparatorTag) == nil else {
             return
         }

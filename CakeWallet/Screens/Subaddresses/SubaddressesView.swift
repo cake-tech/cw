@@ -48,7 +48,7 @@ final class SubaddressesView: BaseFlexView {
             .alignItems(.center)
             .width(100%)
             //tstag
-            .backgroundColor(UserInterfaceTheme.current.background)
+            .backgroundColor(UserInterfaceTheme.current.gray.dim)
             .define { flex in
                 flex.addItem(newSubaddressTextiField).height(40)
                 flex.addItem(newSubaddressButton).height(35).backgroundColor(UserInterfaceTheme.current.gray.dim)

@@ -16,7 +16,7 @@ final class RecoverFromSeedView: BaseFlexView {
         walletNameField = CWTextField(placeholder: NSLocalizedString("wallet_name", comment: ""), fontSize: 16)
         restoreFromHeightView = RestoreFromHeightView()
         seedField = CWTextView(placeholder: NSLocalizedString("seed", comment: ""), fontSize: 16)
-        doneButton = PrimaryLoadingButton()
+        doneButton = LoadingButton()
         doneButton.setTitle(NSLocalizedString("recover", comment: ""), for: .normal)
         
         super.init()

@@ -90,7 +90,7 @@ final class WelcomeFlowCardView: BaseFlexView {
                 flex.addItem(separatorView)
                     .position(.absolute).bottom(getButtonHeight)
                     .width(100%).height(1)
-                    .backgroundColor(UserInterfaceTheme.current.gray.highlight)
+                    .backgroundColor(UserInterfaceTheme.current.gray.dim)
                 flex.addItem(button)
                     .backgroundColor(textColor)
                     .position(.absolute).bottom(0)
