@@ -50,7 +50,7 @@ final class SubaddressCell: FlexCell {
 
 extension Subaddress: CellItem {
     func setup(cell: SubaddressCell) {
-        cell.configure(name: label)
+        cell.configure(name: label.isEmpty ? address : label)
     }
 }
 

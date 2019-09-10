@@ -89,42 +89,7 @@ struct DefaultCryptoQRResult: QRUri {
     }
 }
 
-class RecipientAddresses {
-    static let shared: RecipientAddresses = RecipientAddresses()
-    private static let key = try! KeychainStorageImpl.standart.fetch(forKey: .masterPassword)
-        .replacingOccurrences(of: "-", with: "")
-        .data(using: .utf8)?.bytes ?? []
-    private static let iv = store.state.walletState.name.data(using: .utf8)?.bytes ?? []
 
-    private static var url: URL {
-        return MoneroWalletGateway().makeDirURL(for: store.state.walletState.name).appendingPathComponent("recipients.json")
-    }
-
-    let file: File
-
-    init(file: File = EncryptedFile(
-        url: RecipientAddresses.url,
-        cipherBuiler: {
-            let key = try! PKCS5.PBKDF2(password: RecipientAddresses.key, salt:  RecipientAddresses.iv, iterations: 4096, variant: .sha256).calculate()
-            return try! Blowfish(key: key, padding: .pkcs7)
-    })) {
-        self.file = file
-    }
-
-    func save(forTransactionId transactionId: String, andRecipientAddress recipientAddress: String) {
-        do {
-            var json = file.contentJSON() ?? JSON()
-            json.dictionaryObject?[transactionId] = recipientAddress
-            try file.save(json: json)
-        } catch {
-            print(error)
-        }
-    }
-
-    func getRecipientAddress(by id: String) -> String? {
-        return file.contentJSON()?[id].string
-    }
-}
 
 final class SendViewController: BaseViewController<SendView>, StoreSubscriber, QRUriUpdateResponsible, QRCodeReaderViewControllerDelegate {
     private static let allSymbol = NSLocalizedString("all", comment: "")
@@ -191,6 +156,7 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
                 withPriority: priority
             )
         )
+        contentView.addressView.availablePickers = [.qrScan, .addressBook]
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -474,7 +440,9 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
     }
     
     private func saveRecipientAddress(transactionId id: String, address: String ) {
-        RecipientAddresses.shared.save(forTransactionId: id, andRecipientAddress: address)
+        if (store.state.settingsState.saveRecipientAddresses) {
+            RecipientAddresses.shared.save(forTransactionId: id, andRecipientAddress: address)
+        }
     }
     
     private func onTransactionCommited() {

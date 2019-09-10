@@ -118,7 +118,7 @@ final class TransactionDetailsViewController: BaseViewController<TransactionDeta
             TransactionDetailsCellItem(row: .height, value: String(transactionDescription.height)),
             TransactionDetailsCellItem(row: .amount, value: transactionDescription.totalAmount.formatted())])
         
-        if let recipientAddress = transactionDescription.recipientAddress() {
+        if store.state.settingsState.saveRecipientAddresses, let recipientAddress = transactionDescription.recipientAddress() {
             items.append(TransactionDetailsCellItem(row: .recipientAddress, value: recipientAddress))
         }
         

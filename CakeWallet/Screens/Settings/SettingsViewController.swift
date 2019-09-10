@@ -249,6 +249,20 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
             self?.presentChangeLanguage()
         })
         
+        let saveRecipientAddress = SettingsSwitchCellItem(
+            title: NSLocalizedString("save_recipient_address", comment:""),
+            isOn: store.state.settingsState.saveRecipientAddresses,
+            action: { [weak store] shouldStore, item in
+                guard shouldStore != store?.state.settingsState.saveRecipientAddresses else {
+                    return
+                }
+                
+                store?.dispatch(
+                    SettingsActions.changeShouldSaveRecipientAddress(shouldStore)
+                )
+            }
+        )
+
         let biometricCellItem = SettingsSwitchCellItem(
             title: NSLocalizedString("allow_biometric_authentication", comment: ""),
             isOn: store.state.settingsState.isBiometricAuthenticationAllowed,
@@ -455,7 +469,8 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         sections[.wallets] = [
             displayBalances,
             fiatCurrencyCellItem,
-            feePriorityCellItem
+            feePriorityCellItem,
+            saveRecipientAddress
         ]
         
         sections[.personal] = [

@@ -19,7 +19,7 @@ final class NewAddressView: BaseFlexView {
         contactNameTextField = CWTextField(placeholder: NSLocalizedString(NSLocalizedString("contact_name", comment: ""), comment: ""))
         contactNameTextField.font = applyFont(ofSize: 15)
         
-        addressView = AddressView(placeholder: NSLocalizedString("address", comment: ""), hideAddressBookButton: true)
+        addressView = AddressView(placeholder: NSLocalizedString("address", comment: ""))
         addressView.textView.font = applyFont(ofSize: 16)
         
         saveButton = PrimaryButton(title: NSLocalizedString("save", comment: ""))

@@ -73,8 +73,4 @@ enum Theme: String {
             return .whiteSmoke
         }
     }
-    
-    var progressBar: ProgressBarScheme {
-        return ProgressBarScheme(value: .turquoiseBlue, background: .whiteSmoke)
-    }
 }

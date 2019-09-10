@@ -191,7 +191,7 @@
 "backup_uploaded" = "Backup hochgeladen";
 "backup_uploaded_icloud" = "Backup wurde auf Ihre iCloud hochgeladen";
 "change_backup_warning" = "Wenn Sie das Sicherungskennwort für Sicherungen ändern, funktionieren die vorherigen MANUELLEN Sicherungen nicht mit dem neuen Kennwort. Automatische Sicherungen funktionieren weiterhin mit dem neuen Kennwort.";
-
+"save_recipient_address" = "Empfängeradresse speichern";
 
 // Settings sections
 
