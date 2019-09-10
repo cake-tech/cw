@@ -216,8 +216,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UITabBar.appearance().layer.borderWidth = 0.0
 
         UITabBar.appearance().backgroundColor = UserInterfaceTheme.current.background
-        UITabBar.appearance().shadowImage = UIImage()
-        UITabBar.appearance().backgroundImage = UIImage()
         UITabBar.appearance().layer.borderColor = UIColor.clear.cgColor
         UITabBar.appearance().clipsToBounds = true
 //        UITabBar.appearance().tintColor = .vividBlue
@@ -226,6 +224,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().tintColor = UserInterfaceTheme.current.text
         UINavigationBar.appearance().backgroundColor = UserInterfaceTheme.current.background
 
+    //        UITabBar.appearance().layer.borderWidth = 0.0
+    //
+    //        UITabBar.appearance().backgroundColor = UserInterfaceTheme.current.background
+    //        UITabBar.appearance().shadowImage = UIImage()
+    //        UITabBar.appearance().backgroundImage = UIImage()
+    //        UITabBar.appearance().layer.borderColor = UIColor.clear.cgColor
+    //        UITabBar.appearance().clipsToBounds = true
+    ////        UITabBar.appearance().tintColor = .vividBlue
+    ////        UITabBar.appearance().unselectedItemTintColor = UIColor(hex: 0xC0D4E2)
+    //
+    //        UINavigationBar.appearance().tintColor = UserInterfaceTheme.current.text
+    //        UINavigationBar.appearance().backgroundColor = UserInterfaceTheme.current.background
+    //
 //        UINavigationItem
 //        UINavigationBar.appearance()
         

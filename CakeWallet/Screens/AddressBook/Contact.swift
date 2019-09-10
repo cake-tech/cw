@@ -59,34 +59,34 @@ extension Contact: CellItem {
     private func backgroundColor(for currency: CryptoCurrency) -> UIColor {
         switch currency {
         case .bitcoin:
-            return UIColor(hex: 0xFF9900)
+            return UserInterfaceTheme.current.gray.dim
         case .bitcoinCash:
-            return UIColor(hex: 0xEE8C28)
+            return UserInterfaceTheme.current.gray.dim
         case .monero:
-            return UIColor(hex: 0xD4F4F8)
+            return UserInterfaceTheme.current.purple.dim
         case .ethereum:
-            return UIColor(hex: 0x303030)
+            return UserInterfaceTheme.current.gray.dim
         case .liteCoin:
-            return UIColor(hex: 0x88CAF5)
+            return UserInterfaceTheme.current.gray.dim
         case .dash:
-            return UIColor(hex: 0x008DE4)
+            return UserInterfaceTheme.current.gray.dim
         }
     }
     
     private func textColor(for currency: CryptoCurrency) -> UIColor {
         switch currency {
         case .bitcoin:
-            return UIColor(hex: 0xFFFFFF)
+            return UserInterfaceTheme.current.gray.highlight
         case .bitcoinCash:
-            return UIColor(hex: 0xFFFFFF)
+            return UserInterfaceTheme.current.gray.highlight
         case .monero:
-            return UIColor(hex: 0x26C7DD)
+            return UserInterfaceTheme.current.purple.highlight
         case .ethereum:
-            return UIColor(hex: 0xFFFFFF)
+            return UserInterfaceTheme.current.gray.highlight
         case .liteCoin:
-            return UIColor(hex: 0x82B9DD)
+            return UserInterfaceTheme.current.gray.highlight
         case .dash:
-            return UIColor(hex: 0xFFFFFF)
+            return UserInterfaceTheme.current.gray.highlight
         }
     }
     

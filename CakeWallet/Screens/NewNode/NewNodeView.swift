@@ -27,6 +27,11 @@ final class NewNodeView: BaseFlexView {
         super.configureView()
         nodePortTextField.keyboardType = .numberPad
         passwordTextField.isSecureTextEntry = true
+        
+        nodeAddressTextField.textColor = UserInterfaceTheme.current.text
+        nodePortTextField.textColor = UserInterfaceTheme.current.text
+        loginTextField.textColor = UserInterfaceTheme.current.text
+        passwordTextField.textColor = UserInterfaceTheme.current.text
     }
     
     override func configureConstraints() {

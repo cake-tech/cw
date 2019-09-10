@@ -14,7 +14,7 @@ final class TextViewUITableViewCell: FlexCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         textView = UITextView()
         textView.textColor = UserInterfaceTheme.current.text
-        textView.backgroundColor = UserInterfaceTheme.current.background
+        textView.backgroundColor = UserInterfaceTheme.current.cardColor
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureView()
         configureConstraints()
@@ -58,6 +58,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         
         func setup(cell: TextViewUITableViewCell) {
             cell.configure(attributedText: attributedString)
+            cell.backgroundColor = UserInterfaceTheme.current.cardColor
         }
     }
     
@@ -75,7 +76,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         func setup(cell: UITableViewCell) {
             cell.textLabel?.text = title
             cell.textLabel?.textColor = UserInterfaceTheme.current.text
-            cell.backgroundColor = UserInterfaceTheme.current.background
+            cell.backgroundColor = UserInterfaceTheme.current.cardColor
             cell.imageView?.image = image
             let rightArrowImage = UIImage(named: "arrow_right")
             cell.accessoryView = UIImageView(image:rightArrowImage?.resized(to: CGSize(width: 6, height: 10)).withRenderingMode(.alwaysTemplate))
@@ -155,6 +156,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         
         func setup(cell: SettingsInformativeUITableViewCell) {
             cell.configure(title: self.title, informativeText: self.informativeText)
+            cell.backgroundColor = UserInterfaceTheme.current.cardColor
         }
     }
     
@@ -189,8 +191,8 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         super.init()
         tabBarItem = UITabBarItem(
             title: title,
-            image: UIImage(named: "settings_icon")?.resized(to: CGSize(width: 28, height: 28)).withRenderingMode(.alwaysOriginal),
-            selectedImage: UIImage(named: "settings_selected_icon")?.resized(to: CGSize(width: 28, height: 28)).withRenderingMode(.alwaysOriginal)
+            image: UIImage(named: "settings_icon")?.withRenderingMode(.alwaysTemplate),
+            selectedImage: UIImage(named: "settings_icon")?.withRenderingMode(.alwaysTemplate)
         )
         self.store.subscribe(self, onlyOnChange: [\ApplicationState.settingsState])
     }
@@ -527,6 +529,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         let attributes = [
             NSAttributedStringKey.font : UIFont.systemFont(ofSize: 15),
             NSAttributedStringKey.foregroundColor: UserInterfaceTheme.current.text,
+            NSAttributedStringKey.backgroundColor: UserInterfaceTheme.current.cardColor,
             NSAttributedStringKey.paragraphStyle: paragraphStyle
         ]
         let attributedString = NSMutableAttributedString(
@@ -547,7 +550,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         let xmrAddressRange = attributedString.mutableString.range(of: xmrtoEmail)
         attributedString.addAttribute(.link, value: String(format: "mailto:%@", morphEmail), range: xmrAddressRange)
         let contactUsCellItem = SettingsTextViewCellItem(attributedString: attributedString)
-        
+
         sections[.support] = [
             contactUsCellItem,
             termSettingsCellItem

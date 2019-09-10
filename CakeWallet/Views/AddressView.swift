@@ -110,16 +110,19 @@ final class AddressView: BaseFlexView {
         subaddressButton.layer.cornerRadius = 5
         subaddressButton.backgroundColor = UserInterfaceTheme.current.gray.dim
         
-        if let qrScanImage = UIImage(named: "qr_code_icon") {
+        if let qrScanImage = UIImage(named: "qr_code_icon")?.withRenderingMode(.alwaysTemplate) {
             qrScanButton.setImage(qrScanImage, for: .normal)
+            qrScanButton.imageView?.tintColor = UserInterfaceTheme.current.gray.highlight
         }
         
-        if let addressBookImage = UIImage(named: "address_book") {
+        if let addressBookImage = UIImage(named: "address_book")?.withRenderingMode(.alwaysTemplate) {
             addressBookButton.setImage(addressBookImage, for: .normal)
+            addressBookButton.imageView?.tintColor = UserInterfaceTheme.current.gray.highlight
         }
         
-        if let subaddressImage = UIImage(named: "receive_icon") {
+        if let subaddressImage = UIImage(named: "receive_icon")?.withRenderingMode(.alwaysTemplate) {
             subaddressButton.setImage(subaddressImage, for: .normal)
+            subaddressButton.imageView?.tintColor = UserInterfaceTheme.current.gray.highlight
         }
         
         qrScanButton.addTarget(self, action: #selector(scanQr), for: .touchUpInside)

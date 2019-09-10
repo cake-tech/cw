@@ -34,7 +34,6 @@ enum UserInterfaceTheme: Int, Theme {
         case .dark:
             return 1
         }
-        
     }
     case light, dark
     static var `default` = UserInterfaceTheme.dark
@@ -62,7 +61,7 @@ enum UserInterfaceTheme: Int, Theme {
         }
     }
     
-    var navigationBar: UIColor {
+    var tabBar: UIColor {
         switch self {
         case .light:
             return UIColor.white
@@ -173,5 +172,12 @@ enum UserInterfaceTheme: Int, Theme {
             let low = UIColor(red: 0.85, green: 0.87, blue: 0.96, alpha: 0.1)
             return Colorset(highlight:high, main:norm, dim:low)
         }
+    }
+}
+
+extension UserInterfaceTheme {
+    func asset(named assetName:String) -> UIImage? {
+        let searchName = assetName + "_" + String(self.rawValue)
+        return UIImage(named: searchName)
     }
 }

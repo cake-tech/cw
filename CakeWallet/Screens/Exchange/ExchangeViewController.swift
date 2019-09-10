@@ -794,11 +794,11 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         super.init()
         tabBarItem = UITabBarItem(
             title: title,
-            image: UIImage(named: "exchange_icon")?.resized(to: CGSize(width: 24, height: 28)).withRenderingMode(.alwaysOriginal),
-            selectedImage: UIImage(named: "exchange_icon_selected")?.resized(to: CGSize(width: 24, height: 28)).withRenderingMode(.alwaysOriginal)
+            image: UIImage(named: "exchange_icon")?.withRenderingMode(.alwaysTemplate),
+            selectedImage: UIImage(named: "exchange_icon")?.withRenderingMode(.alwaysTemplate)
         )
     }
-    
+        
     @objc
     func onDepositPickerButtonTap() {
         providesPresentationContextTransitionStyle = true
@@ -861,12 +861,15 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         contentView.receiveCardView.addressContainer.presenter = self
         contentView.receiveCardView.addressContainer.updateResponsible = self
         exchangeNameView.title = NSLocalizedString("exchange", comment: "")
+        exchangeNameView.titleLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
         exchangeNameView.subtitle = exchange.provider.formatted()
+        exchangeNameView.subtitleLabel.textColor = UserInterfaceTheme.current.textVariants.dim
         exchangeNameView.onTap = { [weak self] in
             self?.showExchangeSelection()
         }
         navigationItem.titleView = exchangeNameView
-        
+        contentView.receiveCardView.amountTextField.textColor = UserInterfaceTheme.current.text
+        contentView.depositCardView.amountTextField.textColor = UserInterfaceTheme.current.text
         (contentView.receiveCardView.addressContainer.textView.originText <-> receiveAddress)
             .disposed(by: disposeBag)
 
@@ -1512,7 +1515,6 @@ class ExchangeContentAlertView: BaseFlexView {
     
     override func configureView() {
         super.configureView()
-        copyButton.backgroundColor = UserInterfaceTheme.current.blue.highlight
         messageLabel.textAlignment = .center
         messageLabel.numberOfLines = 0
         messageLabel.font = applyFont(ofSize: 16)
@@ -1525,7 +1527,7 @@ class ExchangeContentAlertView: BaseFlexView {
         rootFlexContainer.flex.alignItems(.center).backgroundColor(.clear).define { flex in
             flex.addItem(messageLabel).margin(UIEdgeInsets(top: 0, left: 30, bottom: 30, right: 30))
             flex.addItem(copiedLabel).height(10).marginBottom(5)
-            flex.addItem(copyButton).height(56).marginBottom(20).width(80%).backgroundColor(UIColor(hex: 0x97E2FF))
+            flex.addItem(copyButton).height(56).marginBottom(20).width(80%)
         }
     }
     

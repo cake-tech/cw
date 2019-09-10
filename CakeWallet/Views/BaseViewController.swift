@@ -4,6 +4,18 @@ import CakeWalletLib
 import CakeWalletCore
 import VisualEffectView
 
+extension UIImage {
+    class func imageWithColor(color: UIColor, size: CGSize) -> UIImage {
+        let rect: CGRect = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+        UIGraphicsBeginImageContextWithOptions(size, false, 0)
+        color.setFill()
+        UIRectFill(rect)
+        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        return image
+    }
+}
+
 class BaseViewController<View: BaseView>: AnyBaseViewController {
     var contentView: View { return view as! View }
     
@@ -67,7 +79,7 @@ class BaseViewController<View: BaseView>: AnyBaseViewController {
         setBarStyle()
     }
     
-    private func setBarStyle() {
+    public func setBarStyle() {
         guard let navController = self.navigationController else {
             return
         }
@@ -79,8 +91,14 @@ class BaseViewController<View: BaseView>: AnyBaseViewController {
         }
         navigationController?.navigationBar.backgroundColor = UserInterfaceTheme.current.background
         contentView.backgroundColor = UserInterfaceTheme.current.background
-        
         navigationController?.navigationItem.backBarButtonItem?.tintColor = UserInterfaceTheme.current.text
+        
+        if let tabBar = tabBarController?.tabBar {
+            tabBar.isTranslucent = false
+            tabBar.barTintColor = UserInterfaceTheme.current.tabBar
+//            tabBar.backgroundImage = UIImage.imageWithColor(color: .black, size:tabBar.frame)
+            tabBar.tintColor = UserInterfaceTheme.current.blue.highlight
+        }
     }
     
     func setTitle() {}

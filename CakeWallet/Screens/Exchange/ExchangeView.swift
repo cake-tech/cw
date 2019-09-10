@@ -266,6 +266,7 @@ final class ExchangeView: BaseScrollFlexView {
             cardTitle: NSLocalizedString("you_will_send", comment: ""),
             addressPlaceholder: NSLocalizedString("refund_address", comment: "")
         )
+        
         receiveCardView = ExchangeCardView(
             cardType: ExchangeCardType.deposit,
             cardTitle: NSLocalizedString("you_will_get", comment: ""),

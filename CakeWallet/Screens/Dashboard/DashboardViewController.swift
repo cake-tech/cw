@@ -52,8 +52,8 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         super.init()
         tabBarItem = UITabBarItem(
             title: title,
-            image: UIImage(named: "wallet_icon")?.resized(to: CGSize(width: 28, height: 28)).withRenderingMode(.alwaysOriginal),
-            selectedImage: UIImage(named: "wallet_selected_icon")?.resized(to: CGSize(width: 28, height: 28)).withRenderingMode(.alwaysOriginal)
+            image: UIImage(named: "wallet_icon")?.withRenderingMode(.alwaysTemplate),
+            selectedImage: UIImage(named: "wallet_icon")?.withRenderingMode(.alwaysTemplate).withRenderingMode(.alwaysTemplate)
         )
     }
     

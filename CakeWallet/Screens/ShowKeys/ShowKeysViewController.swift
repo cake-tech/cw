@@ -26,6 +26,7 @@ struct WalletKeysCellItem: CellItem {
     
     func setup(cell: WalletsKeysUITableViewCell) {
         cell.configure(title: row.string() + ":", value: key)
+        cell.backgroundColor = UserInterfaceTheme.current.background
     }
 }
 

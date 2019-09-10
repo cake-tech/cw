@@ -73,6 +73,8 @@ final class SendView: BaseScrollFlexViewWithBottomSection {
         
         cryptoAmountValueLabel.textAlignment = .right
         cryptoAmountValueLabel.font = applyFont(ofSize: 26)
+        cryptoAmountValueLabel.textColor = UserInterfaceTheme.current.text
+        cryptoAmountTitleLabel.textColor = UserInterfaceTheme.current.text
         cryptoAmountTextField.keyboardType = .decimalPad
         
         let cryptoAmountTextFieldLeftView = UILabel(text: "XMR:")

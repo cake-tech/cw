@@ -260,7 +260,7 @@
 
 // Seed
 
-"seed_disclaimer" = "Please share, copy, or write down your seed. The seed is used to recover your wallet. This is your PRIVATE seed. DO NOT SHARE this seed with other people!";
+"seed_disclaimer" = "Please copy, or write down your seed. The seed is used to recover your wallet. This is your PRIVATE seed. DO NOT SHARE this seed with other people!";
 
 
 // Transactions details

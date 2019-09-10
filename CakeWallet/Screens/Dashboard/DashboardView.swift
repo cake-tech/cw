@@ -147,7 +147,7 @@ final class DashboardView: BaseScrollFlexView {
         cryptoAmountLabel.font = applyFont(ofSize: 40)
         cryptoAmountLabel.textAlignment = .center
         cryptoAmountLabel.textColor = UserInterfaceTheme.current.text
-        fiatAmountLabel.textColor = UserInterfaceTheme.current.textVariants.dim
+        fiatAmountLabel.textColor = UserInterfaceTheme.current.textVariants.main
         fiatAmountLabel.textAlignment = .center
         fiatAmountLabel.font = applyFont(ofSize: 17)
         cryptoTitleLabel.font = applyFont(ofSize: 16, weight: .semibold)

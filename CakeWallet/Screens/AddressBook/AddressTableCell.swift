@@ -23,8 +23,8 @@ final class AddressTableCell: FlexCell {
         
         nameLabel.font = applyFont(ofSize: 16)
         typeLabel.font = applyFont(ofSize: 12, weight: .bold)
-        
-        typeLabel.textColor = UserInterfaceTheme.current.text
+        nameLabel.textColor = UserInterfaceTheme.current.text
+
         typeView.layer.cornerRadius = 8
         typeView.layer.masksToBounds = true
     }

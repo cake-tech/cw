@@ -25,8 +25,6 @@ class FlexCell: SwipeTableViewCell {
     
     override func configureView() {
         super.configureView()
-        contentView.backgroundColor = UserInterfaceTheme.current.background
-        backgroundColor = UserInterfaceTheme.current.background
     }
     
     override func sizeThatFits(_ size: CGSize) -> CGSize {

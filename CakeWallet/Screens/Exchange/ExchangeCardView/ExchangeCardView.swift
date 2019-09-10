@@ -134,7 +134,7 @@ final class ExchangeCardView: BaseFlexView {
             .justifyContent(.start)
             .alignItems(.center)
             .padding(18, 15, 35, 15)
-            .backgroundColor(UserInterfaceTheme.current.background)
+            .backgroundColor(UserInterfaceTheme.current.cardColor)
             .define{ flex in
                 flex.addItem(cardTitle).marginBottom(25)
                 flex.addItem(topCardView).marginBottom(25)
