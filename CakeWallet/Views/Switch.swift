@@ -29,8 +29,6 @@ final class SwitchView: BaseView {
         let onTapGesture = UITapGestureRecognizer(target: self, action: #selector(onTapHandler))
         backgroundColor = UserInterfaceTheme.current.gray.dim
         layer.masksToBounds = false
-        layer.borderWidth = 1
-        layer.borderColor = UserInterfaceTheme.current.gray.main.cgColor
         
         indicatorImageView.layer.masksToBounds = false
         indicatorView.addSubview(indicatorImageView)
