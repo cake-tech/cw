@@ -1032,15 +1032,15 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         highlightNeededFields()
         
         if (depositCrypto.value == CryptoCurrency.monero) {
-            contentView.depositCardView.addressContainer.availablePickers = [.addressBook, .qrScan]
+            contentView.depositCardView.addressContainer.availablePickers = []
         } else {
-            contentView.depositCardView.addressContainer.availablePickers = [.qrScan]
+            contentView.depositCardView.addressContainer.availablePickers = [.qrScan, .addressBook]
         }
         
         if (receiveCrypto.value == CryptoCurrency.monero) {
             contentView.receiveCardView.addressContainer.availablePickers = [.qrScan, .addressBook, .subaddress]
         } else {
-            contentView.receiveCardView.addressContainer.availablePickers = [.qrScan]
+            contentView.receiveCardView.addressContainer.availablePickers = [.qrScan, .addressBook]
         }
     }
     
@@ -1066,9 +1066,9 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         case .deposit:
             depositCrypto.accept(item)
             if (item == CryptoCurrency.monero) {
-                contentView.depositCardView.addressContainer.availablePickers = [.addressBook, .qrScan]
+                contentView.depositCardView.addressContainer.availablePickers = []
             } else {
-                contentView.depositCardView.addressContainer.availablePickers = [.qrScan]
+                contentView.depositCardView.addressContainer.availablePickers = [.qrScan, .addressBook]
             }
 
         case .receive:
@@ -1076,7 +1076,7 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
             if (item == CryptoCurrency.monero) {
                 contentView.receiveCardView.addressContainer.availablePickers = [.qrScan, .addressBook, .subaddress]
             } else {
-                contentView.receiveCardView.addressContainer.availablePickers = [.qrScan]
+                contentView.receiveCardView.addressContainer.availablePickers = [.qrScan, .addressBook]
             }
         case .unknown:
             return
@@ -1087,6 +1087,8 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         updateLimits()
         setProviderTitle()
         exchangeNameView.subtitle = exchange.provider.formatted()
+        contentView.depositCardView.amountTextField.isUserInteractionEnabled = !isXMRTO
+        contentView.receiveCardView.amountTextField.isUserInteractionEnabled = isXMRTO
         highlightNeededFields()
     }
     

@@ -162,6 +162,7 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
                 withPriority: priority
             )
         )
+        contentView.addressView.availablePickers = [.qrScan, .addressBook]
     }
     
     override func viewDidAppear(_ animated: Bool) {
