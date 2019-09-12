@@ -97,7 +97,6 @@ class BaseViewController<View: BaseView>: AnyBaseViewController {
         if let tabBar = tabBarController?.tabBar {
             tabBar.isTranslucent = false
             tabBar.barTintColor = UserInterfaceTheme.current.tabBar
-//            tabBar.backgroundImage = UIImage.imageWithColor(color: .black, size:tabBar.frame)
             tabBar.tintColor = UserInterfaceTheme.current.blue.highlight
         }
     }

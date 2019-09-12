@@ -1005,18 +1005,18 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
             target: self,
             action: #selector(navigateToTradeHistory))
         
-        clearButton.setTitleTextAttributes([
-            NSAttributedStringKey.font: applyFont(ofSize: 16, weight: .regular),
-            NSAttributedStringKey.foregroundColor: UserInterfaceTheme.current.text], for: .normal)
-        clearButton.setTitleTextAttributes([
-            NSAttributedStringKey.font: applyFont(ofSize: 16, weight: .regular),
-            NSAttributedStringKey.foregroundColor: UserInterfaceTheme.current.gray.main], for: .highlighted)
         navigationItem.rightBarButtonItem = clearButton
-        
-        tradesHistoryButton.setTitleTextAttributes([NSAttributedStringKey.font: applyFont(ofSize: 16, weight: .regular)], for: .normal)
-        tradesHistoryButton.setTitleTextAttributes([NSAttributedStringKey.font: applyFont(ofSize: 16, weight: .regular)], for: .highlighted)
+        navigationItem.rightBarButtonItem?.tintColor = UserInterfaceTheme.current.text
         navigationItem.leftBarButtonItem = tradesHistoryButton
-        XMRTOExchange.asyncUpdateUri()
+        navigationItem.leftBarButtonItem?.tintColor =
+            UserInterfaceTheme.current.text
+                XMRTOExchange.asyncUpdateUri()
+    }
+    
+    override func setBarStyle() {
+        super.setBarStyle()
+        navigationItem.leftBarButtonItem?.tintColor = UserInterfaceTheme.current.text
+        navigationItem.rightBarButtonItem?.tintColor = UserInterfaceTheme.current.text
     }
     
     override func viewWillAppear(_ animated: Bool) {
