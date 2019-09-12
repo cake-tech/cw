@@ -36,7 +36,7 @@ enum UserInterfaceTheme: Int, Theme {
         }
     }
     case light, dark
-    static var `default` = UserInterfaceTheme.dark
+    static var `default` = UserInterfaceTheme.light
     static var current: UserInterfaceTheme {
         get {
             if let cacheTest = currentCached {
@@ -73,7 +73,7 @@ enum UserInterfaceTheme: Int, Theme {
     var cardColor: UIColor {
         switch self {
         case .light:
-            return UIColor(red:0.98, green:0.98, blue:0.99, alpha:1.0)
+            return UIColor(red:0.99, green:0.99, blue:0.99, alpha:1.0)
         case .dark:
             return UIColor(red:0.08, green:0.10, blue:0.15, alpha:1.0)
         }
@@ -103,7 +103,7 @@ enum UserInterfaceTheme: Int, Theme {
         switch self {
         case .light:
             let high = UIColor(red: 0.23, green: 0.26, blue: 0.39, alpha: 1)
-            let norm = UIColor(red: 0.71, green: 0.77, blue: 0.87, alpha: 1)
+            let norm = UIColor(red: 0.61, green: 0.67, blue: 0.77, alpha: 1)
             let low = UIColor(red: 0.85, green: 0.89, blue: 0.94, alpha: 1)
             return Colorset(highlight:high, main:norm, dim:low)
         case .dark:
@@ -118,8 +118,8 @@ enum UserInterfaceTheme: Int, Theme {
         switch self {
         case .light:
             let high = UIColor(red: 0.54, green: 0.31, blue: 1, alpha: 1)
-            let norm = UIColor(red: 0.82, green: 0.76, blue: 0.95, alpha: 1)
-            let low = UIColor(red: 0.89, green: 0.83, blue: 1, alpha: 0.7)
+            let norm = UIColor(red: 0.75, green: 0.69, blue: 0.95, alpha: 1)
+            let low = UIColor(red: 0.89, green: 0.83, blue: 1, alpha: 0.6)
             return Colorset(highlight:high, main:norm, dim:low)
         case .dark:
             let high = UIColor(red: 0.51, green: 0.34, blue: 1, alpha: 1)
@@ -164,7 +164,7 @@ enum UserInterfaceTheme: Int, Theme {
         case .light:
             let high = UIColor(red: 0.58, green: 0.62, blue: 0.72, alpha: 1)
             let norm = UIColor(red: 0.88, green: 0.91, blue: 0.96, alpha: 1)
-            let low = UIColor(red: 0.98, green: 0.98, blue: 0.99, alpha: 1)
+            let low = UIColor(red: 0.95, green: 0.95, blue: 0.96, alpha: 1)
             return Colorset(highlight:high, main:norm, dim:low)
         case .dark:
             let high = UIColor(red: 0.61, green: 0.67, blue: 0.77, alpha: 1)
@@ -179,5 +179,15 @@ extension UserInterfaceTheme {
     func asset(named assetName:String) -> UIImage? {
         let searchName = assetName + "_" + String(self.rawValue)
         return UIImage(named: searchName)
+    }
+    var settingCellColor: UIColor {
+        get {
+            switch self {
+            case .light:
+                return self.background
+            case .dark:
+                return self.cardColor
+            }
+        }
     }
 }

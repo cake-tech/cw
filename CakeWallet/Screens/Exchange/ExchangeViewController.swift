@@ -861,9 +861,9 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         contentView.receiveCardView.addressContainer.presenter = self
         contentView.receiveCardView.addressContainer.updateResponsible = self
         exchangeNameView.title = NSLocalizedString("exchange", comment: "")
-        exchangeNameView.titleLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
+        exchangeNameView.titleLabel.textColor = UserInterfaceTheme.current.text
         exchangeNameView.subtitle = exchange.provider.formatted()
-        exchangeNameView.subtitleLabel.textColor = UserInterfaceTheme.current.textVariants.dim
+        exchangeNameView.subtitleLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
         exchangeNameView.onTap = { [weak self] in
             self?.showExchangeSelection()
         }

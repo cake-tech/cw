@@ -30,7 +30,7 @@ final class SwitchView: BaseView {
         backgroundColor = UserInterfaceTheme.current.gray.dim
         layer.masksToBounds = false
         layer.borderWidth = 1
-        layer.borderColor = UserInterfaceTheme.current.gray.highlight.cgColor
+        layer.borderColor = UserInterfaceTheme.current.gray.main.cgColor
         
         indicatorImageView.layer.masksToBounds = false
         indicatorView.addSubview(indicatorImageView)
@@ -40,8 +40,7 @@ final class SwitchView: BaseView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-
-        layer.cornerRadius = frame.size.height * 0.2
+        layer.cornerRadius = frame.size.height * 0.4
         indicatorView.layer.cornerRadius = indicatorImageView.frame.size.height * 0.5
     }
     

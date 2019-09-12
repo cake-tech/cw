@@ -15,6 +15,7 @@ final class CurrencyPickerTableCell: FlexCell {
         cryptoLabel.textAlignment = .center
         cryptoLabel.font = applyFont(ofSize: 17, weight: .semibold)
         selectionStyle = .none
+        backgroundColor = UserInterfaceTheme.current.background
     }
     
     override func configureConstraints() {

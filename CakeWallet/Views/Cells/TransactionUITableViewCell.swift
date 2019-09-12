@@ -42,6 +42,9 @@ final class TransactionUITableViewCell: FlexCell {
         statusLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
         dateLabel.textColor = UserInterfaceTheme.current.textVariants.main
         fiatLabel.textColor = UserInterfaceTheme.current.textVariants.main
+        selectionStyle = UITableViewCellSelectionStyle.gray
+        selectedBackgroundView = UIView()
+        selectedBackgroundView?.backgroundColor = UserInterfaceTheme.current.gray.dim
     }
     
     override func configureConstraints() {

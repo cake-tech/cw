@@ -289,7 +289,7 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
     }
     
     private func updateFiat(_ fiat: FiatCurrency) {
-        contentView.fiatAmountTextFieldLeftView.text = store.state.settingsState.fiatCurrency.formatted()
+        contentView.fiatAmountTextFieldLeftView.text = store.state.settingsState.fiatCurrency.formatted() + ":"
     }
     
     @objc

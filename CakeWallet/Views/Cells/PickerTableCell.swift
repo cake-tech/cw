@@ -16,6 +16,7 @@ final class PickerTableCell: FlexCell {
         titleLabel.textAlignment = .center
         titleLabel.font = applyFont(ofSize: 17, weight: .semibold)
         selectionStyle = .none
+        backgroundColor = UserInterfaceTheme.current.background
     }
     
     override func configureConstraints() {

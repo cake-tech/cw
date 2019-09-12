@@ -149,6 +149,7 @@ final class RestoreFromHeightView: BaseFlexView {
         dateTextField.textColor = UserInterfaceTheme.current.textVariants.main
         backgroundColor = .clear
         restoreHeightTextField.keyboardType = .numberPad
+        restoreHeightTextField.textColor = UserInterfaceTheme.current.textVariants.main
         datePicker.datePickerMode = .date
         datePicker.locale = Locale.current
         dateTextField.inputView = datePicker

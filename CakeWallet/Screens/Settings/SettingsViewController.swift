@@ -14,7 +14,7 @@ final class TextViewUITableViewCell: FlexCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         textView = UITextView()
         textView.textColor = UserInterfaceTheme.current.text
-        textView.backgroundColor = UserInterfaceTheme.current.cardColor
+        textView.backgroundColor = UserInterfaceTheme.current.settingCellColor
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureView()
         configureConstraints()
@@ -58,7 +58,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         
         func setup(cell: TextViewUITableViewCell) {
             cell.configure(attributedText: attributedString)
-            cell.backgroundColor = UserInterfaceTheme.current.cardColor
+            cell.backgroundColor = UserInterfaceTheme.current.settingCellColor
         }
     }
     
@@ -76,7 +76,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         func setup(cell: UITableViewCell) {
             cell.textLabel?.text = title
             cell.textLabel?.textColor = UserInterfaceTheme.current.text
-            cell.backgroundColor = UserInterfaceTheme.current.cardColor
+            cell.backgroundColor = UserInterfaceTheme.current.settingCellColor
             cell.imageView?.image = image
             let rightArrowImage = UIImage(named: "arrow_right")
             cell.accessoryView = UIImageView(image:rightArrowImage?.resized(to: CGSize(width: 6, height: 10)).withRenderingMode(.alwaysTemplate))
@@ -156,7 +156,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         
         func setup(cell: SettingsInformativeUITableViewCell) {
             cell.configure(title: self.title, informativeText: self.informativeText)
-            cell.backgroundColor = UserInterfaceTheme.current.cardColor
+            cell.backgroundColor = UserInterfaceTheme.current.settingCellColor
         }
     }
     
@@ -529,7 +529,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         let attributes = [
             NSAttributedStringKey.font : UIFont.systemFont(ofSize: 15),
             NSAttributedStringKey.foregroundColor: UserInterfaceTheme.current.text,
-            NSAttributedStringKey.backgroundColor: UserInterfaceTheme.current.cardColor,
+            NSAttributedStringKey.backgroundColor: UserInterfaceTheme.current.settingCellColor,
             NSAttributedStringKey.paragraphStyle: paragraphStyle
         ]
         let attributedString = NSMutableAttributedString(
@@ -599,7 +599,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         }
         let cell = tableView.dequeueReusableCell(withItem: item, for: indexPath)
         cell.textLabel?.font = UIFont.systemFont(ofSize: 15)
-        cell.backgroundColor = UserInterfaceTheme.current.cardColor
+        cell.backgroundColor = UserInterfaceTheme.current.settingCellColor
         return cell
     }
     
