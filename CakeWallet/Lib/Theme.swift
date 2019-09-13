@@ -85,7 +85,7 @@ enum UserInterfaceTheme: Int, Theme {
         case .light:
             return .white
         case .dark:
-            return UIColor(red: 0.03, green: 0.04, blue: 0.05, alpha: 1)
+            return UIColor(red:0.04, green:0.05, blue:0.07, alpha:1.0)
 
         }
     }
@@ -123,7 +123,7 @@ enum UserInterfaceTheme: Int, Theme {
             return Colorset(highlight:high, main:norm, dim:low)
         case .dark:
             let high = UIColor(red: 0.51, green: 0.34, blue: 1, alpha: 1)
-            let norm = UIColor(red: 0.63, green: 0.47, blue: 1, alpha: 0.7)
+            let norm = UIColor(red: 0.63, green: 0.47, blue: 1, alpha: 1)
             let low = UIColor(red: 0.72, green: 0.56, blue: 1, alpha: 0.1)
             return Colorset(highlight:high, main:norm, dim:low)
         }
@@ -138,7 +138,7 @@ enum UserInterfaceTheme: Int, Theme {
             return Colorset(highlight:high, main:norm, dim:low)
         case .dark:
             let high = UIColor(red: 0.16, green: 0.73, blue: 0.96, alpha: 1)
-            let norm = UIColor(red: 0.24, green: 0.75, blue: 0.94, alpha: 0.6)
+            let norm = UIColor(red: 0.24, green: 0.75, blue: 0.94, alpha: 1)
             let low = UIColor(red: 0.59, green: 0.89, blue: 1, alpha: 0.1)
             return Colorset(highlight:high, main:norm, dim:low)
         }

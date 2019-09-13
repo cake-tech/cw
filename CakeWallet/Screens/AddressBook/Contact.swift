@@ -63,7 +63,7 @@ extension Contact: CellItem {
         case .bitcoinCash:
             return UserInterfaceTheme.current.gray.dim
         case .monero:
-            return UserInterfaceTheme.current.purple.dim
+            return UserInterfaceTheme.current.blue.dim
         case .ethereum:
             return UserInterfaceTheme.current.gray.dim
         case .liteCoin:
@@ -80,7 +80,7 @@ extension Contact: CellItem {
         case .bitcoinCash:
             return UserInterfaceTheme.current.gray.highlight
         case .monero:
-            return UserInterfaceTheme.current.purple.highlight
+            return UserInterfaceTheme.current.blue.highlight
         case .ethereum:
             return UserInterfaceTheme.current.gray.highlight
         case .liteCoin:
