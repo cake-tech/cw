@@ -52,7 +52,7 @@ final class NodesViewController: BaseViewController<NodesView>, UITableViewDeleg
         
         let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         navigationItem.backBarButtonItem = backButton
-        
+        contentView.table.separatorColor = UserInterfaceTheme.current.gray.dim
         contentView.table.delegate = self
         contentView.table.dataSource = self
         contentView.table.register(items: [NodeCellItem.self])

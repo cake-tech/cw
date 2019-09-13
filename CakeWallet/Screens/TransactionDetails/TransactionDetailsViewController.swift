@@ -18,7 +18,7 @@ final class TransactionDetailsViewController: BaseViewController<TransactionDeta
         title = NSLocalizedString("transaction_details", comment: "")
         let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         navigationItem.backBarButtonItem = backButton
-        
+        contentView.table.separatorColor = UserInterfaceTheme.current.gray.dim
         contentView.table.dataSource = self
         contentView.table.delegate = self
         contentView.table.register(items: [TransactionDetailsCellItem.self])

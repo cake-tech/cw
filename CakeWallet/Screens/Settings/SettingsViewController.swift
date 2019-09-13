@@ -576,6 +576,8 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         }
         
         contentView.table.backgroundColor = UserInterfaceTheme.current.settingBackgroundColor
+        
+        contentView.table.separatorColor = UserInterfaceTheme.current.gray.dim
     }
     
     override func setTitle() {
