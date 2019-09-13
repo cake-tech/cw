@@ -26,9 +26,9 @@ enum DashboardActionType {
     var borderColor: UIColor {
         switch self {
         case .send:
-            return UserInterfaceTheme.current.purple.highlight
+            return UserInterfaceTheme.current.purple.main
         case .receive:
-            return UserInterfaceTheme.current.blue.highlight
+            return UserInterfaceTheme.current.blue.main
         }
     }
     
