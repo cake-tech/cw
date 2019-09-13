@@ -75,7 +75,8 @@ final class ShowKeysViewController: BaseViewController<ShowKeysView>, UITableVie
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let item = items[indexPath.row]
-        return tableView.dequeueReusableCell(withItem: item, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withItem: item, for: indexPath)
+        return cell
     }
     
     func tableView(_ tableView: UITableView, shouldShowMenuForRowAt indexPath: IndexPath) -> Bool {

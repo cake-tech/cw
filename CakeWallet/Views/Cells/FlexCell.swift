@@ -35,7 +35,7 @@ class FlexCell: SwipeTableViewCell {
     }
     
     override func configureConstraints() {
-        contentView.flex.addItem(separatorView).position(.absolute).bottom(0).height(0.6).width(100%).backgroundColor(UserInterfaceTheme.current.textVariants.dim)
+        contentView.flex.addItem(separatorView).position(.absolute).bottom(0).height(0.6).width(100%).backgroundColor(UserInterfaceTheme.current.gray.dim)
     }
     
     func layout() {
