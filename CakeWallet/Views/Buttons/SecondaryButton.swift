@@ -6,6 +6,6 @@ class SecondaryButton: Button {
         //tstag
         backgroundColor = UserInterfaceTheme.current.gray.dim
         layer.borderWidth = 0.75
-        layer.borderColor = UserInterfaceTheme.current.gray.highlight.cgColor
+        layer.borderColor = UserInterfaceTheme.current.gray.main.cgColor
     }
 }

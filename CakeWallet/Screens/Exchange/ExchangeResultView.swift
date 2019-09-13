@@ -100,7 +100,7 @@ final class ExchangeResultView: BaseScrollFlexView {
         descriptionTextView.isScrollEnabled = false
         descriptionTextView.isEditable = false
         idLabel.numberOfLines = 0
-        idLabel.textColor = UserInterfaceTheme.current.textVariants.main
+        idLabel.textColor = UserInterfaceTheme.current.text
         
         idLabel.font = applyFont(ofSize: 15)
         amountLabel.font = applyFont(ofSize: 15)
@@ -108,29 +108,35 @@ final class ExchangeResultView: BaseScrollFlexView {
         statusLabel.font = applyFont(ofSize: 15)
         timeoutLabel.font = applyFont(ofSize: 15)
         
+        statusLabel.textColor = UserInterfaceTheme.current.text
+        
         amountLabel.numberOfLines = 0
-        amountLabel.textColor = UserInterfaceTheme.current.purple.highlight
+        amountLabel.textColor = UserInterfaceTheme.current.text
         
         addressLabel.numberOfLines = 0
         addressLabel.textAlignment = .center
         addressLabel.font = applyFont(ofSize: 13)
-        addressLabel.textColor = UserInterfaceTheme.current.purple.main
+        addressLabel.textColor = UserInterfaceTheme.current.purple.highlight
         
         copyAddressButton.titleLabel?.font = applyFont(ofSize: 13)
         copyIdButton.titleLabel?.font = applyFont(ofSize: 13)
         descriptionTextView.textColor = UserInterfaceTheme.current.gray.main
         descriptionTextView.font = applyFont(ofSize: 12)
         descriptionTextView.isEditable = false
+        descriptionTextView.backgroundColor = .clear
         
         resultDescriptionLabel.numberOfLines = 0
         resultDescriptionLabel.font = applyFont(ofSize: 14)
-        
+        resultDescriptionLabel.backgroundColor = .clear
+
         btcTxIDLabel.numberOfLines = 0
         btcTxIDRow.isUserInteractionEnabled = true
         btcTxIDTextLabel.font = applyFont(ofSize: 14)
         btcTxIDTextLabel.numberOfLines = 0
         paymentIDLabel.numberOfLines =  0
         providerLabel.textAlignment = .center
+        
+        cardView.backgroundColor = UserInterfaceTheme.current.background
     }
     
     override func configureConstraints() {
