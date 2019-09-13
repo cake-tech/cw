@@ -51,7 +51,7 @@ final class WelcomeFlowCardView: BaseFlexView {
         descriptionText.textAlignment = .center
         
         buttonText.font = applyFont(ofSize: buttonFontSize, weight: .semibold)
-        buttonText.textColor = UserInterfaceTheme.current.text
+        buttonText.textColor = UserInterfaceTheme.current.textVariants.highlight
     }
     
     override func configureConstraints() {
