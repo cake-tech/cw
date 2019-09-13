@@ -131,12 +131,14 @@ final class SendView: BaseScrollFlexViewWithBottomSection {
         walletContainer.flex
             .direction(.row).justifyContent(.spaceBetween)
             .width(100%)
-            .paddingTop(30)
+            .paddingTop(20)
             .paddingBottom(15)
-            .backgroundColor(UserInterfaceTheme.current.background)
-            .define { flex in flex.addItem(UIView()).width(100%).height(1).backgroundColor(UserInterfaceTheme.current.gray.main).position(.absolute).top(10).left(0)
+            .backgroundColor(UserInterfaceTheme.current.sendCardColor).alignContent(.center)
+            .define { flex in
+                flex.addItem(UIView()).width(100%).height(1).backgroundColor(UserInterfaceTheme.current.gray.dim).position(.absolute).top(0).left(0)
                 flex.addItem(walletNameContainer).marginHorizontal(20)
                 flex.addItem(cryptoAmonutContainer).marginHorizontal(20)
+                flex.addItem(UIView()).width(100%).height(1).backgroundColor(UserInterfaceTheme.current.gray.dim).position(.absolute).bottom(0).left(0)
         }
         
         currenciesContainer.flex
@@ -160,6 +162,7 @@ final class SendView: BaseScrollFlexViewWithBottomSection {
         mainContentHolder.flex
             .alignItems(.center)
             .padding(30)
+            .backgroundColor(UserInterfaceTheme.current.background)
             .define { flex in
                 flex.addItem(addressView).width(100%)
                 flex.addItem(paymentIdContainer).width(100%).marginTop(30)
@@ -170,12 +173,12 @@ final class SendView: BaseScrollFlexViewWithBottomSection {
                 flex.addItem(estimatedDescriptionLabel).marginTop(20).width(100%)
         }
         
-        rootFlexContainer.flex.backgroundColor(.clear).define { flex in
+        rootFlexContainer.flex.backgroundColor(UserInterfaceTheme.current.background).define { flex in
             flex.addItem(walletContainer)
             flex.addItem(mainContentHolder).marginTop(20)
         }
         
-        bottomSectionView.flex.padding(20).define { flex in
+        bottomSectionView.flex.backgroundColor(UserInterfaceTheme.current.background).padding(20).define { flex in
             flex.addItem(sendButton).height(56)
         }
     }

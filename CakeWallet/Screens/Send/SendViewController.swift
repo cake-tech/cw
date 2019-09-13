@@ -149,6 +149,12 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
         }
     }
     
+    override func setBarStyle() {
+        super.setBarStyle()
+        navigationController?.navigationBar.backgroundColor = UserInterfaceTheme.current.sendCardColor
+        contentView.backgroundColor = UserInterfaceTheme.current.sendCardColor
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationItem.leftBarButtonItem?.tintColor = UserInterfaceTheme.current.text

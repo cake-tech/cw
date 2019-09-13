@@ -69,6 +69,7 @@ class BaseScrollFlexViewWithBottomSection: BaseView {
         rootFlexContainer.flex.backgroundColor(UserInterfaceTheme.current.background)
         contentView.addSubview(rootFlexContainer)
         scrollView.addSubview(contentView)
+        scrollView.backgroundColor = UserInterfaceTheme.current.background
         addSubview(scrollView)
     }
     
