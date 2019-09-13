@@ -83,7 +83,7 @@ enum UserInterfaceTheme: Int, Theme {
     var background: UIColor {
         switch self {
         case .light:
-            return UIColor.white
+            return .white
         case .dark:
             return UIColor(red: 0.03, green: 0.04, blue: 0.05, alpha: 1)
 
@@ -93,9 +93,9 @@ enum UserInterfaceTheme: Int, Theme {
     var text: UIColor {
         switch self {
         case .light:
-            return UIColor.black
+            return UIColor(red:0.13, green:0.16, blue:0.29, alpha:1.0)
         case .dark:
-            return UIColor.white
+            return UIColor(red:0.89, green:0.91, blue:0.97, alpha:1.0)
         }
     }
     
@@ -103,13 +103,13 @@ enum UserInterfaceTheme: Int, Theme {
         switch self {
         case .light:
             let high = UIColor(red: 0.23, green: 0.26, blue: 0.39, alpha: 1)
-            let norm = UIColor(red: 0.61, green: 0.67, blue: 0.77, alpha: 1)
-            let low = UIColor(red: 0.85, green: 0.89, blue: 0.94, alpha: 1)
+            let norm = UIColor(red:0.61, green:0.67, blue:0.77, alpha:1.0)
+            let low = UIColor(red:0.84, green:0.87, blue:0.91, alpha:1.0)
             return Colorset(highlight:high, main:norm, dim:low)
         case .dark:
             let high = UIColor(red: 0.81, green: 0.87, blue: 0.97, alpha: 1)
-            let norm = UIColor(red: 0.72, green: 0.8, blue: 0.93, alpha: 1)
-            let low = UIColor(red: 0.59, green: 0.65, blue: 0.74, alpha: 1)
+            let norm = UIColor(red:0.52, green:0.61, blue:0.73, alpha:1.0)
+            let low = UIColor(red:0.39, green:0.45, blue:0.53, alpha:1.0)
             return Colorset(highlight:high, main:norm, dim:low)
         }
     }
@@ -117,9 +117,9 @@ enum UserInterfaceTheme: Int, Theme {
     var purple: Colorset {
         switch self {
         case .light:
-            let high = UIColor(red: 0.54, green: 0.31, blue: 1, alpha: 1)
-            let norm = UIColor(red: 0.75, green: 0.69, blue: 0.95, alpha: 1)
-            let low = UIColor(red: 0.89, green: 0.83, blue: 1, alpha: 0.6)
+            let high = UIColor(red:0.54, green:0.35, blue:0.98, alpha:1.0)
+            let norm = UIColor(red:0.82, green:0.76, blue:0.95, alpha:1.0)
+            let low = UIColor(red:0.92, green:0.88, blue:1.00, alpha:1.0)
             return Colorset(highlight:high, main:norm, dim:low)
         case .dark:
             let high = UIColor(red: 0.51, green: 0.34, blue: 1, alpha: 1)
@@ -132,9 +132,9 @@ enum UserInterfaceTheme: Int, Theme {
     var blue: Colorset {
         switch self {
         case .light:
-            let high = UIColor(red: 0.2, green: 0.73, blue: 0.8, alpha: 1)
-            let norm = UIColor(red: 0.48, green: 0.79, blue: 0.91, alpha: 0.8)
-            let low = UIColor(red: 0.59, green: 0.89, blue: 1, alpha: 0.6)
+            let high = UIColor(red:0.21, green:0.74, blue:0.95, alpha:1.0)
+            let norm = UIColor(red:0.53, green:0.81, blue:0.92, alpha:1.0)
+            let low = UIColor(red:0.84, green:0.95, blue:0.99, alpha:1.0)
             return Colorset(highlight:high, main:norm, dim:low)
         case .dark:
             let high = UIColor(red: 0.16, green: 0.73, blue: 0.96, alpha: 1)
@@ -168,8 +168,8 @@ enum UserInterfaceTheme: Int, Theme {
             return Colorset(highlight:high, main:norm, dim:low)
         case .dark:
             let high = UIColor(red: 0.61, green: 0.67, blue: 0.77, alpha: 1)
-            let norm = UIColor(red: 0.77, green: 0.81, blue: 0.93, alpha: 0.4)
-            let low = UIColor(red: 0.85, green: 0.87, blue: 0.96, alpha: 0.1)
+            let norm = UIColor(red:0.38, green:0.40, blue:0.46, alpha:1.0)
+            let low = UIColor(red:0.13, green:0.15, blue:0.20, alpha:1.0)
             return Colorset(highlight:high, main:norm, dim:low)
         }
     }
@@ -187,6 +187,16 @@ extension UserInterfaceTheme {
                 return self.background
             case .dark:
                 return self.cardColor
+            }
+        }
+    }
+    var settingBackgroundColor: UIColor {
+        get {
+            switch self {
+            case .light:
+                return self.cardColor
+            case .dark:
+                return self.background
             }
         }
     }

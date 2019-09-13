@@ -58,6 +58,11 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         
         func setup(cell: TextViewUITableViewCell) {
             cell.configure(attributedText: attributedString)
+            cell.selectionStyle = .gray
+            let bgView = UIView()
+            bgView.backgroundColor = UserInterfaceTheme.current.gray.dim
+            cell.selectedBackgroundView = bgView
+
             cell.backgroundColor = UserInterfaceTheme.current.settingCellColor
         }
     }
@@ -78,6 +83,10 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
             cell.textLabel?.textColor = UserInterfaceTheme.current.text
             cell.backgroundColor = UserInterfaceTheme.current.settingCellColor
             cell.imageView?.image = image
+            cell.selectionStyle = .gray
+            let bgView = UIView()
+            bgView.backgroundColor = UserInterfaceTheme.current.gray.dim
+            cell.selectedBackgroundView = bgView
             let rightArrowImage = UIImage(named: "arrow_right")
             cell.accessoryView = UIImageView(image:rightArrowImage?.resized(to: CGSize(width: 6, height: 10)).withRenderingMode(.alwaysTemplate))
             cell.accessoryView?.tintColor = UserInterfaceTheme.current.blue.highlight
@@ -103,6 +112,10 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
             cell.textLabel?.textColor = UserInterfaceTheme.current.text
             cell.imageView?.image = image
             cell.accessoryView = switcher
+            cell.selectionStyle = .gray
+            let bgView = UIView()
+            bgView.backgroundColor = UserInterfaceTheme.current.gray.dim
+            cell.selectedBackgroundView = bgView
             switcher.onChangeHandler = { isOn in
                 self.action?(isOn, self)
             }
@@ -561,10 +574,18 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
             let version = dictionary["CFBundleShortVersionString"] as? String {
             contentView.footerLabel.text = String(format: "%@ %@", NSLocalizedString("version", comment: ""), version)
         }
+        
+        contentView.table.backgroundColor = UserInterfaceTheme.current.settingBackgroundColor
     }
     
     override func setTitle() {
         title = NSLocalizedString("settings", comment: "")
+    }
+    
+    override func setBarStyle() {
+        super.setBarStyle()
+        navigationController?.navigationBar.backgroundColor = UserInterfaceTheme.current.settingBackgroundColor
+        contentView.backgroundColor = UserInterfaceTheme.current.settingBackgroundColor
     }
     
     // MARK: StoreSubscriber
@@ -595,10 +616,11 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         guard
             let section = SettingsSections(rawValue: indexPath.section),
             let item = sections[section]?[indexPath.row] else {
-                return UITableViewCell()
+                return FlexCell()
         }
         let cell = tableView.dequeueReusableCell(withItem: item, for: indexPath)
         cell.textLabel?.font = UIFont.systemFont(ofSize: 15)
+        
         cell.backgroundColor = UserInterfaceTheme.current.settingCellColor
         return cell
     }
@@ -631,7 +653,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         let titleLabel = UILabel(frame: CGRect(origin: CGPoint(x: 20, y: 5), size: CGSize(width: view.frame.width - 20, height: view.frame.height)))
         titleLabel.font = applyFont(ofSize: 16)
         titleLabel.textColor = UserInterfaceTheme.current.textVariants.main
-        view.backgroundColor =  UserInterfaceTheme.current.background
+        view.backgroundColor =  UserInterfaceTheme.current.settingBackgroundColor
 
         view.addSubview(titleLabel)
         

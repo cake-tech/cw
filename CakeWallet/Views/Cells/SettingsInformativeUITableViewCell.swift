@@ -19,6 +19,12 @@ final class SettingsInformativeUITableViewCell: FlexCell, UITextFieldDelegate {
         accessoryTextField.backgroundColor = .clear
         accessoryTextField.delegate = self
         accessoryTextField.isUserInteractionEnabled = false
+        
+        selectionStyle = .gray
+        let bgView = UIView()
+        bgView.backgroundColor = UserInterfaceTheme.current.gray.dim
+        selectedBackgroundView = bgView
+
     }
     
     override func configureConstraints() {

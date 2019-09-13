@@ -27,7 +27,7 @@ final class SwitchView: BaseView {
         super.configureView()
         onValueChange(withAnimation: false)
         let onTapGesture = UITapGestureRecognizer(target: self, action: #selector(onTapHandler))
-        backgroundColor = UserInterfaceTheme.current.gray.dim
+        backgroundColor = UserInterfaceTheme.current.gray.main
         layer.masksToBounds = false
         
         indicatorImageView.layer.masksToBounds = false
