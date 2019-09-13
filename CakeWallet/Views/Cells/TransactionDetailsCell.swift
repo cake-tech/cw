@@ -14,7 +14,7 @@ final class TransactionDetailsCell: FlexCell {
         super.configureView()
         contentView.backgroundColor = UserInterfaceTheme.current.background
         selectionStyle = .none
-        titleLabel.textColor = UserInterfaceTheme.current.text
+        titleLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
         valueLabel.textColor = UserInterfaceTheme.current.textVariants.main
         titleLabel.numberOfLines = 0
         valueLabel.numberOfLines = 0

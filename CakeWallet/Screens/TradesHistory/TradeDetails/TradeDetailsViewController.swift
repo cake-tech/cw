@@ -48,6 +48,7 @@ final class TradeDetailsViewController: BaseViewController<TransactionDetailsVie
         contentView.table.dataSource = self
         contentView.table.delegate = self
         contentView.table.register(items: [TradeDetailsCellItem.self])
+        contentView.table.separatorColor = UserInterfaceTheme.current.gray.dim
         
         updateTradeStateTimer.fire()
         

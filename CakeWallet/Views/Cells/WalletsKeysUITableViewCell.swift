@@ -25,6 +25,8 @@ final class WalletsKeysUITableViewCell: FlexCell {
     func configure(title: String, value: String) {
         titleLabel.text = title
         valueLabel.text = value
+        titleLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
+        valueLabel.textColor = UserInterfaceTheme.current.textVariants.main
         titleLabel.flex.markDirty()
         valueLabel.flex.markDirty()
         layout()

@@ -27,12 +27,14 @@ final class WalletsView: BaseScrollFlexViewWithBottomSection {
         createWalletButton.layer.backgroundColor = UserInterfaceTheme.current.purple.dim.cgColor
         createWalletButton.layer.borderColor = UserInterfaceTheme.current.purple.main.cgColor
         createWalletButton.layer.borderWidth = 1
-        createWalletButton.imageView?.tintColor = UserInterfaceTheme.current.text
+        createWalletButton.imageView?.tintColor = UserInterfaceTheme.current.textVariants.highlight
+        createWalletButton.setTitleColor(UserInterfaceTheme.current.textVariants.highlight, for: .normal)
         restoreWalletButton.setImage(UIImage(named: "recover_icon")?.withRenderingMode(.alwaysTemplate), for: .normal)
-        restoreWalletButton.imageView?.tintColor = UserInterfaceTheme.current.text
+        restoreWalletButton.imageView?.tintColor = UserInterfaceTheme.current.textVariants.highlight
         restoreWalletButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
         restoreWalletButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
         restoreWalletButton.contentHorizontalAlignment = .left
+        restoreWalletButton.setTitleColor(UserInterfaceTheme.current.textVariants.highlight, for: .normal)
         restoreWalletButton.layer.backgroundColor = UserInterfaceTheme.current.blue.dim.cgColor
         restoreWalletButton.layer.borderColor = UserInterfaceTheme.current.blue.main.cgColor
         restoreWalletButton.layer.borderWidth = 1

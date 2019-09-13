@@ -51,7 +51,7 @@ class Button: UIButton {
         layer.shadowRadius = 20
         layer.shadowOffset = CGSize(width: 2, height: 1)
         layer.shadowOpacity = 0.3
-        layer.borderColor = UserInterfaceTheme.current.purple.highlight.cgColor
+        layer.borderColor = UserInterfaceTheme.current.purple.main.cgColor
         layer.shadowColor = UIColor.lightGray.cgColor
         contentHorizontalAlignment = .center
         titleLabel?.font = applyFont()

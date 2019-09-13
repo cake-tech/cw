@@ -58,7 +58,7 @@ class LoadingButton: UIButton {
         layer.shadowOpacity = 0.0
         layer.shadowColor = UIColor.lightGray.cgColor
         layer.borderWidth = 0.75
-        layer.borderColor = UserInterfaceTheme.current.purple.highlight.cgColor
+        layer.borderColor = UserInterfaceTheme.current.purple.main.cgColor
         contentHorizontalAlignment = .center
         titleLabel?.font = applyFont(ofSize: 17)
         titleLabel?.numberOfLines = 0

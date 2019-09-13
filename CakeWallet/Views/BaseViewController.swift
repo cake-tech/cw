@@ -94,6 +94,7 @@ class BaseViewController<View: BaseView>: AnyBaseViewController {
         navigationController?.navigationItem.backBarButtonItem?.tintColor = UserInterfaceTheme.current.text
         navigationController?.navigationItem.leftBarButtonItem?.tintColor = UserInterfaceTheme.current.text
         navigationController?.navigationItem.rightBarButtonItem?.tintColor = UserInterfaceTheme.current.text
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UserInterfaceTheme.current.text]
         if let tabBar = tabBarController?.tabBar {
             tabBar.isTranslucent = false
             tabBar.barTintColor = UserInterfaceTheme.current.tabBar

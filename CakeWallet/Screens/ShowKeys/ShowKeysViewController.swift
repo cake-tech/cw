@@ -44,6 +44,7 @@ final class ShowKeysViewController: BaseViewController<ShowKeysView>, UITableVie
         title = NSLocalizedString("wallet_keys", comment: "")
         contentView.table.dataSource = self
         contentView.table.delegate = self
+        contentView.table.separatorColor = UserInterfaceTheme.current.gray.dim
         contentView.table.register(items: [WalletKeysCellItem.self])
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMM d, yyyy HH:mm"

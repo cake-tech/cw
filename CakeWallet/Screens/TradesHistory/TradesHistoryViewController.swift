@@ -23,6 +23,7 @@ final class TradeTableCell: FlexCell {
         contentView.backgroundColor = UserInterfaceTheme.current.background
         backgroundColor = .clear
         selectionStyle = .none
+        idLabel.textColor = UserInterfaceTheme.current.text
         
         idLabel.font = applyFont(ofSize: 16)
         dateLabel.font = applyFont(ofSize: 15)
@@ -125,7 +126,7 @@ final class TradesHistoryViewController: BaseViewController<TradesHistoryView>, 
         backButton.tintColor = UserInterfaceTheme.current.text
         navigationItem.backBarButtonItem = backButton
         
-        
+        contentView.table.separatorColor = UserInterfaceTheme.current.gray.dim
         contentView.table.delegate = self
         contentView.table.dataSource = self
         contentView.table.register(items: [TradeInfo.self])
@@ -141,9 +142,8 @@ final class TradesHistoryViewController: BaseViewController<TradesHistoryView>, 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let trade = trades[indexPath.row]
         let cell = tableView.dequeueReusableCell(withItem: trade, for: indexPath) as! SwipeTableViewCell
-        
+
         cell.delegate = self as? SwipeTableViewCellDelegate
-        cell.addSeparator()
         
         return cell
     }

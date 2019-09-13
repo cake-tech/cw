@@ -69,11 +69,11 @@ final class SendView: BaseScrollFlexViewWithBottomSection {
         walletTitleLabel.font = applyFont(ofSize: 14)
         walletTitleLabel.textColor = UserInterfaceTheme.current.purple.highlight
         
-        walletNameLabel.textColor = UserInterfaceTheme.current.text
+        walletNameLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
         
         cryptoAmountValueLabel.textAlignment = .right
         cryptoAmountValueLabel.font = applyFont(ofSize: 26)
-        cryptoAmountValueLabel.textColor = UserInterfaceTheme.current.text
+        cryptoAmountValueLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
         cryptoAmountTitleLabel.textColor = UserInterfaceTheme.current.text
         cryptoAmountTextField.keyboardType = .decimalPad
         

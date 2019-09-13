@@ -95,7 +95,7 @@ enum UserInterfaceTheme: Int, Theme {
         case .light:
             return UIColor(red:0.13, green:0.16, blue:0.29, alpha:1.0)
         case .dark:
-            return UIColor(red:0.89, green:0.91, blue:0.97, alpha:1.0)
+            return UIColor(red:0.52, green:0.60, blue:0.73, alpha:1.0)
         }
     }
     
@@ -197,6 +197,16 @@ extension UserInterfaceTheme {
                 return self.cardColor
             case .dark:
                 return self.background
+            }
+        }
+    }
+    var dashboardBalanceColor: UIColor {
+        get {
+            switch self {
+            case .light:
+                return self.text
+            case .dark:
+                return .white
             }
         }
     }

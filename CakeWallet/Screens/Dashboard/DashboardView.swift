@@ -73,7 +73,7 @@ final class DashboardActionButton: BaseFlexView {
         wrapper.applyCardSketchShadow()
         wrapper.frame = CGRect(x: 0, y: 0, width: 200, height: 60)
         buttonImageView.image = type.image
-        
+        label.textColor = UserInterfaceTheme.current.textVariants.highlight
         rootFlexContainer.layer.cornerRadius = 12
         wrapper.layer.cornerRadius = 12
         wrapper.layer.borderWidth = 1
@@ -146,7 +146,7 @@ final class DashboardView: BaseScrollFlexView {
         scrollView.showsVerticalScrollIndicator = false
         cryptoAmountLabel.font = applyFont(ofSize: 40)
         cryptoAmountLabel.textAlignment = .center
-        cryptoAmountLabel.textColor = UserInterfaceTheme.current.text
+        cryptoAmountLabel.textColor = UserInterfaceTheme.current.dashboardBalanceColor
         fiatAmountLabel.textColor = UserInterfaceTheme.current.textVariants.main
         fiatAmountLabel.textAlignment = .center
         fiatAmountLabel.font = applyFont(ofSize: 17)
