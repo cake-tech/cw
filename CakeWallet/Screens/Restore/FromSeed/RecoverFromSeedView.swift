@@ -6,7 +6,7 @@ final class RecoverFromSeedView: BaseFlexView {
     let cardWrapper, actionButtonsContainer, seedContainer: UIView
     let restoreFromHeightView: RestoreFromHeightView
     var walletNameField: CWTextField
-    var seedField: CWTextView
+    var seedField: CWTextField
     let doneButton: LoadingButton
     
     required init() {
@@ -15,7 +15,7 @@ final class RecoverFromSeedView: BaseFlexView {
         seedContainer = UIView()
         walletNameField = CWTextField(placeholder: NSLocalizedString("wallet_name", comment: ""), fontSize: 16)
         restoreFromHeightView = RestoreFromHeightView()
-        seedField = CWTextView(placeholder: NSLocalizedString("seed", comment: ""), fontSize: 16)
+        seedField = CWTextField(placeholder: NSLocalizedString("seed", comment: ""), fontSize: 16)
         doneButton = LoadingButton()
         doneButton.setTitle(NSLocalizedString("recover", comment: ""), for: .normal)
         
@@ -24,14 +24,14 @@ final class RecoverFromSeedView: BaseFlexView {
     
     override func configureView() {
         super.configureView()
-        seedField.isScrollEnabled = false
-        seedField.delegate = self
         cardWrapper.layer.cornerRadius = 12
-        //tstag
         cardWrapper.backgroundColor = UserInterfaceTheme.current.background
         seedField.textColor = UserInterfaceTheme.current.textVariants.main
         seedField.backgroundColor = UserInterfaceTheme.current.background
         walletNameField.textColor = UserInterfaceTheme.current.textVariants.main
+        if let placeholder = seedField.placeholder {
+            seedField.attributedPlaceholder = NSAttributedString(string:placeholder, attributes: [NSAttributedStringKey.foregroundColor: UserInterfaceTheme.current.textVariants.dim])
+        }
     }
     
     override func configureConstraints() {
