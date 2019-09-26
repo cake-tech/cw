@@ -12,12 +12,14 @@ final class AboutSeedView: BaseFlexView {
     
     required init() {
         imageView = UIImageView(image: UIImage(named:"seed_illu"))
-        titleLabel = UILabel(fontSize: 19)
+        titleLabel = UILabel()
         titleLabel.textColor = UserInterfaceTheme.current.text
         titleLabel.text = NSLocalizedString("next_page_seed", comment: "")
         titleLabel.lineBreakMode = .byWordWrapping
         titleLabel.numberOfLines = 0
         titleLabel.textAlignment = .center
+        titleLabel.font = UIFont(name: "Lato-Semibold", size: 19)
+        titleLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
         
         secondLabel = UILabel(fontSize: 14)
         secondLabel.textColor = UserInterfaceTheme.current.textVariants.main
@@ -25,7 +27,8 @@ final class AboutSeedView: BaseFlexView {
         secondLabel.numberOfLines = 0
         secondLabel.lineBreakMode = .byWordWrapping
         secondLabel.textAlignment = .center
-        
+        secondLabel.font = UIFont(name: "Lato-Regular", size: 16)
+    
         understandButton = PrimaryButton(title: NSLocalizedString("i_understand", comment: ""))
         
         super.init()
@@ -45,12 +48,12 @@ final class AboutSeedView: BaseFlexView {
         let mainView = UIView()
         mainView.flex.alignItems(.center).justifyContent(.center).define { flex in
             flex.addItem(imageView)
-            flex.addItem(titleLabel).width(200).height(200)
-            flex.addItem(secondLabel).marginBottom(30).width(260)
+            flex.addItem(titleLabel).width(200).marginBottom(45)
+            flex.addItem(secondLabel).marginBottom(45).width(260)
         }
         
         rootFlexContainer.flex.alignItems(.center).justifyContent(.center).define{ flex in
-            flex.addItem(mainView)
+            flex.addItem(mainView).justifyContent(.center).position(.relative).height(150)
             flex.addItem(bottomView).height(130).position(.absolute).bottom(0).width(100%).backgroundColor(UserInterfaceTheme.current.background)
         }
     }
