@@ -25,8 +25,9 @@ final class WalletUITableViewCell: FlexCell {
     func configure(wallet: WalletIndex, isCurrent: Bool) {
         self.wallet = wallet
         nameLabel.text = wallet.name
+        nameLabel.font = UIFont(name: "Lato-SemiBold", size: 18)
         backgroundColor = UserInterfaceTheme.current.background
-        
+        tintColor = UserInterfaceTheme.current.blue.highlight
         if isCurrent {
             nameLabel.textColor = UserInterfaceTheme.current.blue.highlight
             accessoryType = .checkmark

@@ -6,10 +6,20 @@ class LeftAlignedIconButton: Button {
     override func titleRect(forContentRect contentRect: CGRect) -> CGRect {
         let titleRect = super.titleRect(forContentRect: contentRect)
         let imageSize = currentImage?.size ?? .zero
-        let availableWidth = contentRect.width - imageEdgeInsets.right - imageSize.width - titleRect.width
+        let availableWidth = contentRect.width - imageEdgeInsets.right - imageSize.width*2 - titleRect.width
         return titleRect.offsetBy(dx: round(availableWidth / 2), dy: 0)
     }
 }
+
+//extension UserInterfaceTheme {
+//    func restoreWalletButtonFill: UIColor {
+//        
+//    }
+//    
+//    func restoreWalletButtonOutline: UIColor {
+//        switch self {}
+//    }
+//}
 
 final class WalletsView: BaseScrollFlexViewWithBottomSection {
     let walletsTableView: UITableView
@@ -39,16 +49,16 @@ final class WalletsView: BaseScrollFlexViewWithBottomSection {
         createWalletButton.layer.borderColor = UserInterfaceTheme.current.purple.main.cgColor
         createWalletButton.layer.borderWidth = 1
         createWalletButton.contentHorizontalAlignment = .left
-        
-        createWalletButton.imageView?.tintColor = UserInterfaceTheme.current.textVariants.highlight
+        createWalletButton.imageView?.tintColor = UserInterfaceTheme.current.purple.highlight
         createWalletButton.setTitleColor(UserInterfaceTheme.current.textVariants.highlight, for: .normal)
+        
         restoreWalletButton.setImage(UIImage(named: "recover_icon")?.withRenderingMode(.alwaysTemplate), for: .normal)
         restoreWalletButton.imageView?.tintColor = UserInterfaceTheme.current.textVariants.highlight
         restoreWalletButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
         restoreWalletButton.contentHorizontalAlignment = .left
         restoreWalletButton.setTitleColor(UserInterfaceTheme.current.textVariants.highlight, for: .normal)
-        restoreWalletButton.layer.backgroundColor = UserInterfaceTheme.current.blue.dim.cgColor
-        restoreWalletButton.layer.borderColor = UserInterfaceTheme.current.blue.main.cgColor
+        restoreWalletButton.layer.backgroundColor = UserInterfaceTheme.current.gray.dim.cgColor
+        restoreWalletButton.layer.borderColor = UserInterfaceTheme.current.gray.main.cgColor
         restoreWalletButton.layer.borderWidth = 1
 
         
