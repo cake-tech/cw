@@ -39,7 +39,7 @@ final class SeedViewController: BaseViewController<SeedView>, StoreSubscriber {
 
         contentView.titleLabel.text = walletName
         contentView.seedLabel.text = seed
-        contentView.desciptionLabel.text = NSLocalizedString("seed_disclaimer", comment: "")
+
         contentView.saveButton.addTarget(self, action: #selector(showSaveMenu), for: .touchUpInside)
         contentView.copyButton.addTarget(self, action: #selector(copyAction), for: .touchUpInside)
         contentView.rootFlexContainer.flex.layout()
