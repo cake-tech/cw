@@ -357,6 +357,8 @@
 		A591C677224112DF0051A4FE /* RecoverCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A591C676224112DF0051A4FE /* RecoverCardView.swift */; };
 		A591C67922414C420051A4FE /* UITextView+Placeholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A591C67822414C420051A4FE /* UITextView+Placeholder.swift */; };
 		A5980D2C1FFC9855647CF936 /* Pods_CWMonero.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 784D7BF72CC17977C433AE9E /* Pods_CWMonero.framework */; };
+		AE227C44233C6647009488F6 /* AboutSeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE227C43233C6647009488F6 /* AboutSeedView.swift */; };
+		AE227C46233C6656009488F6 /* AboutSeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE227C45233C6656009488F6 /* AboutSeedViewController.swift */; };
 		AE728B2122F65702000A9F2E /* Vibrate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE728B2022F65701000A9F2E /* Vibrate.swift */; };
 		AEBAD6632310EBBF000A9F2E /* SubAddressPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAD6622310EBBF000A9F2E /* SubAddressPickerViewController.swift */; };
 		AEBAD6652310EBD3000A9F2E /* SubAddressPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAD6642310EBD3000A9F2E /* SubAddressPickerView.swift */; };
@@ -892,6 +894,8 @@
 		A58B26C2223BA7E300AD0B97 /* CurrencyPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyPickerViewController.swift; sourceTree = "<group>"; };
 		A591C676224112DF0051A4FE /* RecoverCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverCardView.swift; sourceTree = "<group>"; };
 		A591C67822414C420051A4FE /* UITextView+Placeholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+Placeholder.swift"; sourceTree = "<group>"; };
+		AE227C43233C6647009488F6 /* AboutSeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutSeedView.swift; sourceTree = "<group>"; };
+		AE227C45233C6656009488F6 /* AboutSeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutSeedViewController.swift; sourceTree = "<group>"; };
 		AE728B2022F65701000A9F2E /* Vibrate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vibrate.swift; sourceTree = "<group>"; };
 		AEBAD6622310EBBF000A9F2E /* SubAddressPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubAddressPickerViewController.swift; sourceTree = "<group>"; };
 		AEBAD6642310EBD3000A9F2E /* SubAddressPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubAddressPickerView.swift; sourceTree = "<group>"; };
@@ -1523,6 +1527,7 @@
 		6AAF1E9620B6028F000E4E02 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				AE227C42233C662A009488F6 /* AboutSeed */,
 				D19AA43822E9FE9900148A44 /* TradesHistory */,
 				0C6DEB4C228184B000536AA1 /* Accounts */,
 				A5178DF0222FEA6400EC4829 /* Splash */,
@@ -1847,6 +1852,15 @@
 				A591C676224112DF0051A4FE /* RecoverCardView.swift */,
 			);
 			path = RecoverCardView;
+			sourceTree = "<group>";
+		};
+		AE227C42233C662A009488F6 /* AboutSeed */ = {
+			isa = PBXGroup;
+			children = (
+				AE227C43233C6647009488F6 /* AboutSeedView.swift */,
+				AE227C45233C6656009488F6 /* AboutSeedViewController.swift */,
+			);
+			path = AboutSeed;
 			sourceTree = "<group>";
 		};
 		AEBAD6612310EB7E000A9F2E /* SubaddressPicker */ = {
@@ -2545,6 +2559,7 @@
 				0CCD600B2272E6180038B602 /* WalletNameView.swift in Sources */,
 				0CB841C722031AE200AF4985 /* getTransactionKey.swift in Sources */,
 				64AA49C921457125002CE1FE /* PinCodeKeyButton.swift in Sources */,
+				AE227C44233C6647009488F6 /* AboutSeedView.swift in Sources */,
 				0C6DEB622281B34D00536AA1 /* OnAccountAddedEffect.swift in Sources */,
 				6AE7241120DD5C5C003D6559 /* NodesList.swift in Sources */,
 				6413ACD720E945BC004922AD /* ApplicationState.swift in Sources */,
@@ -2697,6 +2712,7 @@
 				6AAF1E9A20B60308000E4E02 /* BaseView.swift in Sources */,
 				6A72CB2120CC5D7D00CFABC9 /* NodesViewController.swift in Sources */,
 				6AAF1E8F20B5EF81000E4E02 /* UIColor+extensions.swift in Sources */,
+				AE227C46233C6656009488F6 /* AboutSeedViewController.swift in Sources */,
 				0C6DEB382281565F00536AA1 /* CWTextView.swift in Sources */,
 				A577D40A21EDEFDB00FA1655 /* AddressBookView.swift in Sources */,
 				6AE7240E20DD55F8003D6559 /* StartSyncingEffect.swift in Sources */,
