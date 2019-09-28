@@ -2,8 +2,9 @@ import UIKit
 import FlexLayout
 
 final class DisclaimerView: BaseFlexView {
-    let titleLabel: UILabel
+    let imageView = UIImageView()
     let textView: UITextView
+    let titleLabel: UILabel
     let bottomView: UIView
     let acceptButton: UIButton
     let checkBoxTitleButton: TransparentButton
@@ -12,8 +13,8 @@ final class DisclaimerView: BaseFlexView {
     let gradientView: UIView
     
     required init() {
-        titleLabel = UILabel(fontSize: 14)
         textView = UITextView()
+        titleLabel = UILabel()
         bottomView = UIView()
         acceptButton = PrimaryButton(title: NSLocalizedString("accept", comment: ""))
         checkBoxWrapper = UIView()
@@ -26,8 +27,16 @@ final class DisclaimerView: BaseFlexView {
     
     override func configureView() {
         super.configureView()
+        imageView.image = UIImage.init(named:"AppIcon")?.resized(to: CGSize(width: 35, height: 35))
+        titleLabel.font = UIFont(name: "Lato-SemiBold", size: 18)
+        titleLabel.textAlignment = .left
+        titleLabel.lineBreakMode = .byWordWrapping
+        titleLabel.numberOfLines = 0
+        titleLabel.textColor = UserInterfaceTheme.current.text
+        titleLabel.text = NSLocalizedString("terms", comment: "")
         textView.font = applyFont(ofSize: 14)
         textView.isEditable = false
+
         checkBoxTitleButton.setTitleColor(UserInterfaceTheme.current.text, for: .normal)
         checkBoxTitleButton.titleLabel?.font = applyFont(ofSize: 13, weight: .semibold)
         textView.backgroundColor = .clear
@@ -41,7 +50,7 @@ final class DisclaimerView: BaseFlexView {
         let mask = CAGradientLayer()
         mask.startPoint = CGPoint(x: 0.0, y: 0.0)
         mask.endPoint = CGPoint(x: 0.0, y: 3.0)
-        let whiteColor = UIColor.white
+        let whiteColor = UserInterfaceTheme.current.cardColor
         
         mask.colors = [
             whiteColor.withAlphaComponent(0.0).cgColor,
@@ -60,16 +69,20 @@ final class DisclaimerView: BaseFlexView {
         }
         
         bottomView.flex.define { flex in
-            //tstag
-            flex.addItem(gradientView).position(.absolute).top(-35).backgroundColor(UserInterfaceTheme.current.background)
-            flex.addItem(checkBoxWrapper)
+            flex.addItem(gradientView).position(.absolute).top(-35).backgroundColor(UserInterfaceTheme.current.cardColor)
+            flex.addItem(checkBoxWrapper).marginLeft(25)
             flex.addItem(acceptButton).height(56).width(100%)
         }
-        
+        let leftAlignedView = UIView()
+        leftAlignedView.flex.direction(.column).alignContent(.start).define { flex in
+            flex.addItem(imageView).width(35).height(35)
+            flex.addItem(titleLabel).position(.relative).marginTop(10).width(200)
+        }
+    
         rootFlexContainer.flex.alignItems(.center).padding(0, 15, 0, 15).define{ flex in
+            flex.addItem(leftAlignedView).width(100%).marginTop(15).marginBottom(10)
             flex.addItem(textView).marginBottom(10).marginBottom(100)
-            //tstag
-            flex.addItem(bottomView).height(130).position(.absolute).bottom(0).width(100%).backgroundColor(UserInterfaceTheme.current.background)
+            flex.addItem(bottomView).height(130).position(.absolute).bottom(0).width(100%).backgroundColor(UserInterfaceTheme.current.cardColor)
         }
     }
 }

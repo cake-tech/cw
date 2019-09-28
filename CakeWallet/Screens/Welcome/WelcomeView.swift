@@ -51,6 +51,9 @@ final class WelcomeView: BaseScrollFlexViewWithBottomSection {
         descriptionTextView.backgroundColor = .clear
         descriptionTextView.layer.cornerRadius = 10
         descriptionTextView.isScrollEnabled = false
+        
+        restoreButton.backgroundColor = UserInterfaceTheme.current.blue.dim
+        restoreButton.layer.borderColor = UserInterfaceTheme.current.blue.main.cgColor
     }
     
     override func configureConstraints() {
