@@ -115,6 +115,9 @@ final class SendView: BaseScrollFlexViewWithBottomSection {
         paymentIdTextField.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
         paymentIdTextField.rightViewMode = .always
         paymentIdTextField.textColor = UserInterfaceTheme.current.text
+        
+        sendButton.backgroundColor = UserInterfaceTheme.current.gray.dim
+        sendButton.layer.borderColor = UserInterfaceTheme.current.gray.main.cgColor
     }
     
     override func configureConstraints() {
