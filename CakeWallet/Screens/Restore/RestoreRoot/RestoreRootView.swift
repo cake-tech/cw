@@ -19,6 +19,7 @@ final class RestoreRootView: BaseScrollFlexView {
             descriptionText: NSLocalizedString("restore_from_seed_keys_long", comment: ""),
             textColor: UserInterfaceTheme.current.purple.highlight
         )
+        restoreWalletCard.layer.masksToBounds = false
         
         restoreAppImageView = FlexView()
         restoreAppImage = UIImageView(image: UIImage(named: "restore_app_image"))
@@ -28,13 +29,14 @@ final class RestoreRootView: BaseScrollFlexView {
             descriptionText: NSLocalizedString("restore_from_backup_long", comment: ""),
             textColor: UserInterfaceTheme.current.blue.highlight
         )
+        restoreAppCard.layer.masksToBounds = false
         
         super.init()
     }
     
     override func configureConstraints() {
         //TSTAG
-        let imageViewBackgroundColor = UserInterfaceTheme.current.background
+        let imageViewBackgroundColor = UserInterfaceTheme.current.settingBackgroundColor
         let imageHeight = adaptiveLayout.getSize(forLarge: 180, forBig: 150, defaultSize: 115)
         let imageWidth = adaptiveLayout.getSize(forLarge: 360, forBig: 320, defaultSize: 240)
         

@@ -48,7 +48,7 @@ final class RestoreView: BaseScrollFlexView {
                 }
             }
         }
-        
+        restoreFromSeedCard.layer.masksToBounds = false
         restoreFromKeysImageView.constraintsSetup = { [weak self] root in
             root.flex.padding(imagePaddingTop, 0, 10, 0).backgroundColor(imageViewBackgroundColor).define { flex in
                 if let restoreFromKeysImage = self?.restoreFromKeysImage {
@@ -58,9 +58,10 @@ final class RestoreView: BaseScrollFlexView {
                 }
             }
         }
+        restoreFromKeysCard.layer.masksToBounds = false
         
         rootFlexContainer.flex.alignItems(.center).padding(15, 20, 15, 20).define { flex in
-             flex.addItem(restoreFromSeedCard).width(100%)
+            flex.addItem(restoreFromSeedCard).width(100%)
             flex.addItem(restoreFromKeysCard).width(100%)
         }
     }

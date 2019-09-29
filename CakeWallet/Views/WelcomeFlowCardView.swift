@@ -51,15 +51,13 @@ final class WelcomeFlowCardView: BaseFlexView {
         descriptionText.textAlignment = .center
         
         buttonText.font = applyFont(ofSize: buttonFontSize, weight: .semibold)
-        buttonText.textColor = UserInterfaceTheme.current.textVariants.highlight
+        buttonText.textColor = textColor
     }
-    
+
     override func configureConstraints() {
         rootFlexContainer.layer.cornerRadius = 12
         rootFlexContainer.layer.borderWidth = 0.75
         rootFlexContainer.layer.borderColor = UserInterfaceTheme.current.gray.highlight.cgColor
-        rootFlexContainer.backgroundColor = UserInterfaceTheme.current.background
-        rootFlexContainer.layer.masksToBounds = true
         
         let getButtonHeight: CGFloat = adaptiveLayout.getSize(forLarge: 60, forBig: 52, defaultSize: 48)
         
@@ -92,7 +90,7 @@ final class WelcomeFlowCardView: BaseFlexView {
                     .width(100%).height(1)
                     .backgroundColor(UserInterfaceTheme.current.gray.dim)
                 flex.addItem(button)
-                    .backgroundColor(textColor)
+                    .backgroundColor(UserInterfaceTheme.current.background)
                     .position(.absolute).bottom(0)
                     .alignItems(.center).justifyContent(.center)
                     .width(100%).height(getButtonHeight)

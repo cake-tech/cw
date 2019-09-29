@@ -11,6 +11,7 @@ final class WelcomeView: BaseScrollFlexViewWithBottomSection {
     let buttonsContiner: UIView
     let createWalletButton: UIButton
     let restoreButton: UIButton
+    let cwLogoImageView = UIImageView(image:UIImage(named:"cake_logo_image"))
     
     required init() {
         logoImage = UIImageView(image: UIImage(named: "welcome_image"))
@@ -51,6 +52,9 @@ final class WelcomeView: BaseScrollFlexViewWithBottomSection {
         descriptionTextView.backgroundColor = .clear
         descriptionTextView.layer.cornerRadius = 10
         descriptionTextView.isScrollEnabled = false
+        
+        restoreButton.backgroundColor = UserInterfaceTheme.current.blue.dim
+        restoreButton.layer.borderColor = UserInterfaceTheme.current.blue.main.cgColor
     }
     
     override func configureConstraints() {
@@ -58,6 +62,7 @@ final class WelcomeView: BaseScrollFlexViewWithBottomSection {
         let bodyContainerPaddingTop = adaptiveLayout.getSize(forLarge: 400, forBig: 340, defaultSize: 280)
         
         titleContainer.flex.alignItems(.center).define { flex in
+            flex.addItem(cwLogoImageView).width(35).height(35).marginHorizontal(10)
             flex.addItem(welcomeLabel).marginBottom(10)
             flex.addItem(welcomeSubtitleLabel)
         }
