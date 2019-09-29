@@ -8,6 +8,8 @@ final class CopyButton: SecondaryButton {
     override func configureView() {
         super.configureView()
         addTarget(self, action: #selector(onTouchAction), for: .touchUpInside)
+        layer.backgroundColor = UserInterfaceTheme.current.grayButton.fill.cgColor
+        layer.borderColor = UserInterfaceTheme.current.grayButton.border.cgColor
     }
     
     @objc

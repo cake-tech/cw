@@ -1523,8 +1523,8 @@ class ExchangeContentAlertView: BaseFlexView {
         messageLabel.textColor = UserInterfaceTheme.current.text
         copiedLabel.textAlignment = .center
         copiedLabel.textColor = UserInterfaceTheme.current.text
-        copyButton.backgroundColor = UserInterfaceTheme.current.blue.main
-        copyButton.layer.borderColor = UserInterfaceTheme.current.gray.dim.cgColor
+        copyButton.backgroundColor = UserInterfaceTheme.current.blue.dim
+        copyButton.layer.borderColor = UserInterfaceTheme.current.blue.main.cgColor
         backgroundColor = .clear
     }
     
