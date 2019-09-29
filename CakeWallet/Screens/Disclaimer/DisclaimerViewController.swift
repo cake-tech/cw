@@ -8,10 +8,10 @@ final class DisclaimerViewController: BaseViewController<DisclaimerView> {
     
     override func configureBinds() {
         super.configureBinds()
-        title = NSLocalizedString("terms", comment: "")
         loadAndDisplayDocument()
         contentView.acceptButton.addTarget(self, action: #selector(onAccessAction), for: .touchUpInside)
         contentView.checkBoxTitleButton.addTarget(self, action: #selector(toggleCheckBox), for: .touchUpInside)
+        navigationController?.isNavigationBarHidden = true
     }
     
     @objc
@@ -26,6 +26,10 @@ final class DisclaimerViewController: BaseViewController<DisclaimerView> {
         contentView.checkBox.isChecked = !contentView.checkBox.isChecked
     }
     
+    override var prefersStatusBarHidden: Bool {
+        return navigationController?.isNavigationBarHidden == true
+    }
+    
     private func loadAndDisplayDocument() {
         if let docUrl = Configurations.termsOfUseUrl {
             do {
@@ -34,6 +38,7 @@ final class DisclaimerViewController: BaseViewController<DisclaimerView> {
                     options: [NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.rtf],
                     documentAttributes: nil)
                 contentView.textView.attributedText = attributedText
+                contentView.textView.textColor = UserInterfaceTheme.current.text
             } catch {
                 print(error) // fixme
             }
