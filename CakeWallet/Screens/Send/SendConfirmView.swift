@@ -27,7 +27,8 @@ final class SendConfirmView: BaseFlexView {
         imageView.contentMode = .scaleAspectFit
         
         confirmSendingTitle.font = UIFont(name: "Lato-Semibold", size: 20)
-        confirmSendingTitle.textColor = UserInterfaceTheme.current.purple.highlight
+        confirmSendingTitle.textColor = UserInterfaceTheme.current.purple.main
+        confirmSendingTitle.text = NSLocalizedString("confirm_sending", comment: "")
         
         amountLabel.font = UIFont(name: "Lato-Semibold", size: 32)
         amountLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
@@ -36,29 +37,45 @@ final class SendConfirmView: BaseFlexView {
         feeLabel.textColor = UserInterfaceTheme.current.textVariants.dim
         
         recipientAddressTitle.font = UIFont(name: "Lato-SemiBold", size: 14)
-        recipientAddressTitle.textColor = UserInterfaceTheme.current.textVariants.main
+        recipientAddressTitle.textColor = UserInterfaceTheme.current.purple.main
+        recipientAddressTitle.text = NSLocalizedString("recipient_address", comment: "")
+        
+        addressLabel.font = UIFont(name: "Lato-Semibold", size: 14)
+        addressLabel.textColor = UserInterfaceTheme.current.textVariants.main
+        
+        //enable character breaks and multiple lines
+        addressLabel.lineBreakMode = .byCharWrapping
+        addressLabel.numberOfLines = 0
+        addressLabel.textAlignment = .center
         
     }
     
     override func configureConstraints() {
         let bottomView = UIView()
-        bottomView.flex.marginHorizontal(10).define { flex in
-            flex.addItem(cancelButton).height(56).width(40%)
-            flex.addItem(sendButton).height(56).width(60%)
+        bottomView.flex.direction(.row).justifyContent(.spaceAround).marginHorizontal(3).define { flex in
+            flex.addItem(cancelButton).height(56).width(35%)
+            flex.addItem(sendButton).height(56).width(55%)
         }
         
         let mainView = UIView()
-        mainView.flex.alignItems(.center).justifyContent(.center).define { flex in
-            flex.addItem(imageView)
-            flex.addItem(confirmSendingTitle)
-            flex.addItem(amountLabel)
-            flex.addItem(feeLabel)
-            flex.addItem(recipientAddressTitle)
+        mainView.flex.alignItems(.center).define { flex in
+            flex.addItem(imageView).marginVertical(15)
+            flex.addItem(confirmSendingTitle).marginVertical(3)
+            flex.addItem(amountLabel).marginVertical(2)
+            flex.addItem(feeLabel).marginBottom(2)
+            flex.addItem(UIView()).height(1).width(70%).backgroundColor(UserInterfaceTheme.current.gray.dim).marginVertical(20)
+            flex.addItem(recipientAddressTitle).marginVertical(2)
+            flex.addItem(addressLabel).marginHorizontal(15%).marginVertical(2)
         }
         
-        rootFlexContainer.flex.alignItems(.center).justifyContent(.center).define{ flex in
-            flex.addItem(mainView).justifyContent(.center).position(.relative).height(150)
-            flex.addItem(bottomView).height(130).position(.absolute).bottom(0).width(100%).backgroundColor(UserInterfaceTheme.current.background)
+        let rowWrap = UIView()
+        rowWrap.flex.direction(.row).justifyContent(.start).define { flex in
+            flex.addItem(mainView)
+        }
+        
+        rootFlexContainer.flex.define{ flex in
+            flex.addItem(rowWrap).position(.relative)
+            flex.addItem(bottomView).height(60).position(.absolute).bottom(0).width(100%).backgroundColor(UserInterfaceTheme.current.background)
         }
     }
 }

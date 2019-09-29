@@ -4,23 +4,44 @@ import CWMonero
 
 
 final class SendConfirmViewController: BaseViewController<SendConfirmView> {
-    weak var flow: DashboardFlow?
-    let store: Store<ApplicationState>
+    var amount:String
+    var address:String
+    var fee:String
     
-    init(store: Store<ApplicationState>) {
-        self.store = store
-        super.init()
+    var onAccept: (() -> Void)? = nil
+    var onCancel: (() -> Void)? = nil
+    
+    init(amount:String, address:String, fee:String) {
+        self.amount = amount
+        self.address = address
+        self.fee = fee
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationItem.title = NSLocalizedString("confirm_sending", comment: "")
         title = NSLocalizedString("confirm_sending", comment: "")
+        
+        contentView.amountLabel.text = amount + " XMR"
+        contentView.feeLabel.text = NSLocalizedString("fee", comment: "") + ": " + fee
+        contentView.addressLabel.text = address
     }
     
     override func configureBinds() {
-        contentView.cancelButton.addTarget(self, action: #selector(userUnderstands), for: .touchDown)
+        contentView.cancelButton.addTarget(self, action: #selector(userCanceled), for: .touchDown)
+        contentView.sendButton.addTarget(self, action: #selector(userAccepted), for: .touchDown)
     }
     
-    @objc private func userUnderstands() {
+    @objc private func userCanceled() {
+        if let hasCancelFunction = onCancel {
+            hasCancelFunction()
+        }
+        self.dismiss(animated: true)
+    }
+    
+    @objc private func userAccepted() {
+        if let hasAcceptFunction = onAccept {
+            hasAcceptFunction()
+        }
         self.dismiss(animated: true)
     }
 }
