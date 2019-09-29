@@ -20,8 +20,8 @@ final class RestoreRootVC: BaseViewController<RestoreRootView> {
         contentView.restoreWalletCard.button.addTarget(self, action: #selector(restoreWallet), for: .touchUpInside)
         contentView.restoreAppCard.button.addTarget(self, action: #selector(restoreApp), for: .touchUpInside)
         
-        navigationController?.navigationBar.backgroundColor = UserInterfaceTheme.current.settingBackgroundColor
-        contentView.backgroundColor = UserInterfaceTheme.current.settingBackgroundColor
+        navigationController?.navigationBar.backgroundColor = UserInterfaceTheme.current.background
+        contentView.backgroundColor = UserInterfaceTheme.current.background
     }
 
     @objc
@@ -38,8 +38,8 @@ final class RestoreRootVC: BaseViewController<RestoreRootView> {
     
     override func setBarStyle() {
         super.setBarStyle()
-        navigationController?.navigationBar.backgroundColor = UserInterfaceTheme.current.settingBackgroundColor
-        contentView.backgroundColor = UserInterfaceTheme.current.settingBackgroundColor
+        navigationController?.navigationBar.backgroundColor = UserInterfaceTheme.current.background
+        contentView.backgroundColor = UserInterfaceTheme.current.background
     }
 
 }

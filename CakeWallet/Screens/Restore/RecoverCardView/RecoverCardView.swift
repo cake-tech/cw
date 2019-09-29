@@ -17,8 +17,6 @@ final class RecoverCardView: BaseFlexView {
     override func configureConstraints() {
         rootFlexContainer.layer.cornerRadius = 12
         rootFlexContainer.layer.applySketchShadow(color: UIColor(hex: 0x29174d), alpha: 0.1, x: 0, y: 0, blur: 20, spread: -10)
-        
-        //TSTAG
         rootFlexContainer.backgroundColor = UserInterfaceTheme.current.background
         
         rootFlexContainer.flex

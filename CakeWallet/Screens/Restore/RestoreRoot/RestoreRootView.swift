@@ -30,13 +30,12 @@ final class RestoreRootView: BaseScrollFlexView {
             textColor: UserInterfaceTheme.current.blue.highlight
         )
         restoreAppCard.layer.masksToBounds = false
-        
+
         super.init()
     }
     
     override func configureConstraints() {
-        //TSTAG
-        let imageViewBackgroundColor = UserInterfaceTheme.current.settingBackgroundColor
+        let imageViewBackgroundColor = UserInterfaceTheme.current.background
         let imageHeight = adaptiveLayout.getSize(forLarge: 180, forBig: 150, defaultSize: 115)
         let imageWidth = adaptiveLayout.getSize(forLarge: 360, forBig: 320, defaultSize: 240)
         
