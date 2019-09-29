@@ -100,9 +100,6 @@ final class WalletsViewController: BaseViewController<WalletsView>, UITableViewD
             self?.dismiss(animated: true)
         }
         
-        let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
-        navigationItem.backBarButtonItem = backButton
-        
         insertNavigationItems()
         
         contentView.walletsTableView.separatorStyle = .none
@@ -117,9 +114,10 @@ final class WalletsViewController: BaseViewController<WalletsView>, UITableViewD
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        navigationItem.titleView = UILabel(text: currentWallet.name)
-
+        let nameLabel = UILabel(text: currentWallet.name)
+        nameLabel.font = UIFont(name: "Lato-Semibold", size: 18)
+        navigationItem.titleView = nameLabel
+        
         store.subscribe(self, onlyOnChange: [
             \ApplicationState.walletsState,
             \ApplicationState.walletState
@@ -132,12 +130,17 @@ final class WalletsViewController: BaseViewController<WalletsView>, UITableViewD
     }
     
     private func insertNavigationItems() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(named:"close_symbol")?.resized(to:CGSize(width: 12, height: 12)),
-            style: .plain,
-            target: self,
-            action: #selector(dismissAction)
-        )
+        let closeButton = UIButton(type:.custom)
+        closeButton.layer.masksToBounds = false
+        closeButton.setImage(UIImage(named:"close_icon_white")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        closeButton.layer.cornerRadius = 11
+        closeButton.imageEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+        closeButton.layer.backgroundColor = UserInterfaceTheme.current.gray.dim.cgColor
+        closeButton.imageView?.tintColor = UserInterfaceTheme.current.text
+        closeButton.addTarget(self, action: #selector(dismissAction), for: .touchDown)
+        let backButton = UIBarButtonItem(customView: closeButton)
+        navigationItem.leftBarButtonItem = backButton
+        self.navigationController?.navigationBar.shadowImage
     }
     
     @objc
@@ -156,6 +159,7 @@ final class WalletsViewController: BaseViewController<WalletsView>, UITableViewD
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let wallet = wallets[indexPath.row]
         let cell = tableView.dequeueReusableCell(withItem: wallet, for: indexPath)
+        cell.textLabel?.font = UIFont(name: "Lato-SemiBold", size: 18)
         
         wallet.wallet != wallets.last?.wallet ? cell.addSeparator() : cell.removeSeparator()
         

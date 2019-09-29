@@ -1,17 +1,39 @@
 import UIKit
 import FlexLayout
 
+
+class LeftAlignedIconButton: Button {
+    override func titleRect(forContentRect contentRect: CGRect) -> CGRect {
+        let titleRect = super.titleRect(forContentRect: contentRect)
+        let imageSize = currentImage?.size ?? .zero
+        let availableWidth = contentRect.width - imageEdgeInsets.right - imageSize.width*2 - titleRect.width
+        return titleRect.offsetBy(dx: round(availableWidth / 2), dy: 0)
+    }
+}
+
+//extension UserInterfaceTheme {
+//    func restoreWalletButtonFill: UIColor {
+//        
+//    }
+//    
+//    func restoreWalletButtonOutline: UIColor {
+//        switch self {}
+//    }
+//}
+
 final class WalletsView: BaseScrollFlexViewWithBottomSection {
     let walletsTableView: UITableView
     let walletsCardView: CardView
-    let createWalletButton: UIButton
-    let restoreWalletButton: UIButton
+    let createWalletButton: LeftAlignedIconButton
+    let restoreWalletButton: LeftAlignedIconButton
 
     required init() {
         walletsTableView = UITableView()
         walletsCardView = CardView()
-        createWalletButton = StandardButton(title: NSLocalizedString("create_new_wallet", comment: ""))
-        restoreWalletButton = StandardButton(title: NSLocalizedString("restore_wallet", comment: ""))
+        createWalletButton = LeftAlignedIconButton(title: NSLocalizedString("create_new_wallet", comment: ""))
+        restoreWalletButton = LeftAlignedIconButton(title: NSLocalizedString("restore_wallet", comment: ""))
+        createWalletButton.setTitleColor(UserInterfaceTheme.current.text, for:.normal)
+        restoreWalletButton.setTitleColor(UserInterfaceTheme.current.text, for: .normal)
         super.init()
     }
     
@@ -21,23 +43,25 @@ final class WalletsView: BaseScrollFlexViewWithBottomSection {
         walletsTableView.isScrollEnabled = false
         walletsTableView.backgroundColor = .clear
         createWalletButton.setImage(UIImage(named: "add_icon_purple")?.resized(to: CGSize(width: 30, height: 30)).withRenderingMode(.alwaysTemplate), for: .normal)
-        createWalletButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
-        createWalletButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
-        createWalletButton.contentHorizontalAlignment = .left
+        createWalletButton.imageEdgeInsets = UIEdgeInsets(top:0, left:10, bottom:0, right:0)
+
         createWalletButton.layer.backgroundColor = UserInterfaceTheme.current.purple.dim.cgColor
         createWalletButton.layer.borderColor = UserInterfaceTheme.current.purple.main.cgColor
         createWalletButton.layer.borderWidth = 1
-        createWalletButton.imageView?.tintColor = UserInterfaceTheme.current.textVariants.highlight
+        createWalletButton.contentHorizontalAlignment = .left
+        createWalletButton.imageView?.tintColor = UserInterfaceTheme.current.purple.highlight
         createWalletButton.setTitleColor(UserInterfaceTheme.current.textVariants.highlight, for: .normal)
+        
         restoreWalletButton.setImage(UIImage(named: "recover_icon")?.withRenderingMode(.alwaysTemplate), for: .normal)
         restoreWalletButton.imageView?.tintColor = UserInterfaceTheme.current.textVariants.highlight
-        restoreWalletButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
         restoreWalletButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
         restoreWalletButton.contentHorizontalAlignment = .left
         restoreWalletButton.setTitleColor(UserInterfaceTheme.current.textVariants.highlight, for: .normal)
-        restoreWalletButton.layer.backgroundColor = UserInterfaceTheme.current.blue.dim.cgColor
-        restoreWalletButton.layer.borderColor = UserInterfaceTheme.current.blue.main.cgColor
+        restoreWalletButton.layer.backgroundColor = UserInterfaceTheme.current.gray.dim.cgColor
+        restoreWalletButton.layer.borderColor = UserInterfaceTheme.current.gray.main.cgColor
         restoreWalletButton.layer.borderWidth = 1
+
+        
         backgroundColor = UserInterfaceTheme.current.background
 //        contentView.backgroundColor = .white
 //        scrollView.backgroundColor = .white
@@ -54,5 +78,7 @@ final class WalletsView: BaseScrollFlexViewWithBottomSection {
             flex.addItem(createWalletButton).height(72)
             flex.addItem(restoreWalletButton).height(72).marginTop(10)
         }
+        
+        createWalletButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: createWalletButton.frame.size.width/2, bottom: 0, right: 0)
     }
 }

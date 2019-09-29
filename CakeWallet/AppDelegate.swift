@@ -254,7 +254,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UINavigationBar.appearance().titleTextAttributes = [
             NSAttributedStringKey.foregroundColor: UserInterfaceTheme.current.textVariants.highlight,
-            NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16)
+            NSAttributedStringKey.font: UIFont(name: "Lato-Semibold", size: 18)
         ]
     }
     
