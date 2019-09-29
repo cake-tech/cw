@@ -61,6 +61,16 @@ enum UserInterfaceTheme: Int, Theme {
         }
     }
     
+    @available(iOS 12.0, *)
+    var asStyle: UIUserInterfaceStyle {
+        switch self {
+        case .light:
+            return .light
+        case .dark:
+            return .dark
+        }
+    }
+    
     var tabBar: UIColor {
         switch self {
         case .light:

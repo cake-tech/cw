@@ -9,6 +9,9 @@ class BaseView: UIView {
     required init() {
         super.init(frame: CGRect.zero)
         configureView()
+        if #available(iOS 13.0, *) {
+            overrideUserInterfaceStyle = UserInterfaceTheme.current.asStyle
+        }
     }
     
     @available(*, unavailable)
@@ -23,7 +26,6 @@ class BaseView: UIView {
     
     override func configureView() {
         super.configureView()
-        //tstag
         backgroundColor = UserInterfaceTheme.current.background
     }
 }
