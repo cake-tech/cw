@@ -85,6 +85,8 @@
 "starting_sync" = "Synchronisatie wordt gestart";
 "synchronized" = "Gesynchroniseerd";
 "failed_connection_to_node" = "Mislukte connectie met de nodus";
+"last_block_received" = "Laatste blok ontvangen:";
+"synchronizing" = "Synchroniseren";
 
 // Balances
 "balance-display-type_unlocked" = "Beschikbaar saldo";

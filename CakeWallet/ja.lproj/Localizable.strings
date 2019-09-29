@@ -85,6 +85,8 @@
 "starting_sync" = "同期開始";
 "synchronized" = "同期済み";
 "failed_connection_to_node" = "ノードとの接続失敗";
+"last_block_received" = "最後に受信したブロック:";
+"synchronizing" = "同期する";
 
 // Balances
 "balance-display-type_unlocked" = "有効なバランス";

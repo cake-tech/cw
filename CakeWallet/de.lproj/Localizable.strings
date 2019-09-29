@@ -86,6 +86,8 @@
 "starting_sync" = "Synchronisierung wird gestartet";
 "synchronized" = "Synchronisiert";
 "failed_connection_to_node" = "Fehlgeschlagene Verbindung zum Knoten";
+"last_block_received" = "Letzter empfangener Block:";
+"synchronizing" = "Synchronisieren";
 
 // Balances
 "balance-display-type_unlocked" = "Verfügbares Guthaben";

@@ -79,6 +79,8 @@
 "starting_sync" = "सिंक शुरू ";
 "synchronized" = "सिंक पूर्ण";
 "failed_connection_to_node" = "नोड से कनेक्शन विफल ";
+"last_block_received" = "अंतिम ब्लॉक प्राप्त हुआ:";
+"synchronizing" = "सिंक्रनाइज़ करना";
 
 // Balances
 "balance-display-type_unlocked" = "उपलब्ध शेष राशि";

@@ -80,7 +80,8 @@
 "starting_sync" = "Начало синхронизации";
 "synchronized" = "Синхронизировано";
 "failed_connection_to_node" = "Не удалось подключиться к удаленному узлу";
-
+"last_block_received" = "Последний полученный блок:";
+"synchronizing" = "синхронизирующий";
 
 // Balances
 "balance-display-type_full" = "Полный баланс";

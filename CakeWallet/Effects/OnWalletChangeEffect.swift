@@ -33,6 +33,13 @@ private func onWalletChange(_ wallet: Wallet) {
             store.dispatch(
                 BlockchainState.Action.changedBlockchainHeight(block+1)
             )
+            store.dispatch(
+                BlockchainState.Action.changedConnectionStatus(.syncing(block))
+            )
+            
+            store.dispatch(
+                TransactionsActions.askToUpdate
+            )
         }
     }
    

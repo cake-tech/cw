@@ -85,6 +85,7 @@
 "synchronized" = "Synchronized";
 "failed_connection_to_node" = "Failed connect to the node";
 "last_block_received" = "Last block received:";
+"synchronizing" = "Synchronizing";
 
 // Balances
 "balance-display-type_full" = "Full Balance";
@@ -103,7 +104,7 @@
 "transactions" = "Transactions";
 "sent" = "Sent";
 "pending" = "pending";
-"minutes_to_unlock" = "minutes to unlock";
+"minutes_to_unlock" = "minutes to unlock full balance";
 
 // Address book
 

@@ -84,6 +84,8 @@
 "starting_sync" = "Start synchronizacji";
 "synchronized" = "Zsynchronizowano";
 "failed_connection_to_node" = "Nie połączono się z węzłem";
+"last_block_received" = "Ostatni otrzymany blok:";
+"synchronizing" = "Synchronizacja";
 
 // Balances
 "balance-display-type_unlocked" = "Dostępne Saldo";

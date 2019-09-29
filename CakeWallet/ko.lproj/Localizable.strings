@@ -85,6 +85,8 @@
 "starting_sync" = "싱크 개시 ";
 "synchronized" = "싱크됨";
 "failed_connection_to_node" = "노드 연결 실패 ";
+"last_block_received" = "마지막으로받은 블록 :";
+"synchronizing" = "동기화";
 
 // Balances
 "balance-display-type_unlocked" = "잔여잔고";
