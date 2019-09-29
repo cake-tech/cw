@@ -10,6 +10,7 @@ final class AboutSeedViewController: BaseViewController<AboutSeedView> {
     init(store: Store<ApplicationState>) {
         self.store = store
         super.init()
+        modalPresentationStyle = .fullScreen
     }
     
     override func viewWillAppear(_ animated: Bool) {

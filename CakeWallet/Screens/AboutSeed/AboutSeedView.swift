@@ -53,7 +53,7 @@ final class AboutSeedView: BaseFlexView {
         }
         
         rootFlexContainer.flex.alignItems(.center).justifyContent(.center).define{ flex in
-            flex.addItem(mainView).justifyContent(.center).position(.relative).height(150)
+            flex.addItem(mainView).justifyContent(.center).position(.relative).height(200)
             flex.addItem(bottomView).height(130).position(.absolute).bottom(0).width(100%).backgroundColor(UserInterfaceTheme.current.background)
         }
     }
