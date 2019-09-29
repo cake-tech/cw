@@ -38,6 +38,7 @@ final class DisclaimerViewController: BaseViewController<DisclaimerView> {
                     options: [NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.rtf],
                     documentAttributes: nil)
                 contentView.textView.attributedText = attributedText
+                contentView.textView.textColor = UserInterfaceTheme.current.text
             } catch {
                 print(error) // fixme
             }

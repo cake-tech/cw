@@ -54,6 +54,7 @@ final class SendView: BaseScrollFlexViewWithBottomSection {
         super.init()
     }
     
+    
     override func configureView() {
         super.configureView()
         
@@ -180,6 +181,12 @@ final class SendView: BaseScrollFlexViewWithBottomSection {
         
         bottomSectionView.flex.backgroundColor(UserInterfaceTheme.current.background).padding(20).define { flex in
             flex.addItem(sendButton).height(56)
+        }
+    }
+    override var safeAreaInsets: UIEdgeInsets {
+        get {
+            let superSafe = super.safeAreaInsets
+            return UIEdgeInsets(top: superSafe.top, left: superSafe.left, bottom: 0, right: superSafe.right)
         }
     }
 }

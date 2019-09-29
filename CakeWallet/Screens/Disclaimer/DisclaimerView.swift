@@ -25,9 +25,16 @@ final class DisclaimerView: BaseFlexView {
         super.init()
     }
     
+    override var safeAreaInsets: UIEdgeInsets {
+        get {
+            let superSafe = super.safeAreaInsets
+            return UIEdgeInsets(top: superSafe.top, left: superSafe.left, bottom: 0, right: superSafe.right)
+        }
+    }
+    
     override func configureView() {
         super.configureView()
-        imageView.image = UIImage.init(named:"AppIcon")?.resized(to: CGSize(width: 35, height: 35))
+        imageView.image = UIImage.init(named:"cake_logo_image")?.resized(to: CGSize(width: 35, height: 35))
         titleLabel.font = UIFont(name: "Lato-SemiBold", size: 18)
         titleLabel.textAlignment = .left
         titleLabel.lineBreakMode = .byWordWrapping
@@ -63,7 +70,7 @@ final class DisclaimerView: BaseFlexView {
     }
     
     override func configureConstraints() {
-        checkBoxWrapper.flex.direction(.row).alignItems(.center).marginBottom(10).define{ flex in
+        checkBoxWrapper.flex.direction(.row).alignItems(.center).marginBottom(20).define{ flex in
             flex.addItem(checkBox)
             flex.addItem(checkBoxTitleButton)
         }
@@ -71,17 +78,18 @@ final class DisclaimerView: BaseFlexView {
         bottomView.flex.define { flex in
             flex.addItem(gradientView).position(.absolute).top(-35).backgroundColor(UserInterfaceTheme.current.cardColor)
             flex.addItem(checkBoxWrapper).marginLeft(25)
-            flex.addItem(acceptButton).height(56).width(100%)
+            flex.addItem(acceptButton).height(56).width(90%).alignSelf(.center)
         }
+        
         let leftAlignedView = UIView()
         leftAlignedView.flex.direction(.column).alignContent(.start).define { flex in
             flex.addItem(imageView).width(35).height(35)
             flex.addItem(titleLabel).position(.relative).marginTop(10).width(200)
         }
     
-        rootFlexContainer.flex.alignItems(.center).padding(0, 15, 0, 15).define{ flex in
-            flex.addItem(leftAlignedView).width(100%).marginTop(15).marginBottom(10)
-            flex.addItem(textView).marginBottom(10).marginBottom(100)
+        rootFlexContainer.flex.alignItems(.center).define{ flex in
+            flex.addItem(leftAlignedView).width(100%).marginTop(15).marginBottom(10).paddingHorizontal(15)
+            flex.addItem(textView).marginBottom(175).paddingHorizontal(15)
             flex.addItem(bottomView).height(130).position(.absolute).bottom(0).width(100%).backgroundColor(UserInterfaceTheme.current.cardColor)
         }
     }
