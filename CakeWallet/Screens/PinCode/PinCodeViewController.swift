@@ -35,6 +35,7 @@ class PinCodeViewController: BaseViewController<PinCodeView> {
         let int = UserDefaults.standard.integer(forKey: Configurations.DefaultsKeys.pinLength)
         self.pinLength = PinLength(from: int) ?? .fourDigits
         super.init()
+        modalPresentationStyle = .fullScreen
     }
     
     override func viewDidLoad() {
