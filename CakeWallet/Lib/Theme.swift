@@ -173,6 +173,15 @@ enum UserInterfaceTheme: Int, Theme {
             return Colorset(highlight:high, main:norm, dim:low)
         }
     }
+    
+    var shadow: UIColor {
+        switch self {
+        case .light:
+            return self.text
+        case .dark:
+            return .clear
+        }
+    }
 }
 
 extension UserInterfaceTheme {

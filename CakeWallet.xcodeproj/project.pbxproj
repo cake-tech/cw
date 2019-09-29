@@ -357,6 +357,8 @@
 		A591C677224112DF0051A4FE /* RecoverCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A591C676224112DF0051A4FE /* RecoverCardView.swift */; };
 		A591C67922414C420051A4FE /* UITextView+Placeholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A591C67822414C420051A4FE /* UITextView+Placeholder.swift */; };
 		A5980D2C1FFC9855647CF936 /* Pods_CWMonero.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 784D7BF72CC17977C433AE9E /* Pods_CWMonero.framework */; };
+		AE15B4E123400DB5001FA99A /* SendConfirmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE15B4E023400DB5001FA99A /* SendConfirmViewController.swift */; };
+		AE15B4E323400DC6001FA99A /* SendConfirmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE15B4E223400DC6001FA99A /* SendConfirmView.swift */; };
 		AE728B2122F65702000A9F2E /* Vibrate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE728B2022F65701000A9F2E /* Vibrate.swift */; };
 		AEBAD6632310EBBF000A9F2E /* SubAddressPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAD6622310EBBF000A9F2E /* SubAddressPickerViewController.swift */; };
 		AEBAD6652310EBD3000A9F2E /* SubAddressPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAD6642310EBD3000A9F2E /* SubAddressPickerView.swift */; };
@@ -892,6 +894,8 @@
 		A58B26C2223BA7E300AD0B97 /* CurrencyPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyPickerViewController.swift; sourceTree = "<group>"; };
 		A591C676224112DF0051A4FE /* RecoverCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverCardView.swift; sourceTree = "<group>"; };
 		A591C67822414C420051A4FE /* UITextView+Placeholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+Placeholder.swift"; sourceTree = "<group>"; };
+		AE15B4E023400DB5001FA99A /* SendConfirmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendConfirmViewController.swift; sourceTree = "<group>"; };
+		AE15B4E223400DC6001FA99A /* SendConfirmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendConfirmView.swift; sourceTree = "<group>"; };
 		AE728B2022F65701000A9F2E /* Vibrate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vibrate.swift; sourceTree = "<group>"; };
 		AEBAD6622310EBBF000A9F2E /* SubAddressPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubAddressPickerViewController.swift; sourceTree = "<group>"; };
 		AEBAD6642310EBD3000A9F2E /* SubAddressPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubAddressPickerView.swift; sourceTree = "<group>"; };
@@ -1672,6 +1676,8 @@
 			children = (
 				6A53C4CD20A89DAB001999B6 /* SendViewController.swift */,
 				6AAF1EAA20B604D1000E4E02 /* SendView.swift */,
+				AE15B4E023400DB5001FA99A /* SendConfirmViewController.swift */,
+				AE15B4E223400DC6001FA99A /* SendConfirmView.swift */,
 			);
 			path = Send;
 			sourceTree = "<group>";
@@ -2515,6 +2521,7 @@
 				645195D42131636B00F2FE8F /* WalletsFlow.swift in Sources */,
 				6A39EC9920D19023002E9217 /* TransactionDetailsView.swift in Sources */,
 				642CA24020F6440C00D1E340 /* ExchangeViewController.swift in Sources */,
+				AE15B4E123400DB5001FA99A /* SendConfirmViewController.swift in Sources */,
 				6AAF1EB120B609EB000E4E02 /* UILabel+extension.swift in Sources */,
 				6413ACCD20E94530004922AD /* WalletsState.swift in Sources */,
 				A577D40C21EDF01100FA1655 /* AddressBookViewController.swift in Sources */,
@@ -2637,6 +2644,7 @@
 				64EBA5DC20F3634B00997824 /* SubaddressesView.swift in Sources */,
 				0CCD604B22731DED0038B602 /* XMRTOExchange.swift in Sources */,
 				0C6DEB602281B05400536AA1 /* MoneroUri.swift in Sources */,
+				AE15B4E323400DC6001FA99A /* SendConfirmView.swift in Sources */,
 				0C5EFB8C22022F6A0069AF7F /* BackupService.swift in Sources */,
 				D19AA43A22E9FECD00148A44 /* TradesHistoryViewController.swift in Sources */,
 				6AAF1E9C20B6031C000E4E02 /* BaseFlexView.swift in Sources */,

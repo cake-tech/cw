@@ -72,6 +72,10 @@ final class SendView: BaseScrollFlexViewWithBottomSection {
         
         walletNameLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
         
+        walletContainer.layer.masksToBounds = false
+        walletContainer.applyNavigationBarShadow()
+        
+        
         cryptoAmountValueLabel.textAlignment = .right
         cryptoAmountValueLabel.font = applyFont(ofSize: 26)
         cryptoAmountValueLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
@@ -81,7 +85,8 @@ final class SendView: BaseScrollFlexViewWithBottomSection {
         let cryptoAmountTextFieldLeftView = UILabel(text: "XMR:")
         cryptoAmountTextFieldLeftView.font = applyFont()
         cryptoAmountTextFieldLeftView.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-        cryptoAmountTextFieldLeftView.textColor = UserInterfaceTheme.current.textVariants.dim
+        cryptoAmountTextFieldLeftView.textColor = UserInterfaceTheme.current.textVariants.highlight
+        
         let cryptoAmountTextFieldRightView = UIView()
         cryptoAmountTextFieldRightView.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
         
@@ -92,10 +97,9 @@ final class SendView: BaseScrollFlexViewWithBottomSection {
         cryptoAmountTextField.rightView = cryptoAmountTextFieldRightView
         cryptoAmountTextField.rightViewMode = .always
         
-       
         fiatAmountTextFieldLeftView.font = applyFont()
         fiatAmountTextFieldLeftView.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-        fiatAmountTextFieldLeftView.textColor = UserInterfaceTheme.current.textVariants.dim
+        fiatAmountTextFieldLeftView.textColor = UserInterfaceTheme.current.textVariants.highlight
         
         fiatAmountTextField.keyboardType = .decimalPad
         fiatAmountTextField.leftView = fiatAmountTextFieldLeftView
@@ -116,6 +120,14 @@ final class SendView: BaseScrollFlexViewWithBottomSection {
         paymentIdTextField.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
         paymentIdTextField.rightViewMode = .always
         paymentIdTextField.textColor = UserInterfaceTheme.current.text
+        
+        sendButton.backgroundColor = UserInterfaceTheme.current.gray.dim
+        sendButton.layer.borderColor = UserInterfaceTheme.current.gray.main.cgColor
+        
+        estimatedFeeTitleLabel.textColor = UserInterfaceTheme.current.text
+        estimatedFeeValueLabel.textColor = UserInterfaceTheme.current.text
+        
+        estimatedDescriptionLabel.textColor = UserInterfaceTheme.current.textVariants.main
     }
     
     override func configureConstraints() {

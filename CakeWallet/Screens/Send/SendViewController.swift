@@ -370,57 +370,17 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
         contentView.rootFlexContainer.flex.layout()
     }
     
-    private func onTransactionCreating() {
-        let alertController = UIAlertController(
-            title: NSLocalizedString("creating_transaction", comment: ""),
-            message: NSLocalizedString("confirm_sending", comment: ""),
-            preferredStyle: .alert
-        )
-        
-        alertController.addAction(UIAlertAction(
-            title: NSLocalizedString("send", comment: ""),
-            style: .default,
-            handler: { [weak self, weak alertController] _ in
-                self?.createTransaction()
-                alertController?.dismiss(animated: true)
-            }
-        ))
-        alertController.addAction(UIAlertAction(
-            title: "Cancel",
-            style: .cancel,
-            handler: nil
-        ))
-        
-        present(alertController, animated: true, completion: nil)
-    }
-    
     private func onTransactionCreated(_ pendingTransaction: PendingTransaction) {
-        let description = pendingTransaction.description
-        let message = NSLocalizedString("commit_transaction", comment: "")
-            + "\n"
-            + NSLocalizedString("amount", comment: "")
-            + ": "
-            + description.amount.formatted()
-            + "\n"
-            + NSLocalizedString("fee", comment: "")
-            + ": "
-            + MoneroAmountParser.formatValue(description.fee.value)
-        
-        let cancelAction = UIAlertAction(title: NSLocalizedString("cancel", comment: ""), style: .cancel, handler: { [weak self] action in
+        let confirmController = SendConfirmViewController(amount:pendingTransaction.description.amount.formatted(), address:pendingTransaction.description.id, fee:MoneroAmountParser.formatValue(pendingTransaction.description.fee.value))
+        confirmController.onAccept = { [weak self] in
+            self?.commit(pendingTransaction: pendingTransaction)
+        }
+        confirmController.onCancel = { [weak self] in
             self?.store.dispatch(
                 TransactionsState.Action.changedSendingStage(.none)
             )
-        })
-        
-        let commitAction = UIAlertAction(title: NSLocalizedString("Ok", comment: ""), style: .default, handler: { [weak self] _ in
-            self?.commit(pendingTransaction: pendingTransaction)
-        })
-        
-        showInfoAlert(
-            title: NSLocalizedString("confirm_sending", comment: ""),
-            message: message,
-            actions: [commitAction, cancelAction]
-        )
+        }
+        present(confirmController, animated: true)
     }
     
     private func commit(pendingTransaction: PendingTransaction) {
@@ -461,6 +421,7 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
     private func onTransactionCommited() {
         showOKInfoAlert(title: NSLocalizedString("transaction_created", comment: "")) { [weak self] in
             self?.resetForm()
+            self?.dismiss(animated: true)
         }
     }
     
@@ -514,7 +475,7 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
     
     @objc
     private func sendAction() {
-        onTransactionCreating()
+        createTransaction()
     }
     
     @objc
