@@ -32,7 +32,14 @@ final class SignUpFlow: Flow {
     }
     
     func change(route: Route) {
-        navigationController.pushViewController(initedViewController(for: route), animated: true)
+        switch route {
+        case .seed(_, _, _):
+            let vc = initedViewController(for: route) as! AboutSeedViewController
+            self.navigationController.present(vc, animated: true, completion: nil)
+        default:
+             navigationController.pushViewController(initedViewController(for: route), animated: true)
+        }
+       
     }
     
     private func initedViewController(for route: Route) -> UIViewController {
@@ -58,9 +65,16 @@ final class SignUpFlow: Flow {
         case .createWallet:
             return CreateWalletViewController(signUpFlow: self, store: store)
         case let .seed(date, walletName, seed):
-            let seedViewController = SeedViewController(walletName: walletName, date: date, seed: seed, doneFlag: true)
-            seedViewController.doneHandler = doneHandler
-            return seedViewController
+            let aboutSeed = AboutSeedViewController(store: store)
+            aboutSeed.onDismissHandler = { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                let seedViewController = SeedViewController(walletName: walletName, date: date, seed: seed, doneFlag: true)
+                seedViewController.doneHandler = self.doneHandler
+                self.navigationController.pushViewController(seedViewController, animated: true)
+            }
+            return aboutSeed
         case .restoreFromCloud:
             let restoreFromCloudVC = RestoreFromCloudVC(backup: BackupServiceImpl(), storage: ICloudStorage())
             restoreFromCloudVC.doneHandler = doneHandler

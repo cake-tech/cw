@@ -5,6 +5,5 @@ final class PrimaryButton: Button {
         super.layoutSubviews()
         
         layer.borderWidth = 0.75
-        layer.borderColor = UserInterfaceTheme.current.purple.main.cgColor
     }
 }
