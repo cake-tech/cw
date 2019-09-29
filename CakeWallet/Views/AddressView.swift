@@ -163,7 +163,7 @@ final class AddressView: BaseFlexView {
             .backgroundColor(.clear)
             .define{ flex in
                 flex.addItem(textView).backgroundColor(.clear).width(100%).paddingRight(CGFloat(40*_pickers.count)).marginBottom(11)
-                flex.addItem(borderView).height(1.5).width(100%).backgroundColor(UserInterfaceTheme.current.gray.main)
+                flex.addItem(borderView).height(1).width(100%).backgroundColor(UserInterfaceTheme.current.gray.main)
                 flex.addItem(buttonsView).position(.absolute).top(-10).right(0)
         }
     }

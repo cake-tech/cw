@@ -32,7 +32,7 @@ final class PinCodeIndicatorView: BaseView {
     }
     
     func clear() {
-        innerCircleView.layer.borderColor = UserInterfaceTheme.current.purple.dim.cgColor
+        innerCircleView.layer.borderColor = UserInterfaceTheme.current.purple.main.cgColor
         innerCircleView.backgroundColor = UserInterfaceTheme.current.background
     }
 }

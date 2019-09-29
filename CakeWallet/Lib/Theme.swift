@@ -102,7 +102,7 @@ enum UserInterfaceTheme: Int, Theme {
     var textVariants: Colorset {
         switch self {
         case .light:
-            let high = UIColor(red: 0.23, green: 0.26, blue: 0.39, alpha: 1)
+            let high = UIColor(red:0.13, green:0.16, blue:0.29, alpha:1.0)
             let norm = UIColor(red:0.61, green:0.67, blue:0.77, alpha:1.0)
             let low = UIColor(red:0.84, green:0.87, blue:0.91, alpha:1.0)
             return Colorset(highlight:high, main:norm, dim:low)
@@ -180,6 +180,19 @@ extension UserInterfaceTheme {
         let searchName = assetName + "_" + String(self.rawValue)
         return UIImage(named: searchName)
     }
+    
+    var grayButton: (fill:UIColor, border:UIColor) {
+        get {
+            switch self {
+            case .light:
+                return (fill:UIColor(red:0.89, green:0.91, blue:0.97, alpha:1.0), border:UIColor(red: 0.77, green: 0.81, blue: 0.93, alpha: 1))
+            case .dark:
+                return (fill:self.gray.dim, border:self.gray.main)
+            }
+
+        }
+    }
+    
     var settingCellColor: UIColor {
         get {
             switch self {

@@ -11,6 +11,7 @@ final class CreateWalletView: BaseFlexView {
         
         logoImage = UIImageView(image: UserInterfaceTheme.current.asset(named: "create_wallet_logo"))
         nameTextField = CWTextField(placeholder: NSLocalizedString("wallet_name", comment: ""), fontSize: nameTextFieldFontSize)
+        nameTextField.textColor = UserInterfaceTheme.current.text
         continueButton = LoadingButton()
         continueButton.setTitle(NSLocalizedString("continue", comment: ""), for: .normal)
         super.init()
