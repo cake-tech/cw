@@ -97,6 +97,9 @@ final class ExchangeResultView: BaseScrollFlexView {
     override func configureView() {
         super.configureView()
         confirmButton.setTitle(NSLocalizedString("confirm", comment: ""), for: .normal)
+        confirmButton.backgroundColor = UserInterfaceTheme.current.purple.dim
+        confirmButton.layer.borderColor = UserInterfaceTheme.current.purple.main.cgColor
+        
         descriptionTextView.isScrollEnabled = false
         descriptionTextView.isEditable = false
         idLabel.numberOfLines = 0
