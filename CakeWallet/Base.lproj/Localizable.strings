@@ -83,7 +83,7 @@
 
 // Connection state
 
-"blocks_remaining" = "Blocks remaining";
+"blocks_remaining" = "Block(s) Remaining";
 "connecting" = "Connecting";
 "not_connected" = "Not connected";
 "starting_sync" = "Starting sync";

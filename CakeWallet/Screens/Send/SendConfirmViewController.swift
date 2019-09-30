@@ -15,6 +15,8 @@ final class SendConfirmViewController: BaseViewController<SendConfirmView> {
         self.amount = amount
         self.address = address
         self.fee = fee
+        super.init()
+        modalPresentationStyle = .fullScreen
     }
     
     override func viewWillAppear(_ animated: Bool) {

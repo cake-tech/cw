@@ -127,6 +127,7 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
     
     override func configureBinds() {
         title = NSLocalizedString("send", comment: "")
+        modalPresentationStyle = .fullScreen
         contentView.takeFromAddressBookButton.addTarget(self, action: #selector(takeFromAddressBook), for: .touchUpInside)
         contentView.sendAllButton.addTarget(self, action: #selector(setAllAmount), for: .touchUpInside)
         contentView.cryptoAmountTextField.addTarget(self, action: #selector(onCryptoValueChange(_:)), for: .editingChanged)
@@ -295,7 +296,7 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
     }
     
     private func updateFiat(_ fiat: FiatCurrency) {
-        contentView.fiatAmountTextFieldLeftView.text = store.state.settingsState.fiatCurrency.formatted() + ":"
+        contentView.fiatAmountTextFieldLeftView.text = store.state.settingsState.fiatCurrency.formatted() + ": "
     }
     
     @objc
@@ -372,6 +373,7 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
     
     private func onTransactionCreated(_ pendingTransaction: PendingTransaction) {
         let confirmController = SendConfirmViewController(amount:pendingTransaction.description.amount.formatted(), address:pendingTransaction.description.id, fee:MoneroAmountParser.formatValue(pendingTransaction.description.fee.value))
+        confirmController.modalPresentationStyle = .fullScreen
         confirmController.onAccept = { [weak self] in
             self?.commit(pendingTransaction: pendingTransaction)
         }
@@ -427,9 +429,9 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
     
     private func createTransaction(_ handler: (() -> Void)? = nil) {
         let authController = AuthenticationViewController(store: store, authentication: AuthenticationImpl())
-        let navController = UINavigationController(rootViewController: authController)
+        authController.modalPresentationStyle = .fullScreen
         let paymentID = contentView.paymentIdTextField.text  ?? ""
-        
+        navigationController?.modalPresentationStyle = .fullScreen
         authController.handler = { [weak self] in
             authController.dismiss(animated: true) {
                 self?.contentView.sendButton.showLoading()
@@ -463,7 +465,7 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
             }
         }
         
-        present(navController, animated: true)
+        present(authController, animated: true)
     }
     
     private func resetForm() {

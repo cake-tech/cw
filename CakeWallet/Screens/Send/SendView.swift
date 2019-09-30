@@ -50,7 +50,7 @@ final class SendView: BaseScrollFlexViewWithBottomSection {
         sendAllButton = TransparentButton(title: NSLocalizedString("all", comment: ""))
         cryptoAmonutContainer = UIView()
         scanQrForPaymentId = UIButton()
-        fiatAmountTextFieldLeftView = UILabel(text: "USD:")
+        fiatAmountTextFieldLeftView = UILabel(text: "USD: ")
         super.init()
     }
     
@@ -82,7 +82,7 @@ final class SendView: BaseScrollFlexViewWithBottomSection {
         cryptoAmountTitleLabel.textColor = UserInterfaceTheme.current.text
         cryptoAmountTextField.keyboardType = .decimalPad
         
-        let cryptoAmountTextFieldLeftView = UILabel(text: "XMR:")
+        let cryptoAmountTextFieldLeftView = UILabel(text: "XMR: ")
         cryptoAmountTextFieldLeftView.font = applyFont()
         cryptoAmountTextFieldLeftView.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
         cryptoAmountTextFieldLeftView.textColor = UserInterfaceTheme.current.textVariants.highlight

@@ -59,7 +59,7 @@ final class SendConfirmView: BaseFlexView {
         
         let mainView = UIView()
         mainView.flex.alignItems(.center).define { flex in
-            flex.addItem(imageView).marginVertical(15)
+            flex.addItem(imageView).marginTop(58)
             flex.addItem(confirmSendingTitle).marginVertical(3)
             flex.addItem(amountLabel).marginVertical(2)
             flex.addItem(feeLabel).marginBottom(2)

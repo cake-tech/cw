@@ -19,15 +19,43 @@ extension UIImage {
 class BaseViewController<View: BaseView>: AnyBaseViewController {
     var contentView: View { return view as! View }
     
+    override var childViewControllerForStatusBarStyle: UIViewController? { get {
+            return nil
+        }
+    }
+    
     override var preferredStatusBarStyle:UIStatusBarStyle {
         switch UserInterfaceTheme.current {
         case .light:
-            return .default
+            if #available(iOS 13.0, *) {
+                return .darkContent
+            } else {
+                // Fallback on earlier versions
+                return .default
+            }
         case .dark:
             return .lightContent
         }
     }
     
+    @available(iOS 12.0, *)
+    var userInterfaceStyle: UIUserInterfaceStyle {
+        get {
+            switch UserInterfaceTheme.current {
+            case .light:
+                return .light
+            case .dark:
+                return .dark
+            }
+        }
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        get {
+            return false
+        }
+    }
+
     override init() {
         super.init()
         setTitle()
