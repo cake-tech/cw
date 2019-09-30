@@ -117,7 +117,8 @@ final class WalletsViewController: BaseViewController<WalletsView>, UITableViewD
         let nameLabel = UILabel(text: currentWallet.name)
         nameLabel.font = UIFont(name: "Lato-Semibold", size: 18)
         navigationItem.titleView = nameLabel
-        
+        navigationController?.navigationBar.layer.masksToBounds = false
+        navigationController?.navigationBar.applyNavigationBarShadow()
         store.subscribe(self, onlyOnChange: [
             \ApplicationState.walletsState,
             \ApplicationState.walletState

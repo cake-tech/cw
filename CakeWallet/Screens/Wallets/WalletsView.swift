@@ -52,7 +52,6 @@ final class WalletsView: BaseScrollFlexViewWithBottomSection {
         restoreWalletButton.layer.borderColor = UserInterfaceTheme.current.grayButton.border.cgColor
         restoreWalletButton.layer.borderWidth = 1
 
-        
         backgroundColor = UserInterfaceTheme.current.background
 //        contentView.backgroundColor = .white
 //        scrollView.backgroundColor = .white
