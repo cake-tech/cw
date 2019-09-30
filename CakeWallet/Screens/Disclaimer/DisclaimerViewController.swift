@@ -6,6 +6,12 @@ final class DisclaimerViewController: BaseViewController<DisclaimerView> {
         vc.dismiss(animated: true)
     }
     
+    var hasCheckbox:Bool
+    
+    required init(showingCheckbox:Bool = true) {
+        hasCheckbox = showingCheckbox
+    }
+    
     override func configureBinds() {
         super.configureBinds()
         loadAndDisplayDocument()
@@ -16,7 +22,7 @@ final class DisclaimerViewController: BaseViewController<DisclaimerView> {
     
     @objc
     private func onAccessAction() {
-        if contentView.checkBox.isChecked {
+        if contentView.checkBox.isChecked || hasCheckbox == false {
             onAccept?(self)
         }
     }
@@ -26,6 +32,12 @@ final class DisclaimerViewController: BaseViewController<DisclaimerView> {
         contentView.checkBox.isChecked = !contentView.checkBox.isChecked
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        if hasCheckbox == false {
+            contentView.hasCheckbox = false
+        }
+    }
     override var prefersStatusBarHidden: Bool {
         return navigationController?.isNavigationBarHidden == true
     }

@@ -11,8 +11,9 @@ final class DisclaimerView: BaseFlexView {
     let checkBoxWrapper: UIView
     let checkBox: CheckBox
     let gradientView: UIView
+    var hasCheckbox:Bool
     
-    required init() {
+    init(withCheckbox:Bool = true) {
         textView = UITextView()
         titleLabel = UILabel()
         bottomView = UIView()
@@ -21,8 +22,12 @@ final class DisclaimerView: BaseFlexView {
         checkBoxTitleButton = TransparentButton(title: NSLocalizedString("terms_of_use_agree", comment: ""))
         checkBox = CheckBox()
         gradientView = UIView()
-        
+        hasCheckbox = withCheckbox
         super.init()
+    }
+    
+    required convenience init() {
+        self.init(withCheckbox:true)
     }
     
     override var safeAreaInsets: UIEdgeInsets {
@@ -43,7 +48,7 @@ final class DisclaimerView: BaseFlexView {
         titleLabel.text = NSLocalizedString("terms", comment: "")
         textView.font = applyFont(ofSize: 14)
         textView.isEditable = false
-
+        
         checkBoxTitleButton.setTitleColor(UserInterfaceTheme.current.text, for: .normal)
         checkBoxTitleButton.titleLabel?.font = applyFont(ofSize: 13, weight: .semibold)
         textView.backgroundColor = .clear
@@ -77,7 +82,9 @@ final class DisclaimerView: BaseFlexView {
         
         bottomView.flex.define { flex in
             flex.addItem(gradientView).position(.absolute).top(-35).backgroundColor(UserInterfaceTheme.current.cardColor)
-            flex.addItem(checkBoxWrapper).marginLeft(25)
+            if (hasCheckbox) {
+               flex.addItem(checkBoxWrapper).marginLeft(25)
+            }
             flex.addItem(acceptButton).height(56).width(90%).alignSelf(.center)
         }
         
@@ -90,7 +97,7 @@ final class DisclaimerView: BaseFlexView {
         rootFlexContainer.flex.alignItems(.center).define{ flex in
             flex.addItem(leftAlignedView).width(100%).marginTop(15).marginBottom(10).paddingHorizontal(15)
             flex.addItem(textView).marginBottom(175).paddingHorizontal(15)
-            flex.addItem(bottomView).height(130).position(.absolute).bottom(0).width(100%).backgroundColor(UserInterfaceTheme.current.cardColor)
+            flex.addItem(bottomView).position(.absolute).bottom(0).width(100%).backgroundColor(UserInterfaceTheme.current.cardColor).paddingBottom(45)
         }
     }
 }

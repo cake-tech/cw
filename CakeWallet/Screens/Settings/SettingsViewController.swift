@@ -538,7 +538,9 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         let termsView = SettingsCellItem(
             title: NSLocalizedString("terms", comment: ""),
             action: { [weak self] in
-                let disclaimerVC = DisclaimerViewController()
+                let disclaimerVC = DisclaimerViewController(showingCheckbox: false)
+                disclaimerVC.modalPresentationStyle = .fullScreen
+//                self?.modalPresentationStyle = .fullScreen
                 self?.present(disclaimerVC, animated: true)
         })
         
