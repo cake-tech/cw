@@ -190,7 +190,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         let authScreen = AuthenticationViewController(store: store, authentication: AuthenticationImpl())
-        authScreen.modalPresentationStyle = .overFullScreen
+        authScreen.modalPresentationStyle = .fullScreen
         UIApplication.topViewController()?.present(authScreen, animated: false)
         authScreen.handler = { [weak authScreen] in
             DispatchQueue.main.async {

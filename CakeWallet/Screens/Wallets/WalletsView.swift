@@ -11,15 +11,6 @@ class LeftAlignedIconButton: Button {
     }
 }
 
-//extension UserInterfaceTheme {
-//    func restoreWalletButtonFill: UIColor {
-//        
-//    }
-//    
-//    func restoreWalletButtonOutline: UIColor {
-//        switch self {}
-//    }
-//}
 
 final class WalletsView: BaseScrollFlexViewWithBottomSection {
     let walletsTableView: UITableView
@@ -57,8 +48,8 @@ final class WalletsView: BaseScrollFlexViewWithBottomSection {
         restoreWalletButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
         restoreWalletButton.contentHorizontalAlignment = .left
         restoreWalletButton.setTitleColor(UserInterfaceTheme.current.textVariants.highlight, for: .normal)
-        restoreWalletButton.layer.backgroundColor = UserInterfaceTheme.current.gray.dim.cgColor
-        restoreWalletButton.layer.borderColor = UserInterfaceTheme.current.gray.main.cgColor
+        restoreWalletButton.layer.backgroundColor = UserInterfaceTheme.current.grayButton.fill.cgColor
+        restoreWalletButton.layer.borderColor = UserInterfaceTheme.current.grayButton.border.cgColor
         restoreWalletButton.layer.borderWidth = 1
 
         
