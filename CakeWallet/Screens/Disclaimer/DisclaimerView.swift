@@ -29,7 +29,7 @@ final class DisclaimerView: BaseFlexView {
     required convenience init() {
         self.init(withCheckbox:true)
     }
-    
+
     override var safeAreaInsets: UIEdgeInsets {
         get {
             let superSafe = super.safeAreaInsets
@@ -82,22 +82,28 @@ final class DisclaimerView: BaseFlexView {
         
         bottomView.flex.define { flex in
             flex.addItem(gradientView).position(.absolute).top(-35).backgroundColor(UserInterfaceTheme.current.cardColor)
-            if (hasCheckbox) {
-               flex.addItem(checkBoxWrapper).marginLeft(25)
-            }
-            flex.addItem(acceptButton).height(56).width(90%).alignSelf(.center)
+
+                flex.addItem(checkBoxWrapper).marginLeft(25)
+                flex.addItem(acceptButton).height(56).width(90%).alignSelf(.center)
+
+
         }
         
         let leftAlignedView = UIView()
         leftAlignedView.flex.direction(.column).alignContent(.start).define { flex in
-            flex.addItem(imageView).width(35).height(35)
+            flex.addItem(imageView).width(35).height(35).marginTop(15)
             flex.addItem(titleLabel).position(.relative).marginTop(10).width(200)
         }
     
         rootFlexContainer.flex.alignItems(.center).define{ flex in
             flex.addItem(leftAlignedView).width(100%).marginTop(15).marginBottom(10).paddingHorizontal(15)
-            flex.addItem(textView).marginBottom(175).paddingHorizontal(15)
-            flex.addItem(bottomView).position(.absolute).bottom(0).width(100%).backgroundColor(UserInterfaceTheme.current.cardColor).paddingBottom(45)
+            
+            if (hasCheckbox) {
+                flex.addItem(textView).marginBottom(175).paddingHorizontal(15)
+                flex.addItem(bottomView).position(.absolute).bottom(0).width(100%).backgroundColor(UserInterfaceTheme.current.cardColor).paddingBottom(45)
+            } else {
+                flex.addItem(textView).marginBottom(15).paddingHorizontal(15)
+            }
         }
     }
 }

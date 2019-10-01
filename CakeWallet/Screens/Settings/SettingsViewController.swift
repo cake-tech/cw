@@ -580,7 +580,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
             supportChangeNow,
             supportMorph,
             supportXmrTo,
-            termsView
+            termSettingsCellItem
         ]
         
         let email = "support@cakewallet.io"

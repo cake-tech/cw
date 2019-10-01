@@ -17,7 +17,6 @@ final class DisclaimerViewController: BaseViewController<DisclaimerView> {
         loadAndDisplayDocument()
         contentView.acceptButton.addTarget(self, action: #selector(onAccessAction), for: .touchUpInside)
         contentView.checkBoxTitleButton.addTarget(self, action: #selector(toggleCheckBox), for: .touchUpInside)
-        navigationController?.isNavigationBarHidden = true
     }
     
     @objc
@@ -38,8 +37,9 @@ final class DisclaimerViewController: BaseViewController<DisclaimerView> {
             contentView.hasCheckbox = false
         }
     }
+    
     override var prefersStatusBarHidden: Bool {
-        return navigationController?.isNavigationBarHidden == true
+        return navigationController?.isNavigationBarHidden == hasCheckbox
     }
     
     private func loadAndDisplayDocument() {
@@ -55,5 +55,9 @@ final class DisclaimerViewController: BaseViewController<DisclaimerView> {
                 print(error) // fixme
             }
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.setNavigationBarHidden(hasCheckbox, animated: false)
     }
 }
