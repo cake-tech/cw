@@ -6,7 +6,7 @@ extension UIView {
     }
     
     func applyNavigationBarShadow() {
-        self.layer.applySketchShadow(color: UserInterfaceTheme.current.shadow, alpha: 0.13, x: 0, y: 3, blur: 10, spread: -3)
+        self.layer.applySketchShadow(color: UserInterfaceTheme.current.shadow, alpha: 0.17, x: 0, y: 3, blur: 10, spread: -3)
     }
 }
 

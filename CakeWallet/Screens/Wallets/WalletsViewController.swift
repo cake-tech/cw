@@ -3,6 +3,38 @@ import CakeWalletLib
 import CakeWalletCore
 import CWMonero
 
+//https://stackoverflow.com/a/39917334
+extension UIView {
+
+    func mask(withRect rect: CGRect, inverse: Bool = false) {
+        let path = UIBezierPath(rect: rect)
+        let maskLayer = CAShapeLayer()
+
+        if inverse {
+            path.append(UIBezierPath(rect: self.bounds))
+            maskLayer.fillRule = kCAFillRuleEvenOdd
+        }
+
+        maskLayer.path = path.cgPath
+
+        self.layer.mask = maskLayer
+    }
+
+    func mask(withPath path: UIBezierPath, inverse: Bool = false) {
+        let path = path
+        let maskLayer = CAShapeLayer()
+
+        if inverse {
+            path.append(UIBezierPath(rect: self.bounds))
+            maskLayer.fillRule = kCAFillRuleEvenOdd
+        }
+
+        maskLayer.path = path.cgPath
+
+        self.layer.mask = maskLayer
+    }
+}
+
 protocol WalletActionsPresentable {
     func presentSeed(for wallet: WalletIndex, withConfig walletConfig: WalletConfig)
 }
@@ -117,8 +149,14 @@ final class WalletsViewController: BaseViewController<WalletsView>, UITableViewD
         let nameLabel = UILabel(text: currentWallet.name)
         nameLabel.font = UIFont(name: "Lato-Semibold", size: 18)
         navigationItem.titleView = nameLabel
-        navigationController?.navigationBar.layer.masksToBounds = false
-        navigationController?.navigationBar.applyNavigationBarShadow()
+        if let naviBar =
+            navigationController?.navigationBar {
+            naviBar.layer.masksToBounds = false
+            naviBar.mask(withRect:CGRect(x: naviBar.bounds.origin.x, y: naviBar.bounds.origin.y, width: naviBar.bounds.size.width, height: naviBar.bounds.height+20))
+                 naviBar.applyNavigationBarShadow()
+            naviBar.applyNavigationBarShadow()
+        }
+     
         store.subscribe(self, onlyOnChange: [
             \ApplicationState.walletsState,
             \ApplicationState.walletState
@@ -127,6 +165,7 @@ final class WalletsViewController: BaseViewController<WalletsView>, UITableViewD
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        navigationController?.navigationBar.layer.masksToBounds = true
         store.unsubscribe(self)
     }
     
@@ -141,7 +180,6 @@ final class WalletsViewController: BaseViewController<WalletsView>, UITableViewD
         closeButton.addTarget(self, action: #selector(dismissAction), for: .touchDown)
         let backButton = UIBarButtonItem(customView: closeButton)
         navigationItem.leftBarButtonItem = backButton
-        self.navigationController?.navigationBar.shadowImage
     }
     
     @objc

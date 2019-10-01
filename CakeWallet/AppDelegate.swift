@@ -192,6 +192,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let authScreen = AuthenticationViewController(store: store, authentication: AuthenticationImpl())
         authScreen.modalPresentationStyle = .fullScreen
         UIApplication.topViewController()?.present(authScreen, animated: false)
+        UIApplication.topViewController()?.view.backgroundColor = UserInterfaceTheme.current.background
+        
         authScreen.handler = { [weak authScreen] in
             DispatchQueue.main.async {
                 authScreen?.dismiss(animated: true)

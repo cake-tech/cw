@@ -97,6 +97,11 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         }
     }
     
+    override func setBarStyle() {
+        super.setBarStyle()
+        themeChanged()
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if (fingerDown == false && areTouchesValid(touches, forEvent:event) == true) {
             Vibration.heavy.vibrate()
@@ -134,6 +139,7 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     func themeChanged() {
         walletNameView.titleLabel.textColor = UserInterfaceTheme.current.text
         walletNameView.subtitleLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
+        walletNameView.backgroundColor = UserInterfaceTheme.current.background
     }
     
     override func viewWillAppear(_ animated: Bool) {
