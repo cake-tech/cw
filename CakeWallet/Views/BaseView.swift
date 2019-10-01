@@ -12,6 +12,7 @@ class BaseView: UIView {
         if #available(iOS 13.0, *) {
             overrideUserInterfaceStyle = UserInterfaceTheme.current.asStyle
         }
+        backgroundColor = UserInterfaceTheme.current.background
     }
     
     @available(*, unavailable)
@@ -26,7 +27,6 @@ class BaseView: UIView {
     
     override func configureView() {
         super.configureView()
-        backgroundColor = UserInterfaceTheme.current.background
     }
 }
 
