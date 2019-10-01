@@ -195,7 +195,6 @@
 		646FF2E820E1492B00ADF30C /* CakeWalletLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 646FF2A320E11FFE00ADF30C /* CakeWalletLib.framework */; };
 		648D7F7C20F770A6004C6200 /* ExchangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 648D7F7B20F770A6004C6200 /* ExchangeView.swift */; };
 		648D7F7E20F7F26A004C6200 /* OnNewSubaddressAddedEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 648D7F7D20F7F26A004C6200 /* OnNewSubaddressAddedEffect.swift */; };
-		649F9AD52148097C0071AF17 /* TermsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 649F9AD42148097C0071AF17 /* TermsView.swift */; };
 		64A5AE1A20E2490500BD6098 /* CakeWalletLib.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 646FF2A320E11FFE00ADF30C /* CakeWalletLib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		64AA499F21455CAB002CE1FE /* MoneroWalletHistoryAdapter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 645F891D214429BA00B085AC /* MoneroWalletHistoryAdapter.mm */; };
 		64AA49A021455F2A002CE1FE /* KeychainKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A24468320BACEF100C87C81 /* KeychainKey.swift */; };
@@ -234,7 +233,6 @@
 		64C28A5C21039BFD00327509 /* ExchangeResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C28A5B21039BFD00327509 /* ExchangeResultView.swift */; };
 		64C28A5E21039C0500327509 /* ExchangeResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C28A5D21039C0500327509 /* ExchangeResultViewController.swift */; };
 		64C28A602104E7C000327509 /* AddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C28A5F2104E7C000327509 /* AddressView.swift */; };
-		64DACEDB214804CE0057B604 /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DACEDA214804CE0057B604 /* TermsViewController.swift */; };
 		64DACEDF214807870057B604 /* Terms_of_Use.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 64DACEDD214807870057B604 /* Terms_of_Use.rtf */; };
 		64DACEE0214807870057B604 /* NodesList.plist in Resources */ = {isa = PBXBuildFile; fileRef = 64DACEDE214807870057B604 /* NodesList.plist */; };
 		64EBA5DC20F3634B00997824 /* SubaddressesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64EBA5DB20F3634B00997824 /* SubaddressesView.swift */; };
@@ -710,7 +708,6 @@
 		646FF2E220E1203400ADF30C /* Effect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Effect.swift; sourceTree = "<group>"; };
 		648D7F7B20F770A6004C6200 /* ExchangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeView.swift; sourceTree = "<group>"; };
 		648D7F7D20F7F26A004C6200 /* OnNewSubaddressAddedEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnNewSubaddressAddedEffect.swift; sourceTree = "<group>"; };
-		649F9AD42148097C0071AF17 /* TermsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsView.swift; sourceTree = "<group>"; };
 		64AA49A521456A1F002CE1FE /* MoneroNodeDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoneroNodeDescription.swift; sourceTree = "<group>"; };
 		64AA49A721456DD9002CE1FE /* AnyBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyBaseViewController.swift; sourceTree = "<group>"; };
 		64AA49A921456DF6002CE1FE /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
@@ -759,7 +756,6 @@
 		64C28A5D21039C0500327509 /* ExchangeResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeResultViewController.swift; sourceTree = "<group>"; };
 		64C28A5F2104E7C000327509 /* AddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressView.swift; sourceTree = "<group>"; };
 		64D42E9620FE6EFC00AF516E /* CWMonero.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CWMonero.xcodeproj; path = CWMonero/CWMonero.xcodeproj; sourceTree = "<group>"; };
-		64DACEDA214804CE0057B604 /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
 		64DACEDD214807870057B604 /* Terms_of_Use.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Terms_of_Use.rtf; sourceTree = "<group>"; };
 		64DACEDE214807870057B604 /* NodesList.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NodesList.plist; sourceTree = "<group>"; };
 		64DD51D2215FFD620013309D /* libsodium.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libsodium.a; path = "CWMonero/External/libsodium/libsodium-ios/lib/libsodium.a"; sourceTree = "<group>"; };
@@ -1336,15 +1332,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		64DACED9214804BF0057B604 /* Terms */ = {
-			isa = PBXGroup;
-			children = (
-				64DACEDA214804CE0057B604 /* TermsViewController.swift */,
-				649F9AD42148097C0071AF17 /* TermsView.swift */,
-			);
-			path = Terms;
-			sourceTree = "<group>";
-		};
 		64DACEDC214807580057B604 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -1541,7 +1528,6 @@
 				A577D40D21F5F07E00FA1655 /* NewAddress */,
 				A577D40821EDEFB400FA1655 /* AddressBook */,
 				0C9B94A721B014E8001F9868 /* Disclaimer */,
-				64DACED9214804BF0057B604 /* Terms */,
 				64AA49B121456EAC002CE1FE /* PinCode */,
 				64FBC8372124726800EFC474 /* NewNode */,
 				64BEB642210CDBD600B63D67 /* ChangeLanguage */,
@@ -2600,7 +2586,6 @@
 				0CDBEECA22747A140047A53C /* ExchangeList.swift in Sources */,
 				64AA49D321457848002CE1FE /* BitcoinAmount.swift in Sources */,
 				0C5EFB9222022FED0069AF7F /* CloudStorage.swift in Sources */,
-				649F9AD52148097C0071AF17 /* TermsView.swift in Sources */,
 				64AA49BB2145704F002CE1FE /* Button.swift in Sources */,
 				0C9B94A921B014FE001F9868 /* DisclaimerView.swift in Sources */,
 				0C51C10E2279DB1800F54BFF /* OnSubaddressCahngedEffect.swift in Sources */,
@@ -2761,7 +2746,6 @@
 				6AAF1EA620B6047C000E4E02 /* ReceiveView.swift in Sources */,
 				6AAF1E9E20B60345000E4E02 /* CardView.swift in Sources */,
 				640A2AAA2176209E0047E60C /* Queue.swift in Sources */,
-				64DACEDB214804CE0057B604 /* TermsViewController.swift in Sources */,
 				644E32F52134511F00331241 /* ExchangeFlow.swift in Sources */,
 				A5178DE7222EBCAF00EC4829 /* AdaptiveLayout.swift in Sources */,
 				64AA49AE21456E55002CE1FE /* UIViewController+UIAlertController.swift in Sources */,
