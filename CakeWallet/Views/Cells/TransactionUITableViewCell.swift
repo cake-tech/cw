@@ -28,15 +28,13 @@ final class TransactionUITableViewCell: FlexCell {
         topRow = UIView()
         bottomRow = UIView()
         _contentContainer = UIView()
+        _contentContainer.backgroundColor = .clear
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
     override func configureView() {
         super.configureView()
         layoutMargins = .zero
-        contentView.backgroundColor = UserInterfaceTheme.current.background
-        backgroundColor = UserInterfaceTheme.current.background
-        contentView.backgroundColor = UserInterfaceTheme.current.background
         backgroundColor = UserInterfaceTheme.current.background
         cryptoLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
         statusLabel.textColor = UserInterfaceTheme.current.textVariants.highlight

@@ -1,6 +1,7 @@
 import UIKit
 
 final class TransactionDetailsCell: FlexCell {
+
     let titleLabel: UILabel
     let valueLabel: UILabel
     
@@ -14,6 +15,8 @@ final class TransactionDetailsCell: FlexCell {
         super.configureView()
         contentView.backgroundColor = UserInterfaceTheme.current.background
         selectionStyle = .none
+        titleLabel.backgroundColor = .clear
+        valueLabel.backgroundColor = .clear
         titleLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
         valueLabel.textColor = UserInterfaceTheme.current.textVariants.main
         titleLabel.numberOfLines = 0
@@ -21,15 +24,17 @@ final class TransactionDetailsCell: FlexCell {
     }
     
     override func configureConstraints() {
-        contentView.flex.padding(10, 20, 10, 20).define { flex in
+        contentView.flex.paddingVertical(10).define { flex in
             flex.addItem(titleLabel)
-            flex.addItem(valueLabel).marginTop(5)
+            flex.addItem(valueLabel)
         }
     }
     
     func configure(title: String, value: String) {
         titleLabel.text = title
         valueLabel.text = value
+        titleLabel.backgroundColor = .clear
+        valueLabel.backgroundColor = .clear
         titleLabel.flex.markDirty()
         valueLabel.flex.markDirty()
         layout()

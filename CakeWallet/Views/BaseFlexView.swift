@@ -25,7 +25,6 @@ class BaseFlexView: BaseView {
     
     override func configureView() {
         super.configureView()
-        //tstag
         rootFlexContainer.flex.backgroundColor(UserInterfaceTheme.current.background)
         addSubview(rootFlexContainer)
     }

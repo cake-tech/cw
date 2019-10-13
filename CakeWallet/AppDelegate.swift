@@ -95,7 +95,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         if !store.state.walletState.name.isEmpty && pin != nil {
             let authController = AuthenticationViewController(store: store, authentication: AuthenticationImpl())
+            authController.contentView.backgroundColor = UserInterfaceTheme.current.background
             let splashController = SplashViewController(store: store)
+            splashController.contentView.backgroundColor = UserInterfaceTheme.current.background
             let loadWalletHandler = LoadCurrentWalletHandler()
             
             window?.rootViewController = splashController
