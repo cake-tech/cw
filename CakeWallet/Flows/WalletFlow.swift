@@ -7,8 +7,23 @@ final class CustomTabBarController: UITabBarController {
         tabBar.frame.size.height
     }()
 
+    override var preferredStatusBarStyle:UIStatusBarStyle {
+        switch UserInterfaceTheme.current {
+        case .light:
+            if #available(iOS 13.0, *) {
+                return .darkContent
+            } else {
+                // Fallback on earlier versions
+                return .default
+            }
+        case .dark:
+            return .lightContent
+        }
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setNeedsStatusBarAppearanceUpdate()
         selectedViewController?.viewWillAppear(animated)
     }
     
@@ -21,7 +36,9 @@ final class CustomTabBarController: UITabBarController {
         super.viewDidLoad()
         
         tabBar.clipsToBounds = true
-    
+        
+        view.backgroundColor = UserInterfaceTheme.current.background
+        
         tabBar.backgroundColor = UserInterfaceTheme.current.background
         tabBar.layer.backgroundColor = UserInterfaceTheme.current.background.cgColor
         tabBar.barTintColor = UserInterfaceTheme.current.background
@@ -78,6 +95,8 @@ final class WalletFlow: NSObject, Flow, UITabBarControllerDelegate {
     
     init(rootController: UITabBarController) {
         self._root = rootController
+        self._root.view.backgroundColor = UserInterfaceTheme.current.background
+        
         super.init()
         configureRootTabBar()
         _root.delegate = self
