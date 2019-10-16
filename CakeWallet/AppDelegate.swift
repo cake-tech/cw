@@ -122,7 +122,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 DispatchQueue.main.async {
                     self?.walletFlow = WalletFlow()
                     self?.walletFlow?.change(route: .start)
-                    
+
                     self?.window?.rootViewController = self?.walletFlow?.rootController
                     
                     if !termsOfUseAccepted {
@@ -218,41 +218,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private func setAppearance() {
         UITabBar.appearance().layer.borderWidth = 0.0
-
         UITabBar.appearance().backgroundColor = UserInterfaceTheme.current.background
         UITabBar.appearance().layer.borderColor = UIColor.clear.cgColor
         UITabBar.appearance().clipsToBounds = true
-//        UITabBar.appearance().tintColor = .vividBlue
-//        UITabBar.appearance().unselectedItemTintColor = UIColor(hex: 0xC0D4E2)
-
+        
         UINavigationBar.appearance().tintColor = UserInterfaceTheme.current.text
         UINavigationBar.appearance().backgroundColor = UserInterfaceTheme.current.background
 
-    //        UITabBar.appearance().layer.borderWidth = 0.0
-    //
-    //        UITabBar.appearance().backgroundColor = UserInterfaceTheme.current.background
-    //        UITabBar.appearance().shadowImage = UIImage()
-    //        UITabBar.appearance().backgroundImage = UIImage()
-    //        UITabBar.appearance().layer.borderColor = UIColor.clear.cgColor
-    //        UITabBar.appearance().clipsToBounds = true
-    ////        UITabBar.appearance().tintColor = .vividBlue
-    ////        UITabBar.appearance().unselectedItemTintColor = UIColor(hex: 0xC0D4E2)
-    //
-    //        UINavigationBar.appearance().tintColor = UserInterfaceTheme.current.text
-    //        UINavigationBar.appearance().backgroundColor = UserInterfaceTheme.current.background
-    //
-//        UINavigationItem
-//        UINavigationBar.appearance()
-        
-//        UINavigationBar.appearance().backIndicatorImage = backImage
-//        UINavigationBar.appearance().backIndicatorTransitionMaskImage = backImage
-//        UIBarButtonItem.appearance().setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.clear], for: .normal)
-//        UIBarButtonItem.appearance().setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.clear], for: .highlighted)
-
-//        UINavigationBar.appearance().backItem?.title = ""
-//        UINavigationBar.appearance().backgroundColor = .clear
-        
-//        UINavigationBar.appearance().isTranslucent = true
         UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
         UINavigationBar.appearance().shadowImage = UIImage()
         
