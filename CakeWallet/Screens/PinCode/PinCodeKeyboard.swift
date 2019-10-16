@@ -2,8 +2,6 @@ import UIKit
 import FlexLayout
 
 final class PinCodeKeyboard: BaseView {
-    var currentTheme: UserInterfaceTheme = UserInterfaceTheme.current
-    
     private static let rows = 4
     let rootFlexContainer: UIView
     var compilationHandler: ((PinCodeKeyboardKey) -> Void)?

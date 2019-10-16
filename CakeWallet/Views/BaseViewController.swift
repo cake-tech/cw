@@ -38,18 +38,6 @@ class BaseViewController<View: BaseView>: AnyBaseViewController {
         }
     }
     
-    @available(iOS 12.0, *)
-    var userInterfaceStyle: UIUserInterfaceStyle {
-        get {
-            switch UserInterfaceTheme.current {
-            case .light:
-                return .light
-            case .dark:
-                return .dark
-            }
-        }
-    }
-    
     override var prefersStatusBarHidden: Bool {
         get {
             return false

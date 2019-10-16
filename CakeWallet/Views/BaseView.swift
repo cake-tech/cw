@@ -9,9 +9,6 @@ class BaseView: UIView {
     required init() {
         super.init(frame: CGRect.zero)
         configureView()
-        if #available(iOS 13.0, *) {
-            overrideUserInterfaceStyle = UserInterfaceTheme.current.asStyle
-        }
         backgroundColor = UserInterfaceTheme.current.background
     }
     
@@ -27,6 +24,24 @@ class BaseView: UIView {
     
     override func configureView() {
         super.configureView()
+    }
+
+    var currentTheme:UserInterfaceTheme {
+        get {
+            return UserInterfaceTheme.current
+//            if #available(iOS 13.0, *) {
+//                switch traitCollection.userInterfaceStyle {
+//                case .light:
+//                    return UserInterfaceTheme.light
+//                case .dark:
+//                    return UserInterfaceTheme.dark
+//                default:
+//                    return UserInterfaceTheme.default
+//                }
+//            } else {
+//                return UserInterfaceTheme.current
+//            }
+        }
     }
 }
 
