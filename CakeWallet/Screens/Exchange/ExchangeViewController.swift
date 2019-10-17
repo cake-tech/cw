@@ -1015,6 +1015,7 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
     
     override func setBarStyle() {
         super.setBarStyle()
+        exchangeNameView.backgroundColor = UserInterfaceTheme.current.background
         navigationItem.leftBarButtonItem?.tintColor = UserInterfaceTheme.current.text
         navigationItem.rightBarButtonItem?.tintColor = UserInterfaceTheme.current.text
     }
