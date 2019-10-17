@@ -23,6 +23,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print(error)
         }
         
+        if #available(iOS 13.0, *) {
+            switch UserInterfaceTheme.current {
+            case .dark:
+                window?.overrideUserInterfaceStyle = .dark
+            case .light:
+                window?.overrideUserInterfaceStyle = .light
+            }
+        }
+
         IQKeyboardManager.shared.enable = true
         register(handler: LoadWalletHandler())
         register(handler: LoadCurrentWalletHandler())

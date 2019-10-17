@@ -66,6 +66,15 @@ class BaseViewController<View: BaseView>: AnyBaseViewController {
                 storeSub._onStateChange(store.state)
             }
         }
+        
+        if #available(iOS 13.0, *) {
+            switch UserInterfaceTheme.current {
+            case .dark:
+                overrideUserInterfaceStyle = .dark
+            case .light:
+                overrideUserInterfaceStyle = .light
+            }
+        }
     }
     
     override func loadView() {

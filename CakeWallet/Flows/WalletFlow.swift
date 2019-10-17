@@ -8,16 +8,15 @@ final class CustomTabBarController: UITabBarController {
     }()
 
     override var preferredStatusBarStyle:UIStatusBarStyle {
-        switch UserInterfaceTheme.current {
-        case .light:
-            if #available(iOS 13.0, *) {
+        if #available(iOS 13.0, *) {
+            switch UserInterfaceTheme.current {
+            case .light:
                 return .darkContent
-            } else {
-                // Fallback on earlier versions
-                return .default
+            case .dark:
+                return .lightContent
             }
-        case .dark:
-            return .lightContent
+        } else {
+            return .default
         }
     }
 
@@ -44,6 +43,15 @@ final class CustomTabBarController: UITabBarController {
         tabBar.barTintColor = UserInterfaceTheme.current.background
         tabBar.layer.applySketchShadow(color: UIColor(red: 52, green: 115, blue: 176), alpha: 0.2, x: 0, y: 18, blur: 44, spread: 18)
         tabBar.layer.masksToBounds = false
+        
+        if #available(iOS 13.0, *) {
+            switch UserInterfaceTheme.current {
+            case .light:
+                overrideUserInterfaceStyle = .light
+            case .dark:
+                overrideUserInterfaceStyle = .dark
+            }
+        }
     }
     
     override func viewDidLayoutSubviews() {
