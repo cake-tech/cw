@@ -276,17 +276,19 @@ final class WalletsViewController: BaseViewController<WalletsView>, UITableViewD
                         withName: wallet.name,
                         andType: wallet.type,
                         handler: {
-                            alert.dismiss(animated: true) {
-                                if  let error = self?.store.state.error {
-                                    self?.showInfoAlert(title: nil, message: error.localizedDescription, actions: [cancelAction])
-                                    return
-                                }
+                            DispatchQueue.main.async {
+                                alert.dismiss(animated: true) {
+                                    if  let error = self?.store.state.error {
+                                        self?.showInfoAlert(title: nil, message: error.localizedDescription, actions: [cancelAction])
+                                        return
+                                    }
 
-                                self?.dismiss(animated: true) {
-                                    self?.onDismissHandler?()
+                                    self?.dismiss(animated: true) {
+                                        self?.onDismissHandler?()
+                                    }
                                 }
                             }
-                    }))
+                        }))
                 }
             }
         }
