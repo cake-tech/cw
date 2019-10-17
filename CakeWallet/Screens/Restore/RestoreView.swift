@@ -2,6 +2,12 @@ import UIKit
 import FlexLayout
 
 final class RestoreView: BaseScrollFlexView {
+    override var themedBackgroundColor: UIColor {
+        get {
+            return UserInterfaceTheme.current.restoreScreenBackground
+        }
+    }
+    
     let restoreFromSeedImageView: FlexView
     let restoreFromSeedImage: UIImageView
     let restoreFromSeedCard: WelcomeFlowCardView
@@ -34,7 +40,7 @@ final class RestoreView: BaseScrollFlexView {
     
     override func configureConstraints() {
         //tstag
-        let imageViewBackgroundColor = UserInterfaceTheme.current.background
+        let imageViewBackgroundColor = UserInterfaceTheme.current.restoreCardBackground
         let imageHeight = adaptiveLayout.getSize(forLarge: 135, forBig: 100, defaultSize: 85)
         let imageWidth = adaptiveLayout.getSize(forLarge: 290, forBig: 240, defaultSize: 200)
         let imagePaddingTop = adaptiveLayout.getSize(forLarge: 50, forBig: 50, defaultSize: 30)

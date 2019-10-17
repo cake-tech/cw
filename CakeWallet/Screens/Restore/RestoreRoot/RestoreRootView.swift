@@ -35,7 +35,7 @@ final class RestoreRootView: BaseScrollFlexView {
     }
     
     override func configureConstraints() {
-        let imageViewBackgroundColor = UserInterfaceTheme.current.background
+        let imageViewBackgroundColor = UserInterfaceTheme.current.restoreCardBackground
         let imageHeight = adaptiveLayout.getSize(forLarge: 180, forBig: 150, defaultSize: 115)
         let imageWidth = adaptiveLayout.getSize(forLarge: 360, forBig: 320, defaultSize: 240)
         
@@ -63,6 +63,7 @@ final class RestoreRootView: BaseScrollFlexView {
             flex.addItem(restoreWalletCard).width(100%)
             flex.addItem(restoreAppCard).width(100%)
         }
+        backgroundColor = UserInterfaceTheme.current.restoreScreenBackground
     }
 }
 

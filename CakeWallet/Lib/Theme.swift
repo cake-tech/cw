@@ -252,6 +252,28 @@ extension UserInterfaceTheme {
             }
         }
     }
+    
+    var restoreScreenBackground:UIColor {
+        get {
+            switch self {
+            case .light:
+                return UIColor(red:0.95, green:0.96, blue:0.97, alpha:1.0)
+            case .dark:
+                return background
+            }
+        }
+    }
+    
+    var restoreCardBackground:UIColor {
+        get {
+            switch self {
+            case .light:
+                return .white
+            case .dark:
+                return UIColor(red:0.08, green:0.10, blue:0.15, alpha:1.0)
+            }
+        }
+    }
 }
 
 //https://crunchybagel.com/blend-uicolor-swift-extension/
