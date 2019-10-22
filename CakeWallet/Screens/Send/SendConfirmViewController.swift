@@ -16,13 +16,12 @@ final class SendConfirmViewController: BaseViewController<SendConfirmView> {
         self.address = address
         self.fee = fee
         super.init()
+        title = NSLocalizedString("confirm_sending", comment: "")
         modalPresentationStyle = .fullScreen
     }
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationItem.title = NSLocalizedString("confirm_sending", comment: "")
-        title = NSLocalizedString("confirm_sending", comment: "")
-        
         contentView.amountLabel.text = amount + " XMR"
         contentView.feeLabel.text = NSLocalizedString("fee", comment: "") + ": " + fee
         contentView.addressLabel.text = address
@@ -32,6 +31,7 @@ final class SendConfirmViewController: BaseViewController<SendConfirmView> {
         contentView.cancelButton.addTarget(self, action: #selector(userCanceled), for: .touchDown)
         contentView.sendButton.addTarget(self, action: #selector(userAccepted), for: .touchDown)
     }
+    
     
     @objc private func userCanceled() {
         if let hasCancelFunction = onCancel {

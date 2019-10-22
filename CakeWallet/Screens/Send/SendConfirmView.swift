@@ -5,6 +5,7 @@ import FlexLayout
 final class SendConfirmView: BaseFlexView {
     let imageView = UIImageView()
     
+    let titleLabel = UILabel()
     let confirmSendingTitle = UILabel()
     let amountLabel = UILabel()
     let feeLabel = UILabel()
@@ -21,23 +22,27 @@ final class SendConfirmView: BaseFlexView {
     
     override func configureView() {
         super.configureView()
+        titleLabel.font = UIFont(name: "Lato-Regular", size: 18)
         backgroundColor = UserInterfaceTheme.current.background
+        
+        titleLabel.text = NSLocalizedString("confirm_sending", comment: "")
+        titleLabel.isUserInteractionEnabled = false
         
         imageView.image = UIImage(named:"send_image")
         imageView.contentMode = .scaleAspectFit
         
         confirmSendingTitle.font = UIFont(name: "Lato-Semibold", size: 20)
-        confirmSendingTitle.textColor = UserInterfaceTheme.current.purple.main
+        confirmSendingTitle.textColor = UserInterfaceTheme.current.purple.highlight
         confirmSendingTitle.text = NSLocalizedString("confirm_sending", comment: "")
         
         amountLabel.font = UIFont(name: "Lato-Semibold", size: 32)
         amountLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
         
         feeLabel.font = UIFont(name: "Lato-Semibold", size: 16)
-        feeLabel.textColor = UserInterfaceTheme.current.textVariants.dim
+        feeLabel.textColor = UserInterfaceTheme.current.textVariants.main
         
         recipientAddressTitle.font = UIFont(name: "Lato-SemiBold", size: 14)
-        recipientAddressTitle.textColor = UserInterfaceTheme.current.purple.main
+        recipientAddressTitle.textColor = UserInterfaceTheme.current.purple.highlight
         recipientAddressTitle.text = NSLocalizedString("recipient_address", comment: "")
         
         addressLabel.font = UIFont(name: "Lato-Semibold", size: 14)
@@ -59,6 +64,7 @@ final class SendConfirmView: BaseFlexView {
         
         let mainView = UIView()
         mainView.flex.alignItems(.center).define { flex in
+            flex.addItem(titleLabel).marginTop(10).marginBottom(45)
             flex.addItem(imageView).marginTop(58)
             flex.addItem(confirmSendingTitle).marginVertical(3)
             flex.addItem(amountLabel).marginVertical(2)

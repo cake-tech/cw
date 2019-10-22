@@ -5,6 +5,7 @@ import SwiftDate
 let syncImageSize = CGSize(width: 12, height: 12)
 
 final class ProgressBar: BaseFlexView {
+    var locale:Locale = Locale.current
     let progressView: UIView
     let textContainer: UIView
     let imageHolder: UIImageView
@@ -221,7 +222,7 @@ final class ProgressBar: BaseFlexView {
     }
     
     private func lastBlockRelativeString() -> String {
-        return RelativeFormatter.format(date:lastBlockDate, style:RelativeFormatter.Style(flavours: [.longTime], gradation: RelativeFormatter.Gradation.twitter()), locale:Locale.current)
+        return RelativeFormatter.format(date:lastBlockDate, style:RelativeFormatter.Style(flavours: [.longTime], gradation: RelativeFormatter.Gradation.twitter()), locale:locale)
     }
     
     private func updateLastBlockRelativeString() {
