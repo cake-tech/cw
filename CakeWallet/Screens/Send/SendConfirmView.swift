@@ -13,7 +13,7 @@ final class SendConfirmView: BaseFlexView {
     let recipientAddressTitle = UILabel()
     let addressLabel = UILabel()
     
-    let sendButton = PrimaryButton(title: NSLocalizedString("send", comment: ""))
+    let sendButton = PrimaryButton(title: NSLocalizedString("confirm", comment: ""))
     let cancelButton = SecondaryButton(title: NSLocalizedString("cancel", comment: ""))
     
     required init() {
@@ -25,7 +25,7 @@ final class SendConfirmView: BaseFlexView {
         titleLabel.font = UIFont(name: "Lato-Regular", size: 18)
         backgroundColor = UserInterfaceTheme.current.background
         
-        titleLabel.text = NSLocalizedString("confirm_sending", comment: "")
+        titleLabel.text = NSLocalizedString("send_monero", comment: "")
         titleLabel.isUserInteractionEnabled = false
         
         imageView.image = UIImage(named:"send_image")

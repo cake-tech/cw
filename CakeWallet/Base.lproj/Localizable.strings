@@ -106,6 +106,7 @@
 "cancel" = "Cancel";
 "receive" = "Receive";
 "send" = "Send";
+"send_monero" = "Send Monero";
 "transactions" = "Transactions";
 "sent" = "Sent";
 "pending" = "pending";
@@ -117,7 +118,6 @@
 "no_contacts" = "No contacts yet";
 "contact" = "Contact";
 "contact_name" = "Contact name";
-
 
 // Wallets
 
