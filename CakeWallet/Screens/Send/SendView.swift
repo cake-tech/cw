@@ -121,8 +121,8 @@ final class SendView: BaseScrollFlexViewWithBottomSection {
         paymentIdTextField.rightViewMode = .always
         paymentIdTextField.textColor = UserInterfaceTheme.current.text
         
-        sendButton.backgroundColor = UserInterfaceTheme.current.gray.dim
-        sendButton.layer.borderColor = UserInterfaceTheme.current.gray.main.cgColor
+        sendButton.backgroundColor = UserInterfaceTheme.current.grayButton.fill
+        sendButton.layer.borderColor = UserInterfaceTheme.current.grayButton.border.cgColor
         
         estimatedFeeTitleLabel.textColor = UserInterfaceTheme.current.text
         estimatedFeeValueLabel.textColor = UserInterfaceTheme.current.text
