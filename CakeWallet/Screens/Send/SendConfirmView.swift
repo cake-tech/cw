@@ -39,14 +39,14 @@ final class SendConfirmView: BaseFlexView {
         amountLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
         
         feeLabel.font = UIFont(name: "Lato-Semibold", size: 16)
-        feeLabel.textColor = UserInterfaceTheme.current.textVariants.main
+        feeLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
         
         recipientAddressTitle.font = UIFont(name: "Lato-SemiBold", size: 14)
         recipientAddressTitle.textColor = UserInterfaceTheme.current.purple.highlight
         recipientAddressTitle.text = NSLocalizedString("recipient_address", comment: "")
         
         addressLabel.font = UIFont(name: "Lato-Semibold", size: 14)
-        addressLabel.textColor = UserInterfaceTheme.current.textVariants.main
+        addressLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
         
         //enable character breaks and multiple lines
         addressLabel.lineBreakMode = .byCharWrapping
