@@ -23,6 +23,19 @@ protocol Theme {
     var gray:Colorset { get }
 }
 
+@available(iOS 13.0, *)
+extension UIUserInterfaceStyle {
+    func asUserInterfaceTheme() -> UserInterfaceTheme {
+        switch self {
+        case .light:
+            return UserInterfaceTheme.light
+        case .dark:
+            return UserInterfaceTheme.dark
+        default:
+            return UserInterfaceTheme.default
+        }
+    }
+}
 
 fileprivate var currentCached:UserInterfaceTheme? = nil
 enum UserInterfaceTheme: Int, Theme {
@@ -39,15 +52,24 @@ enum UserInterfaceTheme: Int, Theme {
     static var `default` = UserInterfaceTheme.light
     static var current: UserInterfaceTheme {
         get {
-            if let cacheTest = currentCached {
-                return cacheTest
+            if #available(iOS 13.0, *) {
+                if let cacheTest = currentCached {
+                    return cacheTest
+                }
+                let screenTheme = UIScreen.main.traitCollection.userInterfaceStyle.asUserInterfaceTheme()
+                currentCached = screenTheme
+                return screenTheme
+            } else {
+                if let cacheTest = currentCached {
+                    return cacheTest
+                }
+                if let theme = UserInterfaceTheme(rawValue: UserDefaults.standard.integer(forKey: Configurations.DefaultsKeys.currentTheme)) {
+                    currentCached = theme
+                    return theme
+                }
+                currentCached = self.`default`
+                return self.`default`
             }
-            if let theme = UserInterfaceTheme(rawValue: UserDefaults.standard.integer(forKey: Configurations.DefaultsKeys.currentTheme)) {
-                currentCached = theme
-                return theme
-            }
-            currentCached = self.`default`
-            return self.`default`
         }
         set {
             let currentValue = UserInterfaceTheme(rawValue: UserDefaults.standard.integer(forKey: Configurations.DefaultsKeys.currentTheme)) ?? self.`default`
