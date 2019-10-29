@@ -66,6 +66,7 @@ final class SignUpFlow: Flow {
             return CreateWalletViewController(signUpFlow: self, store: store)
         case let .seed(date, walletName, seed):
             let aboutSeed = AboutSeedViewController(store: store)
+            aboutSeed.contentView.backgroundColor = UserInterfaceTheme.current.background
             aboutSeed.onDismissHandler = { [weak self] in
                 guard let self = self else {
                     return
