@@ -35,9 +35,9 @@ final class PinCodeView: BaseFlexView {
             flex.addItem(useSixPin).marginTop(45).alignSelf(.center)
             
             pinPasswordKeyboardContainer.flex
-                .justifyContent(.end)
-                    .addItem(pinPasswordKeyboard).marginLeft(10.8%).marginRight(10.8%)
-            flex.addItem(pinPasswordKeyboardContainer)
-        }
+                .grow(1)
+                .addItem(pinPasswordKeyboard).marginLeft(10.8%).marginRight(10.8%)
+            flex.addItem(pinPasswordKeyboardContainer).justifyContent(.center)
+        }.justifyContent(.center)
     }
 }
