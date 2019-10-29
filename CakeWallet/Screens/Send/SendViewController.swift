@@ -80,6 +80,22 @@ struct DefaultCryptoQRResult: QRUri {
             return "litecoin"
         case .monero:
             return "monero"
+        case .usdT:
+            return "usdtether"
+        case .eos:
+            return "eos"
+        case .xrp:
+            return "ripple"
+        case .trx:
+            return "tron"
+        case .bnb:
+            return "binancecoin"
+        case .ada:
+            return "cardano"
+        case .xlm:
+            return "ripple"
+        case .nano:
+            return "nano"
         }
     }
     

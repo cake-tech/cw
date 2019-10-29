@@ -10,10 +10,12 @@ func calculate(rate: Double, amount: Double, currency: CryptoCurrency) -> Amount
     return makeAmount(price, currency: currency)
 }
 
+private let MorphSupportedCurrencies = [.monero, .bitcoin, .ethereum, .liteCoin, .bitcoinCash, .dash] as [CryptoCurrency]
+
 final class MorphExchange: Exchange {
     private(set) static var pairs: [Pair] = {
-        return CryptoCurrency.all.map { i -> [Pair] in
-            return CryptoCurrency.all.map { o -> Pair? in
+        return MorphSupportedCurrencies.map { i -> [Pair] in
+            return MorphSupportedCurrencies.map { o -> Pair? in
                 // XMR -> BTC is only for XMR.to
                 
                 if i == .bitcoin && o == .monero {
@@ -106,12 +108,12 @@ final class MorphExchange: Exchange {
                     case .monero:
                         min = MoneroAmount(value: UInt64(minAmount))
                         max = MoneroAmount(value: UInt64(maxAmount))
-                    case .bitcoinCash, .dash, .liteCoin:
-                        min = EDAmount(value: minAmount, currency: request.to)
-                        max = EDAmount(value: maxAmount, currency: request.to)
                     case .ethereum:
                         min = EthereumAmount(value: minAmount)
                         max = EthereumAmount(value: maxAmount)
+                    default:
+                        min = EDAmount(value: minAmount, currency: request.to)
+                        max = EDAmount(value: maxAmount, currency: request.to)
                     }
                     
                     let state = ExchangeTradeState(rawValue: json["state"].stringValue.lowercased()) ?? .pending

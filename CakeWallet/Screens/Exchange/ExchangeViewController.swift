@@ -1268,10 +1268,10 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
             outputAmount = BitcoinAmount(from: String(result))
         case .monero:
             outputAmount = MoneroAmount(from: String(result))
-        case .bitcoinCash, .dash, .liteCoin:
-            outputAmount = EDAmount(from: String(result), currency: output)
         case .ethereum:
             outputAmount = EthereumAmount(from: String(result))
+        default:
+            outputAmount = EDAmount(from: String(result), currency: receiveCrypto.value)
         }
         
         //        return amountForDisplayFormatted(from: outputAmount.formatted())
@@ -1298,10 +1298,10 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
             outputAmount = BitcoinAmount(from: String(result))
         case .monero:
             outputAmount = MoneroAmount(from: String(result))
-        case .bitcoinCash, .dash, .liteCoin:
-            outputAmount = EDAmount(from: String(result), currency: receiveCrypto.value)
         case .ethereum:
             outputAmount = EthereumAmount(from: String(result))
+        default:
+            outputAmount = EDAmount(from: String(result), currency: receiveCrypto.value)
         }
         
         let formattedOutputAmount = amountForDisplayFormatted(from: outputAmount.formatted())

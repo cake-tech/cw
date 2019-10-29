@@ -70,6 +70,22 @@ extension Contact: CellItem {
             return UIColor(hex: 0x88caf2)
         case .dash:
             return UIColor(hex: 0x068de0)
+        case .usdT:
+            return UIColor(hex: 0x88caf2)
+        case .eos:
+            return UIColor(hex: 0x88caf2)
+        case .xrp:
+            return UIColor(hex: 0x88caf2)
+        case .trx:
+            return UIColor(hex: 0x88caf2)
+        case .bnb:
+            return UIColor(hex: 0x88caf2)
+        case .ada:
+            return UIColor(hex: 0x88caf2)
+        case .xlm:
+            return UIColor(hex: 0x88caf2)
+        case .nano:
+            return UIColor(hex: 0x88caf2)
         }
     }
     
@@ -86,6 +102,22 @@ extension Contact: CellItem {
         case .liteCoin:
             return .white
         case .dash:
+            return .white
+        case .usdT:
+            return .white
+        case .eos:
+            return .white
+        case .xrp:
+            return .white
+        case .trx:
+            return .white
+        case .bnb:
+            return .white
+        case .ada:
+            return .white
+        case .xlm:
+            return .white
+        case .nano:
             return .white
         }
     }
