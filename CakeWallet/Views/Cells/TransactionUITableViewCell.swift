@@ -79,7 +79,7 @@ final class TransactionUITableViewCell: FlexCell {
         var status = ""
         
         if direction == .incoming {
-            status = NSLocalizedString("receive", comment: "")
+            status = NSLocalizedString("received", comment: "")
             imageView?.image = UIImage(named: "arrow_down_green_icon")?.resized(to: CGSize(width: 26, height: 26))
         } else {
             status = NSLocalizedString("sent", comment: "")

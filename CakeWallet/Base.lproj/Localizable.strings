@@ -105,6 +105,7 @@
 "reconnect_alert_text" = "Are you sure to reconnect?";
 "cancel" = "Cancel";
 "receive" = "Receive";
+"received" = "Received";
 "send" = "Send";
 "send_monero" = "Send Monero";
 "transactions" = "Transactions";

@@ -5,7 +5,7 @@ import SwiftDate
 let syncImageSize = CGSize(width: 12, height: 12)
 
 final class ProgressBar: BaseFlexView {
-    var locale:Locale = Locale.current
+    let locale:Locale
     let progressView: UIView
     let textContainer: UIView
     let imageHolder: UIImageView
@@ -89,7 +89,11 @@ final class ProgressBar: BaseFlexView {
         syncImage = UIImage(named: "refresh_icon")!.resized(to:syncImageSize)
         primaryLabel = UILabel(text: "SYNCING BLOCKCHAIN")
         secondaryLabel = UILabel(text:"AS OF")
-        
+        if let hasLanguage = UserDefaults.standard.array(forKey: "AppleLanguages") as? [String], let firstLang = hasLanguage.first {
+            locale = Locale(identifier: firstLang)
+        } else {
+            locale = Locale.current
+        }
         super.init()
     }
     
