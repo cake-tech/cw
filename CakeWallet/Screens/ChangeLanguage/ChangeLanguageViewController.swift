@@ -55,7 +55,7 @@ public enum Languages: String, Formatted {
         case .pt:
             return "Português (Portuguese)"
         case .pl:
-            return "Polskie (Polish)"
+            return "Polski (Polish)"
         case .nl:
             return "Nederlands (Dutch)"
         }

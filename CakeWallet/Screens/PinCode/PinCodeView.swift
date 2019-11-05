@@ -18,7 +18,7 @@ final class PinCodeView: BaseFlexView {
     override func configureView() {
         super.configureView()
         titleLabel.text = NSLocalizedString("enter_your_pin", comment: "")
-        titleLabel.font = applyFont(ofSize: 24, weight: .regular)
+        titleLabel.font = applyFont(ofSize: 18, weight: .regular)
         titleLabel.numberOfLines = 0
         titleLabel.textAlignment = .center
         let attributes = [ NSAttributedStringKey.foregroundColor : UserInterfaceTheme.current.textVariants.main, NSAttributedStringKey.font: UIFont(name: "Lato-Regular", size: 16)]
@@ -28,16 +28,22 @@ final class PinCodeView: BaseFlexView {
     
     override func configureConstraints() {
         rootFlexContainer.flex.define { flex in
+            let pinTopContainer = UIView()
             let pinPasswordKeyboardContainer = UIView()
+
             
-            flex.addItem(titleLabel).marginTop(15%)
-            flex.addItem(pinCodesView).marginTop(25).width(100%).alignItems(.center)
-            flex.addItem(useSixPin).marginTop(45).alignSelf(.center)
+            pinTopContainer.flex.direction(.column).define({ pinTopFlex in
+                pinTopFlex.addItem(titleLabel).marginTop(10)
+                pinTopFlex.addItem(pinCodesView).marginTop(22).width(100%)
+                pinTopFlex.addItem(useSixPin).marginTop(27).alignSelf(.center)
+            }).justifyContent(.spaceEvenly)
             
-            pinPasswordKeyboardContainer.flex
-                .grow(1)
-                .addItem(pinPasswordKeyboard).marginLeft(10.8%).marginRight(10.8%)
-            flex.addItem(pinPasswordKeyboardContainer).justifyContent(.center)
-        }.justifyContent(.center)
+            pinPasswordKeyboardContainer.flex.grow(1).direction(.column).define({ pinPassFlex in
+                pinPassFlex.addItem(pinPasswordKeyboard).marginLeft(12%).marginRight(12%)
+            }).justifyContent(.spaceEvenly)
+
+            flex.addItem(pinTopContainer).maxHeight(35%)
+            flex.addItem(pinPasswordKeyboardContainer)
+        }
     }
 }
