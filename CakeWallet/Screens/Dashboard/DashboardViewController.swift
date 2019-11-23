@@ -561,7 +561,7 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
             return
         }
         
-        if (balances.crypto.full.value != balances.crypto.unlocked.value || areTransactionsPending == true) {
+        if (balances.crypto.full.value != balances.crypto.unlocked.value) {
             guard
                 live_bc_height != 0,
                 let lastTxHeight = lastTransactionHeight else {
@@ -570,19 +570,14 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
                     return
             }
             
-            if (areTransactionsPending == true) {
-                print("pending mode")
-                contentView.blockUnlockLabel.text = (blockDelay + pendingBlocks).asLocalizedUnlockString()
-                showIt()
-            } else if (lastTxHeight < live_bc_height && (live_bc_height - lastTxHeight) < blockDelay) {
-                print("progress mode")
+            if (lastTxHeight < live_bc_height && (live_bc_height - lastTxHeight) < blockDelay) {
                 contentView.blockUnlockLabel.text = (blockDelay - (live_bc_height - lastTxHeight)).asLocalizedUnlockString()
                 showIt()
             } else if (balances.crypto.full.value != balances.crypto.unlocked.value) {
-                print("About to dissapear mode")
                 contentView.blockUnlockLabel.text = (1 as UInt64).asLocalizedUnlockString()
                 showIt()
             }
+            
         } else if (balances.crypto.full.value == balances.crypto.unlocked.value) {
             hideIt()
         }
