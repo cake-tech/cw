@@ -26,9 +26,9 @@ final class RecoverFromSeedView: BaseFlexView {
         super.configureView()
         cardWrapper.layer.cornerRadius = 12
         cardWrapper.backgroundColor = UserInterfaceTheme.current.background
-        seedField.textColor = UserInterfaceTheme.current.textVariants.main
+        seedField.textColor = UserInterfaceTheme.current.text
         seedField.backgroundColor = UserInterfaceTheme.current.background
-        walletNameField.textColor = UserInterfaceTheme.current.textVariants.main
+        walletNameField.textColor = UserInterfaceTheme.current.text
         if let placeholder = seedField.placeholder {
             seedField.attributedPlaceholder = NSAttributedString(string:placeholder, attributes: [NSAttributedStringKey.foregroundColor: UserInterfaceTheme.current.textVariants.dim])
         }
