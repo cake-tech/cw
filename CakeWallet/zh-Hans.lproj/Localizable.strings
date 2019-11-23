@@ -84,9 +84,9 @@
 "synchronizing" = "同步";
 
 // Balances
-"balance-display-type_unlocked" = "全部余额";
+"balance-display-type_unlocked" = "可用余额";
 "balance-display-type_full" = "全部余额";
-"balance-display-type_hidden" = "隐";
+"balance-display-type_hidden" = "隐藏";
 "balance_type_title" = "显示平衡为";
 
 // Wallet

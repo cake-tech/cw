@@ -384,7 +384,6 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
                                     )
                                     return
                                 }
-                                
                                 self?.onBackupSave(error: error)
                             }
                         })
