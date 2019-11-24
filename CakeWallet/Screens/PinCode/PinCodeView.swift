@@ -30,13 +30,12 @@ final class PinCodeView: BaseFlexView {
         rootFlexContainer.flex.define { flex in
             let pinTopContainer = UIView()
             let pinPasswordKeyboardContainer = UIView()
-
             
             pinTopContainer.flex.direction(.column).define({ pinTopFlex in
-                pinTopFlex.addItem(titleLabel).marginBottom(10)
+                pinTopFlex.addItem(titleLabel).marginBottom(10).width(50%)
                 pinTopFlex.addItem(pinCodesView)
                 pinTopFlex.addItem(useSixPin).marginTop(10)
-            }).alignItems(.center).justifyContent(.center)
+                }).alignItems(.center).justifyContent(.center)
             
             pinPasswordKeyboardContainer.flex.grow(1).direction(.column).define({ pinPassFlex in
                 pinPassFlex.addItem(pinPasswordKeyboard).marginLeft(12%).marginRight(12%)
