@@ -47,6 +47,7 @@
 		0C6DEB622281B34D00536AA1 /* OnAccountAddedEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6DEB612281B34D00536AA1 /* OnAccountAddedEffect.swift */; };
 		0C6E3A1721FA02C700030C92 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C6E3A1621FA02C700030C92 /* CloudKit.framework */; };
 		0C782005226E34CE009FDB62 /* SubaddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C782004226E34CE009FDB62 /* SubaddressView.swift */; };
+		0C87C2E1238D817B005EE956 /* librandomx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C87C2E0238D817B005EE956 /* librandomx.a */; };
 		0C9B94A921B014FE001F9868 /* DisclaimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9B94A821B014FE001F9868 /* DisclaimerView.swift */; };
 		0C9B94AB21B01506001F9868 /* DisclaimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9B94AA21B01506001F9868 /* DisclaimerViewController.swift */; };
 		0CA192BA2306C2B900502AF9 /* TradesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA192B92306C2B900502AF9 /* TradesList.swift */; };
@@ -509,6 +510,7 @@
 		0C6E3A1521FA02C100030C92 /* CakeWallet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CakeWallet.entitlements; sourceTree = "<group>"; };
 		0C6E3A1621FA02C700030C92 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		0C782004226E34CE009FDB62 /* SubaddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubaddressView.swift; sourceTree = "<group>"; };
+		0C87C2E0238D817B005EE956 /* librandomx.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = librandomx.a; path = "SharedExternal/libs/monero/libs/lib-ios/librandomx.a"; sourceTree = "<group>"; };
 		0C9B94A821B014FE001F9868 /* DisclaimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclaimerView.swift; sourceTree = "<group>"; };
 		0C9B94AA21B01506001F9868 /* DisclaimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclaimerViewController.swift; sourceTree = "<group>"; };
 		0CA192B92306C2B900502AF9 /* TradesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradesList.swift; sourceTree = "<group>"; };
@@ -943,6 +945,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C87C2E1238D817B005EE956 /* librandomx.a in Frameworks */,
 				0CAF2BAA221441540092A720 /* libminiupnpc.a in Frameworks */,
 				0CAF2BA5221441420092A720 /* libeasylogging.a in Frameworks */,
 				0CAF2BA6221441420092A720 /* libunbound.a in Frameworks */,
@@ -1725,6 +1728,7 @@
 		93B531BDF22CFC9B27F1D9F9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0C87C2E0238D817B005EE956 /* librandomx.a */,
 				0CAF2BA9221441540092A720 /* libminiupnpc.a */,
 				0CAF2BA1221441420092A720 /* libeasylogging.a */,
 				0CAF2BA4221441420092A720 /* libepee.a */,
@@ -3306,6 +3310,7 @@
 					"$(PROJECT_DIR)/External/OpenSSL/lib",
 					"$(PROJECT_DIR)/External/ofxiOSBoost/libs/boost/ios",
 				);
+				MARKETING_VERSION = 3.1.21;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-lc++",
@@ -3352,6 +3357,7 @@
 					"$(PROJECT_DIR)/External/OpenSSL/lib",
 					"$(PROJECT_DIR)/External/ofxiOSBoost/libs/boost/ios",
 				);
+				MARKETING_VERSION = 3.1.21;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-lc++",
