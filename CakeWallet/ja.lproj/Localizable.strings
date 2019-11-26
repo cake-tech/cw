@@ -16,6 +16,11 @@
 "restore_from_seed_keys" = "リストア";
 "please_make_selection" = "新しい財布を作成するか、財布を復元するには、下の選択をしてください";
 
+// Next Page Seed
+"next_page_seed" = "次のページにシードが表示されます";
+"i_understand" = "わかります";
+"next_page_seed_instructions" = "携帯電話を紛失したり拭いたりする場合に備えて、これらを書き留めてください。また、設定メニューでシードを再度表示することもできます。";
+
 
 // Pin
 

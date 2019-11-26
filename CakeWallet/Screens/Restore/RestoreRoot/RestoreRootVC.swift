@@ -11,6 +11,10 @@ final class RestoreRootVC: BaseViewController<RestoreRootView> {
         super.init()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.backgroundColor = UserInterfaceTheme.current.restoreScreenBackground
+    }
+    
     override func configureBinds() {
         title = "Restore"
         

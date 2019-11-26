@@ -32,7 +32,7 @@ final class WelcomeViewController: BaseViewController<WelcomeView> {
         
         contentView.descriptionTextView.text = NSLocalizedString("please_make_selection", comment: "")
     }
-    
+
     @objc
     private func createWalletAction() {
         signUpFlow?.change(route: .setupPin({ signUpFlow  in

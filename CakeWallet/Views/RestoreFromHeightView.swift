@@ -145,11 +145,11 @@ final class RestoreFromHeightView: BaseFlexView {
         super.configureView()
         restoreHeightTextField.textColor = UserInterfaceTheme.current.textVariants.main
         separatorLabel.text = "or"
-        separatorLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
-        dateTextField.textColor = UserInterfaceTheme.current.textVariants.main
+        separatorLabel.textColor = UserInterfaceTheme.current.textVariants.main
+        dateTextField.textColor = UserInterfaceTheme.current.text
         backgroundColor = .clear
         restoreHeightTextField.keyboardType = .numberPad
-        restoreHeightTextField.textColor = UserInterfaceTheme.current.textVariants.main
+        restoreHeightTextField.textColor = UserInterfaceTheme.current.text
         datePicker.datePickerMode = .date
         datePicker.locale = Locale.current
         dateTextField.inputView = datePicker

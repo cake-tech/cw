@@ -56,7 +56,9 @@ final class WelcomeFlowCardView: BaseFlexView {
 
     override func configureConstraints() {
         rootFlexContainer.layer.cornerRadius = 12
-        rootFlexContainer.layer.backgroundColor = UserInterfaceTheme.current.restoreCardBackground.cgColor
+        rootFlexContainer.layer.borderWidth = 0.75
+        rootFlexContainer.layer.borderColor = UserInterfaceTheme.current.gray.main.cgColor
+        rootFlexContainer.layer.backgroundColor = UserInterfaceTheme.current.background.cgColor
         
         let getButtonHeight: CGFloat = adaptiveLayout.getSize(forLarge: 60, forBig: 52, defaultSize: 48)
         

@@ -16,6 +16,12 @@
 "restore_from_seed_keys" = "복구";
 "please_make_selection" = "아래에서 선택하여 새 지갑을 만들거나 지갑을 복원하십시오.";
 
+// Next Page Seed
+"next_page_seed" = "다음 페이지는 씨앗을 보여줄 것입니다";
+"i_understand" = "이해 했어";
+"next_page_seed_instructions" = "휴대 전화를 느슨하게하거나 닦을 경우에 적어 두십시오. 설정 메뉴에서 시드를 다시 볼 수도 있습니다.";
+
+
 // Pin
 
 "use_6_pin" = "6자리 핀 번호";

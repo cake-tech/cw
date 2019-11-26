@@ -16,6 +16,12 @@
 "restore_from_seed_keys" = "恢复";
 "please_make_selection" = "请在下方选择创建新钱包或恢复钱包";
 
+// Next Page Seed
+"next_page_seed" = "下一页将为您显示种子";
+"i_understand" = "我明白";
+"next_page_seed_instructions" = "请写下这些，以防您松动或擦拭手机。您也可以在设置菜单中再次看到种子。";
+
+
 // Pin
 
 "use_6_pin" = "使用6位数字 PIN";

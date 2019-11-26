@@ -16,6 +16,10 @@
 "restore" = "Wczytaj";
 "restore_from_seed_keys" = "Wczytaj";
 
+// Next Page Seed
+"next_page_seed" = "Następna strona pokaże ci ziarno";
+"i_understand" = "rozumiem";
+"next_page_seed_instructions" = "Zapisz je na wypadek zgubienia lub wyczyszczenia telefonu. Możesz także zobaczyć ziarno ponownie w menu ustawień.";
 
 // Pin
 
