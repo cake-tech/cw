@@ -549,40 +549,41 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
             contentView.blockUnlockLabel.isHidden = true
             showingBlockUnlock = false
         }
-        func showIt() {
-            contentView.blockUnlockLabel.isHidden = false
-            showingBlockUnlock = true
-
-        }
-
-        guard balances.crypto.full.value > 0 else {
-            hideIt()
-            print("hidden due to no balance")
-            return
-        }
-        
-        if (balances.crypto.full.value != balances.crypto.unlocked.value) {
-            guard
-                live_bc_height != 0,
-                let lastTxHeight = lastTransactionHeight else {
-                print("no valid data pertaining to last unlocked block.")
-                hideIt()
-                    return
-            }
-            
-            if (lastTxHeight < live_bc_height && (live_bc_height - lastTxHeight) < blockDelay) {
-                contentView.blockUnlockLabel.text = (blockDelay - (live_bc_height - lastTxHeight)).asLocalizedUnlockString()
-                showIt()
-            } else if (balances.crypto.full.value != balances.crypto.unlocked.value) {
-                contentView.blockUnlockLabel.text = (1 as UInt64).asLocalizedUnlockString()
-                showIt()
-            }
-            
-        } else if (balances.crypto.full.value == balances.crypto.unlocked.value) {
-            hideIt()
-        }
-        
-        contentView.blockUnlockLabel.sizeToFit()
+        hideIt()
+//        func showIt() {
+//            contentView.blockUnlockLabel.isHidden = false
+//            showingBlockUnlock = true
+//
+//        }
+//
+//        guard balances.crypto.full.value > 0 else {
+//            hideIt()
+//            print("hidden due to no balance")
+//            return
+//        }
+//        
+//        if (balances.crypto.full.value != balances.crypto.unlocked.value) {
+//            guard
+//                live_bc_height != 0,
+//                let lastTxHeight = lastTransactionHeight else {
+//                print("no valid data pertaining to last unlocked block.")
+//                hideIt()
+//                    return
+//            }
+//            
+//            if (lastTxHeight < live_bc_height && (live_bc_height - lastTxHeight) < blockDelay) {
+//                contentView.blockUnlockLabel.text = (blockDelay - (live_bc_height - lastTxHeight)).asLocalizedUnlockString()
+//                showIt()
+//            } else if (balances.crypto.full.value != balances.crypto.unlocked.value) {
+//                contentView.blockUnlockLabel.text = (1 as UInt64).asLocalizedUnlockString()
+//                showIt()
+//            }
+//            
+//        } else if (balances.crypto.full.value == balances.crypto.unlocked.value) {
+//            hideIt()
+//        }
+//        
+//        contentView.blockUnlockLabel.sizeToFit()
         contentView.setNeedsLayout()
         contentView.blockUnlockLabel.flex.markDirty()
     }
