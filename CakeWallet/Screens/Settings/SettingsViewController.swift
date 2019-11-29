@@ -159,17 +159,26 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
     struct SettingsInformativeCellItem: CellItem, ActionableCellItem {
         let title: String
         let informativeText:String
+        let image: UIImage?
         let action: (() -> Void)?
+        var wantsBlue:Bool = false
         
-        init(title: String, informativeText:String, action:(() -> Void)?) {
+        init(title: String, informativeText:String, image:UIImage?, action:(() -> Void)?) {
             self.title = title
             self.informativeText = informativeText
+            self.image = image
             self.action = action
         }
         
         func setup(cell: SettingsInformativeUITableViewCell) {
-            cell.configure(title: self.title, informativeText: self.informativeText)
+            cell.configure(title:title, informativeText:informativeText)
             cell.backgroundColor = UserInterfaceTheme.current.settingCellColor
+            cell.imageView?.image = image
+            if (wantsBlue) {
+                cell.informativeBlue = true
+            } else {
+                cell.informativeBlue = false
+            }
         }
     }
     
@@ -231,7 +240,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         navigationItem.backBarButtonItem = backButton
         
-        let currentNode = SettingsInformativeCellItem(title: NSLocalizedString("current_node", comment: ""), informativeText:(self.store.state.settingsState.node?.uri ?? ""),
+        let currentNode = SettingsInformativeCellItem(title: NSLocalizedString("current_node", comment: ""), informativeText:(self.store.state.settingsState.node?.uri ?? ""), image:nil,
             action: { [weak self] in
                 self?.settingsFlow?.change(route:.nodes)
         })
@@ -375,7 +384,6 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
                                     )
                                     return
                                 }
-                                
                                 self?.onBackupSave(error: error)
                             }
                         })
@@ -501,6 +509,40 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
                     actions: [cancelAction, changeAction])
         })
         
+        var supportEmail = SettingsInformativeCellItem(title: "Email", informativeText: "support@cakewallet.io", image: nil) {
+            UIApplication.shared.open(URL(string:"mailto:support@cakewallet.io")!, options:[:], completionHandler: nil)
+        }
+        supportEmail.wantsBlue = true
+        var supportTelegram = SettingsInformativeCellItem(title: "Telegram", informativeText: "Cake_Wallet", image: UIImage(named:"telegram_logo")) {
+            UIApplication.shared.open(URL(string:"https://t.me/cake_wallet")!, options:[:], completionHandler: nil)
+        }
+        supportTelegram.wantsBlue = true
+        var supportTwitter = SettingsInformativeCellItem(title: "Twitter", informativeText: "@CakeWalletXMR", image: UIImage(named:"twitter_logo")) {
+            UIApplication.shared.open(URL(string:"https://twitter.com/CakeWalletXMR")!, options:[:], completionHandler: nil)
+        }
+        supportTwitter.wantsBlue = true
+        var supportChangeNow = SettingsInformativeCellItem(title: "ChangeNow", informativeText: "support@changenow.io", image: UIImage(named:"changenow_logo")) {
+            UIApplication.shared.open(URL(string:"mailto:support@changenow.io")!, options:[:], completionHandler: nil)
+        }
+        supportChangeNow.wantsBlue = true
+        var supportMorph = SettingsInformativeCellItem(title: "Morph", informativeText: "support@morphtoken.com", image: UIImage(named:"morph_logo")) {
+            UIApplication.shared.open(URL(string:"mailto:support@morphtoken.com")!, options:[:], completionHandler: nil)
+        }
+        supportMorph.wantsBlue = true
+        var supportXmrTo = SettingsInformativeCellItem(title: "XMR.to", informativeText: "support@xmr.to", image: UIImage(named:"xmrto_logo")) {
+            UIApplication.shared.open(URL(string:"mailto:support@xmr.to")!, options:[:], completionHandler: nil)
+        }
+        supportXmrTo.wantsBlue = true
+        
+        let termsView = SettingsCellItem(
+            title: NSLocalizedString("terms", comment: ""),
+            action: { [weak self] in
+                let disclaimerVC = DisclaimerViewController(showingCheckbox: false)
+                disclaimerVC.modalPresentationStyle = .fullScreen
+//                self?.modalPresentationStyle = .fullScreen
+                self?.present(disclaimerVC, animated: true)
+        })
+        
         sections[.nodes] = [
             currentNode
         ]
@@ -512,13 +554,21 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
             saveRecipientAddress
         ]
         
-        sections[.personal] = [
-            changePinCellItem,
-            changeLanguage,
-            biometricCellItem,
-            darkmodeCellItem
-        ]
-        
+        if #available(iOS 13.0, *) {
+            sections[.personal] = [
+                changePinCellItem,
+                changeLanguage,
+                biometricCellItem
+            ]
+        } else {
+            sections[.personal] = [
+                changePinCellItem,
+                changeLanguage,
+                biometricCellItem,
+                darkmodeCellItem
+            ]
+        }
+                
         sections[.backup] = [
             showMasterPasswordCellItem,
             changeMasterPassword,
@@ -528,6 +578,16 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         
         sections[.manualBackup] = [
             createBackupCellItem
+        ]
+        
+        sections[.support] = [
+            supportEmail,
+            supportTelegram,
+            supportTwitter,
+            supportChangeNow,
+            supportMorph,
+            supportXmrTo,
+            termSettingsCellItem
         ]
         
         let email = "support@cakewallet.io"
@@ -563,11 +623,6 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         let xmrAddressRange = attributedString.mutableString.range(of: xmrtoEmail)
         attributedString.addAttribute(.link, value: String(format: "mailto:%@", morphEmail), range: xmrAddressRange)
         let contactUsCellItem = SettingsTextViewCellItem(attributedString: attributedString)
-
-        sections[.support] = [
-            contactUsCellItem,
-            termSettingsCellItem
-        ]
         
         if
             let dictionary = Bundle.main.infoDictionary,
@@ -630,11 +685,6 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
     // MARK: UITableViewDelegate
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard
-            let section = SettingsSections(rawValue: indexPath.section),
-            !(section == .support && indexPath.row == 0) else { //fixme: hardcoded value!!
-                return 175
-        }
         
         return 50
     }

@@ -82,10 +82,10 @@ extension Amount {
 
 public enum CryptoCurrency: Currency {
     public static var all: [CryptoCurrency] {
-        return [.monero, .bitcoin, .ethereum, .liteCoin, .bitcoinCash, .dash]
+        return [.monero, .bitcoin, .ethereum, .liteCoin, .bitcoinCash, .dash, .usdT, .eos, .xrp, .trx, .bnb, .ada, .xlm, .nano]
     }
     
-    case monero, bitcoin, ethereum, dash, liteCoin, bitcoinCash
+    case monero, bitcoin, ethereum, dash, liteCoin, bitcoinCash, usdT, eos, xrp, trx, bnb, ada, xlm, nano
     
     public init?(from string: String) {
         switch string.uppercased() {
@@ -101,6 +101,22 @@ public enum CryptoCurrency: Currency {
             self = .liteCoin
         case "BCH":
             self = .bitcoinCash
+        case "USDT":
+            self = .usdT
+        case "EOS":
+            self = .eos
+        case "XRP":
+            self = .xrp
+        case "TRX":
+            self = .trx
+        case "BNB":
+            self = .bnb
+        case "ADA":
+            self = .ada
+        case "XLM":
+            self = .xlm
+        case "NANO":
+            self = .nano
         default:
             return nil
         }
@@ -120,6 +136,22 @@ public enum CryptoCurrency: Currency {
             return "LTC"
         case .bitcoinCash:
             return "BCH"
+        case .usdT:
+            return "USDT"
+        case .eos:
+            return "EOS"
+        case .xrp:
+            return "XRP"
+        case .trx:
+            return "TRX"
+        case .bnb:
+            return "BNB"
+        case .ada:
+            return "ADA"
+        case .xlm:
+            return "XLM"
+        case .nano:
+            return "NANO"
         }
     }
 }

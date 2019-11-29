@@ -9,6 +9,7 @@ class BaseView: UIView {
     required init() {
         super.init(frame: CGRect.zero)
         configureView()
+        backgroundColor = UserInterfaceTheme.current.background
     }
     
     @available(*, unavailable)
@@ -23,8 +24,12 @@ class BaseView: UIView {
     
     override func configureView() {
         super.configureView()
-        //tstag
-        backgroundColor = UserInterfaceTheme.current.background
+    }
+
+    var currentTheme:UserInterfaceTheme {
+        get {
+            return UserInterfaceTheme.current
+        }
     }
 }
 

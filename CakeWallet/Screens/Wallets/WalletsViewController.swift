@@ -3,6 +3,38 @@ import CakeWalletLib
 import CakeWalletCore
 import CWMonero
 
+//https://stackoverflow.com/a/39917334
+extension UIView {
+
+    func mask(withRect rect: CGRect, inverse: Bool = false) {
+        let path = UIBezierPath(rect: rect)
+        let maskLayer = CAShapeLayer()
+
+        if inverse {
+            path.append(UIBezierPath(rect: self.bounds))
+            maskLayer.fillRule = kCAFillRuleEvenOdd
+        }
+
+        maskLayer.path = path.cgPath
+
+        self.layer.mask = maskLayer
+    }
+
+    func mask(withPath path: UIBezierPath, inverse: Bool = false) {
+        let path = path
+        let maskLayer = CAShapeLayer()
+
+        if inverse {
+            path.append(UIBezierPath(rect: self.bounds))
+            maskLayer.fillRule = kCAFillRuleEvenOdd
+        }
+
+        maskLayer.path = path.cgPath
+
+        self.layer.mask = maskLayer
+    }
+}
+
 protocol WalletActionsPresentable {
     func presentSeed(for wallet: WalletIndex, withConfig walletConfig: WalletConfig)
 }
@@ -100,9 +132,6 @@ final class WalletsViewController: BaseViewController<WalletsView>, UITableViewD
             self?.dismiss(animated: true)
         }
         
-        let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
-        navigationItem.backBarButtonItem = backButton
-        
         insertNavigationItems()
         
         contentView.walletsTableView.separatorStyle = .none
@@ -117,9 +146,17 @@ final class WalletsViewController: BaseViewController<WalletsView>, UITableViewD
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        navigationItem.titleView = UILabel(text: currentWallet.name)
-
+        let nameLabel = UILabel(text: currentWallet.name)
+        nameLabel.font = UIFont(name: "Lato-Semibold", size: 18)
+        navigationItem.titleView = nameLabel
+        if let naviBar =
+            navigationController?.navigationBar {
+            naviBar.layer.masksToBounds = false
+            naviBar.mask(withRect:CGRect(x: naviBar.bounds.origin.x, y: naviBar.bounds.origin.y, width: naviBar.bounds.size.width, height: naviBar.bounds.height+20))
+                 naviBar.applyNavigationBarShadow()
+            naviBar.applyNavigationBarShadow()
+        }
+     
         store.subscribe(self, onlyOnChange: [
             \ApplicationState.walletsState,
             \ApplicationState.walletState
@@ -128,16 +165,21 @@ final class WalletsViewController: BaseViewController<WalletsView>, UITableViewD
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        navigationController?.navigationBar.layer.masksToBounds = true
         store.unsubscribe(self)
     }
     
     private func insertNavigationItems() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(named:"close_symbol")?.resized(to:CGSize(width: 12, height: 12)),
-            style: .plain,
-            target: self,
-            action: #selector(dismissAction)
-        )
+        let closeButton = UIButton(type:.custom)
+        closeButton.layer.masksToBounds = false
+        closeButton.setImage(UIImage(named:"close_icon_white")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        closeButton.layer.cornerRadius = 11
+        closeButton.imageEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+        closeButton.layer.backgroundColor = UserInterfaceTheme.current.gray.dim.cgColor
+        closeButton.imageView?.tintColor = UserInterfaceTheme.current.text
+        closeButton.addTarget(self, action: #selector(dismissAction), for: .touchDown)
+        let backButton = UIBarButtonItem(customView: closeButton)
+        navigationItem.leftBarButtonItem = backButton
     }
     
     @objc
@@ -156,6 +198,7 @@ final class WalletsViewController: BaseViewController<WalletsView>, UITableViewD
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let wallet = wallets[indexPath.row]
         let cell = tableView.dequeueReusableCell(withItem: wallet, for: indexPath)
+        cell.textLabel?.font = UIFont(name: "Lato-SemiBold", size: 18)
         
         wallet.wallet != wallets.last?.wallet ? cell.addSeparator() : cell.removeSeparator()
         
@@ -233,17 +276,19 @@ final class WalletsViewController: BaseViewController<WalletsView>, UITableViewD
                         withName: wallet.name,
                         andType: wallet.type,
                         handler: {
-                            alert.dismiss(animated: true) {
-                                if  let error = self?.store.state.error {
-                                    self?.showInfoAlert(title: nil, message: error.localizedDescription, actions: [cancelAction])
-                                    return
-                                }
+                            DispatchQueue.main.async {
+                                alert.dismiss(animated: true) {
+                                    if  let error = self?.store.state.error {
+                                        self?.showInfoAlert(title: nil, message: error.localizedDescription, actions: [cancelAction])
+                                        return
+                                    }
 
-                                self?.dismiss(animated: true) {
-                                    self?.onDismissHandler?()
+                                    self?.dismiss(animated: true) {
+                                        self?.onDismissHandler?()
+                                    }
                                 }
                             }
-                    }))
+                        }))
                 }
             }
         }

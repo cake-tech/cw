@@ -23,6 +23,19 @@ protocol Theme {
     var gray:Colorset { get }
 }
 
+@available(iOS 13.0, *)
+extension UIUserInterfaceStyle {
+    func asUserInterfaceTheme() -> UserInterfaceTheme {
+        switch self {
+        case .light:
+            return UserInterfaceTheme.light
+        case .dark:
+            return UserInterfaceTheme.dark
+        default:
+            return UserInterfaceTheme.default
+        }
+    }
+}
 
 fileprivate var currentCached:UserInterfaceTheme? = nil
 enum UserInterfaceTheme: Int, Theme {
@@ -39,15 +52,24 @@ enum UserInterfaceTheme: Int, Theme {
     static var `default` = UserInterfaceTheme.light
     static var current: UserInterfaceTheme {
         get {
-            if let cacheTest = currentCached {
-                return cacheTest
+            if #available(iOS 13.0, *) {
+                if let cacheTest = currentCached {
+                    return cacheTest
+                }
+                let screenTheme = UIScreen.main.traitCollection.userInterfaceStyle.asUserInterfaceTheme()
+                currentCached = screenTheme
+                return screenTheme
+            } else {
+                if let cacheTest = currentCached {
+                    return cacheTest
+                }
+                if let theme = UserInterfaceTheme(rawValue: UserDefaults.standard.integer(forKey: Configurations.DefaultsKeys.currentTheme)) {
+                    currentCached = theme
+                    return theme
+                }
+                currentCached = self.`default`
+                return self.`default`
             }
-            if let theme = UserInterfaceTheme(rawValue: UserDefaults.standard.integer(forKey: Configurations.DefaultsKeys.currentTheme)) {
-                currentCached = theme
-                return theme
-            }
-            currentCached = self.`default`
-            return self.`default`
         }
         set {
             let currentValue = UserInterfaceTheme(rawValue: UserDefaults.standard.integer(forKey: Configurations.DefaultsKeys.currentTheme)) ?? self.`default`
@@ -58,6 +80,16 @@ enum UserInterfaceTheme: Int, Theme {
                    NotificationCenter.default.post(name:self.notificationName, object: nil)
                 }
             }
+        }
+    }
+    
+    @available(iOS 12.0, *)
+    var asStyle: UIUserInterfaceStyle {
+        switch self {
+        case .light:
+            return .light
+        case .dark:
+            return .dark
         }
     }
     
@@ -102,7 +134,7 @@ enum UserInterfaceTheme: Int, Theme {
     var textVariants: Colorset {
         switch self {
         case .light:
-            let high = UIColor(red: 0.23, green: 0.26, blue: 0.39, alpha: 1)
+            let high = UIColor(red:0.13, green:0.16, blue:0.29, alpha:1.0)
             let norm = UIColor(red:0.61, green:0.67, blue:0.77, alpha:1.0)
             let low = UIColor(red:0.84, green:0.87, blue:0.91, alpha:1.0)
             return Colorset(highlight:high, main:norm, dim:low)
@@ -173,6 +205,15 @@ enum UserInterfaceTheme: Int, Theme {
             return Colorset(highlight:high, main:norm, dim:low)
         }
     }
+    
+    var shadow: UIColor {
+        switch self {
+        case .light:
+            return self.text
+        case .dark:
+            return .clear
+        }
+    }
 }
 
 extension UserInterfaceTheme {
@@ -180,6 +221,19 @@ extension UserInterfaceTheme {
         let searchName = assetName + "_" + String(self.rawValue)
         return UIImage(named: searchName)
     }
+    
+    var grayButton: (fill:UIColor, border:UIColor) {
+        get {
+            switch self {
+            case .light:
+                return (fill:UIColor(red:0.89, green:0.91, blue:0.97, alpha:1.0), border:UIColor(red: 0.77, green: 0.81, blue: 0.93, alpha: 1))
+            case .dark:
+                return (fill:self.gray.dim, border:self.gray.main)
+            }
+
+        }
+    }
+    
     var settingCellColor: UIColor {
         get {
             switch self {
@@ -217,6 +271,28 @@ extension UserInterfaceTheme {
                 return self.background.add(overlay: self.cardColor.withAlphaComponent(0.6))
             case .dark:
                 return self.background.add(overlay: self.cardColor.withAlphaComponent(0.3))
+            }
+        }
+    }
+    
+    var restoreScreenBackground:UIColor {
+        get {
+            switch self {
+            case .light:
+                return UIColor(red:0.95, green:0.96, blue:0.97, alpha:1.0)
+            case .dark:
+                return background
+            }
+        }
+    }
+    
+    var restoreCardBackground:UIColor {
+        get {
+            switch self {
+            case .light:
+                return .white
+            case .dark:
+                return UIColor(red:0.08, green:0.10, blue:0.15, alpha:1.0)
             }
         }
     }

@@ -20,42 +20,29 @@ final class SetupPinViewController: BaseViewController<BaseFlexView> {
     weak var signUpFlow: SignUpFlow?
     var afterPinSetup: (() -> Void)?
     private var rememberedPin: PinCodeViewController.PinCode
-    let togglePingLengthBtn: UIBarButtonItem
     
     init(store: Store<ApplicationState>) {
         self.store = store
         self.pinCodeViewController = PinCodeViewController()
         rememberedPin = []
-        togglePingLengthBtn = UIBarButtonItem()
         super.init()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        pinCodeViewController.contentView.useSixPin.isHidden = false
         contentView.rootFlexContainer.flex.define({ flex in
             flex.addItem(pinCodeViewController.contentView).height(100%).width(100%)
         })
     }
     
     override func configureBinds() {
-        //tstag
-        togglePingLengthBtn.setTitleTextAttributes([
-            NSAttributedStringKey.font: UIFont(name: "Lato-Regular", size: 16)!,
-            NSAttributedStringKey.foregroundColor: UserInterfaceTheme.current.textVariants.dim], for: .normal)
-        togglePingLengthBtn.setTitleTextAttributes([
-            NSAttributedStringKey.font: UIFont(name: "Lato-Regular", size: 16)!,
-            NSAttributedStringKey.foregroundColor: UserInterfaceTheme.current.textVariants.dim], for: .highlighted)
-        
         let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         navigationItem.backBarButtonItem = backButton
         
         title = NSLocalizedString("setup_pin", comment: "")
-        togglePingLengthBtn.title = NSLocalizedString("use_6_pin", comment: "")
-        togglePingLengthBtn.style = .plain
-        togglePingLengthBtn.target = self
-        togglePingLengthBtn.action = #selector(useSixDigitsPin)
+        pinCodeViewController.contentView.useSixPin.addTarget(self, action:  #selector(useSixDigitsPin), for: .touchDown)
         
-        navigationItem.rightBarButtonItem = togglePingLengthBtn
         pinCodeViewController.contentView.titleLabel.text = NSLocalizedString("create_pin", comment: "")
         
         pinCodeViewController.handler = { [weak self] pin in
@@ -104,17 +91,22 @@ final class SetupPinViewController: BaseViewController<BaseFlexView> {
     
     @objc
     private func useFourDigitsPin() {
+        let attributes = [ NSAttributedStringKey.foregroundColor : UserInterfaceTheme.current.textVariants.main, NSAttributedStringKey.font: UIFont(name: "Lato-Regular", size: 16)]
+        pinCodeViewController.contentView.useSixPin.removeTarget(nil, action: nil, for: .touchDown)
         pinCodeViewController.changePin(length: .fourDigits)
-        togglePingLengthBtn.action = #selector(useSixDigitsPin)
-        togglePingLengthBtn.title = NSLocalizedString("use_6_pin", comment: "")
+        pinCodeViewController.contentView.useSixPin.addTarget(self, action: #selector(useSixDigitsPin), for: .touchDown)
+        pinCodeViewController.contentView.useSixPin.setAttributedTitle(NSAttributedString(string: NSLocalizedString("use_6_pin", comment: ""), attributes: attributes), for: .normal)
         
     }
     
     @objc
     private func useSixDigitsPin() {
+        let attributes = [ NSAttributedStringKey.foregroundColor : UserInterfaceTheme.current.textVariants.main, NSAttributedStringKey.font: UIFont(name: "Lato-Regular", size: 16)]
+        pinCodeViewController.contentView.useSixPin.removeTarget(nil, action: nil, for: .touchDown)
         pinCodeViewController.changePin(length: .sixDigits)
-        togglePingLengthBtn.action = #selector(useFourDigitsPin)
-        togglePingLengthBtn.title = NSLocalizedString("use_4_pin", comment: "")
+        pinCodeViewController.contentView.useSixPin.addTarget(self, action: #selector(useFourDigitsPin), for: .touchDown)
+        pinCodeViewController.contentView.useSixPin.setAttributedTitle(NSAttributedString(string: NSLocalizedString("use_4_pin", comment: ""), attributes: attributes), for: .normal)
+
     }
     
     @objc

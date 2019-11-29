@@ -50,9 +50,10 @@ final class SendView: BaseScrollFlexViewWithBottomSection {
         sendAllButton = TransparentButton(title: NSLocalizedString("all", comment: ""))
         cryptoAmonutContainer = UIView()
         scanQrForPaymentId = UIButton()
-        fiatAmountTextFieldLeftView = UILabel(text: "USD:")
+        fiatAmountTextFieldLeftView = UILabel(text: "USD: ")
         super.init()
     }
+    
     
     override func configureView() {
         super.configureView()
@@ -71,16 +72,21 @@ final class SendView: BaseScrollFlexViewWithBottomSection {
         
         walletNameLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
         
+        walletContainer.layer.masksToBounds = false
+        walletContainer.applyNavigationBarShadow()
+        
+        
         cryptoAmountValueLabel.textAlignment = .right
         cryptoAmountValueLabel.font = applyFont(ofSize: 26)
         cryptoAmountValueLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
         cryptoAmountTitleLabel.textColor = UserInterfaceTheme.current.text
         cryptoAmountTextField.keyboardType = .decimalPad
         
-        let cryptoAmountTextFieldLeftView = UILabel(text: "XMR:")
+        let cryptoAmountTextFieldLeftView = UILabel(text: "XMR: ")
         cryptoAmountTextFieldLeftView.font = applyFont()
         cryptoAmountTextFieldLeftView.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-        cryptoAmountTextFieldLeftView.textColor = UserInterfaceTheme.current.textVariants.dim
+        cryptoAmountTextFieldLeftView.textColor = UserInterfaceTheme.current.textVariants.highlight
+        
         let cryptoAmountTextFieldRightView = UIView()
         cryptoAmountTextFieldRightView.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
         
@@ -91,10 +97,9 @@ final class SendView: BaseScrollFlexViewWithBottomSection {
         cryptoAmountTextField.rightView = cryptoAmountTextFieldRightView
         cryptoAmountTextField.rightViewMode = .always
         
-       
         fiatAmountTextFieldLeftView.font = applyFont()
         fiatAmountTextFieldLeftView.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-        fiatAmountTextFieldLeftView.textColor = UserInterfaceTheme.current.textVariants.dim
+        fiatAmountTextFieldLeftView.textColor = UserInterfaceTheme.current.textVariants.highlight
         
         fiatAmountTextField.keyboardType = .decimalPad
         fiatAmountTextField.leftView = fiatAmountTextFieldLeftView
@@ -115,6 +120,14 @@ final class SendView: BaseScrollFlexViewWithBottomSection {
         paymentIdTextField.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
         paymentIdTextField.rightViewMode = .always
         paymentIdTextField.textColor = UserInterfaceTheme.current.text
+        
+        sendButton.backgroundColor = UserInterfaceTheme.current.grayButton.fill
+        sendButton.layer.borderColor = UserInterfaceTheme.current.grayButton.border.cgColor
+        
+        estimatedFeeTitleLabel.textColor = UserInterfaceTheme.current.text
+        estimatedFeeValueLabel.textColor = UserInterfaceTheme.current.text
+        
+        estimatedDescriptionLabel.textColor = UserInterfaceTheme.current.textVariants.main
     }
     
     override func configureConstraints() {
@@ -180,6 +193,12 @@ final class SendView: BaseScrollFlexViewWithBottomSection {
         
         bottomSectionView.flex.backgroundColor(UserInterfaceTheme.current.background).padding(20).define { flex in
             flex.addItem(sendButton).height(56)
+        }
+    }
+    override var safeAreaInsets: UIEdgeInsets {
+        get {
+            let superSafe = super.safeAreaInsets
+            return UIEdgeInsets(top: superSafe.top, left: superSafe.left, bottom: 0, right: superSafe.right)
         }
     }
 }

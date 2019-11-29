@@ -15,6 +15,11 @@
 "restore" = "Recuperar";
 "please_make_selection" = "Realice una selección a continuación para crear una nueva cartera o restaurar una cartera";
 
+// Next Page Seed
+"next_page_seed" = "La siguiente página te mostrará una semilla";
+"i_understand" = "entiendo";
+"next_page_seed_instructions" = "Anótelos en caso de que pierda o limpie su teléfono. También puede ver la semilla nuevamente en el menú de configuración.";
+
 
 // Pin
 
@@ -84,6 +89,8 @@
 "starting_sync" = "Empezando sincronización";
 "synchronized" = "Sincronizado";
 "failed_connection_to_node" = "Conexión con el nódulo ha fallado";
+"last_block_received" = "Último bloque recibido:";
+"synchronizing" = "Sincronizando";
 
 // Balances
 "balance-display-type_full" = "Saldo completo";

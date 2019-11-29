@@ -12,6 +12,11 @@
 "terms_of_use_agree" = "Я принимаю";
 "please_make_selection" = "Пожалуйста выберите опцию ниже, чтобы создать или восстановить кошелек, а так же приложение целиком";
 
+// Next Page Seed
+"next_page_seed" = "Следующая страница покажет вам семя";
+"i_understand" = "я понимаю";
+"next_page_seed_instructions" = "Пожалуйста, запишите их на случай, если вы потеряете или вытрете свой телефон. Вы также можете увидеть семена снова в меню настроек.";
+
 
 // Pin
 
@@ -72,6 +77,7 @@
 "wallet" = "Кошелек";
 
 
+
 // Connection state
 
 "blocks_remaining" = "Осталось блоков";
@@ -80,7 +86,8 @@
 "starting_sync" = "Начало синхронизации";
 "synchronized" = "Синхронизировано";
 "failed_connection_to_node" = "Не удалось подключиться к удаленному узлу";
-
+"last_block_received" = "Последний полученный блок:";
+"synchronizing" = "синхронизирующий";
 
 // Balances
 "balance-display-type_full" = "Полный баланс";

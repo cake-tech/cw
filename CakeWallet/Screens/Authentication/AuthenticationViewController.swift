@@ -15,6 +15,7 @@ final class AuthenticationViewController: BaseViewController<BaseFlexView> {
         self.store = store
         self.pinCodeViewController = PinCodeViewController()
         super.init()
+        modalPresentationStyle = .fullScreen
     }
     
     override func viewDidLoad() {

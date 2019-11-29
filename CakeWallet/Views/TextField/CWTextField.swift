@@ -37,7 +37,7 @@ class CWTextField: UITextField {
         super.configureView()
         borderStyle = .none
         bottomBorder.backgroundColor = UserInterfaceTheme.current.gray.main.cgColor
-        font = applyFont(ofSize: fontSize)
+        font = UIFont(name: "Lato-Regular", size: fontSize)
         layer.addSublayer(bottomBorder)
     }
     

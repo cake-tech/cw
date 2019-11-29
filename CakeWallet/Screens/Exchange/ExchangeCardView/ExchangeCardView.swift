@@ -29,7 +29,7 @@ final class PickerButtonView: BaseFlexView {
             .direction(.row)
             .alignItems(.center)
             .define{ flex in
-                flex.addItem(pickedCurrency).width(65)
+                flex.addItem(pickedCurrency).width(80)
                 flex.addItem(pickerIcon)
         }
         

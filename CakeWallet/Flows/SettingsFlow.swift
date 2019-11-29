@@ -52,7 +52,8 @@ final class SettingsFlow: Flow {
             let changeLanguage = ChangeLanguageViewController()
             navigationController.pushViewController(changeLanguage, animated: true)
         case .terms:
-            let termsViewController = TermsViewController()
+            let termsViewController = DisclaimerViewController(showingCheckbox: false)
+            termsViewController.modalPresentationStyle = .fullScreen
             navigationController.pushViewController(termsViewController, animated: true)
         }
     }

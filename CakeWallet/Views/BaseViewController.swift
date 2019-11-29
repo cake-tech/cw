@@ -19,15 +19,31 @@ extension UIImage {
 class BaseViewController<View: BaseView>: AnyBaseViewController {
     var contentView: View { return view as! View }
     
+    override var childViewControllerForStatusBarStyle: UIViewController? { get {
+            return nil
+        }
+    }
+    
     override var preferredStatusBarStyle:UIStatusBarStyle {
         switch UserInterfaceTheme.current {
         case .light:
-            return .default
+            if #available(iOS 13.0, *) {
+                return .darkContent
+            } else {
+                // Fallback on earlier versions
+                return .default
+            }
         case .dark:
             return .lightContent
         }
     }
     
+    override var prefersStatusBarHidden: Bool {
+        get {
+            return false
+        }
+    }
+
     override init() {
         super.init()
         setTitle()
@@ -48,6 +64,15 @@ class BaseViewController<View: BaseView>: AnyBaseViewController {
             
             if let storeSub = self as? AnyStoreSubscriber {
                 storeSub._onStateChange(store.state)
+            }
+        }
+        
+        if #available(iOS 13.0, *) {
+            switch UserInterfaceTheme.current {
+            case .dark:
+                overrideUserInterfaceStyle = .dark
+            case .light:
+                overrideUserInterfaceStyle = .light
             }
         }
     }
@@ -94,7 +119,7 @@ class BaseViewController<View: BaseView>: AnyBaseViewController {
         navigationController?.navigationItem.backBarButtonItem?.tintColor = UserInterfaceTheme.current.text
         navigationController?.navigationItem.leftBarButtonItem?.tintColor = UserInterfaceTheme.current.text
         navigationController?.navigationItem.rightBarButtonItem?.tintColor = UserInterfaceTheme.current.text
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UserInterfaceTheme.current.text]
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UserInterfaceTheme.current.text, NSAttributedStringKey.font: UIFont(name: "Lato-Semibold", size: 18)]
         if let tabBar = tabBarController?.tabBar {
             tabBar.isTranslucent = false
             tabBar.barTintColor = UserInterfaceTheme.current.tabBar

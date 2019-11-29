@@ -16,9 +16,12 @@
 "restore_from_seed_keys" = "Herstellen";
 "please_make_selection" = "Maak hieronder een selectie om een ​​nieuwe portefeuille te maken of een portefeuille te herstellen";
 
+// Next Page Seed
+"next_page_seed" = "Op de volgende pagina ziet u een zaadje";
+"i_understand" = "Ik begrijp het";
+"next_page_seed_instructions" = "Noteer deze voor het geval u uw telefoon verliest of veegt. Je kunt de seed ook weer zien in het instellingenmenu.";
 
 // Pin
-
 "use_6_pin" = "Een 6-cijferige pincode gebruiken";
 "use_4_pin" = "Een 4-cijferige pincode gebruiken";
 "enter_your_pin" = "Voer uw pincode in";
@@ -30,7 +33,6 @@
 
 
 // Restore root
-
 "restore_from_seed_keys" = "Herstel van seed/sleutels";
 "restore_from_seed_keys_long" = "Herstel je portemonnee uit je seed of sleutels";
 "restore_from_backup" = "Herstellen van een back-upbestand";
@@ -85,6 +87,8 @@
 "starting_sync" = "Synchronisatie wordt gestart";
 "synchronized" = "Gesynchroniseerd";
 "failed_connection_to_node" = "Mislukte connectie met de nodus";
+"last_block_received" = "Laatste blok ontvangen:";
+"synchronizing" = "Synchroniseren";
 
 // Balances
 "balance-display-type_unlocked" = "Beschikbaar saldo";

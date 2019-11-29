@@ -2,6 +2,12 @@ import UIKit
 import FlexLayout
 
 final class RestoreView: BaseScrollFlexView {
+    override var themedBackgroundColor: UIColor {
+        get {
+            return UserInterfaceTheme.current.restoreScreenBackground
+        }
+    }
+    
     let restoreFromSeedImageView: FlexView
     let restoreFromSeedImage: UIImageView
     let restoreFromSeedCard: WelcomeFlowCardView
@@ -34,7 +40,7 @@ final class RestoreView: BaseScrollFlexView {
     
     override func configureConstraints() {
         //tstag
-        let imageViewBackgroundColor = UserInterfaceTheme.current.background
+        let imageViewBackgroundColor = UserInterfaceTheme.current.restoreCardBackground
         let imageHeight = adaptiveLayout.getSize(forLarge: 135, forBig: 100, defaultSize: 85)
         let imageWidth = adaptiveLayout.getSize(forLarge: 290, forBig: 240, defaultSize: 200)
         let imagePaddingTop = adaptiveLayout.getSize(forLarge: 50, forBig: 50, defaultSize: 30)
@@ -48,7 +54,7 @@ final class RestoreView: BaseScrollFlexView {
                 }
             }
         }
-        
+        restoreFromSeedCard.layer.masksToBounds = false
         restoreFromKeysImageView.constraintsSetup = { [weak self] root in
             root.flex.padding(imagePaddingTop, 0, 10, 0).backgroundColor(imageViewBackgroundColor).define { flex in
                 if let restoreFromKeysImage = self?.restoreFromKeysImage {
@@ -58,9 +64,10 @@ final class RestoreView: BaseScrollFlexView {
                 }
             }
         }
+        restoreFromKeysCard.layer.masksToBounds = false
         
         rootFlexContainer.flex.alignItems(.center).padding(15, 20, 15, 20).define { flex in
-             flex.addItem(restoreFromSeedCard).width(100%)
+            flex.addItem(restoreFromSeedCard).width(100%)
             flex.addItem(restoreFromKeysCard).width(100%)
         }
     }

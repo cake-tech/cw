@@ -51,5 +51,6 @@ class Button: UIButton {
         titleLabel?.font = applyFont()
         titleLabel?.numberOfLines = 0
         titleLabel?.textAlignment = .center
+        titleLabel?.font = UIFont(name: "Lato-SemiBold", size: 18)
     }
 }

@@ -16,6 +16,10 @@
 "restore" = "Wczytaj";
 "restore_from_seed_keys" = "Wczytaj";
 
+// Next Page Seed
+"next_page_seed" = "Następna strona pokaże ci ziarno";
+"i_understand" = "rozumiem";
+"next_page_seed_instructions" = "Zapisz je na wypadek zgubienia lub wyczyszczenia telefonu. Możesz także zobaczyć ziarno ponownie w menu ustawień.";
 
 // Pin
 
@@ -84,6 +88,8 @@
 "starting_sync" = "Start synchronizacji";
 "synchronized" = "Zsynchronizowano";
 "failed_connection_to_node" = "Nie połączono się z węzłem";
+"last_block_received" = "Ostatni otrzymany blok:";
+"synchronizing" = "Synchronizacja";
 
 // Balances
 "balance-display-type_unlocked" = "Dostępne Saldo";
@@ -98,6 +104,7 @@
 "reconnect_alert_text" = "Na pewno chcesz żeby połączyć ponownie ?";
 "cancel" = "Anuluj";
 "receive" = "Otrzymaj";
+"received" = "Otrzymano";
 "send" = "Wyślij";
 "transactions" = "Transakcje";
 "sent" = "Wyślij";

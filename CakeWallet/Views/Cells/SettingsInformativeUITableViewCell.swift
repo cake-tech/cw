@@ -4,6 +4,22 @@ import CakeWalletLib
 final class SettingsInformativeUITableViewCell: FlexCell, UITextFieldDelegate {
     let accessoryTextField: UITextField
     
+    var _infBlue:Bool = false
+    var informativeBlue: Bool {
+        set {
+            if newValue == true {
+                accessoryTextField.textColor = UserInterfaceTheme.current.blue.highlight
+                _infBlue = true
+            } else {
+                accessoryTextField.textColor = UserInterfaceTheme.current.textVariants.main
+                _infBlue = false
+            }
+        }
+        get {
+            return _infBlue
+        }
+    }
+
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         accessoryTextField = UITextField()
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -14,7 +30,6 @@ final class SettingsInformativeUITableViewCell: FlexCell, UITextFieldDelegate {
         accessoryView = accessoryTextField
         textLabel?.textColor = UserInterfaceTheme.current.text
         accessoryTextField.textAlignment = .right
-        //TSTAG
         accessoryTextField.textColor = UserInterfaceTheme.current.textVariants.main
         accessoryTextField.backgroundColor = .clear
         accessoryTextField.delegate = self
@@ -28,7 +43,7 @@ final class SettingsInformativeUITableViewCell: FlexCell, UITextFieldDelegate {
     }
     
     override func configureConstraints() {
-        accessoryTextField.frame = CGRect(origin: .zero, size: CGSize(width: 250, height: 50))
+        accessoryTextField.frame = CGRect(origin: .zero, size: CGSize(width: 215, height: 50))
     }
     
     func configure(title: String, informativeText:String) {

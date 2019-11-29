@@ -59,34 +59,66 @@ extension Contact: CellItem {
     private func backgroundColor(for currency: CryptoCurrency) -> UIColor {
         switch currency {
         case .bitcoin:
-            return UserInterfaceTheme.current.gray.dim
+            return UIColor(hex: 0xfe9a2b)
         case .bitcoinCash:
-            return UserInterfaceTheme.current.gray.dim
+            return UIColor(hex: 0xec8c38)
         case .monero:
             return UserInterfaceTheme.current.blue.dim
         case .ethereum:
-            return UserInterfaceTheme.current.gray.dim
+            return UIColor(hex: 0x303030)
         case .liteCoin:
-            return UserInterfaceTheme.current.gray.dim
+            return UIColor(hex: 0x88caf2)
         case .dash:
-            return UserInterfaceTheme.current.gray.dim
+            return UIColor(hex: 0x068de0)
+        case .usdT:
+            return UIColor(hex: 0x88caf2)
+        case .eos:
+            return UIColor(hex: 0x88caf2)
+        case .xrp:
+            return UIColor(hex: 0x88caf2)
+        case .trx:
+            return UIColor(hex: 0x88caf2)
+        case .bnb:
+            return UIColor(hex: 0x88caf2)
+        case .ada:
+            return UIColor(hex: 0x88caf2)
+        case .xlm:
+            return UIColor(hex: 0x88caf2)
+        case .nano:
+            return UIColor(hex: 0x88caf2)
         }
     }
     
     private func textColor(for currency: CryptoCurrency) -> UIColor {
         switch currency {
         case .bitcoin:
-            return UserInterfaceTheme.current.gray.highlight
+            return .white
         case .bitcoinCash:
-            return UserInterfaceTheme.current.gray.highlight
+            return .white
         case .monero:
             return UserInterfaceTheme.current.blue.highlight
         case .ethereum:
-            return UserInterfaceTheme.current.gray.highlight
+            return .white
         case .liteCoin:
-            return UserInterfaceTheme.current.gray.highlight
+            return .white
         case .dash:
-            return UserInterfaceTheme.current.gray.highlight
+            return .white
+        case .usdT:
+            return .white
+        case .eos:
+            return .white
+        case .xrp:
+            return .white
+        case .trx:
+            return .white
+        case .bnb:
+            return .white
+        case .ada:
+            return .white
+        case .xlm:
+            return .white
+        case .nano:
+            return .white
         }
     }
     

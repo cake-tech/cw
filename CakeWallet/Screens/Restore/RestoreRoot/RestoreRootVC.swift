@@ -11,6 +11,10 @@ final class RestoreRootVC: BaseViewController<RestoreRootView> {
         super.init()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.backgroundColor = UserInterfaceTheme.current.restoreScreenBackground
+    }
+    
     override func configureBinds() {
         title = "Restore"
         
@@ -19,8 +23,11 @@ final class RestoreRootVC: BaseViewController<RestoreRootView> {
         
         contentView.restoreWalletCard.button.addTarget(self, action: #selector(restoreWallet), for: .touchUpInside)
         contentView.restoreAppCard.button.addTarget(self, action: #selector(restoreApp), for: .touchUpInside)
+        
+        navigationController?.navigationBar.backgroundColor = UserInterfaceTheme.current.background
+        contentView.backgroundColor = UserInterfaceTheme.current.background
     }
-    
+
     @objc
     private func restoreWallet() {
         signUpFlow?.change(route: .setupPin({ [weak self] _ in
@@ -32,4 +39,11 @@ final class RestoreRootVC: BaseViewController<RestoreRootView> {
     private func restoreApp() {
         signUpFlow?.change(route: .restoreFromCloud)
     }
+    
+    override func setBarStyle() {
+        super.setBarStyle()
+        navigationController?.navigationBar.backgroundColor = UserInterfaceTheme.current.background
+        contentView.backgroundColor = UserInterfaceTheme.current.background
+    }
+
 }

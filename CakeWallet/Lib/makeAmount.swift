@@ -11,10 +11,10 @@ func makeAmount(_ amount: Double, currency: CryptoCurrency) -> Amount {
         outputAmount = BitcoinAmount(from: amount)
     case .monero:
         outputAmount = MoneroAmount(from: amount)
-    case .bitcoinCash, .dash, .liteCoin:
-        outputAmount = EDAmount(from: amount, currency: currency)
     case .ethereum:
         outputAmount = EthereumAmount(from: amount)
+    default:
+        outputAmount = EDAmount(from: amount, currency: currency)
     }
     
     return outputAmount
@@ -28,10 +28,10 @@ func makeAmount(_ amount: String, currency: CryptoCurrency) -> Amount {
         outputAmount = BitcoinAmount(from: amount)
     case .monero:
         outputAmount = MoneroAmount(from: amount)
-    case .bitcoinCash, .dash, .liteCoin:
-        outputAmount = EDAmount(from: amount, currency: currency)
     case .ethereum:
         outputAmount = EthereumAmount(from: amount)
+    default:
+        outputAmount = EDAmount(from: amount, currency: currency)
     }
     
     return outputAmount
@@ -41,11 +41,11 @@ func makeAmount(_ value: UInt64, currency: CryptoCurrency) -> Amount {
     switch currency {
     case .bitcoin:
         return BitcoinAmount(value: value)
-    case .bitcoinCash, .dash, .liteCoin:
-        return EDAmount(value: value, currency: currency)
     case .ethereum:
         return EthereumAmount(value: value)
     case .monero:
         return MoneroAmount(value: value)
+    default:
+        return EDAmount(value: value, currency: currency)
     }
 }

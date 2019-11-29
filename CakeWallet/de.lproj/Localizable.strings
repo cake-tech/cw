@@ -17,6 +17,10 @@
 "restore_from_seed_keys" = "Wiederherstellen";
 "please_make_selection" = "Bitte treffen Sie eine Auswahl, um entweder eine neue Brieftasche zu erstellen oder eine Brieftasche wiederherzustellen";
 
+// Next Page Seed
+"next_page_seed" = "Auf der nächsten Seite sehen Sie einen Samen";
+"i_understand" = "ich verstehe";
+"next_page_seed_instructions" = "Bitte notieren Sie sich diese, falls Sie Ihr Telefon verlieren oder abwischen. Sie können den Samen auch wieder im Einstellungsmenü sehen.";
 
 // Pin
 
@@ -86,6 +90,8 @@
 "starting_sync" = "Synchronisierung wird gestartet";
 "synchronized" = "Synchronisiert";
 "failed_connection_to_node" = "Fehlgeschlagene Verbindung zum Knoten";
+"last_block_received" = "Letzter empfangener Block:";
+"synchronizing" = "Synchronisieren";
 
 // Balances
 "balance-display-type_unlocked" = "Verfügbares Guthaben";
