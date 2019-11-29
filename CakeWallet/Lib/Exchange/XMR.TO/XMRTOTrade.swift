@@ -55,8 +55,7 @@ struct XMRTOTrade: Trade {
                     let dateFormatter = DateFormatter()
                     dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
                     
-                    let address = json["xmr_receiving_integrated_address"].stringValue
-                    let paymentId = json["xmr_required_payment_id_short"].stringValue
+                    let address = json["xmr_receiving_subaddress"].stringValue
                     let totalAmount = json["xmr_amount_total"].stringValue
                     let amount = MoneroAmount(from: totalAmount)
                     let stateString = json["state"].stringValue
@@ -71,7 +70,7 @@ struct XMRTOTrade: Trade {
                         state: state,
                         inputAddress: address,
                         amount: amount,
-                        extraId: paymentId,
+                        extraId: nil,
                         expiredAt: expiredAt,
                         outputTransaction: outputTransaction)
                     

@@ -189,6 +189,8 @@ enum ExchangerError: Error {
     case tradeNotCreated
     case incorrectOutputAddress
     case notCreated(String)
+    case amountIsOverMaxLimit
+    case amountIsLessMinLimit
 }
 
 extension ExchangerError: LocalizedError {
@@ -206,6 +208,10 @@ extension ExchangerError: LocalizedError {
             return "Inccorrect output address"
         case let .notCreated(description):
             return description
+        case .amountIsOverMaxLimit:
+            return "Out of limits. Amount is over max limits"
+        case .amountIsLessMinLimit:
+            return "Out of limits. Amount is less than min amount"
         }
     }
 }
@@ -1385,7 +1391,26 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
 //        let amount = isXMRTO() ? receiveAmount : depositAmount
         let amountString = (isXMRTO ? receiveAmountString.value : depositAmountString.value).replacingOccurrences(of: ",", with: ".")
         let amount = makeAmount(amountString, currency: isXMRTO ? receiveCrypto.value : depositCrypto.value)
+        let amountDouble = Double(amountString) ?? 0
         let request: TradeRequest
+        let limits = isXMRTO ? receiveLimits.value : depositLimits.value
+        
+        if
+            let min = limits.min,
+            let minAmount = Double(min.formatted()),
+            minAmount > amountDouble {
+            showErrorAlert(error: ExchangerError.amountIsLessMinLimit)
+            return
+        }
+        
+        if
+            let max = limits.max,
+            let maxAmount = Double(max.formatted()),
+            maxAmount < amountDouble {
+            showErrorAlert(error: ExchangerError.amountIsOverMaxLimit)
+            return
+        }
+        
         
         switch exchange.provider {
         case .changenow:
