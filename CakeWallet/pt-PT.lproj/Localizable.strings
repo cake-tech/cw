@@ -15,6 +15,10 @@
 "restore" = "Restaurar carteira";
 "please_make_selection" = "Por favor, faça uma seleção abaixo para criar uma nova carteira ou restaurar uma carteira";
 
+// Next Page Seed
+"next_page_seed" = "A próxima página mostrará uma semente";
+"i_understand" = "Compreendo";
+"next_page_seed_instructions" = "Anote-as caso perca ou limpe o telefone. Você também pode ver a semente novamente no menu de configurações.";
 
 // Pin
 
@@ -82,11 +86,17 @@
 "starting_sync" = "Iniciando a sincronização";
 "synchronized" = "Sincronizado";
 "failed_connection_to_node" = "Falha ao ligar ao node";
+"last_block_received" = "Último bloco recebido:";
+"synchronizing" = "Sincronizando";
 
+// Balances
+"balance-display-type_unlocked" = "Saldo disponível";
+"balance-display-type_full" = "Saldo total";
+"balance-display-type_hidden" = "escondido";
+"balance_type_title" = "Exibir saldo como";
 
 // Wallet
 
-"available_balance" = "Saldo disponível";
 "reconnection" = "Reconex„o";
 "reconnect" = "Reconectar";
 "reconnect_alert_text" = "VocÍ tem certeza que quer reconectar ?";
@@ -164,7 +174,8 @@
 "change_pin" = "Alterar PIN";
 "allow_biometric_authentication" = "Permitir autenticação biométrica";
 "remember_pin" = "Lembrar PIN";
-"node_settings" = "Configuração do Daemon";
+"current_node" = "Nó atual";
+"manage_nodes" = "Gerenciar nós";
 "backup_password" = "Senha de backup";
 "show_backup_password" = "A senha de backup foi alterada com sucesso";
 "show_password" = "Mostrar senha";
@@ -182,7 +193,8 @@
 "backup_uploaded" = "Backup enviado";
 "backup_uploaded_icloud" = "O backup foi enviado para o seu iCloud";
 "change_backup_warning" = "Se você alterar a senha de backup para backups, os backups manuais anteriores não funcionarão com a nova senha. Os backups automçticos continuarão funcionando com a nova senha.";
-
+"save_recipient_address" = "Salvar endereço do destinatário";
+"dark_mode_setting_title" = "Modo escuro";
 
 // Settings sections
 
@@ -225,6 +237,13 @@
 "trade_not_found" = "Operaç„o n„o encontrada";
 "amount_is_guaranteed" = "O valor de recebimento é garantido";
 "amount_is_estimate" = "O valor de recebimento é uma estimativa";
+"trades_history" = "Histórico de negociações";
+"no_trades" = "Nenhum negócio ainda";
+"exchange_provider" = "Provedor de troca";
+"recipient_address" = "Endereço do destinatário";
+"transaction_key" = "Chave de Transação";
+"exchange_id" = "ID da troca";
+"trade_id" = "ID comercial";
 
 
 // Auth
@@ -277,7 +296,6 @@
 "re_enter_your_pin" = "Reintroduza o seu PIN";
 "save" = "Gravar";
 "copy" = "Copiar";
-"full_balance" = "Saldo total";
 "node_address" = "Endereço do node";
 "node_port" = "Porta do node";
 "node_new" = "Novo node";
@@ -307,3 +325,5 @@
 "please_save_sec_key" = "Please copy or write down the trade ID to continue.\n\nTrade ID: %@";
 "edit" = "editar";
 "trade_is_powered" = "Este comércio é alimentado por %@";
+
+"pair" = "Par";

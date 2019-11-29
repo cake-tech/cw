@@ -1,80 +1,324 @@
 import UIKit
+import Foundation
 
-enum Theme: String {
-    case def, night
-    
-    static var current: Theme {
-        if
-            let rawValue = UserDefaults.standard.string(forKey: Configurations.DefaultsKeys.currentTheme),
-            let theme = Theme(rawValue: rawValue) {
-            return theme
-        }
-        
-        return .def
-    }
-    
-    var container: ContainerColorScheme {
+protocol Themed {
+    func themeChanged()
+}
+
+public struct Colorset {
+    public let highlight:UIColor    //high contrast against background
+    public let main:UIColor         //medium contrast against background
+    public let dim:UIColor          //low contrast against background
+}
+
+protocol Theme {
+    var background:UIColor { get }
+
+    var text:UIColor { get }
+    var textVariants:Colorset { get }
+
+    var purple:Colorset { get }
+    var blue:Colorset { get }
+    var red:Colorset { get }
+    var gray:Colorset { get }
+}
+
+@available(iOS 13.0, *)
+extension UIUserInterfaceStyle {
+    func asUserInterfaceTheme() -> UserInterfaceTheme {
         switch self {
-        case .def:
-            return ContainerColorScheme(background: .white)
-        case .night:
-            return ContainerColorScheme(background: .wildDarkBlue)
+        case .light:
+            return UserInterfaceTheme.light
+        case .dark:
+            return UserInterfaceTheme.dark
+        default:
+            return UserInterfaceTheme.default
         }
     }
-    
-    var primaryButton: ButtonColorScheme {
+}
+
+fileprivate var currentCached:UserInterfaceTheme? = nil
+enum UserInterfaceTheme: Int, Theme {
+    static let notificationName = Notification.Name("UIThemeConfigurationChanged")
+    var rawValue:Int {
         switch self {
-        case .def:
-            return ButtonColorScheme(background: .purpleyLight, text: .black)
-        case .night:
-            return ButtonColorScheme(background: .whiteSmoke, text: .vividBlue)
+        case .light:
+            return 0
+        case .dark:
+            return 1
+        }
+    }
+    case light, dark
+    static var `default` = UserInterfaceTheme.light
+    static var current: UserInterfaceTheme {
+        get {
+            if #available(iOS 13.0, *) {
+                if let cacheTest = currentCached {
+                    return cacheTest
+                }
+                let screenTheme = UIScreen.main.traitCollection.userInterfaceStyle.asUserInterfaceTheme()
+                currentCached = screenTheme
+                return screenTheme
+            } else {
+                if let cacheTest = currentCached {
+                    return cacheTest
+                }
+                if let theme = UserInterfaceTheme(rawValue: UserDefaults.standard.integer(forKey: Configurations.DefaultsKeys.currentTheme)) {
+                    currentCached = theme
+                    return theme
+                }
+                currentCached = self.`default`
+                return self.`default`
+            }
+        }
+        set {
+            let currentValue = UserInterfaceTheme(rawValue: UserDefaults.standard.integer(forKey: Configurations.DefaultsKeys.currentTheme)) ?? self.`default`
+            if currentValue.rawValue != newValue.rawValue {
+                currentCached = newValue
+                UserDefaults.standard.set(newValue.rawValue, forKey: Configurations.DefaultsKeys.currentTheme)
+                DispatchQueue.main.async {
+                   NotificationCenter.default.post(name:self.notificationName, object: nil)
+                }
+            }
         }
     }
     
-    var secondaryButton: ButtonColorScheme {
+    @available(iOS 12.0, *)
+    var asStyle: UIUserInterfaceStyle {
         switch self {
-        case .def:
-            return ButtonColorScheme(background: .grayBackground, text: .white)
-        case .night:
-            return ButtonColorScheme(background: .whiteSmoke, text: .wildDarkBlue)
+        case .light:
+            return .light
+        case .dark:
+            return .dark
         }
     }
     
-    var pin: PinIndicatorScheme {
-        return PinIndicatorScheme(background: .white, value: .turquoiseBlue)
+    var tabBar: UIColor {
+        switch self {
+        case .light:
+            return UIColor.white
+        case .dark:
+            return UIColor.black
+        }
     }
     
-    var pinKey: PinKeyScheme {
-        return PinKeyScheme(background: .grayBackground, text: .grayBlue)
+    var cardColor: UIColor {
+        switch self {
+        case .light:
+            return UIColor(red:0.99, green:0.99, blue:0.99, alpha:1.0)
+        case .dark:
+            return UIColor(red:0.08, green:0.10, blue:0.15, alpha:1.0)
+        }
+
     }
     
-    var pinKeyReversed: PinKeyReversedScheme {
-        return PinKeyReversedScheme(background: .white, text: .spaceViolet)
-    }
-    
-    var card: CardScheme {
-        return CardScheme(background: .white)
+    var background: UIColor {
+        switch self {
+        case .light:
+            return .white
+        case .dark:
+            return UIColor(red:0.04, green:0.05, blue:0.07, alpha:1.0)
+
+        }
     }
     
     var text: UIColor {
         switch self {
-        case .def:
-            return .spaceViolet
-        case .night:
-            return .whiteSmoke
+        case .light:
+            return UIColor(red:0.13, green:0.16, blue:0.29, alpha:1.0)
+        case .dark:
+            return UIColor(red:0.52, green:0.60, blue:0.73, alpha:1.0)
         }
     }
     
-    var lightText: UIColor {
+    var textVariants: Colorset {
         switch self {
-        case .def:
-            return .wildDarkBlue
-        case .night:
-            return .whiteSmoke
+        case .light:
+            let high = UIColor(red:0.13, green:0.16, blue:0.29, alpha:1.0)
+            let norm = UIColor(red:0.61, green:0.67, blue:0.77, alpha:1.0)
+            let low = UIColor(red:0.84, green:0.87, blue:0.91, alpha:1.0)
+            return Colorset(highlight:high, main:norm, dim:low)
+        case .dark:
+            let high = UIColor(red: 0.81, green: 0.87, blue: 0.97, alpha: 1)
+            let norm = UIColor(red:0.52, green:0.61, blue:0.73, alpha:1.0)
+            let low = UIColor(red:0.39, green:0.45, blue:0.53, alpha:1.0)
+            return Colorset(highlight:high, main:norm, dim:low)
         }
     }
     
-    var progressBar: ProgressBarScheme {
-        return ProgressBarScheme(value: .turquoiseBlue, background: .whiteSmoke)
+    var purple: Colorset {
+        switch self {
+        case .light:
+            let high = UIColor(red:0.54, green:0.35, blue:0.98, alpha:1.0)
+            let norm = UIColor(red:0.82, green:0.76, blue:0.95, alpha:1.0)
+            let low = UIColor(red:0.92, green:0.88, blue:1.00, alpha:1.0)
+            return Colorset(highlight:high, main:norm, dim:low)
+        case .dark:
+            let high = UIColor(red: 0.51, green: 0.34, blue: 1, alpha: 1)
+            let norm = UIColor(red: 0.63, green: 0.47, blue: 1, alpha: 1)
+            let low = UIColor(red: 0.72, green: 0.56, blue: 1, alpha: 0.1)
+            return Colorset(highlight:high, main:norm, dim:low)
+        }
+    }
+    
+    var blue: Colorset {
+        switch self {
+        case .light:
+            let high = UIColor(red:0.21, green:0.74, blue:0.95, alpha:1.0)
+            let norm = UIColor(red:0.53, green:0.81, blue:0.92, alpha:1.0)
+            let low = UIColor(red:0.84, green:0.95, blue:0.99, alpha:1.0)
+            return Colorset(highlight:high, main:norm, dim:low)
+        case .dark:
+            let high = UIColor(red: 0.16, green: 0.73, blue: 0.96, alpha: 1)
+            let norm = UIColor(red: 0.24, green: 0.75, blue: 0.94, alpha: 1)
+            let low = UIColor(red: 0.59, green: 0.89, blue: 1, alpha: 0.1)
+            return Colorset(highlight:high, main:norm, dim:low)
+        }
+    }
+    
+    var red: Colorset {
+        switch self {
+        case .light:
+            let high = UIColor(red:0.82, green:0.26, blue:0.47, alpha:1.0)
+            let norm = UIColor(red: 194, green: 78, blue: 149)
+            let low = UIColor(red:216, green: 192, blue: 209)
+            return Colorset(highlight:high, main:norm, dim:low)
+        case .dark:
+            let high = UIColor(red:0.81, green:0.16, blue:0.37, alpha:1.0)
+            let norm = UIColor(red:0.76, green:0.38, blue:0.51, alpha:1.0)
+            let low = UIColor(red:0.22, green:0.11, blue:0.15, alpha:1.0)
+            return Colorset(highlight:high, main:norm, dim:low)
+        }
+    }
+    
+    var gray: Colorset {
+        switch self {
+        case .light:
+            let high = UIColor(red: 0.58, green: 0.62, blue: 0.72, alpha: 1)
+            let norm = UIColor(red: 0.88, green: 0.91, blue: 0.96, alpha: 1)
+            let low = UIColor(red: 0.95, green: 0.95, blue: 0.96, alpha: 1)
+            return Colorset(highlight:high, main:norm, dim:low)
+        case .dark:
+            let high = UIColor(red: 0.61, green: 0.67, blue: 0.77, alpha: 1)
+            let norm = UIColor(red:0.38, green:0.40, blue:0.46, alpha:1.0)
+            let low = UIColor(red:0.13, green:0.15, blue:0.20, alpha:1.0)
+            return Colorset(highlight:high, main:norm, dim:low)
+        }
+    }
+    
+    var shadow: UIColor {
+        switch self {
+        case .light:
+            return self.text
+        case .dark:
+            return .clear
+        }
+    }
+}
+
+extension UserInterfaceTheme {
+    func asset(named assetName:String) -> UIImage? {
+        let searchName = assetName + "_" + String(self.rawValue)
+        return UIImage(named: searchName)
+    }
+    
+    var grayButton: (fill:UIColor, border:UIColor) {
+        get {
+            switch self {
+            case .light:
+                return (fill:UIColor(red:0.89, green:0.91, blue:0.97, alpha:1.0), border:UIColor(red: 0.77, green: 0.81, blue: 0.93, alpha: 1))
+            case .dark:
+                return (fill:self.gray.dim, border:self.gray.main)
+            }
+
+        }
+    }
+    
+    var settingCellColor: UIColor {
+        get {
+            switch self {
+            case .light:
+                return self.background
+            case .dark:
+                return self.cardColor
+            }
+        }
+    }
+    var settingBackgroundColor: UIColor {
+        get {
+            switch self {
+            case .light:
+                return self.cardColor
+            case .dark:
+                return self.background
+            }
+        }
+    }
+    var dashboardBalanceColor: UIColor {
+        get {
+            switch self {
+            case .light:
+                return self.text
+            case .dark:
+                return .white
+            }
+        }
+    }
+    var sendCardColor: UIColor {
+        get {
+            switch self {
+            case .light:
+                return self.background.add(overlay: self.cardColor.withAlphaComponent(0.6))
+            case .dark:
+                return self.background.add(overlay: self.cardColor.withAlphaComponent(0.3))
+            }
+        }
+    }
+    
+    var restoreScreenBackground:UIColor {
+        get {
+            switch self {
+            case .light:
+                return UIColor(red:0.95, green:0.96, blue:0.97, alpha:1.0)
+            case .dark:
+                return background
+            }
+        }
+    }
+    
+    var restoreCardBackground:UIColor {
+        get {
+            switch self {
+            case .light:
+                return .white
+            case .dark:
+                return UIColor(red:0.08, green:0.10, blue:0.15, alpha:1.0)
+            }
+        }
+    }
+}
+
+//https://crunchybagel.com/blend-uicolor-swift-extension/
+extension UIColor {
+    
+    func add(overlay: UIColor) -> UIColor {
+        var bgR: CGFloat = 0
+        var bgG: CGFloat = 0
+        var bgB: CGFloat = 0
+        var bgA: CGFloat = 0
+        
+        var fgR: CGFloat = 0
+        var fgG: CGFloat = 0
+        var fgB: CGFloat = 0
+        var fgA: CGFloat = 0
+        
+        self.getRed(&bgR, green: &bgG, blue: &bgB, alpha: &bgA)
+        overlay.getRed(&fgR, green: &fgG, blue: &fgB, alpha: &fgA)
+        
+        let r = fgA * fgR + (1 - fgA) * bgR
+        let g = fgA * fgG + (1 - fgA) * bgG
+        let b = fgA * fgB + (1 - fgA) * bgB
+        
+        return UIColor(red: r, green: g, blue: b, alpha: 1.0)
     }
 }

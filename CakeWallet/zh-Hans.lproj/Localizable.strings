@@ -16,6 +16,12 @@
 "restore_from_seed_keys" = "恢复";
 "please_make_selection" = "请在下方选择创建新钱包或恢复钱包";
 
+// Next Page Seed
+"next_page_seed" = "下一页将为您显示种子";
+"i_understand" = "我明白";
+"next_page_seed_instructions" = "请写下这些，以防您松动或擦拭手机。您也可以在设置菜单中再次看到种子。";
+
+
 // Pin
 
 "use_6_pin" = "使用6位数字 PIN";
@@ -80,10 +86,17 @@
 "starting_sync" = "开始同步";
 "synchronized" = "已同步";
 "failed_connection_to_node" = "连接节点失败";
+"last_block_received" = "收到的最后一块：";
+"synchronizing" = "同步";
+
+// Balances
+"balance-display-type_unlocked" = "可用余额";
+"balance-display-type_full" = "全部余额";
+"balance-display-type_hidden" = "隐藏";
+"balance_type_title" = "显示平衡为";
 
 // Wallet
 
-"available_balance" = "可用余额";
 "reconnection" = "重新连接";
 "reconnect" = "重新连接";
 "reconnect_alert_text" = "你确定要重新连接吗 ?";
@@ -161,7 +174,8 @@
 "change_pin" = "更改pin";
 "allow_biometric_authentication" = "允许生物识别验证";
 "remember_pin" = "记住 pin";
-"node_settings" = "Daemon 设置";
+"current_node" = "当前节点";
+"manage_nodes" = "管理节点";
 "backup_password" = "备份密码";
 "show_backup_password" = "备份密码已成功更改";
 "show_password" = "显示密码";
@@ -179,7 +193,8 @@
 "backup_uploaded" = "备份已上传";
 "backup_uploaded_icloud" = "备份已上传到您的iCloud";
 "change_backup_warning" = "如果要更改备份的备份密码，则以前的MANUAL备份将无法使用新密码。自动备份将继续使用新密码。";
-
+"save_recipient_address" = "保存收件人地址";
+"dark_mode_setting_title" = "黑暗模式";
 
 // Settings sections
 
@@ -221,6 +236,13 @@
 "trade_not_found" = "交易未找到";
 "amount_is_guaranteed" = "收款金额有保证";
 "amount_is_estimate" = "收款金额是估计金额";
+"trades_history" = "交易历史";
+"no_trades" = "还没有交易";
+"exchange_provider" = "交换提供商";
+"recipient_address" = "收件人地址";
+"transaction_key" = "交易密钥";
+"exchange_id" = "交换ID";
+"trade_id" = "商号";
 
 
 // Auth
@@ -266,7 +288,6 @@
 "received" = "已接收";
 "save" = "保存";
 "copy" = "复制";
-"full_balance" = "全部余额";
 "node_address" = "节点地址";
 "node_port" = "节点端口";
 "node_new" = "新节点";
@@ -293,3 +314,5 @@
 "please_save_sec_key" = "Please copy or write down the trade ID to continue.\n\nTrade ID: %@";
 "edit" = "编辑";
 "trade_is_powered" = "这笔交易是由 %@";
+
+"pair" = "对";

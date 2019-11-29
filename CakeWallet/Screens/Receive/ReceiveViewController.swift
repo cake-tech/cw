@@ -60,18 +60,22 @@ final class ReceiveViewController: BaseViewController<ReceiveView>, StoreSubscri
         contentView.qrImage.isUserInteractionEnabled = true
         contentView.addSubaddressButton.addTarget(self, action: #selector(addSubaddressAction), for: .touchUpInside)
         contentView.amountTextField.addTarget(self, action: #selector(onAmountChange), for: .editingChanged)
-        let doneButton = StandartButton(image: UIImage(named: "close_symbol")?.resized(to: CGSize(width: 10, height: 12)))
-        doneButton.frame = CGRect(origin: .zero, size: CGSize(width: 32, height: 32))
-        doneButton.addTarget(self, action: #selector(dismissAction), for: .touchUpInside)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: doneButton)
-        navigationItem.rightBarButtonItems = [
-            UIBarButtonItem(
-                image: UIImage(named: "share_icon")?.resized(to: CGSize(width: 20, height: 20)),
-                style: .plain,
-                target: self,
-                action: #selector(shareAction)
-            )
-        ]
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(named:"close_symbol")?.resized(to:CGSize(width: 12, height: 12)),
+            style: .plain,
+            target: self,
+            action: #selector(dismissAction)
+        )
+        navigationItem.leftBarButtonItem?.tintColor = UserInterfaceTheme.current.text
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(named: "share_icon")?.resized(to: CGSize(width: 20, height: 20)),
+            style: .plain,
+            target: self,
+            action: #selector(shareAction)
+        )
+        navigationItem.rightBarButtonItem?.tintColor = UserInterfaceTheme.current.text
+        
         changeAddress(store.state.walletState.address)
         let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         navigationItem.backBarButtonItem = backButton

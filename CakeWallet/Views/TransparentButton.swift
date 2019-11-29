@@ -43,7 +43,8 @@ class TransparentButton: UIButton {
     }
     
     override func configureView() {
-        setTitleColor(Theme.current.primaryButton.text, for: .normal)
+        //tstag
+        setTitleColor(UserInterfaceTheme.current.background, for: .normal)
         layer.masksToBounds = false
         layer.shadowRadius = 20
         layer.shadowOffset = CGSize(width: 2, height: 1)

@@ -16,10 +16,10 @@ final class PinCodeIndicatorView: BaseView {
         innerCircleView.layer.cornerRadius = 5
         addSubview(rootFlexContainer)
         addSubview(innerCircleView)
-        backgroundColor = Theme.current.pin.background
         
         innerCircleView.layer.borderWidth = 0.7
-        innerCircleView.layer.borderColor = UIColor.wildDarkBlue.cgColor
+        innerCircleView.layer.borderColor = UserInterfaceTheme.current.purple.main.cgColor
+        innerCircleView.layer.backgroundColor = UserInterfaceTheme.current.background.cgColor
     }
     
     override func configureConstraints() {
@@ -27,10 +27,12 @@ final class PinCodeIndicatorView: BaseView {
     }
     
     func fill() {
-        innerCircleView.backgroundColor = UIColor.purpley
+        innerCircleView.layer.backgroundColor = UserInterfaceTheme.current.purple.highlight.cgColor
+        innerCircleView.layer.borderColor = UserInterfaceTheme.current.purple.highlight.cgColor
     }
     
     func clear() {
-        innerCircleView.backgroundColor = .clear
+        innerCircleView.layer.borderColor = UserInterfaceTheme.current.purple.main.cgColor
+        innerCircleView.backgroundColor = UserInterfaceTheme.current.background
     }
 }

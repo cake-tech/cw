@@ -4,6 +4,69 @@ public protocol Formatted {
     func formatted() -> String
 }
 
+public protocol LocalizedFormat: Formatted {
+    func localizedString() -> String
+}
+
+extension LocalizedFormat {
+    public func localizedString() -> String {
+        return NSLocalizedString(self.formatted(), comment:"")
+    }
+}
+
+public enum BalanceDisplay: Int, LocalizedFormat {
+    public static var all: [BalanceDisplay] {
+        return [.full, .unlocked, .hidden]
+    }
+    
+    public var rawValue: Int {
+        switch self {
+        case .full:
+            return 3
+        case .unlocked:
+            return 2
+        case .hidden:
+            return 1
+        }
+    }
+    
+    public var isHidden: Bool {
+        switch self {
+        case .hidden:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    case full, unlocked, hidden
+    
+    public init?(from raw:Int) {
+        switch raw {
+        case 3:
+            self = .full
+        case 2:
+            self = .unlocked
+        case 1:
+            self = .hidden
+            
+        default:
+            return nil
+        }
+    }
+    
+    public func formatted() -> String {
+        switch self {
+        case .full:
+            return "balance-display-type_full"
+        case .unlocked:
+            return "balance-display-type_unlocked"
+        case .hidden:
+            return "balance-display-type_hidden"
+        }
+    }
+}
+
 public protocol Currency: Formatted {}
 
 public protocol Amount: Formatted {
@@ -19,10 +82,10 @@ extension Amount {
 
 public enum CryptoCurrency: Currency {
     public static var all: [CryptoCurrency] {
-        return [.monero, .bitcoin, .ethereum, .liteCoin, .bitcoinCash, .dash]
+        return [.monero, .bitcoin, .ethereum, .liteCoin, .bitcoinCash, .dash, .usdT, .eos, .xrp, .trx, .bnb, .ada, .xlm, .nano]
     }
     
-    case monero, bitcoin, ethereum, dash, liteCoin, bitcoinCash
+    case monero, bitcoin, ethereum, dash, liteCoin, bitcoinCash, usdT, eos, xrp, trx, bnb, ada, xlm, nano
     
     public init?(from string: String) {
         switch string.uppercased() {
@@ -38,6 +101,22 @@ public enum CryptoCurrency: Currency {
             self = .liteCoin
         case "BCH":
             self = .bitcoinCash
+        case "USDT":
+            self = .usdT
+        case "EOS":
+            self = .eos
+        case "XRP":
+            self = .xrp
+        case "TRX":
+            self = .trx
+        case "BNB":
+            self = .bnb
+        case "ADA":
+            self = .ada
+        case "XLM":
+            self = .xlm
+        case "NANO":
+            self = .nano
         default:
             return nil
         }
@@ -57,6 +136,22 @@ public enum CryptoCurrency: Currency {
             return "LTC"
         case .bitcoinCash:
             return "BCH"
+        case .usdT:
+            return "USDT"
+        case .eos:
+            return "EOS"
+        case .xrp:
+            return "XRP"
+        case .trx:
+            return "TRX"
+        case .bnb:
+            return "BNB"
+        case .ada:
+            return "ADA"
+        case .xlm:
+            return "XLM"
+        case .nano:
+            return "NANO"
         }
     }
 }

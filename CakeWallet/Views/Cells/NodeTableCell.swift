@@ -39,7 +39,7 @@ final class NodeTableCell: FlexCell {
     func configure(address: String, isAble: Bool, isCurrent: Bool) {
         addressLabel.text = address
         addressLabel.flex.markDirty()
-        indicatorView.backgroundColor = isAble ? .greenMalachite : .red
+        indicatorView.backgroundColor = isAble ? .green : .red
         self.isCurrent(isCurrent)
         contentView.flex.layout()
     }
@@ -53,9 +53,9 @@ final class LangTableCcell: FlexCell {
     override func configureView() {
         super.configureView()
         contentView.layer.masksToBounds = false
-        contentView.backgroundColor = .white
+        contentView.backgroundColor = UserInterfaceTheme.current.background
         backgroundColor = .clear
-        contentView.layer.applySketchShadow(color: .wildDarkBlue, alpha: 0.25, x: 10, y: 3, blur: 13, spread: 2)
+//        contentView.layer.applySketchShadow(color: .wildDarkBlue, alpha: 0.25, x: 10, y: 3, blur: 13, spread: 2)
         textLabel?.font = UIFont.systemFont(ofSize: 14) //fixme
         selectionStyle = .none
     }
@@ -79,8 +79,8 @@ final class LangTableCcell: FlexCell {
     
     func configure(lang: Languages, isCurrent: Bool) {
         textLabel?.text = lang.formatted()
-        contentView.backgroundColor = isCurrent ? .vividBlue : .white
-        textLabel?.textColor = isCurrent ? .white : .black
+        contentView.backgroundColor = isCurrent ? UserInterfaceTheme.current.purple.dim : UserInterfaceTheme.current.gray.dim
+        textLabel?.textColor = isCurrent ? UserInterfaceTheme.current.text : UserInterfaceTheme.current.textVariants.main
         contentView.flex.layout()
     }
 }

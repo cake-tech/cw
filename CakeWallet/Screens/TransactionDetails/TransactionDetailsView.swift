@@ -14,14 +14,13 @@ final class TransactionDetailsView: BaseFlexView {
     override func configureView() {
         super.configureView()
         table.tableFooterView = UIView()
-        table.allowsSelection = false
         table.backgroundColor = .clear
     }
-    
+
     
     override func configureConstraints() {
         rootFlexContainer.flex.padding(20).backgroundColor(.clear).define { flex in
-            flex.addItem(table).width(100%).height(100%)
+            flex.addItem(table).height(100%).marginHorizontal(15)
         }
     }
 }

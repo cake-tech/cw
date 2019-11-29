@@ -4,13 +4,57 @@ import CakeWalletLib
 import CakeWalletCore
 import VisualEffectView
 
+extension UIImage {
+    class func imageWithColor(color: UIColor, size: CGSize) -> UIImage {
+        let rect: CGRect = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+        UIGraphicsBeginImageContextWithOptions(size, false, 0)
+        color.setFill()
+        UIRectFill(rect)
+        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        return image
+    }
+}
+
 class BaseViewController<View: BaseView>: AnyBaseViewController {
     var contentView: View { return view as! View }
     
+    override var childViewControllerForStatusBarStyle: UIViewController? { get {
+            return nil
+        }
+    }
+    
+    override var preferredStatusBarStyle:UIStatusBarStyle {
+        switch UserInterfaceTheme.current {
+        case .light:
+            if #available(iOS 13.0, *) {
+                return .darkContent
+            } else {
+                // Fallback on earlier versions
+                return .default
+            }
+        case .dark:
+            return .lightContent
+        }
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        get {
+            return false
+        }
+    }
+
     override init() {
         super.init()
         setTitle()
-        
+        NotificationCenter.default.addObserver(forName: UserInterfaceTheme.notificationName, object:nil, queue:nil) { [weak self] notification in
+            self?.loadView()
+            self?.setBarStyle()
+            
+            if let conformingSelf = self as? Themed {
+                conformingSelf.themeChanged()
+            }
+        }
         NotificationCenter.default.addObserver(forName: Notification.Name("langChanged"), object: nil, queue: nil) { [weak self] notification in
             self?.loadView()
             
@@ -22,6 +66,15 @@ class BaseViewController<View: BaseView>: AnyBaseViewController {
                 storeSub._onStateChange(store.state)
             }
         }
+        
+        if #available(iOS 13.0, *) {
+            switch UserInterfaceTheme.current {
+            case .dark:
+                overrideUserInterfaceStyle = .dark
+            case .light:
+                overrideUserInterfaceStyle = .light
+            }
+        }
     }
     
     override func loadView() {
@@ -29,7 +82,17 @@ class BaseViewController<View: BaseView>: AnyBaseViewController {
         view = View()
         configureBinds()
         setTitle()
-        
+        setBarStyle()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setNeedsStatusBarAppearanceUpdate()
+        setBarStyle()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
     }
     
     override func viewDidLoad() {
@@ -37,8 +100,31 @@ class BaseViewController<View: BaseView>: AnyBaseViewController {
         guard let navController = self.navigationController else {
             return
         }
- 
-        navController.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: applyFont(ofSize: 16)]
+        navController.navigationBar.titleTextAttributes = [NSAttributedStringKey.font:applyFont(ofSize: 16)]
+        setBarStyle()
+    }
+    
+    public func setBarStyle() {
+        guard let navController = self.navigationController else {
+            return
+        }
+        switch UserInterfaceTheme.current {
+        case .dark:
+            navController.navigationBar.barStyle = UIBarStyle.black
+        case .light:
+            navController.navigationBar.barStyle = UIBarStyle.default
+        }
+        navigationController?.navigationBar.backgroundColor = UserInterfaceTheme.current.background
+        contentView.backgroundColor = UserInterfaceTheme.current.background
+        navigationController?.navigationItem.backBarButtonItem?.tintColor = UserInterfaceTheme.current.text
+        navigationController?.navigationItem.leftBarButtonItem?.tintColor = UserInterfaceTheme.current.text
+        navigationController?.navigationItem.rightBarButtonItem?.tintColor = UserInterfaceTheme.current.text
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UserInterfaceTheme.current.text, NSAttributedStringKey.font: UIFont(name: "Lato-Semibold", size: 18)]
+        if let tabBar = tabBarController?.tabBar {
+            tabBar.isTranslucent = false
+            tabBar.barTintColor = UserInterfaceTheme.current.tabBar
+            tabBar.tintColor = UserInterfaceTheme.current.blue.highlight
+        }
     }
     
     func setTitle() {}

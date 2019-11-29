@@ -19,6 +19,7 @@ target 'CakeWallet' do
     pod 'RxBiBinding'
     pod 'Sourcery'
     pod 'SwipeCellKit'
+    pod 'SwiftDate', '~> 6.0'
 end
 
 target 'CWMonero' do

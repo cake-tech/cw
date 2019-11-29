@@ -18,16 +18,19 @@ final class NewAddressView: BaseFlexView {
         cardView = UIView()
         contactNameTextField = CWTextField(placeholder: NSLocalizedString(NSLocalizedString("contact_name", comment: ""), comment: ""))
         contactNameTextField.font = applyFont(ofSize: 15)
-        
-        addressView = AddressView(placeholder: NSLocalizedString("address", comment: ""), hideAddressBookButton: true)
+        contactNameTextField.textColor = UserInterfaceTheme.current.text
+        addressView = AddressView(placeholder: NSLocalizedString("address", comment: ""))
         addressView.textView.font = applyFont(ofSize: 16)
-        
+        addressView.availablePickers = [.qrScan]
+
         saveButton = PrimaryButton(title: NSLocalizedString("save", comment: ""))
         resetButton = SecondaryButton(title: NSLocalizedString("reset", comment: ""))
         buttonsContainer = UIView()
         
         pickerView = UIPickerView()
+
         pickerTextField = CWTextField(placeholder: NSLocalizedString("Select cryptocurrency", comment: ""))
+        pickerTextField.textColor = UserInterfaceTheme.current.text
         pickerTextField.inputView = pickerView
         
         super.init()

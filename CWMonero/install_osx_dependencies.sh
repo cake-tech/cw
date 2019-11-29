@@ -20,6 +20,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 
   install_brew_package "cmake"
   install_brew_package "pkg-config"
+  install_brew_package "zmq"
 
   if [ ! -f $CPPZMQ_HEADER_PATH ]; then
       echo "File not found!"
@@ -27,6 +28,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     if [ ! -d $CPPZMQ_SOURCES_PATH ]; then
       echo "Installing zeromq"
       git clone https://github.com/zeromq/cppzmq $CPPZMQ_SOURCES_PATH
+      git checkout 213da0b04ae3b4d846c9abc46bab87f86bfb9cf4 # release v4.3.0
     fi
 
     cp $CPPZMQ_SOURCES_PATH/$CPPZMQ_HEADER_FILE $CPPZMQ_HEADER_PATH

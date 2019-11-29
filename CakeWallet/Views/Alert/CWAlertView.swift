@@ -27,7 +27,7 @@ final class CWAlertView: CWBaseAlertView {
     }
     
     override func configureConstraints() {
-        contentView.flex.backgroundColor(.white).alignItems(.center).define { flex in
+        contentView.flex.backgroundColor(UserInterfaceTheme.current.background).alignItems(.center).define { flex in
             flex.addItem(statusImageView).width(100).height(100).alignSelf(.center).position(.absolute).top(-30)
             
             if
@@ -45,7 +45,7 @@ final class CWAlertView: CWBaseAlertView {
                 flex.addItem(innerView)
             }
             
-            flex.addItem(separatorView).width(100%).height(1).backgroundColor(.lightBlueGrey)
+            flex.addItem(separatorView).width(100%).height(1).backgroundColor(UserInterfaceTheme.current.gray.dim)
             
             if let activityIndicatorView = activityIndicatorView {
                 flex.addItem(activityIndicatorView).width(50).height(50)
@@ -69,7 +69,7 @@ final class CWAlertView: CWBaseAlertView {
         innerView = UILabel(fontSize: 16)
         messageLabel?.textAlignment = .center
         messageLabel?.numberOfLines = 0
-        messageLabel?.textColor = .wildDarkBlue
+        messageLabel?.textColor = UserInterfaceTheme.current.gray.main
     }
     
     func addActivityIndicatorView() {
@@ -135,7 +135,7 @@ final class ExchangeAlertView: CWBaseAlertView {
     }
     
     override func configureConstraints() {
-        contentView.flex.backgroundColor(.white).alignItems(.center).define { flex in
+        contentView.flex.backgroundColor(UserInterfaceTheme.current.background).alignItems(.center).define { flex in
             flex.addItem(titleLabel).margin(UIEdgeInsets(top: 80, left: 30, bottom: 20, right: 30))
             flex.addItem(innerView)
         }
@@ -171,7 +171,8 @@ class CWBaseAlertView: BaseFlexView {
     override func configureView() {
         super.configureView()
         isOpaque = true
-        rootFlexContainer.backgroundColor = Theme.current.container.background
+        //tstag
+        rootFlexContainer.backgroundColor = UserInterfaceTheme.current.background
         
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 0

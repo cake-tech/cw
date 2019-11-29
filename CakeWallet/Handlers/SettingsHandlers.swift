@@ -5,7 +5,7 @@ import LocalAuthentication
 //public struct AuthenticationHandler: AsyncHandler {
 //    public func handle(action: SettingsActions, store: Store<ApplicationState>, handler: @escaping (AnyAction?) -> Void) {
 //        guard case let .authentication(pin) = action else { return }
-//        
+//
 //        workQueue.async {
 //            do {
 //                let originPinCode = try KeychainStorageImpl.standart.fetch(forKey: .pinCode)
@@ -82,6 +82,7 @@ public struct ChangeCurrentNodeHandler: Handler {
         UserDefaults.standard.set(node.uri, forKey: Configurations.DefaultsKeys.nodeUri)
         UserDefaults.standard.set(node.login, forKey: Configurations.DefaultsKeys.nodeLogin)
         UserDefaults.standard.set(node.password, forKey: Configurations.DefaultsKeys.nodePassword)
+        
         return SettingsState.Action.changeCurrentNode(node)
     }
 }
@@ -94,3 +95,18 @@ public struct ChangeCurrentFiatHandler: Handler {
     }
 }
 
+public struct ChangeBalanceDisplayHandler: Handler {
+    public func handle(action: SettingsActions, store:Store<ApplicationState>) -> AnyAction? {
+        guard case let .changeBalanceDisplayMode(newDisplayMode) = action else { return nil }
+        UserDefaults.standard.set(newDisplayMode.rawValue, forKey: Configurations.DefaultsKeys.displayedBalance.string())
+        return SettingsState.Action.changedDisplayBalance(newDisplayMode)
+    }
+}
+
+public struct ChangeShouldSaveRecipientAddress: Handler {
+    public func handle(action: SettingsActions, store:Store<ApplicationState>) -> AnyAction? {
+        guard case let .changeShouldSaveRecipientAddress(shouldSave) = action else { return nil }
+        UserDefaults.standard.set(shouldSave, forKey: Configurations.DefaultsKeys.shouldSaveRecipientAddress.string())
+        return SettingsState.Action.changedShouldSaveRecipientAddress(shouldSave)
+    }
+}

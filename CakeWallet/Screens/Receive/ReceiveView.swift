@@ -34,11 +34,12 @@ final class ReceiveView: BaseFlexView {
         super.configureView()
         table.tableFooterView = UIView()
         table.backgroundColor = .clear
-        copyAddressButton.backgroundColor = UIColor.turquoiseBlue
+        copyAddressButton.backgroundColor = UserInterfaceTheme.current.blue.main
         addressLabel.textAlignment = .center
         addressLabel.numberOfLines = 0
         addressLabel.font = applyFont(ofSize: 14)
         amountTextField.keyboardType = .decimalPad
+        amountTextField.textColor = UserInterfaceTheme.current.text
         addSubaddressButton.setImage(UIImage(named: "add_icon_purple"), for: .normal)
         subaddressesLabel.text = "Subaddresses"
     }
@@ -46,7 +47,7 @@ final class ReceiveView: BaseFlexView {
     override func configureConstraints() {
         super.configureConstraints()
         subaddressesHeaderView.flex
-            .backgroundColor(.lightCream)
+            .backgroundColor(UserInterfaceTheme.current.gray.dim)
             .justifyContent(.center)
             .paddingLeft(20)
             .define { flex in

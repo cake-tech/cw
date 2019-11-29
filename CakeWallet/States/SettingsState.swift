@@ -21,6 +21,8 @@ public struct SettingsState: StateType {
         case changeAutoSwitchNode(Bool)
         case changedFiatCurrency(FiatCurrency)
         case changedBiometricAuthentication(Bool)
+        case changedDisplayBalance(BalanceDisplay)
+        case changedShouldSaveRecipientAddress(Bool)
     }
     
     public let isPinCodeInstalled: Bool
@@ -30,9 +32,10 @@ public struct SettingsState: StateType {
     public let node: NodeDescription?
     public let isAutoSwitchNodeOn: Bool
     public let fiatCurrency: FiatCurrency
+    public let displayBalance:BalanceDisplay
+    public let saveRecipientAddresses:Bool
     
-    
-    public init(isPinCodeInstalled: Bool, isAuthenticated: Bool, isBiometricAuthenticationAllowed: Bool, transactionPriority: TransactionPriority, node: NodeDescription?, isAutoSwitchNodeOn: Bool, fiatCurrency: FiatCurrency) {
+    public init(isPinCodeInstalled: Bool, isAuthenticated: Bool, isBiometricAuthenticationAllowed: Bool, transactionPriority: TransactionPriority, node: NodeDescription?, isAutoSwitchNodeOn: Bool, fiatCurrency: FiatCurrency, displayBalance:BalanceDisplay, saveRecipientAddresses:Bool) {
         self.isPinCodeInstalled = isPinCodeInstalled
         self.isAuthenticated = isAuthenticated
         self.isBiometricAuthenticationAllowed = isBiometricAuthenticationAllowed
@@ -40,24 +43,30 @@ public struct SettingsState: StateType {
         self.node = node
         self.isAutoSwitchNodeOn = isAutoSwitchNodeOn
         self.fiatCurrency = fiatCurrency
+        self.displayBalance = displayBalance
+        self.saveRecipientAddresses = saveRecipientAddresses
     }
     
     public func reduce(_ action: SettingsState.Action) -> SettingsState {
         switch action {
-        case .pinSet:
-            return SettingsState(isPinCodeInstalled: true, isAuthenticated: isAuthenticated, isBiometricAuthenticationAllowed: isBiometricAuthenticationAllowed, transactionPriority: transactionPriority, node: node, isAutoSwitchNodeOn: isAutoSwitchNodeOn, fiatCurrency: fiatCurrency)
-        case .isAuthenticated:
-            return SettingsState(isPinCodeInstalled: isPinCodeInstalled, isAuthenticated: true, isBiometricAuthenticationAllowed: isBiometricAuthenticationAllowed, transactionPriority: transactionPriority, node: node, isAutoSwitchNodeOn: isAutoSwitchNodeOn, fiatCurrency: fiatCurrency)
-        case let .changeTransactionPriority(priority):
-            return SettingsState(isPinCodeInstalled: isPinCodeInstalled, isAuthenticated: isAuthenticated, isBiometricAuthenticationAllowed: isBiometricAuthenticationAllowed, transactionPriority: priority, node: node, isAutoSwitchNodeOn: isAutoSwitchNodeOn, fiatCurrency: fiatCurrency)
-        case let .changeCurrentNode(node):
-            return SettingsState(isPinCodeInstalled: isPinCodeInstalled, isAuthenticated: isAuthenticated, isBiometricAuthenticationAllowed: isBiometricAuthenticationAllowed, transactionPriority: transactionPriority, node: node, isAutoSwitchNodeOn: isAutoSwitchNodeOn, fiatCurrency: fiatCurrency)
-        case let .changeAutoSwitchNode(isAutoSwitchNodeOn):
-            return SettingsState(isPinCodeInstalled: isPinCodeInstalled, isAuthenticated: isAuthenticated, isBiometricAuthenticationAllowed: isBiometricAuthenticationAllowed, transactionPriority: transactionPriority, node: node, isAutoSwitchNodeOn: isAutoSwitchNodeOn, fiatCurrency: fiatCurrency)
-        case let .changedFiatCurrency(fiatCurrency):
-            return SettingsState(isPinCodeInstalled: isPinCodeInstalled, isAuthenticated: isAuthenticated, isBiometricAuthenticationAllowed: isBiometricAuthenticationAllowed, transactionPriority: transactionPriority, node: node, isAutoSwitchNodeOn: isAutoSwitchNodeOn, fiatCurrency: fiatCurrency)
+        case let .changedShouldSaveRecipientAddress(shouldSave):
+            return SettingsState(isPinCodeInstalled: isPinCodeInstalled, isAuthenticated: isAuthenticated, isBiometricAuthenticationAllowed: isBiometricAuthenticationAllowed, transactionPriority: transactionPriority, node: node, isAutoSwitchNodeOn: isAutoSwitchNodeOn, fiatCurrency: fiatCurrency, displayBalance:displayBalance, saveRecipientAddresses: shouldSave)
+        case let .changedDisplayBalance(displayConfig):
+            return SettingsState(isPinCodeInstalled: isPinCodeInstalled, isAuthenticated: isAuthenticated, isBiometricAuthenticationAllowed: isBiometricAuthenticationAllowed, transactionPriority: transactionPriority, node: node, isAutoSwitchNodeOn: isAutoSwitchNodeOn, fiatCurrency: fiatCurrency, displayBalance:displayConfig, saveRecipientAddresses: saveRecipientAddresses)
         case let .changedBiometricAuthentication(isAllowed):
-            return SettingsState(isPinCodeInstalled: isPinCodeInstalled, isAuthenticated: isAuthenticated, isBiometricAuthenticationAllowed: isAllowed, transactionPriority: transactionPriority, node: node, isAutoSwitchNodeOn: isAutoSwitchNodeOn, fiatCurrency: fiatCurrency)
+            return SettingsState(isPinCodeInstalled: isPinCodeInstalled, isAuthenticated: isAuthenticated, isBiometricAuthenticationAllowed: isAllowed, transactionPriority: transactionPriority, node: node, isAutoSwitchNodeOn: isAutoSwitchNodeOn, fiatCurrency: fiatCurrency, displayBalance:displayBalance, saveRecipientAddresses: saveRecipientAddresses)
+        case let .changedFiatCurrency(fiatCurrency):
+            return SettingsState(isPinCodeInstalled: isPinCodeInstalled, isAuthenticated: isAuthenticated, isBiometricAuthenticationAllowed: isBiometricAuthenticationAllowed, transactionPriority: transactionPriority, node: node, isAutoSwitchNodeOn: isAutoSwitchNodeOn, fiatCurrency: fiatCurrency, displayBalance:displayBalance, saveRecipientAddresses: saveRecipientAddresses)
+        case let .changeAutoSwitchNode(isAutoSwitchNodeOn):
+            return SettingsState(isPinCodeInstalled: isPinCodeInstalled, isAuthenticated: isAuthenticated, isBiometricAuthenticationAllowed: isBiometricAuthenticationAllowed, transactionPriority: transactionPriority, node: node, isAutoSwitchNodeOn: isAutoSwitchNodeOn, fiatCurrency: fiatCurrency, displayBalance:displayBalance, saveRecipientAddresses: saveRecipientAddresses)
+        case let .changeCurrentNode(node):
+            return SettingsState(isPinCodeInstalled: isPinCodeInstalled, isAuthenticated: isAuthenticated, isBiometricAuthenticationAllowed: isBiometricAuthenticationAllowed, transactionPriority: transactionPriority, node: node, isAutoSwitchNodeOn: isAutoSwitchNodeOn, fiatCurrency: fiatCurrency, displayBalance:displayBalance, saveRecipientAddresses: saveRecipientAddresses)
+        case let .changeTransactionPriority(priority):
+            return SettingsState(isPinCodeInstalled: isPinCodeInstalled, isAuthenticated: isAuthenticated, isBiometricAuthenticationAllowed: isBiometricAuthenticationAllowed, transactionPriority: priority, node: node, isAutoSwitchNodeOn: isAutoSwitchNodeOn, fiatCurrency: fiatCurrency, displayBalance:displayBalance, saveRecipientAddresses: saveRecipientAddresses)
+        case .isAuthenticated:
+            return SettingsState(isPinCodeInstalled: isPinCodeInstalled, isAuthenticated: true, isBiometricAuthenticationAllowed: isBiometricAuthenticationAllowed, transactionPriority: transactionPriority, node: node, isAutoSwitchNodeOn: isAutoSwitchNodeOn, fiatCurrency: fiatCurrency, displayBalance:displayBalance, saveRecipientAddresses: saveRecipientAddresses)
+        case .pinSet:
+            return SettingsState(isPinCodeInstalled: true, isAuthenticated: isAuthenticated, isBiometricAuthenticationAllowed: isBiometricAuthenticationAllowed, transactionPriority: transactionPriority, node: node, isAutoSwitchNodeOn: isAutoSwitchNodeOn, fiatCurrency: fiatCurrency, displayBalance:displayBalance, saveRecipientAddresses: saveRecipientAddresses)
         }
     }
 }

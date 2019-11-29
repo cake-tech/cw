@@ -13,9 +13,9 @@ final class SubaddressesView: BaseFlexView {
         table.separatorStyle = .none
         newSubaddressButton = UIButton()
         newSubaddressTextiField = CWTextField(placeholder: NSLocalizedString("new_subaddress_label", comment: ""))
-    
-        newSubaddressButton.backgroundColor = Theme.current.container.background
-        newSubaddressButton.imageView?.backgroundColor = Theme.current.container.background
+        //tstag
+        newSubaddressButton.backgroundColor = UserInterfaceTheme.current.background
+        newSubaddressButton.imageView?.backgroundColor = UserInterfaceTheme.current.background
         newSubaddressButton.setImage(UIImage(named: "add_icon_purple")?.resized(to: CGSize(width: 30, height: 30)), for: .normal)
         
         newSubaddressContiner = UIView()
@@ -47,10 +47,11 @@ final class SubaddressesView: BaseFlexView {
             .justifyContent(.spaceBetween)
             .alignItems(.center)
             .width(100%)
-            .backgroundColor(Theme.current.container.background)
+            //tstag
+            .backgroundColor(UserInterfaceTheme.current.gray.dim)
             .define { flex in
                 flex.addItem(newSubaddressTextiField).height(40)
-                flex.addItem(newSubaddressButton).height(35).backgroundColor(.whiteSmoke)
+                flex.addItem(newSubaddressButton).height(35).backgroundColor(UserInterfaceTheme.current.gray.dim)
         }
         
         cardView.flex

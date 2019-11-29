@@ -16,6 +16,7 @@ final class PickerTableCell: FlexCell {
         titleLabel.textAlignment = .center
         titleLabel.font = applyFont(ofSize: 17, weight: .semibold)
         selectionStyle = .none
+        backgroundColor = UserInterfaceTheme.current.background
     }
     
     override func configureConstraints() {
@@ -32,7 +33,7 @@ final class PickerTableCell: FlexCell {
     
     func configure(text: String, isSelected: Bool) {
         titleLabel.text = text
-        titleLabel.textColor = isSelected ? UIColor(red: 138, green: 80, blue: 255) : .black
+        titleLabel.textColor = isSelected ? UserInterfaceTheme.current.blue.highlight : UserInterfaceTheme.current.textVariants.highlight
         contentView.flex.layout()
     }
 }

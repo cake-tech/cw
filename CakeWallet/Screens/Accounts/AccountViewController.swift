@@ -37,6 +37,11 @@ final class AccountViewController: BaseViewController<AccountView> {
         contentView.editButton.rx.tap
             .subscribe(onNext: { [weak self] _ in self?.updateAccount() })
             .disposed(by: disposeBag)
+        
+        if let navController = navigationController {
+            navController.navigationItem.leftBarButtonItem?.tintColor = UserInterfaceTheme.current.text
+            navController.navigationItem.rightBarButtonItem?.tintColor = UserInterfaceTheme.current.text
+        }
     }
     
     private func updateAccount() {

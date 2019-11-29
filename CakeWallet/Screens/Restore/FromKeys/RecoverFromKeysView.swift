@@ -5,30 +5,35 @@ final class RecoverFromKeysView: BaseFlexView {
     let cardWrapper, actionButtonsContainer: UIView
     let restoreFromHeightView: RestoreFromHeightView
     var walletNameField, viewKeyField, spendKeyField: CWTextField
-    var addressTextView: CWTextView
+    var addressTextView: CWTextField
     let doneButton: LoadingButton
     
     required init() {
         cardWrapper = UIView()
         actionButtonsContainer = UIView()
         walletNameField = CWTextField(placeholder: NSLocalizedString("wallet_name", comment: ""), fontSize: 16)
-        addressTextView = CWTextView(placeholder: NSLocalizedString("address", comment: ""), fontSize: 16)
+        addressTextView = CWTextField(placeholder: NSLocalizedString("address", comment: ""), fontSize: 16)
         viewKeyField = CWTextField(placeholder: NSLocalizedString("view_key_(private)", comment: ""), fontSize: 16)
         spendKeyField = CWTextField(placeholder: NSLocalizedString("spend_key_(private)", comment: ""), fontSize: 16)
         restoreFromHeightView = RestoreFromHeightView()
 
-        doneButton = PrimaryLoadingButton()
+        doneButton = LoadingButton()
         doneButton.setTitle(NSLocalizedString("recover", comment: ""), for: .normal)
         
         super.init()
-        addressTextView.delegate = self
     }
     
     override func configureConstraints() {
         var adaptiveMargin: CGFloat
-        cardWrapper.layer.cornerRadius = 12
-        cardWrapper.backgroundColor = Theme.current.card.background
+        walletNameField.textColor = UserInterfaceTheme.current.text
+        viewKeyField.textColor = UserInterfaceTheme.current.text
+        spendKeyField.textColor = UserInterfaceTheme.current.text
+        addressTextView.textColor = UserInterfaceTheme.current.text
         
+        cardWrapper.layer.cornerRadius = 12
+        cardWrapper.backgroundColor = UserInterfaceTheme.current.background
+        addressTextView.backgroundColor = UserInterfaceTheme.current.background
+        addressTextView.textColor = UserInterfaceTheme.current.text
         adaptiveMargin = adaptiveLayout.getSize(forLarge: 34, forBig: 32, defaultSize: 30)
         
         if adaptiveLayout.screenType == .iPhones_5_5s_5c_SE {

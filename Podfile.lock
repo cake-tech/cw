@@ -16,6 +16,7 @@ PODS:
   - RxSwift (4.4.1):
     - RxAtomic (~> 4.4)
   - Sourcery (0.15.0)
+  - SwiftDate (6.0.3)
   - SwiftSVG (2.2.0)
   - SwiftyJSON (4.1.0)
   - SwipeCellKit (2.5.1)
@@ -35,6 +36,7 @@ DEPENDENCIES:
   - RxCocoa (~> 4.0)
   - RxSwift (~> 4.0)
   - Sourcery
+  - SwiftDate (~> 6.0)
   - SwiftSVG (~> 2.0)
   - SwiftyJSON
   - SwipeCellKit
@@ -56,6 +58,7 @@ SPEC REPOS:
     - RxCocoa
     - RxSwift
     - Sourcery
+    - SwiftDate
     - SwiftSVG
     - SwiftyJSON
     - SwipeCellKit
@@ -76,12 +79,13 @@ SPEC CHECKSUMS:
   RxCocoa: 2f35a76bf8887872e28a1914112395b11b8e0e64
   RxSwift: 92fcf68dfef21f3e2ab1965363d9e7b3d787597e
   Sourcery: 5895672cae353cdbfa95f3f4aaeb75a664d76f6a
+  SwiftDate: 8d4f14bf1ef68e95094511504856547bf9e3e1a6
   SwiftSVG: 19bc4e434dcf236ece45ddf75f5ee1d3ef8061e6
   SwiftyJSON: c29297daf073d2aa016295d5809cdd68045c39b3
   SwipeCellKit: 30fd6a4f8a8b8ac864ea389c8b4c8bac5ba5471a
   VisualEffectView: 922eedf8d7d7e776a367ac11e0a4d4a0b2ba3545
   ZIPFoundation: 68c35eb2637c21abe56dc60b3277636443bc1501
 
-PODFILE CHECKSUM: ca46be02938736c045b745c643070f747495f8d6
+PODFILE CHECKSUM: bbf84476359300d0ba23ac31255a3f2fdfcc03c6
 
-COCOAPODS: 1.6.2
+COCOAPODS: 1.7.5

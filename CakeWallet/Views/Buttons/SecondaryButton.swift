@@ -3,8 +3,9 @@ import UIKit
 class SecondaryButton: Button {
     override func configureView() {
         super.configureView()
-        backgroundColor = Theme.current.secondaryButton.background
+        //tstag
+        backgroundColor = UserInterfaceTheme.current.grayButton.fill
         layer.borderWidth = 0.75
-        layer.borderColor = UIColor.grayBorder.cgColor
+        layer.borderColor = UserInterfaceTheme.current.grayButton.border.cgColor
     }
 }

@@ -8,4 +8,6 @@ public enum SettingsActions: HandlableAction {
     case changeTransactionPriority(TransactionPriority)
     case changeCurrentFiat(currency: FiatCurrency)
     case changeCurrentNode(to: NodeDescription)
+    case changeBalanceDisplayMode(to: BalanceDisplay)
+    case changeShouldSaveRecipientAddress(Bool)
 }

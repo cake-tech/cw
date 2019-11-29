@@ -7,10 +7,6 @@ class AnyBaseViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
     
-    deinit {
-        //fixme: remove this shit
-        print("Deinit \(self)")
-    }
     
     @available(*, unavailable)
     required init(coder aDecoder: NSCoder) {

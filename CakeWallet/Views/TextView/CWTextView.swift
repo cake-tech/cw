@@ -39,7 +39,7 @@ class CWTextView: UITextView {
         let height = 1.5 as CGFloat
         let y = frame.size.height - height
         let width = self.frame.size.width
-        bottomBorder.backgroundColor = UIColor.veryLightBlue
+        bottomBorder.backgroundColor = UserInterfaceTheme.current.gray.main
         bottomBorder.frame = CGRect(origin: CGPoint(x: 0, y: y), size: CGSize(width: width, height: height))
     }
 }

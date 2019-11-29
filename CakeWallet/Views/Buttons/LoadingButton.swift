@@ -47,29 +47,21 @@ class LoadingButton: UIButton {
     override func configureView() {
         super.configureView()
         
-        backgroundColor = Theme.current.primaryButton.background
-        setTitleColor(Theme.current.primaryButton.text, for: .normal)
+        backgroundColor =
+            UserInterfaceTheme.current.purple.dim
+        
+        setTitleColor(UserInterfaceTheme.current.textVariants.highlight, for: .normal)
         layer.cornerRadius = 10
         layer.masksToBounds = false
         layer.shadowRadius = 20
         layer.shadowOffset = CGSize(width: 2, height: 1)
-        layer.shadowOpacity = 0.3
+        layer.shadowOpacity = 0.0
         layer.shadowColor = UIColor.lightGray.cgColor
         layer.borderWidth = 0.75
-        layer.borderColor = UIColor.purpleyBorder.cgColor
+        layer.borderColor = UserInterfaceTheme.current.purple.main.cgColor
         contentHorizontalAlignment = .center
         titleLabel?.font = applyFont(ofSize: 17)
         titleLabel?.numberOfLines = 0
         titleLabel?.textAlignment = .center
-    }
-}
-
-final class PrimaryLoadingButton: LoadingButton {
-    override func configureView() {
-        super.configureView()
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
     }
 }

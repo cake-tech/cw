@@ -16,6 +16,11 @@
 "restore_from_seed_keys" = "リストア";
 "please_make_selection" = "新しい財布を作成するか、財布を復元するには、下の選択をしてください";
 
+// Next Page Seed
+"next_page_seed" = "次のページにシードが表示されます";
+"i_understand" = "わかります";
+"next_page_seed_instructions" = "携帯電話を紛失したり拭いたりする場合に備えて、これらを書き留めてください。また、設定メニューでシードを再度表示することもできます。";
+
 
 // Pin
 
@@ -85,11 +90,17 @@
 "starting_sync" = "同期開始";
 "synchronized" = "同期済み";
 "failed_connection_to_node" = "ノードとの接続失敗";
+"last_block_received" = "最後に受信したブロック:";
+"synchronizing" = "同期する";
 
+// Balances
+"balance-display-type_unlocked" = "有効なバランス";
+"balance-display-type_full" = "フルバランス";
+"balance-display-type_hidden" = "隠された";
+"balance_type_title" = "表示バランス";
 
 // Wallet
 
-"available_balance" = "有効なバランス";
 "reconnection" = "再接続";
 "reconnect" = "再接続";
 "reconnect_alert_text" = "再接続しますか？";
@@ -167,7 +178,8 @@
 "change_pin" = "ピン変更";
 "allow_biometric_authentication" = "生体認証を許可";
 "remember_pin" = "ピンを記憶";
-"node_settings" = "デーモン設定";
+"current_node" = "現在のノード";
+"manage_nodes" = "ノードを管理する";
 "backup_password" = "バックアップパスワード";
 "show_backup_password" = "バックアップパスワードが正常に変更されました";
 "show_password" = "パスワードを表示";
@@ -185,7 +197,8 @@
 "backup_uploaded" = "バックアップがアップロードされました";
 "backup_uploaded_icloud" = "バックアップがiCloudにアップロードされました";
 "change_backup_warning" = "バックアップ用のバックアップパスワードを変更した場合、以前のMANUALバックアップは新しいパスワードでは機能しません。自動バックアップは新しいパスワードでも引き続き機能します。";
-
+"save_recipient_address" = "受信者のアドレスを保存";
+"dark_mode_setting_title" = "ダークモード";
 
 // Settings sections
 
@@ -227,6 +240,13 @@
 "trade_not_found" = "トレードが見つかりません";
 "amount_is_guaranteed" = "受け取り金額は保証されています";
 "amount_is_estimate" = "受け取り金額は概算です";
+"trades_history" = "取引履歴";
+"no_trades" = "まだ取引はありません";
+"exchange_provider" = "交換プロバイダー";
+"recipient_address" = "受取人の住所";
+"transaction_key" = "トランザクションキー";
+"exchange_id" = "取引所ID";
+"trade_id" = "取引ID";
 
 
 // Auth
@@ -271,7 +291,6 @@
 
 "save" = "Save";
 "copy" = "コピー";
-"full_balance" = "フルバランス";
 "node_address" = "ノードアドレス";
 "node_port" = "ノードポート";
 "node_new" = "新しいノード";
@@ -300,3 +319,5 @@
 "please_save_sec_key" = "Please copy or write down the trade ID to continue.\n\nsTrade ID: %@";
 "edit" = "編集する";
 "trade_is_powered" = "この取引はによって供給されています %@";
+
+"pair" = "ペア";

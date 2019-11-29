@@ -12,6 +12,11 @@
 "terms_of_use_agree" = "Я принимаю";
 "please_make_selection" = "Пожалуйста выберите опцию ниже, чтобы создать или восстановить кошелек, а так же приложение целиком";
 
+// Next Page Seed
+"next_page_seed" = "Следующая страница покажет вам семя";
+"i_understand" = "я понимаю";
+"next_page_seed_instructions" = "Пожалуйста, запишите их на случай, если вы потеряете или вытрете свой телефон. Вы также можете увидеть семена снова в меню настроек.";
+
 
 // Pin
 
@@ -72,6 +77,7 @@
 "wallet" = "Кошелек";
 
 
+
 // Connection state
 
 "blocks_remaining" = "Осталось блоков";
@@ -80,11 +86,17 @@
 "starting_sync" = "Начало синхронизации";
 "synchronized" = "Синхронизировано";
 "failed_connection_to_node" = "Не удалось подключиться к удаленному узлу";
+"last_block_received" = "Последний полученный блок:";
+"synchronizing" = "синхронизирующий";
 
+// Balances
+"balance-display-type_full" = "Полный баланс";
+"balance-display-type_unlocked" = "Доступный баланс";
+"balance-display-type_hidden" = "скрытый";
+"balance_type_title" = "Показать баланс как";
 
 // Wallet
 
-"available_balance" = "Доступный баланс";
 "reconnection" = "Переподключение";
 "reconnect" = "Переподключиться";
 "reconnect_alert_text" = "Вы уверены, что хотите переподключиться ?";
@@ -167,7 +179,8 @@
 "change_pin" = "Изменить пин-код";
 "allow_biometric_authentication" = "Разрешить биометрическую аутентификацию";
 "remember_pin" = "Запомнить пин-код";
-"node_settings" = "Настройки удаленного узла";
+"current_node" = "текущий узел";
+"manage_nodes" = "управлять узлами";
 "backup_password" = "Пароль от бэкапа";
 "show_backup_password" = "Показать бэкап-пароль";
 "show_password" = "Показать пароль";
@@ -185,7 +198,8 @@
 "backup_uploaded" = "Бэкап загружен";
 "backup_uploaded_icloud" = "Бэкап загружен в Ваш iCloud";
 "change_backup_warning" = "Если вы поменяете бэкап-пароль, предыдущие мануальные бэкапы перестанут работать с новым паролем. Автоматические бэкапы смогут работать с новым паролем.";
-
+"save_recipient_address" = "Сохранить адрес получателя";
+"dark_mode_setting_title" = "темный режим";
 
 // Settings sections
 
@@ -228,6 +242,13 @@
 "trade_not_found" = "Обмен не найден";
 "amount_is_guaranteed" = "Получаемая сумма гарантирована";
 "amount_is_estimate" = "Получаемая сумма является оценочной";
+"trades_history" = "История трейдов";
+"no_trades" = "Пока не было трейдов";
+"exchange_provider" = "Обменный провайдер";
+"recipient_address" = "Адрес получателя";
+"transaction_key" = "Ключ транзакции";
+"exchange_id" = "ID обменного сервиса";
+"trade_id" = "ID трейда";
 
 
 // Auth
@@ -272,7 +293,6 @@
 
 "save" = "Сохранить";
 "copy" = "Скопировать";
-"full_balance" = "Полный баланс";
 "node_address" = "Адрес узла";
 "node_port" = "Порт узла";
 "reset" = "Сбросить";
@@ -303,3 +323,5 @@
 "please_save_sec_key" = "Скопируйте или запишите ID сделки, чтобы продолжить..\n\nID сделки: %@";
 "edit" = "Редактировать";
 "trade_is_powered" = "Этот обмен производиться через %@";
+
+"pair" = "Пара";

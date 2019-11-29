@@ -94,8 +94,19 @@ public enum ExchangeTradeState: String, Formatted {
     }
 }
 
-public enum ExchangeProvider {
+public enum ExchangeProvider: String, CaseIterable {
     case morph, xmrto, changenow
+    
+    func iconName() -> String {
+        switch self {
+        case .morph:
+            return "morphtoken_logo"
+        case .xmrto:
+            return "xmr_to_logo"
+        case .changenow:
+            return "cn_logo"
+        }
+    }
 }
 
 extension ExchangeProvider: Formatted {
@@ -178,6 +189,8 @@ enum ExchangerError: Error {
     case tradeNotCreated
     case incorrectOutputAddress
     case notCreated(String)
+    case amountIsOverMaxLimit
+    case amountIsLessMinLimit
 }
 
 extension ExchangerError: LocalizedError {
@@ -195,6 +208,10 @@ extension ExchangerError: LocalizedError {
             return "Inccorrect output address"
         case let .notCreated(description):
             return description
+        case .amountIsOverMaxLimit:
+            return "Out of limits. Amount is over max limits"
+        case .amountIsLessMinLimit:
+            return "Out of limits. Amount is less than min amount"
         }
     }
 }
@@ -759,6 +776,9 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
     private let depositLimits: BehaviorRelay<ExchangeLimits> = BehaviorRelay(value: (min: nil, max: nil))
     private let disposeBag: DisposeBag
     
+    private var depositCurrencyDisplayed:CryptoCurrency = CryptoCurrency.bitcoinCash
+    private var receiveCurrencyDisplayed:CryptoCurrency = CryptoCurrency.bitcoinCash
+    
     init(store: Store<ApplicationState>, exchangeFlow: ExchangeFlow?) {
         cryptos = CryptoCurrency.all
 //        exchangeActionCreators = ExchangeActionCreators.shared
@@ -780,11 +800,11 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         super.init()
         tabBarItem = UITabBarItem(
             title: title,
-            image: UIImage(named: "exchange_icon")?.resized(to: CGSize(width: 24, height: 28)).withRenderingMode(.alwaysOriginal),
-            selectedImage: UIImage(named: "exchange_icon_selected")?.resized(to: CGSize(width: 24, height: 28)).withRenderingMode(.alwaysOriginal)
+            image: UIImage(named: "exchange_icon")?.withRenderingMode(.alwaysTemplate),
+            selectedImage: UIImage(named: "exchange_icon")?.withRenderingMode(.alwaysTemplate)
         )
     }
-    
+        
     @objc
     func onDepositPickerButtonTap() {
         providesPresentationContextTransitionStyle = true
@@ -847,20 +867,15 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         contentView.receiveCardView.addressContainer.presenter = self
         contentView.receiveCardView.addressContainer.updateResponsible = self
         exchangeNameView.title = NSLocalizedString("exchange", comment: "")
+        exchangeNameView.titleLabel.textColor = UserInterfaceTheme.current.text
         exchangeNameView.subtitle = exchange.provider.formatted()
+        exchangeNameView.subtitleLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
         exchangeNameView.onTap = { [weak self] in
             self?.showExchangeSelection()
         }
         navigationItem.titleView = exchangeNameView
-        
-//        let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
-//        navigationItem.backBarButtonItem = backButton
-        
-//        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Switch exchange", style: .plain, target: nil, action: nil)
-//        navigationItem.leftBarButtonItem?.rx.tap.subscribe(onNext: { [weak self] _ in
-//            self?.showExchangeSelection()
-//        }).disposed(by: disposeBag)
-        
+        contentView.receiveCardView.amountTextField.textColor = UserInterfaceTheme.current.text
+        contentView.depositCardView.amountTextField.textColor = UserInterfaceTheme.current.text
         (contentView.receiveCardView.addressContainer.textView.originText <-> receiveAddress)
             .disposed(by: disposeBag)
 
@@ -990,14 +1005,25 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
             target: self,
             action: #selector(clear))
         
-        clearButton.setTitleTextAttributes([
-            NSAttributedStringKey.font: applyFont(ofSize: 16, weight: .regular),
-            NSAttributedStringKey.foregroundColor: UIColor.wildDarkBlue], for: .normal)
-        clearButton.setTitleTextAttributes([
-            NSAttributedStringKey.font: applyFont(ofSize: 16, weight: .regular),
-            NSAttributedStringKey.foregroundColor: UIColor.wildDarkBlue], for: .highlighted)
+        let tradesHistoryButton = UIBarButtonItem(
+            title: "History",
+            style: .plain,
+            target: self,
+            action: #selector(navigateToTradeHistory))
+        
         navigationItem.rightBarButtonItem = clearButton
-        XMRTOExchange.asyncUpdateUri()
+        navigationItem.rightBarButtonItem?.tintColor = UserInterfaceTheme.current.text
+        navigationItem.leftBarButtonItem = tradesHistoryButton
+        navigationItem.leftBarButtonItem?.tintColor =
+            UserInterfaceTheme.current.text
+                XMRTOExchange.asyncUpdateUri()
+    }
+    
+    override func setBarStyle() {
+        super.setBarStyle()
+        exchangeNameView.backgroundColor = UserInterfaceTheme.current.background
+        navigationItem.leftBarButtonItem?.tintColor = UserInterfaceTheme.current.text
+        navigationItem.rightBarButtonItem?.tintColor = UserInterfaceTheme.current.text
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -1005,15 +1031,24 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         store.subscribe(self, onlyOnChange: [
             \ApplicationState.exchangeState,
             \ApplicationState.walletState
-            ])
-//        store.dispatch(exchangeActionCreators.fetchRates()) {
-//            //
-//        }
+        ])
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         highlightNeededFields()
+        
+        if (depositCrypto.value == CryptoCurrency.monero) {
+            contentView.depositCardView.addressContainer.availablePickers = []
+        } else {
+            contentView.depositCardView.addressContainer.availablePickers = [.qrScan, .addressBook]
+        }
+        
+        if (receiveCrypto.value == CryptoCurrency.monero) {
+            contentView.receiveCardView.addressContainer.availablePickers = [.qrScan, .addressBook, .subaddress]
+        } else {
+            contentView.receiveCardView.addressContainer.availablePickers = [.qrScan, .addressBook]
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -1028,7 +1063,7 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
     // MARK: StoreSubscriber
     
     func onStateChange(_ state: ApplicationState) {
-        changedWallet(type: state.walletState.walletType)
+        changedWallet(state.walletState)
     }
     
     // MARK: CurrencyPickerDelegate
@@ -1037,8 +1072,19 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         switch pickerType {
         case .deposit:
             depositCrypto.accept(item)
+            if (item == CryptoCurrency.monero) {
+                contentView.depositCardView.addressContainer.availablePickers = []
+            } else {
+                contentView.depositCardView.addressContainer.availablePickers = [.qrScan, .addressBook]
+            }
+
         case .receive:
             receiveCrypto.accept(item)
+            if (item == CryptoCurrency.monero) {
+                contentView.receiveCardView.addressContainer.availablePickers = [.qrScan, .addressBook, .subaddress]
+            } else {
+                contentView.receiveCardView.addressContainer.availablePickers = [.qrScan, .addressBook]
+            }
         case .unknown:
             return
         }
@@ -1055,8 +1101,8 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
     
     private func highlightNeededFields() {
         let isXMRTO = self.isXMRTO
-        contentView.depositCardView.amountTextField.bottomBorder.backgroundColor = !isXMRTO ? UIColor(red: 126, green: 92, blue: 250).cgColor : UIColor.veryLightBlue.cgColor
-        contentView.receiveCardView.amountTextField.bottomBorder.backgroundColor = isXMRTO ? UIColor(red: 126, green: 92, blue: 250).cgColor : UIColor.veryLightBlue.cgColor
+        contentView.depositCardView.amountTextField.bottomBorder.backgroundColor = !isXMRTO ? UserInterfaceTheme.current.purple.highlight.cgColor : UserInterfaceTheme.current.gray.dim.cgColor
+        contentView.receiveCardView.amountTextField.bottomBorder.backgroundColor = isXMRTO ? UserInterfaceTheme.current.purple.highlight.cgColor : UserInterfaceTheme.current.gray.dim.cgColor
     }
     
     private func changeExchange(deposit: CryptoCurrency, receive: CryptoCurrency) {
@@ -1072,16 +1118,19 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         
         if store.state.walletState.walletType.currency == crypto {
             contentView.depositCardView.pickerButtonView.walletNameLabel.text = store.state.walletState.name
-            
-            if !didSetCurrentAddressForDeposit {
-                didSetCurrentAddressForDeposit = true
-                contentView.depositCardView.addressContainer.textView.originText.accept(store.state.walletState.address)
+            if depositCurrencyDisplayed != crypto {
+                depositCurrencyDisplayed = crypto
+                depositRefundAddress.accept(store.state.walletState.address)
             }
         } else {
-            didSetCurrentAddressForDeposit = false
             contentView.depositCardView.pickerButtonView.walletNameLabel.text = nil
             contentView.depositCardView.addressContainer.textView.text = nil
+            if (depositCurrencyDisplayed != crypto) {
+                depositCurrencyDisplayed = crypto
+                depositRefundAddress.accept("")
+            }
         }
+    
         
         let amount = Double(receiveAmountString.value) ?? 0
         exchange.calculateAmount(amount, from: crypto, to: receiveCrypto.value)
@@ -1089,8 +1138,7 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
             .bind(to: receiveAmountString)
             .disposed(by: disposeBag)
         
-        
-        
+        contentView.depositCardView.addressContainer.isUserInteractionEnabled = store.state.walletState.walletType.currency != crypto
         
 //        receiveAmountString.accept(receiveAmount)
 //        contentView.receiveCardView.amountTextField.text = receiveAmount
@@ -1125,17 +1173,15 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
 //        contentView.depositCardView.minLabel.isHidden = false
 //        contentView.depositCardView.maxLabel.isHidden = false
         
-        if isXMRTO {
-            exchange.fetchLimist(from: receiveCrypto.value, to: depositCrypto.value)
-                .bind(to: receiveLimits)
-                .disposed(by: disposeBag)
-            depositLimits.accept((min: nil, max: nil))
-        } else {
-            exchange.fetchLimist(from: depositCrypto.value, to: receiveCrypto.value)
-                .bind(to: depositLimits)
-                .disposed(by: disposeBag)
-            receiveLimits.accept((min: nil, max: nil))
-        }
+        let from = isXMRTO ? receiveCrypto.value : depositCrypto.value
+        let to = isXMRTO ? depositCrypto.value : receiveCrypto.value
+        let limits = isXMRTO ? receiveLimits : depositLimits
+        
+        exchange.fetchLimist(from: from, to: to)
+            .catchErrorJustReturn((min: nil, max: nil))
+            .bind(to: limits)
+            .disposed(by: disposeBag)
+        depositLimits.accept((min: nil, max: nil))
         
 //        fetchLimits(for: receiveCrypto.value, and: depositCrypto.value) { [weak self] result in
 //            DispatchQueue.main.async {
@@ -1179,14 +1225,16 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         
         if store.state.walletState.walletType.currency == crypto {
             contentView.receiveCardView.pickerButtonView.walletNameLabel.text = store.state.walletState.name
-            
-            if !didSetCurrentAddressForReceive {
-                didSetCurrentAddressForReceive = true
+            if (receiveCurrencyDisplayed != crypto) {
                 receiveAddress.accept(store.state.walletState.address)
-//                contentView.receiveCardView.addressContainer.textView.change(text: store.state.walletState.address)
+                receiveCurrencyDisplayed = crypto
             }
+//            receiveAddress.accept(store.state.walletState.address)
         } else {
-            didSetCurrentAddressForReceive = false
+            if (receiveCurrencyDisplayed != crypto) {
+                receiveAddress.accept("")
+                receiveCurrencyDisplayed = crypto
+            }
             contentView.receiveCardView.pickerButtonView.walletNameLabel.text = nil
             contentView.receiveCardView.addressContainer.textView.text = nil
         }
@@ -1195,7 +1243,21 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         updateLimits()
     }
     
-    private func changedWallet(type: WalletType) {
+    private func changedWallet(_ walletState: WalletState) {
+        if depositCrypto.value == walletState.walletType.currency {
+            if contentView.depositCardView.pickerButtonView.walletNameLabel.text != walletState.name {
+                contentView.depositCardView.pickerButtonView.walletNameLabel.text = walletState.name
+                depositRefundAddress.accept(store.state.walletState.address)
+            }
+        }
+        
+        if receiveCrypto.value == walletState.walletType.currency {
+            if contentView.receiveCardView.pickerButtonView.walletNameLabel.text != walletState.name {
+                contentView.receiveCardView.pickerButtonView.walletNameLabel.text = walletState.name
+                receiveAddress.accept("")
+            }
+        }
+        
         contentView.setNeedsLayout()
     }
     
@@ -1212,10 +1274,10 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
             outputAmount = BitcoinAmount(from: String(result))
         case .monero:
             outputAmount = MoneroAmount(from: String(result))
-        case .bitcoinCash, .dash, .liteCoin:
-            outputAmount = EDAmount(from: String(result), currency: output)
         case .ethereum:
             outputAmount = EthereumAmount(from: String(result))
+        default:
+            outputAmount = EDAmount(from: String(result), currency: receiveCrypto.value)
         }
         
         //        return amountForDisplayFormatted(from: outputAmount.formatted())
@@ -1242,10 +1304,10 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
             outputAmount = BitcoinAmount(from: String(result))
         case .monero:
             outputAmount = MoneroAmount(from: String(result))
-        case .bitcoinCash, .dash, .liteCoin:
-            outputAmount = EDAmount(from: String(result), currency: receiveCrypto.value)
         case .ethereum:
             outputAmount = EthereumAmount(from: String(result))
+        default:
+            outputAmount = EDAmount(from: String(result), currency: receiveCrypto.value)
         }
         
         let formattedOutputAmount = amountForDisplayFormatted(from: outputAmount.formatted())
@@ -1268,7 +1330,7 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
             icon = "cn_logo"
         case .morph:
             title = "Powered by Morphtoken"
-            icon = "xmr_to_logo"
+            icon = "morphtoken_logo"
         case .xmrto:
             title = "Powered by XMR.to"
             icon = "xmr_to_logo"
@@ -1295,21 +1357,22 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
     private func clear() {
         depositAmountString.accept("")
         receiveAmountString.accept("")
-        contentView.depositCardView.addressContainer.textView.text = depositCrypto.value == .monero ? store.state.walletState.address : ""
-        contentView.receiveCardView.addressContainer.textView.text = receiveCrypto.value == .monero ? store.state.walletState.address : ""
+//        contentView.depositCardView.addressContainer.textView.originText.accept(depositCrypto.value == .monero ? store.state.walletState.address : "")
+//        contentView.receiveCardView.addressContainer.textView.originText.accept(receiveCrypto.value == .monero ? store.state.walletState.address : "")
         updateReceiveResult(with: makeAmount(0 as UInt64, currency: receiveCrypto.value))
         store.dispatch(ExchangeState.Action.changedTrade(nil))
     }
     
     @objc
+    func navigateToTradeHistory() {
+        exchangeFlow?.change(route: .tradesHistory)
+    }
+    
+    @objc
     private func exhcnage() {
-        let refundAddress = store.state.walletState.walletType.currency == depositCrypto.value
-            ? store.state.walletState.address
-            : depositRefundAddress.value
+        let refundAddress = depositRefundAddress.value
         
-        let outputAddress = store.state.walletState.walletType.currency == receiveCrypto.value
-            ? store.state.walletState.address
-            : receiveAddress.value
+        let outputAddress = receiveAddress.value
         
         guard !refundAddress.isEmpty else {
             showOKInfoAlert(message: NSLocalizedString("refund_address_is_empty", comment: ""))
@@ -1328,7 +1391,26 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
 //        let amount = isXMRTO() ? receiveAmount : depositAmount
         let amountString = (isXMRTO ? receiveAmountString.value : depositAmountString.value).replacingOccurrences(of: ",", with: ".")
         let amount = makeAmount(amountString, currency: isXMRTO ? receiveCrypto.value : depositCrypto.value)
+        let amountDouble = Double(amountString) ?? 0
         let request: TradeRequest
+        let limits = isXMRTO ? receiveLimits.value : depositLimits.value
+        
+        if
+            let min = limits.min,
+            let minAmount = Double(min.formatted()),
+            minAmount > amountDouble {
+            showErrorAlert(error: ExchangerError.amountIsLessMinLimit)
+            return
+        }
+        
+        if
+            let max = limits.max,
+            let maxAmount = Double(max.formatted()),
+            maxAmount < amountDouble {
+            showErrorAlert(error: ExchangerError.amountIsOverMaxLimit)
+            return
+        }
+        
         
         switch exchange.provider {
         case .changenow:
@@ -1409,6 +1491,14 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
     }
     
     private func onTradeCreated(_ trade: Trade, amount: Amount) {
+        
+        TradesList.shared.add(
+            tradeID: trade.id,
+            date: Date(),
+            provider: exchange.provider,
+            from: depositCrypto.value,
+            to: receiveCrypto.value)
+        
         let alert = ExchangeAlertViewController()
         alert.onDone = { [weak self] in
             self?.exchangeFlow?.change(route: .exchangeResult(trade, amount))
@@ -1453,12 +1543,14 @@ class ExchangeContentAlertView: BaseFlexView {
     
     override func configureView() {
         super.configureView()
-        copyButton.backgroundColor = .vividBlue
         messageLabel.textAlignment = .center
         messageLabel.numberOfLines = 0
         messageLabel.font = applyFont(ofSize: 16)
+        messageLabel.textColor = UserInterfaceTheme.current.text
         copiedLabel.textAlignment = .center
-        copiedLabel.textColor = .wildDarkBlue
+        copiedLabel.textColor = UserInterfaceTheme.current.text
+        copyButton.backgroundColor = UserInterfaceTheme.current.blue.dim
+        copyButton.layer.borderColor = UserInterfaceTheme.current.blue.main.cgColor
         backgroundColor = .clear
     }
     
@@ -1466,7 +1558,7 @@ class ExchangeContentAlertView: BaseFlexView {
         rootFlexContainer.flex.alignItems(.center).backgroundColor(.clear).define { flex in
             flex.addItem(messageLabel).margin(UIEdgeInsets(top: 0, left: 30, bottom: 30, right: 30))
             flex.addItem(copiedLabel).height(10).marginBottom(5)
-            flex.addItem(copyButton).height(56).marginBottom(20).width(80%).backgroundColor(UIColor(hex: 0x97E2FF))
+            flex.addItem(copyButton).height(56).marginBottom(20).width(80%)
         }
     }
     
@@ -1492,7 +1584,6 @@ class ExchangeTransactions {
     static let shared: ExchangeTransactions = ExchangeTransactions()
     
     private static let name = "exchange_transactions.txt"
-    
     private static var url: URL {
         return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent(name)
     }
@@ -1517,18 +1608,40 @@ class ExchangeTransactions {
         json = ExchangeTransactions.load()
     }
     
+    func getAll() -> [JSON]? {
+        return json.array
+    }
+    
+    func getExchangeProvider(by transactionID: String) -> String? {
+        return json.array?.filter({ j -> Bool in
+            return j["txID"].stringValue == transactionID
+        }).first?["provider"].string
+    }
+    
     func getTradeID(by transactionID: String) -> String? {
         return json.array?.filter({ j -> Bool in
             return j["txID"].stringValue == transactionID
         }).first?["tradeID"].string
     }
     
-    func add(tradeID: String, transactionID: String) throws {
+    func getTradeByTransactionID(by transactionID: String) -> JSON? {
+        return json.array?.filter({ j -> Bool in
+            return j["txID"].stringValue == transactionID
+        }).first
+    }
+    
+    func add(tradeID: String, transactionID: String, provider: String) throws {
         guard getTradeID(by: transactionID) == nil else {
             return
         }
         
-        let item = JSON(["tradeID": tradeID, "txID": transactionID])
+        let item = JSON([
+            "tradeID": tradeID,
+            "txID": transactionID,
+            "provider": provider,
+            "date": Date().timeIntervalSince1970
+        ])
+        
         let array = json.arrayValue + [item]
         json = JSON(array)
         try save()

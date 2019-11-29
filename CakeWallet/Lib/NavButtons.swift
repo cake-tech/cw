@@ -8,14 +8,14 @@ func makeIconedNavigationButton(iconName: String, target: Any? = nil, action: Se
         target: target,
         action: action
     )
-    button.tintColor = .purpley
+    button.tintColor = UserInterfaceTheme.current.purple.main
     
     return button
 }
 
-func makeTitledNavigationButton(title: String, target: Any? = nil, action: Selector? = nil, fontSize: CGFloat = 16, textColor: UIColor = UIColor.wildDarkBlue) -> UIBarButtonItem {
+func makeTitledNavigationButton(title: String, target: Any? = nil, action: Selector? = nil, fontSize: CGFloat = 16, textColor: UIColor = UserInterfaceTheme.current.textVariants.highlight) -> UIBarButtonItem {
     let button = UIBarButtonItem(title: title, style: .plain, target: target, action: action)
-    button.tintColor = UIColor.wildDarkBlue
+    button.tintColor = UserInterfaceTheme.current.purple.main
     
     button.setTitleTextAttributes([
         NSAttributedStringKey.font: applyFont(ofSize: fontSize),

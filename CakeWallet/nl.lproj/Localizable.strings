@@ -16,9 +16,12 @@
 "restore_from_seed_keys" = "Herstellen";
 "please_make_selection" = "Maak hieronder een selectie om een ​​nieuwe portefeuille te maken of een portefeuille te herstellen";
 
+// Next Page Seed
+"next_page_seed" = "Op de volgende pagina ziet u een zaadje";
+"i_understand" = "Ik begrijp het";
+"next_page_seed_instructions" = "Noteer deze voor het geval u uw telefoon verliest of veegt. Je kunt de seed ook weer zien in het instellingenmenu.";
 
 // Pin
-
 "use_6_pin" = "Een 6-cijferige pincode gebruiken";
 "use_4_pin" = "Een 4-cijferige pincode gebruiken";
 "enter_your_pin" = "Voer uw pincode in";
@@ -30,7 +33,6 @@
 
 
 // Restore root
-
 "restore_from_seed_keys" = "Herstel van seed/sleutels";
 "restore_from_seed_keys_long" = "Herstel je portemonnee uit je seed of sleutels";
 "restore_from_backup" = "Herstellen van een back-upbestand";
@@ -85,11 +87,18 @@
 "starting_sync" = "Synchronisatie wordt gestart";
 "synchronized" = "Gesynchroniseerd";
 "failed_connection_to_node" = "Mislukte connectie met de nodus";
+"last_block_received" = "Laatste blok ontvangen:";
+"synchronizing" = "Synchroniseren";
+
+// Balances
+"balance-display-type_unlocked" = "Beschikbaar saldo";
+"balance-display-type_full" = "Volledig saldo";
+"balance-display-type_hidden" = "verborgen";
+"balance_type_title" = "Weergavesaldo als";
 
 
 // Wallet
 
-"available_balance" = "Beschikbaar saldo";
 "reconnection" = "Herverbinding";
 "reconnect" = "Opnieuw verbinden";
 "reconnect_alert_text" = "Wilt u opnieuw verbinden?";
@@ -167,7 +176,8 @@
 "change_pin" = "Pincode wijzigen";
 "allow_biometric_authentication" = "Biometrische authenticatie toestaan";
 "remember_pin" = "Pincode onthouden";
-"node_settings" = "Daemoninstellingen";
+"current_node" = "Huidige knooppunt";
+"manage_nodes" = "Beheer knooppunten";
 "backup_password" = "Back-upwachtwoord";
 "show_backup_password" = "Back-upwachtwoord is succesvol veranderd";
 "show_password" = "Laat wachtwoord zien";
@@ -185,7 +195,8 @@
 "backup_uploaded" = "Back-up geüpload";
 "backup_uploaded_icloud" = "Back-up is geüpload naar uw iCloud";
 "change_backup_warning" = "Als u het back-upwachtwoord voor back-ups wilt wijzigen, werken de vorige MANUAL-back-ups niet met het nieuwe wachtwoord. Automatische back-ups blijven werken met het nieuwe wachtwoord.";
-
+"save_recipient_address" = "Adres ontvanger opslaan";
+"dark_mode_setting_title" = "Donkere modus";
 
 // Settings sections
 
@@ -227,6 +238,13 @@
 "trade_not_found" = "Omwisseling is niet gevonden";
 "amount_is_guaranteed" = "Het ontvangstbedrag is gegarandeerd";
 "amount_is_estimate" = "Het ontvangstbedrag is een schatting";
+"trades_history" = "Handelt geschiedenis";
+"no_trades" = "Nog geen transacties";
+"exchange_provider" = "Exchange provider";
+"recipient_address" = "Recipient address";
+"transaction_key" = "Transactiesleutel";
+"exchange_id" = "Exchange ID";
+"trade_id" = "Trade ID";
 
 
 // Auth
@@ -271,7 +289,6 @@
 
 "save" = "Opslaan";
 "copy" = "Kopiëren";
-"full_balance" = "Volledig saldo";
 "node_address" = "Nodusadres";
 "node_port" = "Noduspoort";
 "node_new" = "Nieuwe nodus";
@@ -303,3 +320,5 @@
 "please_save_sec_key" = "Please copy or write down the trade ID to continue.\n\nTrade ID: %@";
 "edit" = "Bewerk";
 "trade_is_powered" = "Deze handel wordt aangedreven door %@";
+
+"pair" = "Paar";
