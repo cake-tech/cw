@@ -10,9 +10,8 @@ func updateFiatPrice(for crypto: Currency, to fiatCurrency: FiatCurrency, handle
         return
     }
         
-    var url =  URLComponents(string: "https://api.coinmarketcap.com/v2/ticker/")!
+    var url =  URLComponents(string: "http://fiat-api.cakewallet.com/v1/rates")!
     url.queryItems = [
-        URLQueryItem(name: "structure", value: "array"),
         URLQueryItem(name: "convert", value: fiatCurrency.formatted())
     ]
     Alamofire.request(url, method: .get).responseData(queue: ratesUpdateQueue, completionHandler: { response in
@@ -28,8 +27,8 @@ func updateFiatPrice(for crypto: Currency, to fiatCurrency: FiatCurrency, handle
 
         let price = results.reduce(0.0, { price, json -> Double in
             if
-                json["symbol"].stringValue == crypto.formatted(),
-                let price = json["quotes"][fiatCurrency.formatted()]["price"].double {
+                json["symbol"].stringValue.uppercased() == crypto.formatted().uppercased(),
+                let price = json["quote"][fiatCurrency.formatted().uppercased()]["price"].double {
                 return price
             }
             
@@ -41,9 +40,8 @@ func updateFiatPrice(for crypto: Currency, to fiatCurrency: FiatCurrency, handle
 }
 
 func updateFiatPriceForVef(for crypto: Currency, baseCrypto: CryptoCurrency = CryptoCurrency.bitcoin, handler: @escaping (Double) -> Void) {
-    var url =  URLComponents(string: "https://api.coinmarketcap.com/v2/ticker/")!
+    var url =  URLComponents(string: "http://fiat-api.cakewallet.com/v1/rates")!
     url.queryItems = [
-        URLQueryItem(name: "structure", value: "array"),
         URLQueryItem(name: "convert", value: baseCrypto.formatted())
     ]
     Alamofire.request(url, method: .get).responseData(queue: ratesUpdateQueue, completionHandler: { response in
@@ -59,8 +57,8 @@ func updateFiatPriceForVef(for crypto: Currency, baseCrypto: CryptoCurrency = Cr
         
         let price = results.reduce(0.0, { price, json -> Double in
             if
-                json["symbol"].stringValue == crypto.formatted(),
-                let price = json["quotes"][baseCrypto.formatted()]["price"].double {
+                json["symbol"].stringValue.uppercased() == crypto.formatted().uppercased(),
+                let price = json["quote"][baseCrypto.formatted().uppercased()]["price"].double {
                 return price
             }
             
