@@ -52,7 +52,7 @@ final class NodesViewController: BaseViewController<NodesView>, UITableViewDeleg
         
         let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         navigationItem.backBarButtonItem = backButton
-        
+        contentView.table.separatorColor = .none
         contentView.table.delegate = self
         contentView.table.dataSource = self
         contentView.table.register(items: [NodeCellItem.self])
@@ -91,6 +91,7 @@ final class NodesViewController: BaseViewController<NodesView>, UITableViewDeleg
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let nodeItem = nodes[indexPath.row]
         let cell = tableView.dequeueReusableCell(withItem: nodeItem, for: indexPath) as! SwipeTableViewCell
+        cell.addSeparator(color: UserInterfaceTheme.current.gray.dim)
         cell.delegate = self
         return cell
     }

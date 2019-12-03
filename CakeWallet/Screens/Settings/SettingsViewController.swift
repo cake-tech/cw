@@ -13,6 +13,8 @@ final class TextViewUITableViewCell: FlexCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         textView = UITextView()
+        textView.textColor = UserInterfaceTheme.current.text
+        textView.backgroundColor = UserInterfaceTheme.current.settingCellColor
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureView()
         configureConstraints()
@@ -56,6 +58,12 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         
         func setup(cell: TextViewUITableViewCell) {
             cell.configure(attributedText: attributedString)
+            cell.selectionStyle = .gray
+            let bgView = UIView()
+            bgView.backgroundColor = UserInterfaceTheme.current.gray.dim
+            cell.selectedBackgroundView = bgView
+
+            cell.backgroundColor = UserInterfaceTheme.current.settingCellColor
         }
     }
     
@@ -72,8 +80,16 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         
         func setup(cell: UITableViewCell) {
             cell.textLabel?.text = title
+            cell.textLabel?.textColor = UserInterfaceTheme.current.text
+            cell.backgroundColor = UserInterfaceTheme.current.settingCellColor
             cell.imageView?.image = image
-            cell.accessoryView = UIImageView(image: UIImage(named: "arrow_right")?.resized(to: CGSize(width: 6, height: 10)))
+            cell.selectionStyle = .gray
+            let bgView = UIView()
+            bgView.backgroundColor = UserInterfaceTheme.current.gray.dim
+            cell.selectedBackgroundView = bgView
+            let rightArrowImage = UIImage(named: "arrow_right")
+            cell.accessoryView = UIImageView(image:rightArrowImage?.resized(to: CGSize(width: 6, height: 10)).withRenderingMode(.alwaysTemplate))
+            cell.accessoryView?.tintColor = UserInterfaceTheme.current.blue.highlight
         }
     }
     
@@ -93,8 +109,13 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         
         func setup(cell: UITableViewCell) {
             cell.textLabel?.text = title
+            cell.textLabel?.textColor = UserInterfaceTheme.current.text
             cell.imageView?.image = image
             cell.accessoryView = switcher
+            cell.selectionStyle = .gray
+            let bgView = UIView()
+            bgView.backgroundColor = UserInterfaceTheme.current.gray.dim
+            cell.selectedBackgroundView = bgView
             switcher.onChangeHandler = { isOn in
                 self.action?(isOn, self)
             }
@@ -129,6 +150,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         
         func setup(cell: SettingsPickerUITableViewCell<PickerItem>) {
             cell.configure(title: title, pickerOptions: pickerOptions, selectedOption: selectedIndex, action: action)
+            cell.textLabel?.textColor = UserInterfaceTheme.current.text
             cell.imageView?.image = image
             cell.onFinish = onFinish
         }
@@ -137,16 +159,26 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
     struct SettingsInformativeCellItem: CellItem, ActionableCellItem {
         let title: String
         let informativeText:String
+        let image: UIImage?
         let action: (() -> Void)?
+        var wantsBlue:Bool = false
         
-        init(title: String, informativeText:String, action:(() -> Void)?) {
+        init(title: String, informativeText:String, image:UIImage?, action:(() -> Void)?) {
             self.title = title
             self.informativeText = informativeText
+            self.image = image
             self.action = action
         }
         
         func setup(cell: SettingsInformativeUITableViewCell) {
-            cell.configure(title: self.title, informativeText: self.informativeText)
+            cell.configure(title:title, informativeText:informativeText)
+            cell.backgroundColor = UserInterfaceTheme.current.settingCellColor
+            cell.imageView?.image = image
+            if (wantsBlue) {
+                cell.informativeBlue = true
+            } else {
+                cell.informativeBlue = false
+            }
         }
     }
     
@@ -181,8 +213,8 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         super.init()
         tabBarItem = UITabBarItem(
             title: title,
-            image: UIImage(named: "settings_icon")?.resized(to: CGSize(width: 28, height: 28)).withRenderingMode(.alwaysOriginal),
-            selectedImage: UIImage(named: "settings_selected_icon")?.resized(to: CGSize(width: 28, height: 28)).withRenderingMode(.alwaysOriginal)
+            image: UIImage(named: "settings_icon")?.withRenderingMode(.alwaysTemplate),
+            selectedImage: UIImage(named: "settings_icon")?.withRenderingMode(.alwaysTemplate)
         )
         self.store.subscribe(self, onlyOnChange: [\ApplicationState.settingsState])
     }
@@ -208,7 +240,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         navigationItem.backBarButtonItem = backButton
         
-        let currentNode = SettingsInformativeCellItem(title: NSLocalizedString("current_node", comment: ""), informativeText:(self.store.state.settingsState.node?.uri ?? ""),
+        let currentNode = SettingsInformativeCellItem(title: NSLocalizedString("current_node", comment: ""), informativeText:(self.store.state.settingsState.node?.uri ?? ""), image:nil,
             action: { [weak self] in
                 self?.settingsFlow?.change(route:.nodes)
         })
@@ -217,6 +249,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
             title: NSLocalizedString("balance_type_title", comment: ""),
             pickerOptions: BalanceDisplay.all,
             selectedAtIndex: BalanceDisplay.all.index(of:balanceType) ?? 0) { [weak store] newBalance in
+                print("newBalance \(newBalance)")
                 store?.dispatch(
                     SettingsActions.changeBalanceDisplayMode(to: newBalance)
                 )
@@ -248,6 +281,36 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
             self?.presentChangeLanguage()
         })
         
+        let saveRecipientAddress = SettingsSwitchCellItem(
+            title: NSLocalizedString("save_recipient_address", comment:""),
+            isOn: store.state.settingsState.saveRecipientAddresses,
+            action: { [weak store] shouldStore, item in
+                guard shouldStore != store?.state.settingsState.saveRecipientAddresses else {
+                    return
+                }
+                
+                store?.dispatch(
+                    SettingsActions.changeShouldSaveRecipientAddress(shouldStore)
+                )
+            }
+        )
+        
+        let darkmodeCellItem = SettingsSwitchCellItem(
+            title: NSLocalizedString("dark_mode_setting_title", comment: ""),
+            isOn: UserInterfaceTheme.current == .dark,
+            action: { isDarkMode, item in
+                guard ((isDarkMode == true) ? UserInterfaceTheme.dark : UserInterfaceTheme.light) != UserInterfaceTheme.current else {
+                    return
+                }
+                switch UserInterfaceTheme.current {
+                case .dark:
+                    UserInterfaceTheme.current = .light
+                case .light:
+                    UserInterfaceTheme.current = .dark
+                }
+                
+        })
+
         let biometricCellItem = SettingsSwitchCellItem(
             title: NSLocalizedString("allow_biometric_authentication", comment: ""),
             isOn: store.state.settingsState.isBiometricAuthenticationAllowed,
@@ -321,7 +384,6 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
                                     )
                                     return
                                 }
-                                
                                 self?.onBackupSave(error: error)
                             }
                         })
@@ -447,6 +509,40 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
                     actions: [cancelAction, changeAction])
         })
         
+        var supportEmail = SettingsInformativeCellItem(title: "Email", informativeText: "support@cakewallet.io", image: nil) {
+            UIApplication.shared.open(URL(string:"mailto:support@cakewallet.io")!, options:[:], completionHandler: nil)
+        }
+        supportEmail.wantsBlue = true
+        var supportTelegram = SettingsInformativeCellItem(title: "Telegram", informativeText: "Cake_Wallet", image: UIImage(named:"telegram_logo")) {
+            UIApplication.shared.open(URL(string:"https://t.me/cake_wallet")!, options:[:], completionHandler: nil)
+        }
+        supportTelegram.wantsBlue = true
+        var supportTwitter = SettingsInformativeCellItem(title: "Twitter", informativeText: "@CakeWalletXMR", image: UIImage(named:"twitter_logo")) {
+            UIApplication.shared.open(URL(string:"https://twitter.com/CakeWalletXMR")!, options:[:], completionHandler: nil)
+        }
+        supportTwitter.wantsBlue = true
+        var supportChangeNow = SettingsInformativeCellItem(title: "ChangeNow", informativeText: "support@changenow.io", image: UIImage(named:"changenow_logo")) {
+            UIApplication.shared.open(URL(string:"mailto:support@changenow.io")!, options:[:], completionHandler: nil)
+        }
+        supportChangeNow.wantsBlue = true
+        var supportMorph = SettingsInformativeCellItem(title: "Morph", informativeText: "support@morphtoken.com", image: UIImage(named:"morph_logo")) {
+            UIApplication.shared.open(URL(string:"mailto:support@morphtoken.com")!, options:[:], completionHandler: nil)
+        }
+        supportMorph.wantsBlue = true
+        var supportXmrTo = SettingsInformativeCellItem(title: "XMR.to", informativeText: "support@xmr.to", image: UIImage(named:"xmrto_logo")) {
+            UIApplication.shared.open(URL(string:"mailto:support@xmr.to")!, options:[:], completionHandler: nil)
+        }
+        supportXmrTo.wantsBlue = true
+        
+        let termsView = SettingsCellItem(
+            title: NSLocalizedString("terms", comment: ""),
+            action: { [weak self] in
+                let disclaimerVC = DisclaimerViewController(showingCheckbox: false)
+                disclaimerVC.modalPresentationStyle = .fullScreen
+//                self?.modalPresentationStyle = .fullScreen
+                self?.present(disclaimerVC, animated: true)
+        })
+        
         sections[.nodes] = [
             currentNode
         ]
@@ -454,16 +550,25 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         sections[.wallets] = [
             displayBalances,
             fiatCurrencyCellItem,
-            feePriorityCellItem
+            feePriorityCellItem,
+            saveRecipientAddress
         ]
         
-        sections[.personal] = [
-            changePinCellItem,
-            changeLanguage,
-            biometricCellItem,
-            //            rememberPasswordCellItem
-        ]
-        
+        if #available(iOS 13.0, *) {
+            sections[.personal] = [
+                changePinCellItem,
+                changeLanguage,
+                biometricCellItem
+            ]
+        } else {
+            sections[.personal] = [
+                changePinCellItem,
+                changeLanguage,
+                biometricCellItem,
+                darkmodeCellItem
+            ]
+        }
+                
         sections[.backup] = [
             showMasterPasswordCellItem,
             changeMasterPassword,
@@ -475,8 +580,16 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
             createBackupCellItem
         ]
         
+        sections[.support] = [
+            supportEmail,
+            supportTelegram,
+            supportTwitter,
+            supportChangeNow,
+            supportMorph,
+            supportXmrTo,
+            termSettingsCellItem
+        ]
         
-        //fixme
         let email = "support@cakewallet.io"
         let telegram = "https://t.me/cake_wallet"
         let twitter = "cakewalletXMR"
@@ -488,6 +601,8 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         paragraphStyle.lineSpacing = 5
         let attributes = [
             NSAttributedStringKey.font : UIFont.systemFont(ofSize: 15),
+            NSAttributedStringKey.foregroundColor: UserInterfaceTheme.current.text,
+            NSAttributedStringKey.backgroundColor: UserInterfaceTheme.current.settingCellColor,
             NSAttributedStringKey.paragraphStyle: paragraphStyle
         ]
         let attributedString = NSMutableAttributedString(
@@ -509,20 +624,25 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         attributedString.addAttribute(.link, value: String(format: "mailto:%@", morphEmail), range: xmrAddressRange)
         let contactUsCellItem = SettingsTextViewCellItem(attributedString: attributedString)
         
-        sections[.support] = [
-            contactUsCellItem,
-            termSettingsCellItem
-        ]
-        
         if
             let dictionary = Bundle.main.infoDictionary,
             let version = dictionary["CFBundleShortVersionString"] as? String {
             contentView.footerLabel.text = String(format: "%@ %@", NSLocalizedString("version", comment: ""), version)
         }
+        
+        contentView.table.backgroundColor = UserInterfaceTheme.current.settingBackgroundColor
+        
+        contentView.table.separatorColor = UserInterfaceTheme.current.gray.dim
     }
     
     override func setTitle() {
         title = NSLocalizedString("settings", comment: "")
+    }
+    
+    override func setBarStyle() {
+        super.setBarStyle()
+        navigationController?.navigationBar.backgroundColor = UserInterfaceTheme.current.settingBackgroundColor
+        contentView.backgroundColor = UserInterfaceTheme.current.settingBackgroundColor
     }
     
     // MARK: StoreSubscriber
@@ -553,21 +673,18 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         guard
             let section = SettingsSections(rawValue: indexPath.section),
             let item = sections[section]?[indexPath.row] else {
-                return UITableViewCell()
+                return FlexCell()
         }
         let cell = tableView.dequeueReusableCell(withItem: item, for: indexPath)
         cell.textLabel?.font = UIFont.systemFont(ofSize: 15)
+        
+        cell.backgroundColor = UserInterfaceTheme.current.settingCellColor
         return cell
     }
     
     // MARK: UITableViewDelegate
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard
-            let section = SettingsSections(rawValue: indexPath.section),
-            !(section == .support && indexPath.row == 0) else { //fixme: hardcoded value!!
-                return 175
-        }
         
         return 50
     }
@@ -587,8 +704,9 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
                 size: CGSize(width: tableView.frame.width, height: 60)))
         let titleLabel = UILabel(frame: CGRect(origin: CGPoint(x: 20, y: 5), size: CGSize(width: view.frame.width - 20, height: view.frame.height)))
         titleLabel.font = applyFont(ofSize: 16)
-        titleLabel.textColor = Theme.current.lightText
-        view.backgroundColor =  contentView.backgroundColor
+        titleLabel.textColor = UserInterfaceTheme.current.textVariants.main
+        view.backgroundColor =  UserInterfaceTheme.current.settingBackgroundColor
+
         view.addSubview(titleLabel)
         
         switch section {
@@ -673,7 +791,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
     }
     
     private func toggleNightMode(isOn: Bool) {
-        NotificationCenter.default.post(name: Notification.Name("changeTheme"), object: isOn ? Theme.night : Theme.def)
+        NotificationCenter.default.post(name: Notification.Name("changeTheme"), object: isOn ? UserInterfaceTheme.dark : UserInterfaceTheme.light )
     }
     
     private func showICloudIsNotEnabledAlert() {

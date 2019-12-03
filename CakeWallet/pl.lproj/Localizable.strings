@@ -16,6 +16,10 @@
 "restore" = "Wczytaj";
 "restore_from_seed_keys" = "Wczytaj";
 
+// Next Page Seed
+"next_page_seed" = "Następna strona pokaże ci ziarno";
+"i_understand" = "rozumiem";
+"next_page_seed_instructions" = "Zapisz je na wypadek zgubienia lub wyczyszczenia telefonu. Możesz także zobaczyć ziarno ponownie w menu ustawień.";
 
 // Pin
 
@@ -84,6 +88,8 @@
 "starting_sync" = "Start synchronizacji";
 "synchronized" = "Zsynchronizowano";
 "failed_connection_to_node" = "Nie połączono się z węzłem";
+"last_block_received" = "Ostatni otrzymany blok:";
+"synchronizing" = "Synchronizacja";
 
 // Balances
 "balance-display-type_unlocked" = "Dostępne Saldo";
@@ -98,6 +104,7 @@
 "reconnect_alert_text" = "Na pewno chcesz żeby połączyć ponownie ?";
 "cancel" = "Anuluj";
 "receive" = "Otrzymaj";
+"received" = "Otrzymano";
 "send" = "Wyślij";
 "transactions" = "Transakcje";
 "sent" = "Wyślij";
@@ -189,7 +196,8 @@
 "backup_uploaded" = "Przesłano kopię zapasową";
 "backup_uploaded_icloud" = "Kopia zapasowa została przesłana do Twojej iCloud";
 "change_backup_warning" = "Jeśli zmienisz hasło kopii zapasowej dla kopii zapasowych, poprzednie kopie zapasowe RĘCZNE nie będą działać z nowym hasłem. Automatyczne kopie zapasowe będą nadal działać z nowym hasłem.";
-
+"save_recipient_address" = "Zapisz adres odbiorcy";
+"dark_mode_setting_title" = "Tryb ciemny";
 
 // Settings sections
 
@@ -317,3 +325,5 @@
 "please_save_sec_key" = "Please copy or write down the trade ID to continue.\n\nTrade ID: %@";
 "edit" = "edytować";
 "trade_is_powered" = "Ten handel jest napędzany przez %@";
+
+"pair" = "Para";

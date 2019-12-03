@@ -18,7 +18,7 @@ final class PickerButtonView: BaseFlexView {
         
         pickedCurrency.font = applyFont(ofSize: 26, weight: .bold)
         walletNameLabel.font = applyFont(ofSize: 13)
-        walletNameLabel.textColor = UIColor.wildDarkBlue
+        walletNameLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
         backgroundColor = .clear
     }
     
@@ -29,7 +29,7 @@ final class PickerButtonView: BaseFlexView {
             .direction(.row)
             .alignItems(.center)
             .define{ flex in
-                flex.addItem(pickedCurrency).width(65)
+                flex.addItem(pickedCurrency).width(80)
                 flex.addItem(pickerIcon)
         }
         
@@ -86,14 +86,14 @@ final class ExchangeCardView: BaseFlexView {
         amountTextField.textAlignment = .right
         amountTextField.keyboardType = .decimalPad
         receiveViewTitle.font = applyFont(ofSize: 15)
-        receiveViewTitle.textColor = UIColor.wildDarkBlue
+        receiveViewTitle.textColor = UserInterfaceTheme.current.textVariants.highlight
         receiveViewTitle.textAlignment = .right
         receiveViewAmount.font = applyFont(ofSize: 22, weight: .semibold)
-        receiveViewAmount.textColor = UIColor.purpley
+        receiveViewAmount.textColor = UserInterfaceTheme.current.purple.main
         receiveViewAmount.textAlignment = .right
-        maxLabel.textColor = .wildDarkBlue
+        maxLabel.textColor = UserInterfaceTheme.current.textVariants.main
         maxLabel.textAlignment = .right
-        minLabel.textColor = .wildDarkBlue
+        minLabel.textColor = UserInterfaceTheme.current.textVariants.main
         minLabel.textAlignment = .right
         backgroundColor = .clear
         rootFlexContainer.layer.cornerRadius = 12
@@ -134,7 +134,7 @@ final class ExchangeCardView: BaseFlexView {
             .justifyContent(.start)
             .alignItems(.center)
             .padding(18, 15, 35, 15)
-            .backgroundColor(UIColor(hex: 0xF9FAFD))
+            .backgroundColor(UserInterfaceTheme.current.cardColor)
             .define{ flex in
                 flex.addItem(cardTitle).marginBottom(25)
                 flex.addItem(topCardView).marginBottom(25)

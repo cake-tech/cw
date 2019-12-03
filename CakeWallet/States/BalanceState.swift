@@ -17,6 +17,7 @@ public struct BalanceState: StateType {
         case changedUnlockedFiatBalance(Amount)
         case changedFullFiatBalance(Amount)
         case changedRate(Double)
+
     }
     
     public let balance: Amount

@@ -16,6 +16,11 @@
 "restore_from_seed_keys" = "リストア";
 "please_make_selection" = "新しい財布を作成するか、財布を復元するには、下の選択をしてください";
 
+// Next Page Seed
+"next_page_seed" = "次のページにシードが表示されます";
+"i_understand" = "わかります";
+"next_page_seed_instructions" = "携帯電話を紛失したり拭いたりする場合に備えて、これらを書き留めてください。また、設定メニューでシードを再度表示することもできます。";
+
 
 // Pin
 
@@ -85,6 +90,8 @@
 "starting_sync" = "同期開始";
 "synchronized" = "同期済み";
 "failed_connection_to_node" = "ノードとの接続失敗";
+"last_block_received" = "最後に受信したブロック:";
+"synchronizing" = "同期する";
 
 // Balances
 "balance-display-type_unlocked" = "有効なバランス";
@@ -190,7 +197,8 @@
 "backup_uploaded" = "バックアップがアップロードされました";
 "backup_uploaded_icloud" = "バックアップがiCloudにアップロードされました";
 "change_backup_warning" = "バックアップ用のバックアップパスワードを変更した場合、以前のMANUALバックアップは新しいパスワードでは機能しません。自動バックアップは新しいパスワードでも引き続き機能します。";
-
+"save_recipient_address" = "受信者のアドレスを保存";
+"dark_mode_setting_title" = "ダークモード";
 
 // Settings sections
 
@@ -311,3 +319,5 @@
 "please_save_sec_key" = "Please copy or write down the trade ID to continue.\n\nsTrade ID: %@";
 "edit" = "編集する";
 "trade_is_powered" = "この取引はによって供給されています %@";
+
+"pair" = "ペア";

@@ -15,6 +15,10 @@
 "restore" = "Restaurar carteira";
 "please_make_selection" = "Por favor, faça uma seleção abaixo para criar uma nova carteira ou restaurar uma carteira";
 
+// Next Page Seed
+"next_page_seed" = "A próxima página mostrará uma semente";
+"i_understand" = "Compreendo";
+"next_page_seed_instructions" = "Anote-as caso perca ou limpe o telefone. Você também pode ver a semente novamente no menu de configurações.";
 
 // Pin
 
@@ -82,6 +86,8 @@
 "starting_sync" = "Iniciando a sincronização";
 "synchronized" = "Sincronizado";
 "failed_connection_to_node" = "Falha ao ligar ao node";
+"last_block_received" = "Último bloco recebido:";
+"synchronizing" = "Sincronizando";
 
 // Balances
 "balance-display-type_unlocked" = "Saldo disponível";
@@ -187,7 +193,8 @@
 "backup_uploaded" = "Backup enviado";
 "backup_uploaded_icloud" = "O backup foi enviado para o seu iCloud";
 "change_backup_warning" = "Se você alterar a senha de backup para backups, os backups manuais anteriores não funcionarão com a nova senha. Os backups automçticos continuarão funcionando com a nova senha.";
-
+"save_recipient_address" = "Salvar endereço do destinatário";
+"dark_mode_setting_title" = "Modo escuro";
 
 // Settings sections
 
@@ -318,3 +325,5 @@
 "please_save_sec_key" = "Please copy or write down the trade ID to continue.\n\nTrade ID: %@";
 "edit" = "editar";
 "trade_is_powered" = "Este comércio é alimentado por %@";
+
+"pair" = "Par";

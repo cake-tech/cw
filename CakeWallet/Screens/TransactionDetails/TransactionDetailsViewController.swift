@@ -18,18 +18,22 @@ final class TransactionDetailsViewController: BaseViewController<TransactionDeta
         title = NSLocalizedString("transaction_details", comment: "")
         let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         navigationItem.backBarButtonItem = backButton
-        
         contentView.table.dataSource = self
         contentView.table.delegate = self
+        contentView.table.separatorStyle = .singleLine
+        contentView.table.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        contentView.table.separatorColor = UserInterfaceTheme.current.gray.dim
         contentView.table.register(items: [TransactionDetailsCellItem.self])
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let doneButton = StandartButton(image: UIImage(named: "close_symbol")?.resized(to: CGSize(width: 10, height: 10)))
-        doneButton.frame = CGRect(origin: .zero, size: CGSize(width: 32, height: 32))
-        doneButton.addTarget(self, action: #selector(dismissAction), for: .touchUpInside)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: doneButton)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(named:"close_symbol")?.resized(to:CGSize(width: 12, height: 12)),
+            style: .plain,
+            target: self,
+            action: #selector(dismissAction)
+        )
         update(transactionDescription: transactionDescription)
     }
     
@@ -118,7 +122,7 @@ final class TransactionDetailsViewController: BaseViewController<TransactionDeta
             TransactionDetailsCellItem(row: .height, value: String(transactionDescription.height)),
             TransactionDetailsCellItem(row: .amount, value: transactionDescription.totalAmount.formatted())])
         
-        if let recipientAddress = transactionDescription.recipientAddress() {
+        if store.state.settingsState.saveRecipientAddresses, let recipientAddress = transactionDescription.recipientAddress() {
             items.append(TransactionDetailsCellItem(row: .recipientAddress, value: recipientAddress))
         }
         
@@ -133,11 +137,15 @@ final class TransactionDetailsViewController: BaseViewController<TransactionDeta
         }
         
         if let tradeID = transactionDescription.tradeId() {
-            items.append(TransactionDetailsCellItem(row: .exchangeID, value: tradeID))
-        }
-        
-        if let exchangeProvider = transactionDescription.exchangeProvider() {
-            items.append(TransactionDetailsCellItem(row: .exchange, value: exchangeProvider))
+            var value = ""
+            
+            if let exchangeProvider = transactionDescription.exchangeProvider() {
+                value += exchangeProvider.uppercased() + ": "
+            }
+            
+            value += tradeID
+            
+            items.append(TransactionDetailsCellItem(row: .exchangeID, value: value))
         }
         
         if let transactionKey = getTransactionKey(for: transactionDescription.id), !transactionKey.isEmpty {

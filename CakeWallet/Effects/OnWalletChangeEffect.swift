@@ -24,9 +24,23 @@ private func onWalletChange(_ wallet: Wallet) {
     }
     
     currentWallet.onNewBlock = { block in
-        store.dispatch(
-            BlockchainState.Action.changedConnectionStatus(.syncing(block))
-        )
+        switch (store.state.blockchainState.connectionStatus) {
+        case .syncing(_), .startingSync:
+            store.dispatch(
+                BlockchainState.Action.changedConnectionStatus(.syncing(block+1))
+            )
+        default:
+            store.dispatch(
+                BlockchainState.Action.changedBlockchainHeight(block+1)
+            )
+            store.dispatch(
+                BlockchainState.Action.changedConnectionStatus(.syncing(block))
+            )
+            
+            store.dispatch(
+                TransactionsActions.askToUpdate
+            )
+        }
     }
    
     currentWallet.onConnectionStatusChange = { conntectionStatus in

@@ -26,6 +26,7 @@ struct WalletKeysCellItem: CellItem {
     
     func setup(cell: WalletsKeysUITableViewCell) {
         cell.configure(title: row.string() + ":", value: key)
+        cell.backgroundColor = UserInterfaceTheme.current.background
     }
 }
 
@@ -43,6 +44,7 @@ final class ShowKeysViewController: BaseViewController<ShowKeysView>, UITableVie
         title = NSLocalizedString("wallet_keys", comment: "")
         contentView.table.dataSource = self
         contentView.table.delegate = self
+        contentView.table.separatorColor = UserInterfaceTheme.current.gray.dim
         contentView.table.register(items: [WalletKeysCellItem.self])
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMM d, yyyy HH:mm"
@@ -50,11 +52,13 @@ final class ShowKeysViewController: BaseViewController<ShowKeysView>, UITableVie
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let doneButton = StandartButton.init(image: UIImage(named: "close_symbol")?.resized(to: CGSize(width: 12, height: 12)))
-        doneButton.frame = CGRect(origin: .zero, size: CGSize(width: 37, height: 37))
-        doneButton.addTarget(self, action: #selector(dismissAction), for: .touchUpInside)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: doneButton)
-        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(named:"close_symbol")?.resized(to:CGSize(width: 12, height: 12)),
+            style: .plain,
+            target: self,
+            action: #selector(dismissAction)
+        )
+
         if let keys = store.state.walletState.walletKeys {
             updateKeys(keys)
         }
@@ -72,7 +76,8 @@ final class ShowKeysViewController: BaseViewController<ShowKeysView>, UITableVie
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let item = items[indexPath.row]
-        return tableView.dequeueReusableCell(withItem: item, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withItem: item, for: indexPath)
+        return cell
     }
     
     func tableView(_ tableView: UITableView, shouldShowMenuForRowAt indexPath: IndexPath) -> Bool {

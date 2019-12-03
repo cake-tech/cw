@@ -3,9 +3,16 @@ import CakeWalletLib
 import CakeWalletCore
 import CWMonero
 import FlexLayout
+import SwiftDate
 
 
-final class DashboardController: BaseViewController<DashboardView>, StoreSubscriber, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate {
+
+fileprivate let averageBlocktimeMinutes = 2 as UInt64  //how many minutes per block?
+fileprivate let pendingBlocks = 3 as UInt64  //how many blocks will pass (roughly) before a pending transaction is accepted in the blockchain?
+fileprivate let blockDelay = 10 as UInt64   //how many blocks are funds locked?
+fileprivate let progressBarSyncUpdateTimeThreshold = 900000.nanoseconds.timeInterval
+
+final class DashboardController: BaseViewController<DashboardView>, StoreSubscriber, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, Themed {
     let walletNameView = WalletNameView()
     weak var dashboardFlow: DashboardFlow?
     private var sortedTransactions:  [DateComponents : [TransactionDescription]] = [:] {
@@ -15,11 +22,12 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     }
     private var transactionsKeys: [DateComponents] = []
     private var initialHeight: UInt64
-    private var refreshControl: UIRefreshControl
     private let calendar: Calendar
     private var scrollViewOffset: CGFloat = 0
     let store: Store<ApplicationState>
     private var fingerDown:Bool = false
+    private var live_bc_height:UInt64 = 0
+    private var lastRefreshedProgressBar:Date? = nil
     
     typealias PartiallyAvailableBalance = (unlocked:Amount, full:Amount)
     typealias CryptoFiatBalance = (crypto:PartiallyAvailableBalance, fiat:PartiallyAvailableBalance)
@@ -31,23 +39,26 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         return store.state.settingsState.displayBalance
     }
     
+    private var pendingTransactionSumValues:UInt64 = 0
+    private var areTransactionsPending = false
+    private var lastTransactionHeight:UInt64? = nil
+    private var showingBlockUnlock:Bool = false
+    
     init(store: Store<ApplicationState>, dashboardFlow: DashboardFlow?, calendar: Calendar = Calendar.current) {
         self.store = store
         self.dashboardFlow = dashboardFlow
         self.calendar = calendar
         initialHeight = 0
-        refreshControl = UIRefreshControl()
         super.init()
         tabBarItem = UITabBarItem(
             title: title,
-            image: UIImage(named: "wallet_icon")?.resized(to: CGSize(width: 28, height: 28)).withRenderingMode(.alwaysOriginal),
-            selectedImage: UIImage(named: "wallet_selected_icon")?.resized(to: CGSize(width: 28, height: 28)).withRenderingMode(.alwaysOriginal)
+            image: UIImage(named: "wallet_icon")?.withRenderingMode(.alwaysTemplate),
+            selectedImage: UIImage(named: "wallet_icon")?.withRenderingMode(.alwaysTemplate).withRenderingMode(.alwaysTemplate)
         )
     }
     
     override func configureBinds() {
         super.configureBinds()
-        navigationController?.navigationBar.backgroundColor = .clear
         
         let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         navigationItem.backBarButtonItem = backButton  
@@ -55,9 +66,6 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         contentView.transactionsTableView.register(items: [TransactionDescription.self])
         contentView.transactionsTableView.delegate = self
         contentView.transactionsTableView.dataSource = self
-        contentView.transactionsTableView.addSubview(refreshControl)
-    
-        refreshControl.addTarget(self, action: #selector(refresh(_:)), for: UIControlEvents.valueChanged)
         
         let sendButtonTap = UITapGestureRecognizer(target: self, action: #selector(presentSend))
         contentView.sendButton.isUserInteractionEnabled = true
@@ -67,22 +75,31 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         contentView.receiveButton.isUserInteractionEnabled = true
         contentView.receiveButton.addGestureRecognizer(receiveButtonTap)
         
+        let progressTap = UITapGestureRecognizer(target:self, action: #selector(refresh(_:)))
+        contentView.progressBar.isUserInteractionEnabled = true
+        contentView.progressBar.addGestureRecognizer(progressTap)
         contentView.fixedHeader.isUserInteractionEnabled = true
         
         insertNavigationItems()
     }
 
-
     private func areTouchesValid(_ touches:Set<UITouch>, forEvent thisEvent:UIEvent?) -> Bool {
         let touchPointsRec = touches.map { return $0.location(in:contentView.receiveButton) }
         let touchPointsSnd = touches.map { return $0.location(in:contentView.sendButton) }
+        let touchPointsProg = touches.map { return $0.location(in:contentView.progressBar.progressView) }
         let insideRec = touchPointsRec.map { return contentView.receiveButton.point(inside: $0, with: thisEvent) }
         let insideSnd = touchPointsSnd.map { return contentView.sendButton.point(inside: $0, with: thisEvent) }
-        if (insideRec.contains(true) || insideSnd.contains(true)) {
+        let insideProg = touchPointsProg.map { return contentView.progressBar.progressView.point(inside: $0, with: thisEvent) }
+        if (insideRec.contains(true) || insideSnd.contains(true) || insideProg.contains(true)) {
             return false
         } else {
             return true
         }
+    }
+    
+    override func setBarStyle() {
+        super.setBarStyle()
+        themeChanged()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -111,7 +128,18 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     
     private func insertNavigationItems() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "more")?.resized(to: CGSize(width: 28, height: 28)), style: .plain, target: self, action: #selector(presentWalletActions))
+        navigationItem.leftBarButtonItem?.tintColor = UserInterfaceTheme.current.text
         navigationItem.titleView = walletNameView
+        navigationItem.titleView?.tintColor = UserInterfaceTheme.current.text
+        
+        walletNameView.titleLabel.textColor = UserInterfaceTheme.current.text
+        walletNameView.subtitleLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
+    }
+    
+    func themeChanged() {
+        walletNameView.titleLabel.textColor = UserInterfaceTheme.current.text
+        walletNameView.subtitleLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
+        walletNameView.backgroundColor = UserInterfaceTheme.current.background
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -141,7 +169,13 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         onWalletChange(state.walletState, state.blockchainState)
         updateTransactions(state.transactionsState.transactions)
         updateInitialHeight(state.blockchainState)
-        
+        if (state.blockchainState.blockchainHeight > live_bc_height) {
+            live_bc_height = state.blockchainState.blockchainHeight
+            contentView.progressBar.lastBlockDate = Date()
+        } else if (state.blockchainState.currentHeight > live_bc_height) {
+            live_bc_height = state.blockchainState.currentHeight
+        }
+        updateBlocksToUnlock()
         walletNameView.title = state.walletState.name
         walletNameView.subtitle = state.walletState.account.label
     }
@@ -172,7 +206,7 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         let dateFormatter = DateFormatter()
         let label = UILabel(frame: CGRect(origin: .zero, size: CGSize(width: tableView.frame.size.width, height: DashboardView.tableSectionHeaderHeight)))
         let date = NSCalendar.current.date(from: key)!
-        label.textColor = UIColor(hex: 0x9BACC5)
+        label.textColor = UserInterfaceTheme.current.textVariants.main
         label.font = applyFont(ofSize: 14, weight: .semibold)
         label.textAlignment = .center
         
@@ -459,15 +493,13 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
         } else {
             let track = blockchainHeight - initialHeight
             let _currentHeight = currentHeight > initialHeight ? currentHeight - initialHeight : 0
-            let remaining = track > _currentHeight ? track - _currentHeight : 0
+            let remaining = blockchainHeight - currentHeight
             guard currentHeight != 0 && track != 0 else { return }
-            let val = Float(_currentHeight) / Float(track)
-            let prg = Int(val * 100)
-            contentView.progressBar.updateProgress(prg)
-            contentView.updateStatus(text: NSLocalizedString("blocks_remaining", comment: "")
-                + ": "
-                + String(remaining)
-                + "(\(prg)%)")
+            //this basic time-based logic will ensure the blocks remaining are only redrawn a certain number per second. this reduces cpu load and actually results in faster visual refresh of the progress bar
+            if (lastRefreshedProgressBar == nil || lastRefreshedProgressBar!.compareCloseTo(Date(), precision: progressBarSyncUpdateTimeThreshold) == false) {
+                lastRefreshedProgressBar = Date()
+                contentView.progressBar.configuration = .inProgress(NSLocalizedString("synchronizing", comment: ""), NSLocalizedString("blocks_remaining", comment: ""), (remaining:remaining, track:blockchainHeight))
+            }
         }
     }
     
@@ -489,33 +521,71 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     }
     
     private func updateStatusConnection() {
-        contentView.progressBar.updateProgress(0)
-        contentView.updateStatus(text: NSLocalizedString("connecting", comment: ""))
+        contentView.progressBar.configuration = .indeterminantMessage(NSLocalizedString("connecting", comment: ""))
     }
     
     private func updateStatusNotConnected() {
-        contentView.progressBar.updateProgress(0)
-        contentView.updateStatus(text: NSLocalizedString("not_connected", comment: ""))
+        contentView.progressBar.configuration = .error(NSLocalizedString("not_connected", comment: ""))
     }
     
     private func updateStatusstartingSync() {
-        contentView.progressBar.updateProgress(0)
-        contentView.updateStatus(text: NSLocalizedString("starting_sync", comment: ""))
-        contentView.rootFlexContainer.flex.layout(mode: .adjustHeight)
+        contentView.progressBar.configuration = .indeterminantSync(NSLocalizedString("starting_sync", comment: ""))
     }
     
     private func updateStatusSynced() {
-        contentView.progressBar.updateProgress(100)
-        contentView.updateStatus(text: NSLocalizedString("synchronized", comment: ""), done: true)
+        contentView.progressBar.configuration = .syncronized(NSLocalizedString("synchronized", comment: ""), NSLocalizedString("last_block_received", comment:""))
     }
     
     private func updateStatusFailed() {
-        contentView.progressBar.updateProgress(0)
-        contentView.updateStatus(text: NSLocalizedString("failed_connection_to_node", comment: ""))
+        contentView.progressBar.configuration = .error(NSLocalizedString("failed_connection_to_node", comment: ""))
     }
     
-    func updateBalances() {
+    private func updateBalances() {
         self.render(balances:balances, displaySettings: (fingerDown == true) ? ((configuredBalanceDisplay == .full) ? BalanceDisplay.unlocked : BalanceDisplay.full) : configuredBalanceDisplay)
+    }
+
+    private func updateBlocksToUnlock() {
+        func hideIt() {
+            contentView.blockUnlockLabel.isHidden = true
+            showingBlockUnlock = false
+        }
+        hideIt()
+//        func showIt() {
+//            contentView.blockUnlockLabel.isHidden = false
+//            showingBlockUnlock = true
+//
+//        }
+//
+//        guard balances.crypto.full.value > 0 else {
+//            hideIt()
+//            print("hidden due to no balance")
+//            return
+//        }
+//        
+//        if (balances.crypto.full.value != balances.crypto.unlocked.value) {
+//            guard
+//                live_bc_height != 0,
+//                let lastTxHeight = lastTransactionHeight else {
+//                print("no valid data pertaining to last unlocked block.")
+//                hideIt()
+//                    return
+//            }
+//            
+//            if (lastTxHeight < live_bc_height && (live_bc_height - lastTxHeight) < blockDelay) {
+//                contentView.blockUnlockLabel.text = (blockDelay - (live_bc_height - lastTxHeight)).asLocalizedUnlockString()
+//                showIt()
+//            } else if (balances.crypto.full.value != balances.crypto.unlocked.value) {
+//                contentView.blockUnlockLabel.text = (1 as UInt64).asLocalizedUnlockString()
+//                showIt()
+//            }
+//            
+//        } else if (balances.crypto.full.value == balances.crypto.unlocked.value) {
+//            hideIt()
+//        }
+//        
+//        contentView.blockUnlockLabel.sizeToFit()
+        contentView.setNeedsLayout()
+        contentView.blockUnlockLabel.flex.markDirty()
     }
     
     private func render(balances:CryptoFiatBalance, displaySettings:BalanceDisplay) {
@@ -525,17 +595,17 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
             contentView.cryptoTitleLabel.text = "XMR " + displaySettings.localizedString()
             contentView.fiatAmountLabel.text = balances.fiat.full.formatted()
             contentView.cryptoAmountLabel.text = balances.crypto.full.formatted()
-            contentView.cryptoTitleLabel.textColor = .turquoiseBlue
+            contentView.cryptoTitleLabel.textColor = UserInterfaceTheme.current.blue.highlight
         case .unlocked:
             contentView.cryptoTitleLabel.text = "XMR " + displaySettings.localizedString()
             contentView.fiatAmountLabel.text = balances.fiat.unlocked.formatted()
             contentView.cryptoAmountLabel.text = balances.crypto.unlocked.formatted()
-            contentView.cryptoTitleLabel.textColor = .purpley
+            contentView.cryptoTitleLabel.textColor = UserInterfaceTheme.current.purple.highlight
         case .hidden:
             contentView.cryptoTitleLabel.text = "XMR " + displaySettings.localizedString()
             contentView.cryptoAmountLabel.text = "--"
             contentView.fiatAmountLabel.text = "-"
-            contentView.cryptoTitleLabel.textColor = .gray
+            contentView.cryptoTitleLabel.textColor = UserInterfaceTheme.current.textVariants.main
         }
 
         contentView.cryptoAmountLabel.sizeToFit()
@@ -550,19 +620,32 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     }
     
     private func updateTransactions(_ transactions: [TransactionDescription]) {
-        if refreshControl.isRefreshing {
-            refreshControl.endRefreshing()
-        }
 
         contentView.transactionTitleLabel.isHidden = transactions.count <= 0
         
         let sortedTransactions = Dictionary(grouping: transactions) {
             return calendar.dateComponents([.day, .year, .month], from: ($0.date))
         }
-
         self.sortedTransactions = sortedTransactions
         
-        if self.sortedTransactions.count > 0 {
+        var pendingValues = 0 as UInt64
+        let doesHavePending = transactions.contains(where: { transaction in
+            if (transaction.isPending) {
+                pendingValues += transaction.totalAmount.value
+                return true
+            } else {
+                return false
+            }
+        })
+        areTransactionsPending = doesHavePending
+        
+        let heightSortedTransactions = transactions.sorted { t1, t2 in
+            return t1.height > t2.height
+        }
+        
+        if (areTransactionsPending == true || sortedTransactions.count > 0) {
+            lastTransactionHeight = heightSortedTransactions[0].height
+            updateBlocksToUnlock()
             if contentView.transactionTitleLabel.isHidden {
                 contentView.transactionTitleLabel.isHidden = false
             }
@@ -597,8 +680,24 @@ final class DashboardController: BaseViewController<DashboardView>, StoreSubscri
     }
     
     @objc
-    private func refresh(_ refreshControl: UIRefreshControl) {
-        store.dispatch(TransactionsActions.askToUpdate)
-        refreshControl.endRefreshing()
+    private func refresh(_ refCont: UIRefreshControl) {
+        if (store.state.blockchainState.connectionStatus == .synced) {
+            store.dispatch(
+                BlockchainState.Action.changedConnectionStatus(.syncing(live_bc_height))
+            )
+            
+            store.dispatch(TransactionsActions.askToUpdate)
+            Vibration.selection.vibrate()
+        }
+    }
+}
+
+fileprivate extension UInt64 {
+    func asLocalizedUnlockString(asTime:Bool = true) -> String {
+        if (asTime) {
+            return String(self*averageBlocktimeMinutes) + " " + NSLocalizedString("minutes_to_unlock", comment:"")
+        } else {
+            return String(self) + " " + NSLocalizedString("blocks_to_unlock", comment:"")
+        }
     }
 }

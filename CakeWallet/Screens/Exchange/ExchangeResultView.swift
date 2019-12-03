@@ -51,7 +51,7 @@ final class ExchangeResultView: BaseScrollFlexView {
     let qrImageView: UIImageView
     let copyAddressButton: CopyButton
     let copyIdButton: CopyButton
-    let confirmButton: PrimaryLoadingButton
+    let confirmButton: LoadingButton
     let resultDescriptionLabel: UILabel
     let descriptionTextView: UITextView
     let cardView: UIView
@@ -76,7 +76,7 @@ final class ExchangeResultView: BaseScrollFlexView {
         qrImageView = UIImageView(image: nil)
         copyAddressButton = CopyButton(title: NSLocalizedString("copy_address", comment: ""))
         copyIdButton = CopyButton(title: NSLocalizedString("copy_id", comment: ""))
-        confirmButton = PrimaryLoadingButton()
+        confirmButton = LoadingButton()
         resultDescriptionLabel = UILabel(fontSize: 14)
         descriptionTextView = UITextView(frame: .zero)
         cardView = UIView()
@@ -97,10 +97,13 @@ final class ExchangeResultView: BaseScrollFlexView {
     override func configureView() {
         super.configureView()
         confirmButton.setTitle(NSLocalizedString("confirm", comment: ""), for: .normal)
+        confirmButton.backgroundColor = UserInterfaceTheme.current.purple.dim
+        confirmButton.layer.borderColor = UserInterfaceTheme.current.purple.main.cgColor
+        
         descriptionTextView.isScrollEnabled = false
         descriptionTextView.isEditable = false
         idLabel.numberOfLines = 0
-        idLabel.textColor = .spaceViolet
+        idLabel.textColor = UserInterfaceTheme.current.text
         
         idLabel.font = applyFont(ofSize: 15)
         amountLabel.font = applyFont(ofSize: 15)
@@ -108,29 +111,35 @@ final class ExchangeResultView: BaseScrollFlexView {
         statusLabel.font = applyFont(ofSize: 15)
         timeoutLabel.font = applyFont(ofSize: 15)
         
+        statusLabel.textColor = UserInterfaceTheme.current.text
+        
         amountLabel.numberOfLines = 0
-        amountLabel.textColor = .spaceViolet
+        amountLabel.textColor = UserInterfaceTheme.current.text
         
         addressLabel.numberOfLines = 0
         addressLabel.textAlignment = .center
         addressLabel.font = applyFont(ofSize: 13)
-        addressLabel.textColor = .purpley
+        addressLabel.textColor = UserInterfaceTheme.current.purple.highlight
         
         copyAddressButton.titleLabel?.font = applyFont(ofSize: 13)
         copyIdButton.titleLabel?.font = applyFont(ofSize: 13)
-        descriptionTextView.textColor = .wildDarkBlue
+        descriptionTextView.textColor = UserInterfaceTheme.current.gray.main
         descriptionTextView.font = applyFont(ofSize: 12)
         descriptionTextView.isEditable = false
+        descriptionTextView.backgroundColor = .clear
         
         resultDescriptionLabel.numberOfLines = 0
         resultDescriptionLabel.font = applyFont(ofSize: 14)
-        
+        resultDescriptionLabel.backgroundColor = .clear
+
         btcTxIDLabel.numberOfLines = 0
         btcTxIDRow.isUserInteractionEnabled = true
         btcTxIDTextLabel.font = applyFont(ofSize: 14)
         btcTxIDTextLabel.numberOfLines = 0
         paymentIDLabel.numberOfLines =  0
         providerLabel.textAlignment = .center
+        
+        cardView.backgroundColor = UserInterfaceTheme.current.background
     }
     
     override func configureConstraints() {

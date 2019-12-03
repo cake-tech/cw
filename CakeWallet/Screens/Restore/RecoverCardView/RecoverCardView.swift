@@ -9,15 +9,15 @@ final class RecoverCardView: BaseFlexView {
         walletNameField = CWTextField(placeholder: NSLocalizedString("wallet_name", comment: ""), fontSize: 16)
         restoreHeightField = CWTextField(fontSize: 16)
         restoreDateField = CWTextField(fontSize: 16)
-        seedView = AddressView(hideAddressBookButton: true)
-        
+        seedView = AddressView(placeholder: "")
+        seedView.availablePickers = []
         super.init()
     }
     
     override func configureConstraints() {
         rootFlexContainer.layer.cornerRadius = 12
         rootFlexContainer.layer.applySketchShadow(color: UIColor(hex: 0x29174d), alpha: 0.1, x: 0, y: 0, blur: 20, spread: -10)
-        rootFlexContainer.backgroundColor = Theme.current.card.background
+        rootFlexContainer.backgroundColor = UserInterfaceTheme.current.restoreCardBackground
         
         rootFlexContainer.flex
             .justifyContent(.start)

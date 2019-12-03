@@ -12,7 +12,7 @@ final class PinCodeKeyButton: UIButton {
         super.init(frame: .zero)
         
         if .del == pinCode {
-            setImage(UIImage(named: "delete_icon"), for: .normal)
+            setImage(UIImage(named: "delete_icon")?.withRenderingMode(.alwaysTemplate), for: .normal)
         } else {
             setTitle(pinCode.string(), for: .normal)
         }
@@ -27,9 +27,11 @@ final class PinCodeKeyButton: UIButton {
     override func configureView() {
         showsTouchWhenHighlighted = false
         contentHorizontalAlignment = .center
-        setTitleColor(.white, for: .normal)
+        setTitleColor(UserInterfaceTheme.current.text, for: .normal)
         titleLabel?.font = applyFont(ofSize: 26, weight: .regular)
-        backgroundColor = UIColor(hex: 0xf5f6f9)
+        backgroundColor = UserInterfaceTheme.current.background
+        tintColor = UserInterfaceTheme.current.textVariants.main
+        imageView?.tintColor = UserInterfaceTheme.current.textVariants.main
     }
     
     override func layoutSublayers(of layer: CALayer) {

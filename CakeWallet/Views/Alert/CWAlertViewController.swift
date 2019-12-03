@@ -103,12 +103,12 @@ final class CWAlertViewController: BaseViewController<CWAlertView> {
             
             if (sortedActions.count == 2 && actionsAxis != .vertical) && index == 0 {
                 let separatorView = UIView()
-                separatorView.backgroundColor = .lightBlueGrey
+                separatorView.backgroundColor = UserInterfaceTheme.current.gray.dim
                 separatorView.widthAnchor.constraint(equalToConstant: 1).isActive = true
                 contentView.actionsStackView.addArrangedSubview(separatorView)
             } else if actionsAxis == .vertical && index != sortedActions.count {
                 let separatorView = UIView()
-                separatorView.backgroundColor = .lightBlueGrey
+                separatorView.backgroundColor = UserInterfaceTheme.current.gray.dim
                 separatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
                 contentView.actionsStackView.addArrangedSubview(separatorView)
             }

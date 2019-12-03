@@ -9,9 +9,10 @@ final class CreateWalletView: BaseFlexView {
     required init() {
         let nameTextFieldFontSize = adaptiveLayout.getSize(forLarge: 20, forBig: 19, defaultSize: 18)
         
-        logoImage = UIImageView(image: UIImage(named: "create_wallet_logo"))
+        logoImage = UIImageView(image: UserInterfaceTheme.current.asset(named: "create_wallet_logo"))
         nameTextField = CWTextField(placeholder: NSLocalizedString("wallet_name", comment: ""), fontSize: nameTextFieldFontSize)
-        continueButton = PrimaryLoadingButton()
+        nameTextField.textColor = UserInterfaceTheme.current.text
+        continueButton = LoadingButton()
         continueButton.setTitle(NSLocalizedString("continue", comment: ""), for: .normal)
         super.init()
     }

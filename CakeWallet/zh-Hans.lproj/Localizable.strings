@@ -16,6 +16,12 @@
 "restore_from_seed_keys" = "恢复";
 "please_make_selection" = "请在下方选择创建新钱包或恢复钱包";
 
+// Next Page Seed
+"next_page_seed" = "下一页将为您显示种子";
+"i_understand" = "我明白";
+"next_page_seed_instructions" = "请写下这些，以防您松动或擦拭手机。您也可以在设置菜单中再次看到种子。";
+
+
 // Pin
 
 "use_6_pin" = "使用6位数字 PIN";
@@ -80,11 +86,13 @@
 "starting_sync" = "开始同步";
 "synchronized" = "已同步";
 "failed_connection_to_node" = "连接节点失败";
+"last_block_received" = "收到的最后一块：";
+"synchronizing" = "同步";
 
 // Balances
-"balance-display-type_unlocked" = "全部余额";
+"balance-display-type_unlocked" = "可用余额";
 "balance-display-type_full" = "全部余额";
-"balance-display-type_hidden" = "隐";
+"balance-display-type_hidden" = "隐藏";
 "balance_type_title" = "显示平衡为";
 
 // Wallet
@@ -185,7 +193,8 @@
 "backup_uploaded" = "备份已上传";
 "backup_uploaded_icloud" = "备份已上传到您的iCloud";
 "change_backup_warning" = "如果要更改备份的备份密码，则以前的MANUAL备份将无法使用新密码。自动备份将继续使用新密码。";
-
+"save_recipient_address" = "保存收件人地址";
+"dark_mode_setting_title" = "黑暗模式";
 
 // Settings sections
 
@@ -305,3 +314,5 @@
 "please_save_sec_key" = "Please copy or write down the trade ID to continue.\n\nTrade ID: %@";
 "edit" = "编辑";
 "trade_is_powered" = "这笔交易是由 %@";
+
+"pair" = "对";

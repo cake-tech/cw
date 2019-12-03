@@ -9,4 +9,5 @@ public enum SettingsActions: HandlableAction {
     case changeCurrentFiat(currency: FiatCurrency)
     case changeCurrentNode(to: NodeDescription)
     case changeBalanceDisplayMode(to: BalanceDisplay)
+    case changeShouldSaveRecipientAddress(Bool)
 }

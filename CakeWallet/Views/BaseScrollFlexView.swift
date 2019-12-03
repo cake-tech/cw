@@ -3,6 +3,12 @@ import FlexLayout
 import PinLayout
 
 class BaseScrollFlexView: BaseView {
+    var themedBackgroundColor:UIColor {
+        get {
+            return UserInterfaceTheme.current.background
+        }
+    }
+    
     let rootFlexContainer: UIView
     let scrollView: UIScrollView
     
@@ -22,7 +28,7 @@ class BaseScrollFlexView: BaseView {
     
     override func configureView() {
         super.configureView()
-        rootFlexContainer.flex.backgroundColor(Theme.current.container.background)
+        rootFlexContainer.flex.backgroundColor(themedBackgroundColor)
         scrollView.addSubview(rootFlexContainer)
         addSubview(scrollView)
     }
@@ -37,6 +43,12 @@ class BaseScrollFlexView: BaseView {
 }
 
 class BaseScrollFlexViewWithBottomSection: BaseView {
+    var themedBackgroundColor:UIColor {
+        get {
+            return UserInterfaceTheme.current.background
+        }
+    }
+    
     private static let bottomViewTopOffset = 20 as CGFloat
     private static let bottomViewBottomOffset = 20 as CGFloat
     let bottomSectionView: UIView
@@ -64,9 +76,11 @@ class BaseScrollFlexViewWithBottomSection: BaseView {
     
     override func configureView() {
         super.configureView()
-        rootFlexContainer.flex.backgroundColor(Theme.current.container.background)
+        //tstag
+        rootFlexContainer.flex.backgroundColor(themedBackgroundColor)
         contentView.addSubview(rootFlexContainer)
         scrollView.addSubview(contentView)
+        scrollView.backgroundColor = themedBackgroundColor
         addSubview(scrollView)
     }
     

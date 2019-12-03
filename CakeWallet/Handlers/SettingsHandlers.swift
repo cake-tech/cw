@@ -102,3 +102,11 @@ public struct ChangeBalanceDisplayHandler: Handler {
         return SettingsState.Action.changedDisplayBalance(newDisplayMode)
     }
 }
+
+public struct ChangeShouldSaveRecipientAddress: Handler {
+    public func handle(action: SettingsActions, store:Store<ApplicationState>) -> AnyAction? {
+        guard case let .changeShouldSaveRecipientAddress(shouldSave) = action else { return nil }
+        UserDefaults.standard.set(shouldSave, forKey: Configurations.DefaultsKeys.shouldSaveRecipientAddress.string())
+        return SettingsState.Action.changedShouldSaveRecipientAddress(shouldSave)
+    }
+}

@@ -22,6 +22,15 @@ func getSavedBalanceDisplay() -> BalanceDisplay {
     return asBalanceDisplay
 }
 
+func getShouldSaveRecipientAddress() -> Bool {
+    guard
+        let raw = UserDefaults.standard.value(forKey:Configurations.DefaultsKeys.shouldSaveRecipientAddress.string()) as? Bool
+        else {
+            return false
+    }
+    return raw
+}
+
 func getSavedTransactionPriority() -> TransactionPriority {
     if UserDefaults.standard.value(forKey: Configurations.DefaultsKeys.transactionPriority.string()) == nil {
         return .slow
@@ -107,7 +116,8 @@ let store = Store<ApplicationState>(
             node: getSavedNode(),
             isAutoSwitchNodeOn: getSavedIsAutoSwitchNodeOn(),
             fiatCurrency: getSavedFiatCurrency(),
-            displayBalance: getSavedBalanceDisplay()
+            displayBalance: getSavedBalanceDisplay(),
+            saveRecipientAddresses: getShouldSaveRecipientAddress()
         ), balanceState: BalanceState(
             balance: MoneroAmount(value: 0),
             unlockedBalance: MoneroAmount(value: 0),

@@ -12,7 +12,9 @@ final class ShowKeysView: BaseFlexView {
     override func configureView() {
         super.configureView()
         table.tableFooterView = UIView()
+        table.backgroundColor = UserInterfaceTheme.current.background
         table.allowsSelection = false
+        backgroundColor = UserInterfaceTheme.current.background
         table.isScrollEnabled = false
     }
     

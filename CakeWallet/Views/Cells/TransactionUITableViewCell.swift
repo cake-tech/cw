@@ -20,7 +20,7 @@ final class TransactionUITableViewCell: FlexCell {
         
         cryptoLabel = UILabel(fontSize: 14)
         cryptoLabel.font = applyFont(ofSize: 14)
-        cryptoLabel.textColor = .black
+        cryptoLabel.textColor = UserInterfaceTheme.current.text
         
         fiatLabel = UILabel.withLightText(fontSize: 12)
         fiatLabel.font = applyFont(ofSize: 12)
@@ -28,14 +28,21 @@ final class TransactionUITableViewCell: FlexCell {
         topRow = UIView()
         bottomRow = UIView()
         _contentContainer = UIView()
+        _contentContainer.backgroundColor = .clear
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
     override func configureView() {
         super.configureView()
         layoutMargins = .zero
-        contentView.backgroundColor = .white
-        backgroundColor = .white
+        backgroundColor = UserInterfaceTheme.current.background
+        cryptoLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
+        statusLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
+        dateLabel.textColor = UserInterfaceTheme.current.textVariants.main
+        fiatLabel.textColor = UserInterfaceTheme.current.textVariants.main
+        selectionStyle = UITableViewCellSelectionStyle.gray
+        selectedBackgroundView = UIView()
+        selectedBackgroundView?.backgroundColor = UserInterfaceTheme.current.gray.dim
     }
     
     override func configureConstraints() {
@@ -69,16 +76,13 @@ final class TransactionUITableViewCell: FlexCell {
     }
     
     func configure(direction: TransactionDirection, date: Date, isPending: Bool, cryptoAmount: Amount, fiatAmount: String, hidden:Bool) {
-        let color: UIColor
         var status = ""
         
         if direction == .incoming {
-            status = NSLocalizedString("receive", comment: "") // FIXME: Hardcoded value
-            color = .black
+            status = NSLocalizedString("received", comment: "")
             imageView?.image = UIImage(named: "arrow_down_green_icon")?.resized(to: CGSize(width: 26, height: 26))
         } else {
-            status = NSLocalizedString("sent", comment: "") // FIXME: Hardcoded value
-            color = .black
+            status = NSLocalizedString("sent", comment: "")
             imageView?.image = UIImage(named: "arrow_top_purple_icon")?.resized(to: CGSize(width: 26, height: 26))
         }
         
@@ -89,11 +93,11 @@ final class TransactionUITableViewCell: FlexCell {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM-dd-yyyy, HH:mm"
         statusLabel.text = status
+        statusLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
         cryptoLabel.text = (hidden == true) ? "--" : "\(cryptoAmount.formatted()) \(cryptoAmount.currency.formatted())"
-        cryptoLabel.textColor = color
         dateLabel.text = dateFormatter.string(from: date)
         fiatLabel.text = (hidden == true) ? "-" : fiatAmount
-        
+
         statusLabel.flex.markDirty()
         cryptoLabel.flex.markDirty()
         dateLabel.flex.markDirty()
@@ -101,13 +105,14 @@ final class TransactionUITableViewCell: FlexCell {
         contentView.flex.layout()
     }
     
+    
     func addSeparator() {
         let height = 1 as CGFloat
         let y = frame.size.height - height
         let leftOffset = 20 as CGFloat
         let rightOffset = 20 as CGFloat
         let width = frame.size.width - leftOffset - rightOffset
-        let color = UIColor(red: 248, green: 250, blue: 253)
+        let color = UserInterfaceTheme.current.gray.dim
         addSeparator(frame: CGRect(x: leftOffset, y: y, width: width, height: height), color: color)
     }
 }

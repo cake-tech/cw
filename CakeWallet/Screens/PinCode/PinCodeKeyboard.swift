@@ -38,14 +38,18 @@ final class PinCodeKeyboard: BaseView {
                 row.flex.addItem().direction(.row).justifyContent(.spaceBetween).define({ flex in
                     keysTitles.forEach {
                         let key = PinCodeKeyButton(pinCode: $0)
-                        key.setTitleColor(.grayBlue, for: .normal)
+                        key.backgroundColor = currentTheme.gray.dim
+                        key.setTitleColor(currentTheme.textVariants.main, for: .normal)
+
                         key.addTarget(self, action: #selector(onKeyHandler(_:)), for: .touchUpInside)
                         let maxSize: CGFloat = 79
                         flex.addItem(key).maxWidth(25%).height(maxSize).aspectRatio(1)
                         
                         if $0 == .empty || $0 == .del {
-                            key.backgroundColor = Theme.current.pinKeyReversed.background
-                            key.setTitleColor(Theme.current.pinKeyReversed.text, for: .normal)
+                            //tstag
+                            key.backgroundColor = UserInterfaceTheme.current.gray.dim
+                            
+                            key.setTitleColor(UserInterfaceTheme.current.gray.highlight, for: .normal)
                         }
                     }
                 })

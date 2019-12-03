@@ -20,13 +20,14 @@ final class TradeTableCell: FlexCell {
     override func configureView() {
         super.configureView()
         contentView.layer.masksToBounds = false
-        contentView.backgroundColor = .white
+        contentView.backgroundColor = UserInterfaceTheme.current.background
         backgroundColor = .clear
         selectionStyle = .none
+        idLabel.textColor = UserInterfaceTheme.current.text
         
         idLabel.font = applyFont(ofSize: 16)
         dateLabel.font = applyFont(ofSize: 15)
-        dateLabel.textColor = UIColor.grayBlue
+        dateLabel.textColor = UserInterfaceTheme.current.gray.main
     }
     
     override func configureConstraints() {
@@ -73,13 +74,21 @@ struct TradeInfo: JSONInitializable {
     let tradeID: String
     let transactionID: String
     let date: Double
+    let from: CryptoCurrency?
+    let to: CryptoCurrency?
     var provider: String
+    
+    var exchangeProvider: ExchangeProvider? {
+        return ExchangeProvider(rawValue: provider)
+    }
 
     init(json: JSON) {
         tradeID = json["tradeID"].stringValue
         transactionID = json["txID"].stringValue
         date = json["date"].doubleValue
         provider = json["provider"].stringValue
+        from = CryptoCurrency(from: json["from"].stringValue)
+        to = CryptoCurrency(from: json["to"].stringValue)
     }
 }
 
@@ -114,8 +123,10 @@ final class TradesHistoryViewController: BaseViewController<TradesHistoryView>, 
         title = NSLocalizedString("trades_history", comment: "")
         
         let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+        backButton.tintColor = UserInterfaceTheme.current.text
         navigationItem.backBarButtonItem = backButton
         
+        contentView.table.separatorColor = UserInterfaceTheme.current.gray.dim
         contentView.table.delegate = self
         contentView.table.dataSource = self
         contentView.table.register(items: [TradeInfo.self])
@@ -131,9 +142,8 @@ final class TradesHistoryViewController: BaseViewController<TradesHistoryView>, 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let trade = trades[indexPath.row]
         let cell = tableView.dequeueReusableCell(withItem: trade, for: indexPath) as! SwipeTableViewCell
-        
+
         cell.delegate = self as? SwipeTableViewCellDelegate
-        cell.addSeparator()
         
         return cell
     }
@@ -149,12 +159,7 @@ final class TradesHistoryViewController: BaseViewController<TradesHistoryView>, 
     }
     
     private func loadTrades() {
-        guard let tradesJSON = ExchangeTransactions.shared.getAll() else { return }
-        
-        for tradeJSON in tradesJSON {
-            let trade = TradeInfo(json: tradeJSON)
-            trades.append(trade)
-        }
+        trades = TradesList.shared.list().sorted(by: { $0.date > $1.date })
     }
     
     private func createNoDataLabel(with size: CGSize) -> UIView {

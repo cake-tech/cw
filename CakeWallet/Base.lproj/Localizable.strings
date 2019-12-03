@@ -16,6 +16,11 @@
 "please_make_selection" = "Please make a selection below to either create a new wallet or restore a wallet";
 
 
+// Next Page Seed
+"next_page_seed" = "The next page will show you a seed";
+"i_understand" = "I understand";
+"next_page_seed_instructions" = "Please write these down in case you loose or wipe your phone.\n\nYou can also see the seed again in the settings menu.";
+
 // Pin
 
 "use_6_pin" = "Use 6-digits PIN";
@@ -78,13 +83,14 @@
 
 // Connection state
 
-"blocks_remaining" = "Blocks remaining";
+"blocks_remaining" = "Block(s) Remaining";
 "connecting" = "Connecting";
 "not_connected" = "Not connected";
 "starting_sync" = "Starting sync";
 "synchronized" = "Synchronized";
 "failed_connection_to_node" = "Failed connect to the node";
-
+"last_block_received" = "Last block received:";
+"synchronizing" = "Synchronizing";
 
 // Balances
 "balance-display-type_full" = "Full Balance";
@@ -96,14 +102,16 @@
 
 "reconnection" = "Reconnection";
 "reconnect" = "Reconnect";
-"reconnect_alert_text" = "Are you sure to reconnect ?";
+"reconnect_alert_text" = "Are you sure to reconnect?";
 "cancel" = "Cancel";
 "receive" = "Receive";
+"received" = "Received";
 "send" = "Send";
+"send_monero" = "Send Monero";
 "transactions" = "Transactions";
 "sent" = "Sent";
 "pending" = "pending";
-
+"minutes_to_unlock" = "minutes to unlock full balance";
 
 // Address book
 
@@ -111,7 +119,6 @@
 "no_contacts" = "No contacts yet";
 "contact" = "Contact";
 "contact_name" = "Contact name";
-
 
 // Wallets
 
@@ -190,7 +197,8 @@
 "backup_uploaded" = "Backup uploaded";
 "backup_uploaded_icloud" = "Backup has uploaded to your iCloud";
 "change_backup_warning" = "If you will change the Backup password for backups, the previous MANUAL backups will not work with the new password. Auto backups will continue to work with the new password.";
-
+"save_recipient_address" = "Save recipient address";
+"dark_mode_setting_title" = "Dark mode";
 
 // Settings sections
 
@@ -259,7 +267,7 @@
 
 // Seed
 
-"seed_disclaimer" = "Please share, copy, or write down your seed. The seed is used to recover your wallet. This is your PRIVATE seed. DO NOT SHARE this seed with other people!";
+"seed_disclaimer" = "Please copy, or write down your seed. The seed is used to recover your wallet. This is your PRIVATE seed. DO NOT SHARE this seed with other people!";
 
 
 // Transactions details
@@ -303,7 +311,7 @@
 "change" = "Change";
 "done" = "Done";
 "yes" = "Yes";
-"terms" = "Terms and conditions";
+"terms" = "Legal Disclaimer And Terms of Use";
 "terms_accepting_message" = "By using this app, you agree to the Terms of Agreement set forth below";
 "support" = "Support";
 "version" = "Version";
@@ -317,3 +325,5 @@
 "please_save_sec_key" = "Please copy or write down the trade ID to continue.\n\nTrade ID: %@";
 "edit" = "Edit";
 "trade_is_powered" = "This trade is powered by %@";
+
+"pair" = "Pair";

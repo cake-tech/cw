@@ -21,6 +21,11 @@ final class RestoreVC: BaseViewController<RestoreView> {
         contentView.restoreFromKeysCard.button.addTarget(self, action: #selector(fromKeys), for: .touchUpInside)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.backgroundColor = UserInterfaceTheme.current.restoreScreenBackground
+        contentView.backgroundColor = UserInterfaceTheme.current.restoreScreenBackground
+    }
+    
     @objc
     private func fromSeed() {
         restoreWalletFlow?.change(route: .recoverFromSeed)

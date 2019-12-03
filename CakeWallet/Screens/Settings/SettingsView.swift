@@ -16,18 +16,18 @@ final class SettingsView: BaseFlexView {
         super.configureView()
         table.tableFooterView = UIView()
         table.backgroundColor = .clear
-        footerLabel.textColor = .wildDarkBlue
+        footerLabel.textColor = UserInterfaceTheme.current.textVariants.highlight
         footerLabel.frame = CGRect(
             origin: CGPoint(x: 20, y: 0),
             size: CGSize(width: 50, height: 50)
         )
         table.tableFooterView = footerLabel
-        backgroundColor = .lightCream
+        backgroundColor = UserInterfaceTheme.current.background
     }
     
     override func configureConstraints() {
         rootFlexContainer.flex
-            .backgroundColor(.lightCream)
+            .backgroundColor(UserInterfaceTheme.current.background)
             .define { flex in
                 flex.addItem(table).height(100%).width(100%)
         }

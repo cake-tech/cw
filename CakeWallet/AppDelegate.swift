@@ -23,6 +23,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print(error)
         }
         
+        if #available(iOS 13.0, *) {
+            switch UserInterfaceTheme.current {
+            case .dark:
+                window?.overrideUserInterfaceStyle = .dark
+            case .light:
+                window?.overrideUserInterfaceStyle = .light
+            }
+        }
+
         IQKeyboardManager.shared.enable = true
         register(handler: LoadWalletHandler())
         register(handler: LoadCurrentWalletHandler())
@@ -47,6 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         register(handler: ChangeCurrentNodeHandler())
         register(handler: ChangeCurrentFiatHandler())
         register(handler: ChangeBalanceDisplayHandler())
+        register(handler: ChangeShouldSaveRecipientAddress())
         register(handler: CheckConnectionHandler())
         register(handler: UpdateFiatPriceHandler())
         register(handler: UpdateFiatBalanceHandler())
@@ -60,6 +70,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         register(handler: AddNewAccountHandler())
         register(handler: UpdateAccountHandler())
         register(handler: UpdateSubaddressHandler())
+        
+        NotificationCenter.default.addObserver(forName: UserInterfaceTheme.notificationName, object:nil, queue:nil) { [weak self] notification in
+            guard let self = self else {
+                return
+            }
+            self.setAppearance()
+        }
+
         
         window = UIWindow(frame: UIScreen.main.bounds)
         
@@ -86,7 +104,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         if !store.state.walletState.name.isEmpty && pin != nil {
             let authController = AuthenticationViewController(store: store, authentication: AuthenticationImpl())
+            authController.contentView.backgroundColor = UserInterfaceTheme.current.background
             let splashController = SplashViewController(store: store)
+            splashController.contentView.backgroundColor = UserInterfaceTheme.current.background
             let loadWalletHandler = LoadCurrentWalletHandler()
             
             window?.rootViewController = splashController
@@ -111,7 +131,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 DispatchQueue.main.async {
                     self?.walletFlow = WalletFlow()
                     self?.walletFlow?.change(route: .start)
-                    
+
                     self?.window?.rootViewController = self?.walletFlow?.rootController
                     
                     if !termsOfUseAccepted {
@@ -181,8 +201,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         let authScreen = AuthenticationViewController(store: store, authentication: AuthenticationImpl())
-        authScreen.modalPresentationStyle = .overFullScreen
+        authScreen.modalPresentationStyle = .fullScreen
         UIApplication.topViewController()?.present(authScreen, animated: false)
+        UIApplication.topViewController()?.view.backgroundColor = UserInterfaceTheme.current.background
+        
         authScreen.handler = { [weak authScreen] in
             DispatchQueue.main.async {
                 authScreen?.dismiss(animated: true)
@@ -205,36 +227,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private func setAppearance() {
         UITabBar.appearance().layer.borderWidth = 0.0
-
-        UITabBar.appearance().backgroundColor = .white
-        UITabBar.appearance().shadowImage = UIImage()
-        UITabBar.appearance().backgroundImage = UIImage()
+        UITabBar.appearance().backgroundColor = UserInterfaceTheme.current.background
         UITabBar.appearance().layer.borderColor = UIColor.clear.cgColor
         UITabBar.appearance().clipsToBounds = true
-//        UITabBar.appearance().tintColor = .vividBlue
-//        UITabBar.appearance().unselectedItemTintColor = UIColor(hex: 0xC0D4E2)
-
-        UINavigationBar.appearance().tintColor = .black
-        UINavigationBar.appearance().backgroundColor = .clear
-
-//        UINavigationItem
-//        UINavigationBar.appearance()
         
-//        UINavigationBar.appearance().backIndicatorImage = backImage
-//        UINavigationBar.appearance().backIndicatorTransitionMaskImage = backImage
-//        UIBarButtonItem.appearance().setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.clear], for: .normal)
-//        UIBarButtonItem.appearance().setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.clear], for: .highlighted)
+        UINavigationBar.appearance().tintColor = UserInterfaceTheme.current.text
+        UINavigationBar.appearance().backgroundColor = UserInterfaceTheme.current.background
 
-//        UINavigationBar.appearance().backItem?.title = ""
-//        UINavigationBar.appearance().backgroundColor = .clear
-        
-//        UINavigationBar.appearance().isTranslucent = true
         UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
         UINavigationBar.appearance().shadowImage = UIImage()
         
         UINavigationBar.appearance().titleTextAttributes = [
-            NSAttributedStringKey.foregroundColor: UIColor.black,
-            NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16)
+            NSAttributedStringKey.foregroundColor: UserInterfaceTheme.current.textVariants.highlight,
+            NSAttributedStringKey.font: UIFont(name: "Lato-Semibold", size: 18)
         ]
     }
     

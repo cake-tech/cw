@@ -8,6 +8,8 @@ final class CopyButton: SecondaryButton {
     override func configureView() {
         super.configureView()
         addTarget(self, action: #selector(onTouchAction), for: .touchUpInside)
+        layer.backgroundColor = UserInterfaceTheme.current.grayButton.fill.cgColor
+        layer.borderColor = UserInterfaceTheme.current.grayButton.border.cgColor
     }
     
     @objc
@@ -36,6 +38,6 @@ class IconedCopyButton: UIButton {
         
         layer.cornerRadius = 5
         imageEdgeInsets = UIEdgeInsetsMake(9, 9, 9, 9)
-        backgroundColor = UIColor.whiteSmoke
+        backgroundColor = UserInterfaceTheme.current.gray.dim
     }
 }

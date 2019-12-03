@@ -373,22 +373,24 @@ final class ExchangeResultViewController: BaseViewController<ExchangeResultView>
                 WalletActions.commit(
                     transaction: pendingTransaction,
                     handler: { result in
-                        alert.dismiss(animated: true) {
-                            switch result {
-                            case .success(_):
-                                self?.onTransactionCommited()
-                                
-                                if let trade = self?.trade {
-                                    try? ExchangeTransactions.shared.add(
-                                        tradeID: trade.value.id,
-                                        transactionID: transactionID,
-                                        provider: trade.value.provider.rawValue
-                                    )
-                                }
+                        DispatchQueue.main.async {
+                            alert.dismiss(animated: true) {
+                                switch result {
+                                case .success(_):
+                                    self?.onTransactionCommited()
+                                    
+                                    if let trade = self?.trade {
+                                        try? ExchangeTransactions.shared.add(
+                                            tradeID: trade.value.id,
+                                            transactionID: transactionID,
+                                            provider: trade.value.provider.rawValue
+                                        )
+                                    }
 
-                            case let .failed(error):
-                                self?.showErrorAlert(error: error)
-                                break
+                                case let .failed(error):
+                                    self?.showErrorAlert(error: error)
+                                    break
+                                }
                             }
                         }
                 })

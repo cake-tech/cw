@@ -56,12 +56,15 @@ final class DashboardFlow: Flow {
             let addressBook = AddressBookViewController(addressBook: AddressBook.shared, store: store, isReadOnly: false)
             navigationController.pushViewController(addressBook, animated: true)
         case let .showSeed(wallet, date, seed):
-            let seedViewController = SeedViewController(walletName: wallet, date: date, seed: seed, doneFlag: true)
-            seedViewController.doneHandler = { [weak seedViewController] in
-                seedViewController?.dismiss(animated: true)
-            }
-            let navigationController = UINavigationController(rootViewController: seedViewController)
-            self.navigationController.viewControllers.first?.present(navigationController, animated: true)
+                let seedViewController = SeedViewController(walletName: wallet, date: date, seed: seed, doneFlag: true)
+                seedViewController.doneHandler = { [weak seedViewController] in
+                    seedViewController?.dismiss(animated: true)
+                }
+                let navigationController = UINavigationController(rootViewController: seedViewController)
+                self.navigationController.viewControllers.first?.present(navigationController, animated: true)
+//            }
+//            presentPopup(aboutSeed)
+            
         case .showKeys:
             let keysViewController = ShowKeysViewController(store: store)
             let navigationController = UINavigationController(rootViewController: keysViewController)

@@ -16,6 +16,12 @@
 "restore_from_seed_keys" = "복구";
 "please_make_selection" = "아래에서 선택하여 새 지갑을 만들거나 지갑을 복원하십시오.";
 
+// Next Page Seed
+"next_page_seed" = "다음 페이지는 씨앗을 보여줄 것입니다";
+"i_understand" = "이해 했어";
+"next_page_seed_instructions" = "휴대 전화를 느슨하게하거나 닦을 경우에 적어 두십시오. 설정 메뉴에서 시드를 다시 볼 수도 있습니다.";
+
+
 // Pin
 
 "use_6_pin" = "6자리 핀 번호";
@@ -85,6 +91,8 @@
 "starting_sync" = "싱크 개시 ";
 "synchronized" = "싱크됨";
 "failed_connection_to_node" = "노드 연결 실패 ";
+"last_block_received" = "마지막으로받은 블록 :";
+"synchronizing" = "동기화";
 
 // Balances
 "balance-display-type_unlocked" = "잔여잔고";
@@ -190,7 +198,8 @@
 "backup_uploaded" = "백업 업로드 됨";
 "backup_uploaded_icloud" = "iCloud에 백업이 업로드되었습니다.";
 "change_backup_warning" = "백업용 백업 비밀번호를 변경하면 이전 수동 백업은 새 비밀번호로 작동하지 않습니다. 자동 백업은 새 비밀번호로 계속 작동합니다.";
-
+"save_recipient_address" = "수신자 주소 저장";
+"dark_mode_setting_title" = "다크 모드";
 
 // Settings sections
 
@@ -311,3 +320,5 @@
 "please_save_sec_key" = "Please copy or write down the trade ID to continue.\n\nTrade ID: %@";
 "edit" = "편집하다";
 "trade_is_powered" = "이 무역은 %@";
+
+"pair" = "쌍";

@@ -44,17 +44,13 @@ class Button: UIButton {
     
     override func configureView() {
         super.configureView()
-        
-        backgroundColor = Theme.current.primaryButton.background
-        setTitleColor(Theme.current.primaryButton.text, for: .normal)
-        layer.masksToBounds = false
-        layer.shadowRadius = 20
-        layer.shadowOffset = CGSize(width: 2, height: 1)
-        layer.shadowOpacity = 0.3
-        layer.shadowColor = UIColor.lightGray.cgColor
+        backgroundColor = UserInterfaceTheme.current.purple.dim
+        setTitleColor(UserInterfaceTheme.current.textVariants.highlight, for: .normal)
+        layer.borderColor = UserInterfaceTheme.current.purple.main.cgColor
         contentHorizontalAlignment = .center
         titleLabel?.font = applyFont()
         titleLabel?.numberOfLines = 0
         titleLabel?.textAlignment = .center
+        titleLabel?.font = UIFont(name: "Lato-SemiBold", size: 18)
     }
 }

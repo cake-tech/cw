@@ -8,6 +8,7 @@ final class SubaddressView: BaseFlexView {
     required init() {
         labelContainer = CWTextField(placeholder: NSLocalizedString("subaddresses", comment: ""))
         labelContainer.font = applyFont(ofSize: 17)
+        labelContainer.textColor = UserInterfaceTheme.current.text
         editButton = PrimaryButton(title: NSLocalizedString("edit", comment: ""))
         super.init()
     }

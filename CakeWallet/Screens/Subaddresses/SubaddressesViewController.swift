@@ -18,7 +18,8 @@ final class SubaddressCell: FlexCell {
     
     override func configureView() {
         super.configureView()
-        contentView.backgroundColor = .white
+        contentView.backgroundColor = UserInterfaceTheme.current.background
+        nameLabel.textColor = UserInterfaceTheme.current.text
         backgroundColor = .clear
         selectionStyle = .none
         
@@ -41,8 +42,8 @@ final class SubaddressCell: FlexCell {
     
     func configure(name: String) {
         nameLabel.text = name
+        nameLabel.textColor = UserInterfaceTheme.current.text
         nameLabel.flex.markDirty()
-        
         contentView.flex.layout()
     }
 }
@@ -50,7 +51,7 @@ final class SubaddressCell: FlexCell {
 
 extension Subaddress: CellItem {
     func setup(cell: SubaddressCell) {
-        cell.configure(name: label)
+        cell.configure(name: label.isEmpty ? address : label)
     }
 }
 

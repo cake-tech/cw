@@ -6,7 +6,7 @@ final class Configurations {
     enum DefaultsKeys: Stringify {
         case nodeUri, nodeLogin, nodePassword, termsOfUseAccepted, currentWalletName,
         currentWalletType, biometricAuthenticationOn, passwordIsRemembered, transactionPriority,
-        currency, defaultNodeChanged, autoSwitchNode, pinLength, currentTheme, termsOfUseXMRto, termsOfUseMorph, walletsDirectoryPathMigrated, masterPassword, lastBackupDate, isAutoBackupEnabled, bitrefillSelectedCountry, checkForIsEu, displayedBalance
+        currency, defaultNodeChanged, autoSwitchNode, pinLength, currentTheme, termsOfUseXMRto, termsOfUseMorph, walletsDirectoryPathMigrated, masterPassword, lastBackupDate, isAutoBackupEnabled, bitrefillSelectedCountry, checkForIsEu, displayedBalance, shouldSaveRecipientAddress
         
         func string() -> String {
             switch self {
@@ -56,6 +56,8 @@ final class Configurations {
                 return "check_for_node_is_eu"
             case .displayedBalance:
                 return "display_balance_mode"
+            case .shouldSaveRecipientAddress:
+                return "should_save_recipient_address"
             }
         }
     }

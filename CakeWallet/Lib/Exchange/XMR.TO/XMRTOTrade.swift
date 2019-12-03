@@ -17,6 +17,71 @@ struct XMRTOTrade: Trade {
     let expiredAt: Date?
     let outputTransaction: String?
     
+    static func findBy(id: String) -> Observable<Trade> {
+        return Observable.create({ o -> Disposable in
+            exchangeQueue.async {
+                
+                let url = URLComponents(string: String(format: "%@/order_status_query/", XMRTOExchange.uri))!
+                var request = URLRequest(url: url.url!)
+                request.httpMethod = "POST"
+                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                request.addValue("CakeWallet/XMR iOS", forHTTPHeaderField: "User-Agent")
+                let bodyJSON: JSON = [
+                    "uuid": id
+                ]
+                
+                do {
+                    request.httpBody = try bodyJSON.rawData(options: .prettyPrinted)
+                } catch {
+                    o.onError(error)
+                }
+                
+                Alamofire.request(request).responseData(completionHandler: { response in
+                    if let error = response.error {
+                        o.onError(error)
+                        return
+                    }
+                    
+                    guard response.response?.statusCode == 200 else {
+                        return
+                    }
+                    
+                    guard
+                        let data = response.data,
+                        let json = try? JSON(data: data) else {
+                            return
+                    }
+                    
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+                    
+                    let address = json["xmr_receiving_subaddress"].stringValue
+                    let totalAmount = json["xmr_amount_total"].stringValue
+                    let amount = MoneroAmount(from: totalAmount)
+                    let stateString = json["state"].stringValue
+                    let state = ExchangeTradeState(fromXMRTO: stateString) ?? .notFound
+                    let expiredAt = dateFormatter.date(from: json["expires_at"].stringValue)
+                    let outputTransaction = json["btc_transaction_id"].string
+                    
+                    let trade = XMRTOTrade(
+                        id: id,
+                        from: CryptoCurrency.monero,
+                        to: CryptoCurrency.bitcoin,
+                        state: state,
+                        inputAddress: address,
+                        amount: amount,
+                        extraId: nil,
+                        expiredAt: expiredAt,
+                        outputTransaction: outputTransaction)
+                    
+                    o.onNext(trade)
+                })
+            }
+            
+            return Disposables.create()
+        })
+    }
+    
     init(id: String, from: CryptoCurrency, to: CryptoCurrency, state: ExchangeTradeState, inputAddress: String, amount: Amount, extraId: String? = nil, expiredAt: Date? = nil, outputTransaction: String? = nil) {
         self.id = id
         self.from = from
@@ -30,65 +95,6 @@ struct XMRTOTrade: Trade {
     }
     
     func update() -> Observable<Trade> {
-        return Observable.create({ o -> Disposable in
-            let url = URLComponents(string: String(format: "%@/order_status_query/", XMRTOExchange.uri))!
-            var request = URLRequest(url: url.url!)
-            request.httpMethod = "POST"
-            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.addValue("CakeWallet/XMR iOS", forHTTPHeaderField: "User-Agent")
-            let bodyJSON: JSON = [
-                "uuid": self.id
-            ]
-            
-            do {
-                request.httpBody = try bodyJSON.rawData(options: .prettyPrinted)
-            } catch {
-                o.onError(error)
-            }
-            
-            Alamofire.request(request).responseData(completionHandler: { response in
-                if let error = response.error {
-                    o.onError(error)
-                    return
-                }
-                
-                guard response.response?.statusCode == 200 else {
-                    return
-                }
-                
-                guard
-                    let data = response.data,
-                    let json = try? JSON(data: data) else {
-                        return
-                }
-                
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-                
-                let address = json["xmr_receiving_integrated_address"].stringValue
-                let paymentId = json["xmr_required_payment_id_short"].stringValue
-                let totalAmount = json["xmr_amount_total"].stringValue
-                let amount = MoneroAmount(from: totalAmount)
-                let stateString = json["state"].stringValue
-                let state = ExchangeTradeState(fromXMRTO: stateString) ?? .notFound
-                let expiredAt = dateFormatter.date(from: json["expires_at"].stringValue)
-                let outputTransaction = json["btc_transaction_id"].string
-                
-                let trade = XMRTOTrade(
-                    id: self.id,
-                    from: self.from,
-                    to: self.to,
-                    state: state,
-                    inputAddress: address,
-                    amount: amount,
-                    extraId: paymentId,
-                    expiredAt: expiredAt,
-                    outputTransaction: outputTransaction)
-                
-                o.onNext(trade)
-            })
-            
-            return Disposables.create()
-        })
+        return XMRTOTrade.findBy(id: id)
     }
 }

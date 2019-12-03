@@ -80,6 +80,22 @@ struct DefaultCryptoQRResult: QRUri {
             return "litecoin"
         case .monero:
             return "monero"
+        case .usdT:
+            return "usdtether"
+        case .eos:
+            return "eos"
+        case .xrp:
+            return "ripple"
+        case .trx:
+            return "tron"
+        case .bnb:
+            return "binancecoin"
+        case .ada:
+            return "cardano"
+        case .xlm:
+            return "ripple"
+        case .nano:
+            return "nano"
         }
     }
     
@@ -89,37 +105,7 @@ struct DefaultCryptoQRResult: QRUri {
     }
 }
 
-class RecipientAddresses {
-    static let shared: RecipientAddresses = RecipientAddresses()
-    private static let key = try! KeychainStorageImpl.standart.fetch(forKey: .masterPassword)
-        .replacingOccurrences(of: "-", with: "")
-        .data(using: .utf8)?.bytes ?? []
-    private static let iv = store.state.walletState.name.data(using: .utf8)?.bytes ?? []
 
-    private static var url: URL {
-        return MoneroWalletGateway().makeDirURL(for: store.state.walletState.name).appendingPathComponent("recipients.json")
-    }
-
-    let file: File
-
-    init(file: File = EncryptedFile(url: RecipientAddresses.url, cipher: try! ChaCha20(key: RecipientAddresses.key, iv: RecipientAddresses.iv))) {
-        self.file = file
-    }
-
-    func save(forTransactionId transactionId: String, andRecipientAddress recipientAddress: String) {
-        do {
-            var json = file.contentJSON() ?? JSON()
-            json.dictionaryObject?[transactionId] = recipientAddress
-            try file.save(json: json)
-        } catch {
-            print(error)
-        }
-    }
-
-    func getRecipientAddress(by id: String) -> String? {
-        return file.contentJSON()?[id].string
-    }
-}
 
 final class SendViewController: BaseViewController<SendView>, StoreSubscriber, QRUriUpdateResponsible, QRCodeReaderViewControllerDelegate {
     private static let allSymbol = NSLocalizedString("all", comment: "")
@@ -129,6 +115,11 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
     var priority: TransactionPriority {
         return store.state.settingsState.transactionPriority
     }
+    
+    private var configuredBalanceDisplay:BalanceDisplay {
+        return store.state.settingsState.displayBalance
+    }
+    
     private weak var alert: UIAlertController?
     private var price: Double {
         return store.state.balanceState.price
@@ -152,6 +143,7 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
     
     override func configureBinds() {
         title = NSLocalizedString("send", comment: "")
+        modalPresentationStyle = .fullScreen
         contentView.takeFromAddressBookButton.addTarget(self, action: #selector(takeFromAddressBook), for: .touchUpInside)
         contentView.sendAllButton.addTarget(self, action: #selector(setAllAmount), for: .touchUpInside)
         contentView.cryptoAmountTextField.addTarget(self, action: #selector(onCryptoValueChange(_:)), for: .editingChanged)
@@ -161,17 +153,29 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
         contentView.addressView.updateResponsible = self
         contentView.scanQrForPaymentId.addTarget(self, action: #selector(scanPaymnetIdQr), for: .touchUpInside)
         updateEstimatedFee(for: store.state.settingsState.transactionPriority)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(named:"close_symbol")?.resized(to:CGSize(width: 12, height: 12)),
+            style: .plain,
+            target: self,
+            action: #selector(dismissAction)
+        )
+        
+        if let navController = navigationController {
+            navController.navigationItem.leftBarButtonItem?.tintColor = UserInterfaceTheme.current.text
+            navController.navigationItem.rightBarButtonItem?.tintColor = UserInterfaceTheme.current.text
+        }
+    }
+    
+    override func setBarStyle() {
+        super.setBarStyle()
+        navigationController?.navigationBar.backgroundColor = UserInterfaceTheme.current.sendCardColor
+        contentView.backgroundColor = UserInterfaceTheme.current.sendCardColor
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        let doneButton = StandartButton(image: UIImage(named: "close_symbol")?.resized(to: CGSize(width: 12, height: 12)))
-        doneButton.frame = CGRect(origin: .zero, size: CGSize(width: 32, height: 32))
-        doneButton.addTarget(self, action: #selector(dismissAction), for: .touchUpInside)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: doneButton)
+        navigationItem.leftBarButtonItem?.tintColor = UserInterfaceTheme.current.text
         contentView.sendButton.addTarget(self, action: #selector(sendAction), for: .touchUpInside)
-        
         store.subscribe(self, onlyOnChange: [
             \ApplicationState.balanceState,
             \ApplicationState.transactionsState,
@@ -181,6 +185,7 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
                 withPriority: priority
             )
         )
+        contentView.addressView.availablePickers = [.qrScan, .addressBook]
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -202,7 +207,7 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
     func onStateChange(_ state: ApplicationState) {
         updateWallet(name: state.walletState.name)
         updateWallet(type: state.walletState.walletType)
-        updateWallet(balance: state.balanceState.unlockedBalance)
+        updateWalletBalance()
         updateSendingStage(state.transactionsState.sendingStage)
         updateFiat(state.settingsState.fiatCurrency)
         updateEstimatedFee(state.transactionsState.estimatedFee)
@@ -279,12 +284,12 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
         contentView.rootFlexContainer.flex.layout()
     }
     
-    private func updateWallet(balance: Amount) {
-        let balance = balance.formatted()
-        guard balance != contentView.cryptoAmountTitleLabel.text else {
+    private func updateWalletBalance() {
+        let newBalanceText = (configuredBalanceDisplay).isHidden == true ? "--" : store.state.balanceState.unlockedBalance.formatted()
+        guard newBalanceText != contentView.cryptoAmountTitleLabel.text else {
             return
         }
-        contentView.cryptoAmountValueLabel.text = balance
+        contentView.cryptoAmountValueLabel.text = newBalanceText
         contentView.cryptoAmountValueLabel.flex.markDirty()
         contentView.walletContainer.flex.layout()
         contentView.rootFlexContainer.flex.layout()
@@ -300,13 +305,14 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
         contentView.cryptoAmountTitleLabel.text = type.currency.formatted()
             + " "
             + NSLocalizedString("balance-display-type_unlocked", comment: "")
+        
         contentView.cryptoAmountTitleLabel.flex.markDirty()
         contentView.walletContainer.flex.markDirty()
         contentView.rootFlexContainer.flex.layout()
     }
     
     private func updateFiat(_ fiat: FiatCurrency) {
-        contentView.fiatAmountTextFieldLeftView.text = store.state.settingsState.fiatCurrency.formatted()
+        contentView.fiatAmountTextFieldLeftView.text = store.state.settingsState.fiatCurrency.formatted() + ": "
     }
     
     @objc
@@ -381,57 +387,18 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
         contentView.rootFlexContainer.flex.layout()
     }
     
-    private func onTransactionCreating() {
-        let alertController = UIAlertController(
-            title: NSLocalizedString("creating_transaction", comment: ""),
-            message: NSLocalizedString("confirm_sending", comment: ""),
-            preferredStyle: .alert
-        )
-        
-        alertController.addAction(UIAlertAction(
-            title: NSLocalizedString("send", comment: ""),
-            style: .default,
-            handler: { [weak self, weak alertController] _ in
-                self?.createTransaction()
-                alertController?.dismiss(animated: true)
-            }
-        ))
-        alertController.addAction(UIAlertAction(
-            title: "Cancel",
-            style: .cancel,
-            handler: nil
-        ))
-        
-        present(alertController, animated: true, completion: nil)
-    }
-    
     private func onTransactionCreated(_ pendingTransaction: PendingTransaction) {
-        let description = pendingTransaction.description
-        let message = NSLocalizedString("commit_transaction", comment: "")
-            + "\n"
-            + NSLocalizedString("amount", comment: "")
-            + ": "
-            + description.amount.formatted()
-            + "\n"
-            + NSLocalizedString("fee", comment: "")
-            + ": "
-            + MoneroAmountParser.formatValue(description.fee.value)
-        
-        let cancelAction = UIAlertAction(title: NSLocalizedString("cancel", comment: ""), style: .cancel, handler: { [weak self] action in
+        let confirmController = SendConfirmViewController(amount:pendingTransaction.description.amount.formatted(), address:contentView.addressView.textView.originText.value, fee:MoneroAmountParser.formatValue(pendingTransaction.description.fee.value))
+        confirmController.modalPresentationStyle = .fullScreen
+        confirmController.onAccept = { [weak self] in
+            self?.commit(pendingTransaction: pendingTransaction)
+        }
+        confirmController.onCancel = { [weak self] in
             self?.store.dispatch(
                 TransactionsState.Action.changedSendingStage(.none)
             )
-        })
-        
-        let commitAction = UIAlertAction(title: NSLocalizedString("Ok", comment: ""), style: .default, handler: { [weak self] _ in
-            self?.commit(pendingTransaction: pendingTransaction)
-        })
-        
-        showInfoAlert(
-            title: NSLocalizedString("confirm_sending", comment: ""),
-            message: message,
-            actions: [commitAction, cancelAction]
-        )
+        }
+        present(confirmController, animated: true)
     }
     
     private func commit(pendingTransaction: PendingTransaction) {
@@ -464,20 +431,23 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
     }
     
     private func saveRecipientAddress(transactionId id: String, address: String ) {
-        RecipientAddresses.shared.save(forTransactionId: id, andRecipientAddress: address)
+        if (store.state.settingsState.saveRecipientAddresses) {
+            RecipientAddresses.shared.save(forTransactionId: id, andRecipientAddress: address)
+        }
     }
     
     private func onTransactionCommited() {
         showOKInfoAlert(title: NSLocalizedString("transaction_created", comment: "")) { [weak self] in
             self?.resetForm()
+            self?.dismiss(animated: true)
         }
     }
     
     private func createTransaction(_ handler: (() -> Void)? = nil) {
         let authController = AuthenticationViewController(store: store, authentication: AuthenticationImpl())
-        let navController = UINavigationController(rootViewController: authController)
+        authController.modalPresentationStyle = .fullScreen
         let paymentID = contentView.paymentIdTextField.text  ?? ""
-        
+        navigationController?.modalPresentationStyle = .fullScreen
         authController.handler = { [weak self] in
             authController.dismiss(animated: true) {
                 self?.contentView.sendButton.showLoading()
@@ -511,7 +481,7 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
             }
         }
         
-        present(navController, animated: true)
+        present(authController, animated: true)
     }
     
     private func resetForm() {
@@ -523,7 +493,7 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
     
     @objc
     private func sendAction() {
-        onTransactionCreating()
+        createTransaction()
     }
     
     @objc

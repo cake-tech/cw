@@ -20,8 +20,9 @@ final class NodesView: BaseFlexView {
         super.configureView()
         table.tableFooterView = UIView()
         table.backgroundColor = .clear
+        autoNodeSwitchLabel.textColor = UserInterfaceTheme.current.text
         table.separatorStyle = .none
-        backgroundColor = .white
+        backgroundColor = UserInterfaceTheme.current.background
     }
     
     override func layoutSubviews() {
@@ -33,7 +34,7 @@ final class NodesView: BaseFlexView {
     
     override func configureConstraints() {
         autoNodeSwitchContainer.flex
-            .direction(.row).backgroundColor(.lightCream)
+            .direction(.row).backgroundColor(UserInterfaceTheme.current.gray.dim)
             .padding(0, 20, 0, 20)
             .justifyContent(.spaceBetween).alignItems(.center)
             .height(56).define { flex in
@@ -42,7 +43,7 @@ final class NodesView: BaseFlexView {
         }
         
         rootFlexContainer.flex
-            .backgroundColor(.white)
+            .backgroundColor(UserInterfaceTheme.current.background)
             .define { flex in
                 flex.addItem(autoNodeSwitchContainer).width(100%).marginTop(5)
                 flex.addItem(table).width(100%).marginTop(15)

@@ -6,9 +6,14 @@ final class DisclaimerViewController: BaseViewController<DisclaimerView> {
         vc.dismiss(animated: true)
     }
     
+    var hasCheckbox:Bool
+    
+    required init(showingCheckbox:Bool = true) {
+        hasCheckbox = showingCheckbox
+    }
+    
     override func configureBinds() {
         super.configureBinds()
-        title = NSLocalizedString("terms", comment: "")
         loadAndDisplayDocument()
         contentView.acceptButton.addTarget(self, action: #selector(onAccessAction), for: .touchUpInside)
         contentView.checkBoxTitleButton.addTarget(self, action: #selector(toggleCheckBox), for: .touchUpInside)
@@ -16,7 +21,7 @@ final class DisclaimerViewController: BaseViewController<DisclaimerView> {
     
     @objc
     private func onAccessAction() {
-        if contentView.checkBox.isChecked {
+        if contentView.checkBox.isChecked || hasCheckbox == false {
             onAccept?(self)
         }
     }
@@ -24,6 +29,17 @@ final class DisclaimerViewController: BaseViewController<DisclaimerView> {
     @objc
     func toggleCheckBox() {
         contentView.checkBox.isChecked = !contentView.checkBox.isChecked
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        if hasCheckbox == false {
+            contentView.hasCheckbox = false
+        }
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        return navigationController?.isNavigationBarHidden == hasCheckbox
     }
     
     private func loadAndDisplayDocument() {
@@ -34,9 +50,14 @@ final class DisclaimerViewController: BaseViewController<DisclaimerView> {
                     options: [NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.rtf],
                     documentAttributes: nil)
                 contentView.textView.attributedText = attributedText
+                contentView.textView.textColor = UserInterfaceTheme.current.text
             } catch {
                 print(error) // fixme
             }
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.setNavigationBarHidden(hasCheckbox, animated: false)
     }
 }
