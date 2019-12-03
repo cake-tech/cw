@@ -82,7 +82,9 @@ extension Amount {
 
 public enum CryptoCurrency: Currency {
     public static var all: [CryptoCurrency] {
-        return [.monero, .bitcoin, .ethereum, .liteCoin, .bitcoinCash, .dash, .usdT, .eos, .xrp, .trx, .bnb, .ada, .xlm, .nano]
+        var all:[CryptoCurrency] = [.bitcoin, .ethereum, .liteCoin, .bitcoinCash, .dash, .usdT, .eos, .xrp, .trx, .bnb, .ada, .xlm, .nano].sorted(by: { $0.formatted() < $1.formatted() })
+        all.insert(.monero, at:0)
+        return all
     }
     
     case monero, bitcoin, ethereum, dash, liteCoin, bitcoinCash, usdT, eos, xrp, trx, bnb, ada, xlm, nano

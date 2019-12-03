@@ -18,7 +18,6 @@ final class RestoreRootView: BaseScrollFlexView {
     
     required init() {
         restoreWalletImageView = FlexView()
-        restoreWalletImageView.backgroundColor = .clear
         restoreWalletImage = UIImageView(image: UIImage(named: "restore_wallet_image"))
         restoreWalletCard = WelcomeFlowCardView(
             imageView: restoreWalletImageView,
@@ -28,7 +27,6 @@ final class RestoreRootView: BaseScrollFlexView {
         )
 
         restoreAppImageView = FlexView()
-        restoreAppImageView.backgroundColor = .clear
         restoreAppImage = UIImageView(image: UIImage(named: "restore_app_image"))
         restoreAppCard = WelcomeFlowCardView(
             imageView: restoreAppImageView,
@@ -41,7 +39,6 @@ final class RestoreRootView: BaseScrollFlexView {
     }
     
     override func configureConstraints() {
-//        let imageViewBackgroundColor = UserInterfaceTheme.current.restoreCardBackground
         let imageHeight = adaptiveLayout.getSize(forLarge: 180, forBig: 150, defaultSize: 115)
         let imageWidth = adaptiveLayout.getSize(forLarge: 360, forBig: 320, defaultSize: 240)
         
@@ -53,6 +50,7 @@ final class RestoreRootView: BaseScrollFlexView {
                         .width(imageWidth)
                 }
             }
+            root.flex.backgroundColor(UserInterfaceTheme.current.restoreCardBackground)
         }
         
         restoreAppImageView.constraintsSetup = { [weak self] root in
@@ -63,6 +61,7 @@ final class RestoreRootView: BaseScrollFlexView {
                         .width(imageWidth)
                 }
             }
+            root.flex.backgroundColor(UserInterfaceTheme.current.restoreCardBackground)
         }
         
         rootFlexContainer.flex.alignItems(.center).padding(15, 20, 15, 20).define { flex in

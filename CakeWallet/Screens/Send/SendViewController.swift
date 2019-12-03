@@ -388,7 +388,7 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
     }
     
     private func onTransactionCreated(_ pendingTransaction: PendingTransaction) {
-        let confirmController = SendConfirmViewController(amount:pendingTransaction.description.amount.formatted(), address:pendingTransaction.description.id, fee:MoneroAmountParser.formatValue(pendingTransaction.description.fee.value))
+        let confirmController = SendConfirmViewController(amount:pendingTransaction.description.amount.formatted(), address:contentView.addressView.textView.originText.value, fee:MoneroAmountParser.formatValue(pendingTransaction.description.fee.value))
         confirmController.modalPresentationStyle = .fullScreen
         confirmController.onAccept = { [weak self] in
             self?.commit(pendingTransaction: pendingTransaction)

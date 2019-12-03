@@ -30,12 +30,12 @@ final class DisclaimerView: BaseFlexView {
         self.init(withCheckbox:true)
     }
 
-//    override var safeAreaInsets: UIEdgeInsets {
-//        get {
-//            let superSafe = super.safeAreaInsets
-//            return UIEdgeInsets(top: superSafe.top, left: superSafe.left, bottom: 0, right: superSafe.right)
-//        }
-//    }
+    override var safeAreaInsets: UIEdgeInsets {
+        get {
+            let superSafe = super.safeAreaInsets
+            return UIEdgeInsets(top: superSafe.top, left: superSafe.left, bottom: 0, right: superSafe.right)
+        }
+    }
     
     override func configureView() {
         super.configureView()
@@ -99,7 +99,7 @@ final class DisclaimerView: BaseFlexView {
             flex.addItem(leftAlignedView).width(100%).paddingHorizontal(15)
             
             if (hasCheckbox) {
-                flex.addItem(textView).marginHorizontal(15)
+                flex.addItem(textView).marginHorizontal(15).marginBottom(190)
                 flex.addItem(bottomView).position(.absolute).bottom(0).width(100%).backgroundColor(UserInterfaceTheme.current.cardColor).paddingBottom(45)
             } else {
                 flex.addItem(textView).marginBottom(15).marginHorizontal(15)
