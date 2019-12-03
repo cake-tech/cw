@@ -10,7 +10,7 @@ func updateFiatPrice(for crypto: Currency, to fiatCurrency: FiatCurrency, handle
         return
     }
         
-    var url =  URLComponents(string: "http://fiat-api.cakewallet.com/v1/rates")!
+    var url =  URLComponents(string: "https://fiat-api.cakewallet.com/v1/rates")!
     url.queryItems = [
         URLQueryItem(name: "convert", value: fiatCurrency.formatted())
     ]
@@ -40,7 +40,7 @@ func updateFiatPrice(for crypto: Currency, to fiatCurrency: FiatCurrency, handle
 }
 
 func updateFiatPriceForVef(for crypto: Currency, baseCrypto: CryptoCurrency = CryptoCurrency.bitcoin, handler: @escaping (Double) -> Void) {
-    var url =  URLComponents(string: "http://fiat-api.cakewallet.com/v1/rates")!
+    var url =  URLComponents(string: "https://fiat-api.cakewallet.com/v1/rates")!
     url.queryItems = [
         URLQueryItem(name: "convert", value: baseCrypto.formatted())
     ]

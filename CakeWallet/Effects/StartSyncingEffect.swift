@@ -13,6 +13,7 @@ public final class startingSyncEffect: Effect {
             workQueue.async {
                 store.dispatch(BlockchainState.Action.changedConnectionStatus(.startingSync))
                 currentWallet.startUpdate()
+                store.dispatch(BalanceActions.updateFiatPrice(currency: store.state.settingsState.fiatCurrency))
             }
         }
         
