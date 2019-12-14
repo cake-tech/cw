@@ -95,7 +95,7 @@
 
 // Balances
 "balance-display-type_unlocked" = "Verfügbares Guthaben";
-"balance-display-type_full" = "Volle Balance";
+"balance-display-type_full" = "Volles Guthaben";
 "balance-display-type_hidden" = "versteckt";
 "balance_type_title" = "Kontostand anzeigen als";
 
