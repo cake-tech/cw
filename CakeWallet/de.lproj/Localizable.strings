@@ -106,6 +106,7 @@
 "reconnect_alert_text" = "Sind Sie sicher?";
 "cancel" = "Abbrechen";
 "receive" = "Empfangen";
+"received" = "Empfangen";
 "send" = "Senden";
 "transactions" = "Transaktionen";
 "sent" = "Gesendet";

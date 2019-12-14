@@ -102,6 +102,7 @@
 "reconnect_alert_text" = "你确定要重新连接吗 ?";
 "cancel" = "取消";
 "receive" = "接收";
+"received" = "已收到";
 "send" = "发送";
 "transactions" = "交易";
 "sent" = "发送";

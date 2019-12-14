@@ -44,7 +44,7 @@ DEPENDENCIES:
   - ZIPFoundation (~> 0.9)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - Alamofire
     - CryptoSwift
     - FlexLayout
@@ -88,4 +88,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: bbf84476359300d0ba23ac31255a3f2fdfcc03c6
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.7.5

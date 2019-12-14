@@ -107,6 +107,7 @@
 "reconnect_alert_text" = "재연결 하실건가요?";
 "cancel" = "취소";
 "receive" = "수신";
+"received" = "받았습니다ено";
 "send" = "보내기";
 "transactions" = "거래내역";
 "sent" = "보내짐";

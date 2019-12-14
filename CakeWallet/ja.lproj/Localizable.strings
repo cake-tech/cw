@@ -106,6 +106,7 @@
 "reconnect_alert_text" = "再接続しますか？";
 "cancel" = "キャンセル";
 "receive" = "受け取り";
+"received" = "受け取った";
 "send" = "送信";
 "transactions" = "トランザクション";
 "sent" = "送信";
