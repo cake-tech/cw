@@ -248,7 +248,7 @@
 "transaction_key" = "Transaction key";
 "exchange_id" = "Exchange ID";
 "trade_id" = "Trade ID";
-
+"history" = "History";
 
 // Auth
 

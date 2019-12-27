@@ -244,7 +244,7 @@
 "transaction_key" = "交易密钥";
 "exchange_id" = "交换ID";
 "trade_id" = "商号";
-
+"history" = "历史";
 
 // Auth
 

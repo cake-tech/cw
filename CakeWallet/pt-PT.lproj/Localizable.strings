@@ -245,7 +245,7 @@
 "transaction_key" = "Chave de Transação";
 "exchange_id" = "ID da troca";
 "trade_id" = "ID comercial";
-
+"history" = "História"
 
 // Auth
 
