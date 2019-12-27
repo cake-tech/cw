@@ -75,7 +75,7 @@
 "creating_wallet" = "Создание кошелька с именем -";
 
 "wallet" = "Кошелек";
-"history" = "история"
+"history" = "история";
 
 
 // Connection state
