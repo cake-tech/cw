@@ -490,7 +490,13 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
                             }))
                             
                             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] _ in
-                                guard let password = alert?.textFields?.first?.text else {
+                                guard let password = alert?.textFields?.first?.text, password.count > 0 else {
+                                    let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+                                    self?.showInfoAlert(
+                                        title: NSLocalizedString("backup_password", comment: ""),
+                                        message: "Please enter a valid backup password.",
+                                        actions: [okAction]
+                                    )
                                     return
                                 }
                                 
