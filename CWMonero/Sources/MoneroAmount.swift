@@ -8,12 +8,17 @@ extension String {
     }
 }
 
+fileprivate let nf = NumberFormatter()
+
 public struct MoneroAmount: Amount {
     public let currency: Currency = CryptoCurrency.monero
     public let value: UInt64
     
     public init(value: UInt64) {
         self.value = value
+        if nf.numberStyle != .decimal {
+            nf.numberStyle = .decimal
+        }
     }
     
     public init(from string: String) {
@@ -42,6 +47,7 @@ public struct MoneroAmount: Amount {
               return "0.0"
         }
         
-        return String(_value)
+        let number = NSNumber(value:_value)
+        return nf.string(from:number) ?? String(_value)
     }
 }
