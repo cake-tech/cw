@@ -1006,7 +1006,7 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
             action: #selector(clear))
         
         let tradesHistoryButton = UIBarButtonItem(
-            title: "History",
+            title: NSLocalizedString("history", comment: ""),
             style: .plain,
             target: self,
             action: #selector(navigateToTradeHistory))
