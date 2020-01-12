@@ -209,9 +209,9 @@ extension ExchangerError: LocalizedError {
         case let .notCreated(description):
             return description
         case .amountIsOverMaxLimit:
-            return "Out of limits. Amount is over max limits"
+            return "Amount is over the maximum limit"
         case .amountIsLessMinLimit:
-            return "Out of limits. Amount is less than min amount"
+            return "Amount is below the minimum limit"
         }
     }
 }
