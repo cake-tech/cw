@@ -93,6 +93,7 @@ final class SettingsPickerUITableViewCell<Item: Formatted>: FlexCell, UIPickerVi
         let selectedRow = pickerView.selectedRow(inComponent: 0)
         let selectedOption = pickerOptions[selectedRow]
         onFinish?(selectedOption)
+        pinckerTextField.text = stringForPickerOption(selectedOption)
     }
     
     @objc
