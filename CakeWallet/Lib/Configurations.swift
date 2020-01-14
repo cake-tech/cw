@@ -62,8 +62,8 @@ final class Configurations {
         }
     }
     
-    static let defaultMoneroNode = MoneroNodeDescription(uri: "node.cakewallet.io:18081")
-    static let defaultEuMoneroNode = MoneroNodeDescription(uri: "eu-node.cakewallet.io:18081")
+    static let defaultMoneroNode = MoneroNodeDescription(uri: "xmr-node-usa-east.cakewallet.io:18081")
+    static let defaultEuMoneroNode = MoneroNodeDescription(uri: "xmr-node-eu.cakewallet.io:18081")
     static let preDefaultNodeUri = "node.xmrbackb.one:18081"
 //    static let defaultNodeUri = "opennode.xmr-tw.org:18089"
 //    static let defaultCurreny = Currency.usd
