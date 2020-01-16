@@ -12,15 +12,13 @@ final class NodesList: Collection {
             
         }
         
+        //load the bundled node plist and the user's node plist
         if  let documentsPlistData = try? Data(contentsOf:url),
             let originalPlistData = try? Data(contentsOf:originalNodesListUrl),
             let originalSerialized = try! PropertyListSerialization.propertyList(from: originalPlistData, options:[], format:nil) as? [[String:Any]],
             var documentSerialized = try! PropertyListSerialization.propertyList(from: documentsPlistData, options:[], format:nil) as? [[String:Any]]
         {
-            print("bundled node plist has \(originalSerialized.count) nodes")
-            print("document plist data contains \(documentSerialized.count) nodes")
-            
-            //inject the "isUserDeleted" key for every node in the document plist that does not contain is key
+            //inject the "isUserDeleted" key for every node in the users plist that does not contain this key
             documentSerialized = documentSerialized.map({ someNode in
                 if someNode["isUserDeleted"] as? Bool == nil {
                     var someNodeModify = someNode
@@ -31,12 +29,25 @@ final class NodesList: Collection {
                 }
             })
             
-            //these are the nodes that the user will see
-            var userNodes = documentSerialized.filter({ someNode in
-                if let hasIsUserDeleted = someNode["isUserDeleted"] as? Bool {
-                    return !hasIsUserDeleted
+            //these are the nodes that the user will see. filter out any nodes that have "isUserDeleted" == true
+            var userNodes = documentSerialized.compactMap({ someNode -> [String:Any]? in
+                if let hasIsUserDeleted = someNode["isUserDeleted"] as? Bool, hasIsUserDeleted == false {
+                    //this node is not user deleted..now verify that it is not using one of the old cakewallet domains before returning
+                    if let nodeURI = someNode["uri"] as? String {
+                        var nodeDataToModify = someNode
+                        switch nodeURI {
+                        case "eu-node.cakewallet.io:18081":
+                            nodeDataToModify["uri"] = "xmr-node-eu.cakewallet.com:18081"
+                        case "node.cakewallet.io:18081":
+                            nodeDataToModify["uri"] = "xmr-node-usa-east.cakewallet.com:18081"
+                        default:
+                            break
+                        }
+                        return nodeDataToModify
+                    }
+                    return someNode
                 } else {
-                    return true
+                    return nil
                 }
             })
 
@@ -51,9 +62,9 @@ final class NodesList: Collection {
             }
             
             return userNodes
+        } else {
+            return []
         }
-        
-        return []
     }
     
     private static func copyOriginToDocuments() throws {
