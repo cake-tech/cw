@@ -7,17 +7,53 @@ final class NodesList: Collection {
     
     private static func load() -> [[String: Any]] {
         if !FileManager.default.fileExists(atPath: url.path) {
-           try! copyOriginToDocuments()
+           
+            try! copyOriginToDocuments()
+            
         }
         
-        guard
-            let nodesData = try? Data(contentsOf: url),
-            let propertyList = try? PropertyListSerialization.propertyList(from: nodesData, options: [], format: nil),
-            let nodesDirs = propertyList as? [[String: Any]] else {
-                return []
+        if  let documentsPlistData = try? Data(contentsOf:url),
+            let originalPlistData = try? Data(contentsOf:originalNodesListUrl),
+            let originalSerialized = try! PropertyListSerialization.propertyList(from: originalPlistData, options:[], format:nil) as? [[String:Any]],
+            var documentSerialized = try! PropertyListSerialization.propertyList(from: documentsPlistData, options:[], format:nil) as? [[String:Any]]
+        {
+            print("bundled node plist has \(originalSerialized.count) nodes")
+            print("document plist data contains \(documentSerialized.count) nodes")
+            
+            //inject the "isUserDeleted" key for every node in the document plist that does not contain is key
+            documentSerialized = documentSerialized.map({ someNode in
+                if someNode["isUserDeleted"] as? Bool == nil {
+                    var someNodeModify = someNode
+                    someNodeModify["isUserDeleted"] = false
+                    return someNodeModify
+                } else {
+                    return someNode
+                }
+            })
+            
+            //these are the nodes that the user will see
+            var userNodes = documentSerialized.filter({ someNode in
+                if let hasIsUserDeleted = someNode["isUserDeleted"] as? Bool {
+                    return !hasIsUserDeleted
+                } else {
+                    return true
+                }
+            })
+
+            let allDocumentNodeURIs = documentSerialized.compactMap({ $0["uri"] as? String })
+            
+            for (_, currentBundledNode) in originalSerialized.enumerated() {
+                if let thisNodeURI = currentBundledNode["uri"] as? String {
+                    if allDocumentNodeURIs.contains(thisNodeURI) == false {
+                        userNodes.append(currentBundledNode)
+                    }
+                }
+            }
+            
+            return userNodes
         }
         
-        return nodesDirs
+        return []
     }
     
     private static func copyOriginToDocuments() throws {
@@ -78,14 +114,16 @@ final class NodesList: Collection {
     }
     
     func remove(at index: Int) throws {
-        self.content.remove(at: index)
+        var nodeToFlagAsRemoved = self.content[index]
+        nodeToFlagAsRemoved["isUserDeleted"] = true
+        self.content[index] = nodeToFlagAsRemoved
         let content = self.content as NSArray
         if #available(iOS 11.0, *) {
             try content.write(to: NodesList.url)
         } else {
-            
             // Fallback on earlier versions
         }
+        self.content = Self.load()
     }
     
     func reset() throws {
