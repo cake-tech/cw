@@ -12,6 +12,12 @@
 		<key>isUserDeleted</key>
 		<false/>
 		<key>uri</key>
+		<string>node.imonero.org:18081</string>
+	</dict>
+	<dict>
+		<key>isUserDeleted</key>
+		<false/>
+		<key>uri</key>
 		<string>xmr-node-eu.cakewallet.com:18081</string>
 	</dict>
 	<dict>
