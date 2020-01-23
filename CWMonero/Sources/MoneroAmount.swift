@@ -13,12 +13,14 @@ fileprivate let nf = NumberFormatter()
 public struct MoneroAmount: Amount {
     public let currency: Currency = CryptoCurrency.monero
     public let value: UInt64
+    fileprivate let nf:NumberFormatter
     
     public init(value: UInt64) {
         self.value = value
-        if nf.numberStyle != .decimal {
-            nf.numberStyle = .decimal
-        }
+        nf = NumberFormatter()
+        nf.numberStyle = .decimal
+        nf.maximumFractionDigits = 1000000000000
+        nf.minimumFractionDigits = 1
     }
     
     public init(from string: String) {
@@ -37,6 +39,11 @@ public struct MoneroAmount: Amount {
         }
         
         value = MoneroAmountParser.amount(from: _string)
+        
+        nf = NumberFormatter()
+        nf.numberStyle = .decimal
+        nf.maximumFractionDigits = 1000000000000
+        nf.minimumFractionDigits = 1
     }
     
     public func formatted() -> String {
@@ -46,7 +53,6 @@ public struct MoneroAmount: Amount {
             _value != 0 else {
               return "0.0"
         }
-        
         let number = NSNumber(value:_value)
         return nf.string(from:number) ?? String(_value)
     }
