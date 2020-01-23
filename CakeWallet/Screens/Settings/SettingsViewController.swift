@@ -376,15 +376,17 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
                 self?.askToShowBackupPasswordAlert() {
                     self?.showSpinnerAlert(withTitle: NSLocalizedString("creating_backup", comment: "")) { [weak self] alert in
                         autoBackup(force: true, handler: { error in
-                            alert.dismiss(animated: true) {
-                                guard let error = error else {
-                                    self?.showOKInfoAlert(
-                                        title: NSLocalizedString("backup_uploaded", comment: ""),
-                                        message: NSLocalizedString("backup_uploaded_icloud", comment: "")
-                                    )
-                                    return
+                            DispatchQueue.main.async {
+                                alert.dismiss(animated: true) {
+                                    guard let error = error else {
+                                        self?.showOKInfoAlert(
+                                            title: NSLocalizedString("backup_uploaded", comment: ""),
+                                            message: NSLocalizedString("backup_uploaded_icloud", comment: "")
+                                        )
+                                        return
+                                    }
+                                    self?.onBackupSave(error: error)
                                 }
-                                self?.onBackupSave(error: error)
                             }
                         })
                     }
