@@ -29,11 +29,14 @@ final class NodesList: Collection {
                 }
             })
             
+            var containedURIs = Set<String>()
+            
             //these are the nodes that the user will see. filter out any nodes that have "isUserDeleted" == true
             var userNodes = documentSerialized.compactMap({ someNode -> [String:Any]? in
                 if let hasIsUserDeleted = someNode["isUserDeleted"] as? Bool, hasIsUserDeleted == false {
                     //this node is not user deleted..now verify that it is not using one of the old cakewallet domains before returning
-                    if let nodeURI = someNode["uri"] as? String {
+                    if let nodeURI = someNode["uri"] as? String, containedURIs.contains(nodeURI.lowercased()) == false {
+                        containedURIs.update(with:nodeURI.lowercased())
                         var nodeDataToModify = someNode
                         switch nodeURI {
                         case "eu-node.cakewallet.io:18081":
@@ -44,12 +47,13 @@ final class NodesList: Collection {
                             break
                         }
                         return nodeDataToModify
+                    } else {
+                        return nil
                     }
-                    return someNode
                 } else {
                     return nil
                 }
-            })
+                })
 
             let allDocumentNodeURIs = documentSerialized.compactMap({ $0["uri"] as? String })
             
