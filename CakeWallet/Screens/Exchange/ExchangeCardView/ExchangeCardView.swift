@@ -57,6 +57,34 @@ final class ExchangeCardView: BaseFlexView {
     let limitsRow: UIView
     let maxLabel: UILabel
     let minLabel: UILabel
+    let addressFieldRow:UIView = UIView()
+    let estimatedField: UILabel
+    
+    var wantsEstimatedField:Bool = false {
+        didSet {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                
+                let field = (self.cardType == .deposit ? self.amountTextField : self.receiveView)
+                
+                self.estimatedField.isHidden = !self.wantsEstimatedField
+                
+                if !self.wantsEstimatedField {
+                    field.flex.minWidth(100%)
+                    field.flex.left(0)
+                    self.estimatedField.flex.width(0)
+                } else {
+                    field.flex.minWidth(50%)
+                    field.flex.grow(1)
+                    self.estimatedField.flex.grow(1)
+                }
+                
+                self.addressFieldRow.flex.layout()
+            }
+        }
+    }
     
     required init(cardType: ExchangeCardType, cardTitle: String, addressPlaceholder: String) {
         self.cardType = cardType
@@ -73,6 +101,7 @@ final class ExchangeCardView: BaseFlexView {
         limitsRow = UIView()
         maxLabel = UILabel(fontSize: 10)
         minLabel = UILabel(fontSize: 10)
+        estimatedField = UILabel(fontSize:12)
         super.init()
     }
     
@@ -97,8 +126,12 @@ final class ExchangeCardView: BaseFlexView {
         minLabel.textAlignment = .right
         backgroundColor = .clear
         rootFlexContainer.layer.cornerRadius = 12
-//        rootFlexContainer.layer.borderWidth = 0.75
-//        rootFlexContainer.layer.borderColor = UIColor.grayBorder.cgColor
+    
+        estimatedField.layer.backgroundColor = UserInterfaceTheme.current.gray.dim.cgColor
+        estimatedField.textColor = UserInterfaceTheme.current.gray.highlight
+        estimatedField.layer.cornerRadius = 10
+        estimatedField.text = "Estimated"
+        estimatedField.textAlignment = .center
     }
     
     override func configureConstraints() {
@@ -125,7 +158,10 @@ final class ExchangeCardView: BaseFlexView {
                     .width(67%)
                     .paddingBottom(7)
                     .define({ flex in
-                        flex.addItem(cardType == .deposit ? amountTextField : receiveView)
+                        flex.addItem(addressFieldRow).direction(.row).define({ flex in
+                            flex.addItem(estimatedField).height(32).padding(10).alignSelf(.center).width(10%).grow(1)
+                            flex.addItem(cardType == .deposit ? amountTextField : receiveView).grow(1)
+                        }).alignContent(.center).justifyContent(.center)
                         flex.addItem(limitsRow).height(20).width(100%)
                 })
         }
