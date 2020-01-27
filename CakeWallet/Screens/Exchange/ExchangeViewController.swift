@@ -795,9 +795,31 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         depositMaxAmount = BehaviorRelay<String>(value: "0.0")
         receiveMinAmount = BehaviorRelay<String>(value: "0.0")
         receiveMaxAmount = BehaviorRelay<String>(value: "0.0")
+
         self.exchangeFlow = exchangeFlow
         self.store = store
         super.init()
+        NotificationCenter.default.addObserver(forName: Notification.Name("langChanged"), object: nil, queue: nil) { [weak self] notification in
+            guard let self = self else {
+                return
+            }
+            
+            let clearButton = UIBarButtonItem(
+                title: NSLocalizedString("clear", comment: ""),
+                style: .plain,
+                target: self,
+                action: #selector(self.clear))
+            
+            let tradesHistoryButton = UIBarButtonItem(
+                title: NSLocalizedString("history", comment: ""),
+                style: .plain,
+                target: self,
+                action: #selector(self.navigateToTradeHistory))
+            
+            self.navigationItem.rightBarButtonItem = clearButton
+            self.navigationItem.leftBarButtonItem = tradesHistoryButton
+
+        }
         tabBarItem = UITabBarItem(
             title: title,
             image: UIImage(named: "exchange_icon")?.withRenderingMode(.alwaysTemplate),
@@ -1006,14 +1028,15 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
             action: #selector(clear))
         
         let tradesHistoryButton = UIBarButtonItem(
-            title: "History",
+            title: NSLocalizedString("history", comment: ""),
             style: .plain,
             target: self,
             action: #selector(navigateToTradeHistory))
         
         navigationItem.rightBarButtonItem = clearButton
-        navigationItem.rightBarButtonItem?.tintColor = UserInterfaceTheme.current.text
         navigationItem.leftBarButtonItem = tradesHistoryButton
+        navigationItem.rightBarButtonItem?.tintColor = UserInterfaceTheme.current.text
+
         navigationItem.leftBarButtonItem?.tintColor =
             UserInterfaceTheme.current.text
                 XMRTOExchange.asyncUpdateUri()
