@@ -466,22 +466,37 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
                             alert.addAction(UIAlertAction(title: NSLocalizedString("generate_new_password", comment: ""), style: .default, handler: { _ in
                                 let password = UUID().uuidString
                                 changePassword(password) {
-                                    let copyAction = UIAlertAction(title: NSLocalizedString("copy", comment: ""), style: .default) { [weak self] _ in
-                                        UIPasteboard.general.string = self?.masterPassword
+                                    if (password.count != 0) {
+                                        let copyAction = UIAlertAction(title: NSLocalizedString("copy", comment: ""), style: .default) { [weak self] _ in
+                                            UIPasteboard.general.string = self?.masterPassword
+                                        }
+                                        
+                                        let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+                                        
+                                        self?.showInfoAlert(
+                                            title: NSLocalizedString("backup_password", comment: ""),
+                                            message: "Backup password has changed successfuly!\nYour new backup password: \(password)",
+                                            actions: [okAction, copyAction]
+                                        )
+                                    } else {
+                                        let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+                                        self?.showInfoAlert(
+                                            title: NSLocalizedString("backup_password", comment: ""),
+                                            message: "Please enter a valid backup password.",
+                                            actions: [okAction]
+                                        )
                                     }
-                                    
-                                    let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
-                                    
-                                    self?.showInfoAlert(
-                                        title: NSLocalizedString("backup_password", comment: ""),
-                                        message: "Backup password has changed successfuly!\nYour new backup password: \(password)",
-                                        actions: [okAction, copyAction]
-                                    )
                                 }
                             }))
                             
                             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] _ in
-                                guard let password = alert?.textFields?.first?.text else {
+                                guard let password = alert?.textFields?.first?.text, password.count > 0 else {
+                                    let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+                                    self?.showInfoAlert(
+                                        title: NSLocalizedString("backup_password", comment: ""),
+                                        message: "Please enter a valid backup password.",
+                                        actions: [okAction]
+                                    )
                                     return
                                 }
                                 

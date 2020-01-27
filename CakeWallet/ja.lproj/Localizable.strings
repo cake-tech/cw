@@ -248,7 +248,7 @@
 "transaction_key" = "トランザクションキー";
 "exchange_id" = "取引所ID";
 "trade_id" = "取引ID";
-
+"history" = "歴史";
 
 // Auth
 

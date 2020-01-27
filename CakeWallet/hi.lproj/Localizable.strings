@@ -242,7 +242,7 @@
 "transaction_key" = "लेन-देन की";
 "exchange_id" = "एक्सचेंज आईडी";
 "trade_id" = "ट्रेड आईडी";
-
+"history" = "इतिहास";
 
 // Auth
 

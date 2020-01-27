@@ -255,7 +255,7 @@
 "transaction_key" = "Transaktionsschlüssel";
 "exchange_id" = "Exchange ID";
 "trade_id" = "Geschäfts-ID";
-
+"history" = "Geschichte";
 
 // Auth
 

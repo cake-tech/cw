@@ -249,7 +249,7 @@
 "transaction_key" = "거래 키";
 "exchange_id" = "교환 ID";
 "trade_id" = "거래 ID";
-
+"history" = "역사";
 
 // Auth
 
