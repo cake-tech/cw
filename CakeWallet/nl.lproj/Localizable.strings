@@ -104,6 +104,7 @@
 "reconnect_alert_text" = "Wilt u opnieuw verbinden?";
 "cancel" = "Annuleren";
 "receive" = "Ontvangen";
+"received" = "Ontvangen";
 "send" = "Versturen";
 "transactions" = "Transacties";
 "sent" = "Verstuurd";

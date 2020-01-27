@@ -102,6 +102,7 @@
 "reconnect_alert_text" = "VocÍ tem certeza que quer reconectar ?";
 "cancel" = "Cancelar";
 "receive" = "Receber";
+"received" = "Recebido";
 "send" = "Enviar";
 "transactions" = "Transaçıes";
 "sent" = "Enviado";

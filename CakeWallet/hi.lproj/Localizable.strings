@@ -101,6 +101,7 @@
 "reconnect_alert_text" = "क्या आप फिर से कनेक्ट करना चाहते है?";
 "cancel" = "रद्द करें";
 "receive" = "प्राप्त करें";
+"received" = "प्राप्त किया";
 "send" = "भेजें’";
 "transactions" = "लेनदेन";
 "sent" = "भेजे";
