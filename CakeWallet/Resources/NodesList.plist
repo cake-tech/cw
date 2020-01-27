@@ -3,42 +3,70 @@
 <plist version="1.0">
 <array>
 	<dict>
-		<key>uri</key>
-		<string>xmr-node-eu.cakewallet.io:18081</string>
-		<key>isDefault</key>
+		<key>isUserDeleted</key>
 		<false/>
+		<key>uri</key>
+		<string>node.imonero.org:18081</string>
 	</dict>
 	<dict>
+		<key>isUserDeleted</key>
+		<false/>
+		<key>uri</key>
+		<string>node.imonero.org:18081</string>
+	</dict>
+	<dict>
+		<key>isUserDeleted</key>
+		<false/>
+		<key>uri</key>
+		<string>xmr-node-eu.cakewallet.com:18081</string>
+	</dict>
+	<dict>
+		<key>isUserDeleted</key>
+		<false/>
 		<key>isDefault</key>
 		<true/>
 		<key>uri</key>
-		<string>xmr-node-usa-east.cakewallet.io:18081</string>
+		<string>xmr-node-usa-east.cakewallet.com:18081</string>
 	</dict>
 	<dict>
+		<key>isUserDeleted</key>
+		<false/>
 		<key>uri</key>
 		<string>node.bohemianpool.com:18081</string>
 	</dict>
 	<dict>
+		<key>isUserDeleted</key>
+		<false/>
 		<key>uri</key>
 		<string>node.xmr.pt:18081</string>
 	</dict>
 	<dict>
+		<key>isUserDeleted</key>
+		<false/>
 		<key>uri</key>
 		<string>node.xmr.ru:13666</string>
 	</dict>
 	<dict>
+		<key>isUserDeleted</key>
+		<false/>
 		<key>uri</key>
 		<string>opennode.xmr-tw.org:18089</string>
 	</dict>
 	<dict>
+		<key>isUserDeleted</key>
+		<false/>
 		<key>uri</key>
 		<string>node.moneroworld.com:18089</string>
 	</dict>
 	<dict>
+		<key>isUserDeleted</key>
+		<false/>
 		<key>uri</key>
 		<string>node.xmrbackb.one:18081</string>
 	</dict>
 	<dict>
+		<key>isUserDeleted</key>
+		<false/>
 		<key>uri</key>
 		<string>node.viaxmr.com:18081</string>
 	</dict>
