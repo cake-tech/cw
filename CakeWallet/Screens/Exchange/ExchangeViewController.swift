@@ -1096,6 +1096,8 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         exchangeNameView.subtitle = exchange.provider.formatted()
         contentView.depositCardView.amountTextField.isUserInteractionEnabled = !isXMRTO
         contentView.receiveCardView.amountTextField.isUserInteractionEnabled = isXMRTO
+        contentView.depositCardView.wantsEstimatedField = isXMRTO
+        contentView.receiveCardView.wantsEstimatedField = !isXMRTO
         highlightNeededFields()
     }
     

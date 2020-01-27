@@ -189,6 +189,7 @@ final class ReceiveExchangeCardView: BaseFlexView, ExchangableCardView {
     let maxLabel: UILabel
     let limitsRow: UIView
     let amountTextField: CWTextField
+    let estimatedField: UILabel
     
     required init() {
         titleLabel = UILabel(fontSize: 16)
@@ -201,6 +202,7 @@ final class ReceiveExchangeCardView: BaseFlexView, ExchangableCardView {
         maxLabel = UILabel(fontSize: 12)
         limitsRow = UIView()
         amountTextField = CWTextField(placeholder: NSLocalizedString("amount", comment: ""))
+        estimatedField = UILabel(fontSize: 12)
         super.init()
     }
     
@@ -272,6 +274,7 @@ final class ExchangeView: BaseScrollFlexView {
             cardTitle: NSLocalizedString("you_will_get", comment: ""),
             addressPlaceholder: NSLocalizedString("address", comment: "")
         )
+        receiveCardView.wantsEstimatedField = false
         arrowDownImageView = UIImageView(image: UIImage(named: "arrow_down_dotted"))
         clearButton = SecondaryButton(title: NSLocalizedString("clear", comment: ""))
         exchangeButton = LoadingButton()
