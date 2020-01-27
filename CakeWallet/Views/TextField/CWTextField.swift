@@ -79,3 +79,66 @@ class CWTextField: UITextField {
             size: CGSize(width: self.frame.size.width, height: CWTextField.bottomBorderHeight))
     }
 }
+
+class UserSizableCWTextField: UITextField {
+    private let bottomBorder: CALayer
+    private var insetX = 0 as CGFloat
+    private var insetY = 10 as CGFloat
+        
+    override init(frame: CGRect) {
+        bottomBorder = CALayer()
+        super.init(frame: frame)
+        configureView()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func configureView() {
+        super.configureView()
+        borderStyle = .none
+        bottomBorder.backgroundColor = UserInterfaceTheme.current.gray.main.cgColor
+        font = UIFont(name: "Lato-Regular", size: super.font?.pointSize ?? 12)
+        layer.addSublayer(bottomBorder)
+    }
+    
+    override func textRect(forBounds bounds: CGRect) -> CGRect {
+        let dx = leftView?.frame.size.width ?? insetX
+        let rightOffset = (rightView?.frame.size.width ?? 0)
+        var frame = bounds.insetBy(dx: dx, dy: insetY)
+        frame.size.width = frame.size.width - rightOffset
+        return frame
+    }
+
+    override func editingRect(forBounds bounds: CGRect) -> CGRect {
+        let dx = leftView?.frame.size.width ?? insetX
+        let rightOffset = (rightView?.frame.size.width ?? 0)
+        var frame = bounds.insetBy(dx: dx, dy: insetY)
+        frame.size.width = frame.size.width - rightOffset
+        return frame
+    }
+    
+    func setPlaceholder(_ placeholder: String) {
+        attributedPlaceholder = NSAttributedString(
+            string: placeholder,
+            attributes: [
+                NSAttributedString.Key.foregroundColor: UserInterfaceTheme.current.textVariants.dim,
+                NSAttributedStringKey.font: UIFont(name: "Lato-Regular", size: super.font?.pointSize ?? 12)!
+            ]
+        )
+    }
+
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        updateLayoutBottomBorder()
+    }
+    
+    func updateLayoutBottomBorder() {
+        let y = frame.size.height - 1.5
+        bottomBorder.frame = CGRect(
+            origin: CGPoint(x: 0, y: y),
+            size: CGSize(width: self.frame.size.width, height: 1.5))
+    }
+}
