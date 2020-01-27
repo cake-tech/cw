@@ -4,23 +4,15 @@
 <array>
 	<dict>
 		<key>uri</key>
-		<string>eu-node.cakewallet.io:18081</string>
-		<key>login</key>
-		<string>cake</string>
-		<key>password</key>
-		<string>public_node</string>
+		<string>xmr-node-eu.cakewallet.io:18081</string>
 		<key>isDefault</key>
 		<false/>
 	</dict>
 	<dict>
 		<key>isDefault</key>
 		<true/>
-		<key>password</key>
-		<string>public_node</string>
-		<key>login</key>
-		<string>cake</string>
 		<key>uri</key>
-		<string>node.cakewallet.io:18081</string>
+		<string>xmr-node-usa-east.cakewallet.io:18081</string>
 	</dict>
 	<dict>
 		<key>uri</key>
