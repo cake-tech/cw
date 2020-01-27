@@ -529,7 +529,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
         }
         supportEmail.wantsBlue = true
         var supportTelegram = SettingsInformativeCellItem(title: "Telegram", informativeText: "Cake_Wallet", image: UIImage(named:"telegram_logo")) {
-            UIApplication.shared.open(URL(string:"https://t.me/cake_wallet")!, options:[:], completionHandler: nil)
+            UIApplication.shared.open(URL(string:"https://t.me/cakewallet_bot")!, options:[:], completionHandler: nil)
         }
         supportTelegram.wantsBlue = true
         var supportTwitter = SettingsInformativeCellItem(title: "Twitter", informativeText: "@CakeWalletXMR", image: UIImage(named:"twitter_logo")) {
