@@ -162,7 +162,7 @@ final class ChangeLanguageViewController: BaseViewController<ChangeLanguageView>
         }
         
         showInfoAlert(
-            title: NSLocalizedString("confirm_sending", comment: ""),
+            title: NSLocalizedString("change_language", comment: ""),
             message: String(format: NSLocalizedString("change_language_ask", comment: ""), language.formatted()),
             actions: [changeAction, cancelAction]
         )
