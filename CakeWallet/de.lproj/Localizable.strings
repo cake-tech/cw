@@ -1,13 +1,13 @@
 "welcome" = "Wilkommen zu %@";
-"first_wallet_text" = "Der ersten iOS-Wallet für Monero";
+"first_wallet_text" = "Das erste iOS-Wallet für Monero";
 "InsufficientFundsWithAmount" = "Der Betrag von %@ (Anzahl der %@ + Gebühr von %@ ist mehr als Ihr Guthaben von %@).";
 "InsufficientFunds" = "Der Betrag ist mehr als Ihr Guthaben von %@.";
 "OverallBalanceWithAmonut" = "Der Betrag von %@ ist mehr als Ihr Guthaben von %@.";
 "OverallBalance" = "Der Betrag ist mehr als Ihr Guthaben von %@.";
 
 
-"starting_creation_selection" = "Bitte treffen Sie eine Auswahl, um entweder eine neue Wallet zu erstellen oder Ihre vorhandene Wallet wiederherzustellen.";
-"enjoy_this_wallet" = "Viel Spaß mit dieser Wallet!";
+"starting_creation_selection" = "Bitte treffen Sie eine Auswahl um entweder eine neues Wallet zu erstellen oder Ihr vorhandenes Wallet wiederherzustellen.";
+"enjoy_this_wallet" = "Viel Spaß mit diesem Wallet!";
 "love_your_feedback" = "Wir würden uns über Ihr Feedback freuen!";
 
 "terms_of_use_agree" = "Ich stimme den Nutzungsbedingungen zu";
@@ -15,7 +15,7 @@
 "create_new" = "Erstellen";
 "restore" = "Wiederherstellen";
 "restore_from_seed_keys" = "Wiederherstellen";
-"please_make_selection" = "Bitte treffen Sie eine Auswahl, um entweder eine neue Brieftasche zu erstellen oder eine Brieftasche wiederherzustellen";
+"please_make_selection" = "Bitte treffen Sie eine Auswahl um entweder eine neues Wallet zu erstellen oder ein Wallet wiederherzustellen";
 
 // Next Page Seed
 "next_page_seed" = "Auf der nächsten Seite sehen Sie einen Samen";
@@ -36,8 +36,8 @@
 
 // Restore root
 
-"restore_from_seed_keys" = "Wiederherstellen aus Seed / Keys";
-"restore_from_seed_keys_long" = "Stellen Sie Ihre Brieftasche aus Ihrem Seed oder Schlüssel wieder her";
+"restore_from_seed_keys" = "Wiederherstellen aus Seed / Schlüssel";
+"restore_from_seed_keys_long" = "Stellen Sie Ihr Wallet aus Ihrem Seed oder Schlüssel wieder her";
 "restore_from_backup" = "Wiederherstellen aus einer Sicherungsdatei";
 "restore_from_backup_long" = "Stellen Sie die gesamte Cake Wallet-App aus Ihrer Sicherungsdatei wieder her";
 
@@ -45,18 +45,18 @@
 // Restore cards
 
 "restore_seed_card_title" = "Wiederherstellen aus Seed";
-"restore_seed_card_description" = "Stellen Sie Ihre Brieftasche entweder aus dem Seed mit 25 oder 13 Wörtern wieder her";
+"restore_seed_card_description" = "Stellen Sie Ihr Wallet entweder aus dem Seed mit 25 oder 13 Wörtern wieder her";
 "restore_keys_card_title" = "Wiederherstellen von Schlüsseln";
-"restore_keys_card_description" = "Stellen Sie Ihre Brieftasche mit Ihren privaten Schlüsseln wieder her";
+"restore_keys_card_description" = "Stellen Sie Ihr Wallet entweder aus dem Seed mit 25 oder 13 Wörtern wieder her";
 
 
 // Restore
 
 "recover" = "Genesen";
 "restore_your_wallet" = "Wallet wiederherstellen";
-"restore_selection_text" = "Es gibt zwei Möglichkeiten, um Ihre Wallet wiederherzustellen. Sie können entweder Ihre Seed eingeben, was eine 25-Wort-Phrase ist, oder Sie können Ihre privaten Schlüssel eingeben. Bitte wählen Sie eine Option aus";
-"from_seed" = "Mit der Seed";
-"from_keys" = "Mit dem privaten Schlüssel";
+"restore_selection_text" = "Es gibt zwei Möglichkeiten um Ihr Wallet wiederherzustellen. Sie können entweder Ihren Seed eingeben, was eine 25-Wort-Phrase ist, oder Sie können Ihren geheimen Schlüssel eingeben. Bitte wählen Sie eine Option aus";
+"from_seed" = "Mit dem Seed";
+"from_keys" = "Mit dem geheimen Schlüssel";
 "or" = "oder";
 
 "restore_wallet" = "Wallet wiederherstellen";
@@ -72,12 +72,12 @@
 "restore_height" = "Höhe wiederherstellen";
 "restore_from_date" = "Wiederherstellen vom Datum";
 "address" = "Address";
-"view_key_(private)" = "Ansichtsschlüssel (privat)";
-"spend_key_(private)" = "Ausgaben-Schlüssel (privat)";
+"view_key_(private)" = "Ansichtsschlüssel (geheim)";
+"spend_key_(private)" = "Ausgaben-Schlüssel (geheim)";
 
 "continue" = "Fortsetzen";
-"new_wallet" = "Neue wallet";
-"creating_wallet" = "Erstellen einer neuen Wallet mit Namen -";
+"new_wallet" = "Neues Wallet";
+"creating_wallet" = "Erstelle neues Wallet mit Namen -";
 
 "wallet" = "Wallet";
 
@@ -95,7 +95,7 @@
 
 // Balances
 "balance-display-type_unlocked" = "Verfügbares Guthaben";
-"balance-display-type_full" = "Volle Balance";
+"balance-display-type_full" = "Volles Guthaben";
 "balance-display-type_hidden" = "versteckt";
 "balance_type_title" = "Kontostand anzeigen als";
 
@@ -104,13 +104,19 @@
 "reconnection" = "Wiederverbindung";
 "reconnect" = "Erneut verbinden";
 "reconnect_alert_text" = "Sind Sie sicher?";
-"cancel" = "Stornieren";
-"receive" = "Erhalten";
+"cancel" = "Abbrechen";
+"receive" = "Empfangen";
 "send" = "Senden";
 "transactions" = "Transaktionen";
 "sent" = "Gesendet";
 "pending" = "Ausstehend";
 
+// Address book
+
+"address_book" = "Adressbuch";
+"no_contacts" = "Noch keine Kontakte";
+"contact" = "Kontakt";
+"contact_name" = "Kontaktname";
 
 // Wallets
 
@@ -119,9 +125,9 @@
 "remove" = "Löschen";
 "rescan" = "Neu scannen";
 "show_keys" = "Schlüssel anzeigen";
-"removing_wallet" = "Wallet mit Namen entfernen";
-"loading_wallet" = "Wallet mit den Namen laden";
-"create_new_wallet" = "Neue Wallet erstellen";
+"removing_wallet" = "Wallet mit dem Namen entfernen";
+"loading_wallet" = "Wallet mit dem Namen laden";
+"create_new_wallet" = "Neues Wallet erstellen";
 "accounts" = "Konten";
 
 
@@ -140,7 +146,7 @@
 
 // Send
 
-"your_wallet" = "Deine geldbörse";
+"your_wallet" = "Dein Wallet";
 "all" = "Alle";
 "optional" = "Optional";
 "estimated_fee" = "Geschätzte Gebühr";
@@ -196,7 +202,7 @@
 "creating_backup" = "Backup erstellen";
 "backup_uploaded" = "Backup hochgeladen";
 "backup_uploaded_icloud" = "Backup wurde auf Ihre iCloud hochgeladen";
-"change_backup_warning" = "Wenn Sie das Sicherungskennwort für Sicherungen ändern, funktionieren die vorherigen MANUELLEN Sicherungen nicht mit dem neuen Kennwort. Automatische Sicherungen funktionieren weiterhin mit dem neuen Kennwort.";
+"change_backup_warning" = "Wenn Sie das Sicherungskennwort für Sicherungen ändern funktionieren die vorherigen MANUELLEN Sicherungen nicht mit dem neuen Kennwort. Automatische Sicherungen funktionieren weiterhin mit dem neuen Kennwort.";
 "save_recipient_address" = "Empfängeradresse speichern";
 "dark_mode_setting_title" = "Dunkler Modus";
 
@@ -234,8 +240,9 @@
 "max" = "Max.";
 "state" = "Status";
 "status" = "Status";
-"exchange_result_confirm_text" = "Nachdem Sie den Wechsel bestätigt haben, senden Sie %@ von Ihrer Wallet namens %@ an die oben angezeigte Adresse. Oder Sie können von Ihrer externen Geldbörse an den oben genannten Adress- / QR-Code senden.";
-"exchange_result_confirm_sending" = "Bitte bestätigen Sie den Wechsel, um fortzufahren oder gehen Sie zurück, um die Beträge zu ändern.";
+"exchange_result_description_text" = "Bitte senden Sie %@ an die oben angezeigte Adresse";
+"exchange_result_confirm_text" = "Nachdem Sie den Wechsel bestätigt haben senden Sie %@ von Ihrem Wallet namens %@ an die oben angezeigte Adresse. Oder Sie können von Ihrem externen Wallet an den oben genannten Adress- / QR-Code senden.";
+"exchange_result_confirm_sending" = "Bitte bestätigen Sie den Wechsel um fortzufahren oder gehen Sie zurück um die Beträge zu ändern.";
 "exchange_result_write_down_trade_id" = "Bitte kopieren oder notieren Sie Ihre oben angezeigte ID";
 "trade_not_found" = "Wechsel nicht gefunden";
 "amount_is_guaranteed" = "Der empfangsbetrag ist garantiert";
@@ -254,7 +261,7 @@
 "loading_wallet" = "Wallet wird geladen";
 "authentication" = "Authentifizierung";
 "use_pin_password" = "Verwenden Sie die PIN";
-"unlock_wallet" = "Um die Wallet zu entsperren";
+"unlock_wallet" = "Um das Wallet zu entsperren";
 
 
 // Wallets keys
@@ -266,7 +273,7 @@
 
 // Seed
 
-"seed_disclaimer" = "Bitte teilen, kopieren oder schreiben Sie Ihre Seed auf. Die Seed wird verwendet, um Ihre Wallet wiederherzustellen. Das ist Ihre PRIVATE Seed. Bewahren Sie Ihre Seed sicher auf!";
+"seed_disclaimer" = "Bitte teilen, kopieren oder schreiben Sie Ihren Seed auf. Der Seed wird verwendet um Ihr Wallet wiederherzustellen. Das ist Ihr GEHEIMER Seed. Bewahren Sie Ihren Seed sicher auf!";
 
 
 // Transactions details
