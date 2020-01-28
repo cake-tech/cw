@@ -16,7 +16,7 @@
 "please_make_selection" = "Please make a selection below to either create a new wallet or restore a wallet";
 
 
-// Next Page Seed
+// Next Page Seedloose
 "next_page_seed" = "The next page will show you a seed";
 "i_understand" = "I understand";
 "next_page_seed_instructions" = "Please write these down in case you lose or wipe your phone.\n\nYou can also see the seed again in the settings menu.";
