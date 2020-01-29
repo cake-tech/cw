@@ -8,8 +8,6 @@ extension String {
     }
 }
 
-fileprivate let nf = NumberFormatter()
-
 public struct MoneroAmount: Amount {
     public let currency: Currency = CryptoCurrency.monero
     public let value: UInt64
@@ -21,6 +19,9 @@ public struct MoneroAmount: Amount {
         nf.numberStyle = .decimal
         nf.maximumFractionDigits = 1000000000000
         nf.minimumFractionDigits = 1
+        nf.isLenient = false
+        nf.alwaysShowsDecimalSeparator = true
+        nf.locale = Locale(identifier: "en_US")
     }
     
     public init(from string: String) {
@@ -44,6 +45,9 @@ public struct MoneroAmount: Amount {
         nf.numberStyle = .decimal
         nf.maximumFractionDigits = 1000000000000
         nf.minimumFractionDigits = 1
+        nf.isLenient = false
+        nf.alwaysShowsDecimalSeparator = true
+        nf.locale = Locale(identifier: "en_US")
     }
     
     public func formatted() -> String {
