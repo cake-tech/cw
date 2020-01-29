@@ -571,20 +571,20 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
             saveRecipientAddress
         ]
         
-        if #available(iOS 13.0, *) {
-            sections[.personal] = [
-                changePinCellItem,
-                changeLanguage,
-                biometricCellItem
-            ]
-        } else {
+//        if #available(iOS 13.0, *) {
+//            sections[.personal] = [
+//                changePinCellItem,
+//                changeLanguage,
+//                biometricCellItem
+//            ]
+//        } else {
             sections[.personal] = [
                 changePinCellItem,
                 changeLanguage,
                 biometricCellItem,
                 darkmodeCellItem
             ]
-        }
+//        }
                 
         sections[.backup] = [
             showMasterPasswordCellItem,

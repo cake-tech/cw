@@ -52,14 +52,14 @@ enum UserInterfaceTheme: Int, Theme {
     static var `default` = UserInterfaceTheme.light
     static var current: UserInterfaceTheme {
         get {
-            if #available(iOS 13.0, *) {
-                if let cacheTest = currentCached {
-                    return cacheTest
-                }
-                let screenTheme = UIScreen.main.traitCollection.userInterfaceStyle.asUserInterfaceTheme()
-                currentCached = screenTheme
-                return screenTheme
-            } else {
+//            if #available(iOS 13.0, *) {
+//                if let cacheTest = currentCached {
+//                    return cacheTest
+//                }
+//                let screenTheme = UIScreen.main.traitCollection.userInterfaceStyle.asUserInterfaceTheme()
+//                currentCached = screenTheme
+//                return screenTheme
+//            } else {
                 if let cacheTest = currentCached {
                     return cacheTest
                 }
@@ -69,7 +69,7 @@ enum UserInterfaceTheme: Int, Theme {
                 }
                 currentCached = self.`default`
                 return self.`default`
-            }
+//            }
         }
         set {
             let currentValue = UserInterfaceTheme(rawValue: UserDefaults.standard.integer(forKey: Configurations.DefaultsKeys.currentTheme)) ?? self.`default`
