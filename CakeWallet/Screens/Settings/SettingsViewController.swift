@@ -676,6 +676,10 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
                 return FlexCell()
         }
         let cell = tableView.dequeueReusableCell(withItem: item, for: indexPath)
+        if let fiatCell = cell as? SettingsPickerUITableViewCell<FiatCurrency> {
+            print("foo")
+            fiatCell.reconfigureForSelection(index:FiatCurrency.all.index(of: fiatCurrency) ?? 0)
+        }
         cell.textLabel?.font = UIFont.systemFont(ofSize: 15)
         
         cell.backgroundColor = UserInterfaceTheme.current.settingCellColor

@@ -39,6 +39,12 @@ final class SettingsPickerUITableViewCell<Item: Formatted>: FlexCell, UIPickerVi
         addGestureRecognizer(onTapGesture)
     }
     
+    public func reconfigureForSelection(index:Int) {
+        pickerView.reloadAllComponents()
+        pickerView.selectRow(index, inComponent: 0, animated: false)
+        pinckerTextField.text = stringForPickerOption(pickerOptions[index])
+    }
+    
     override func configureConstraints() {
         pinckerTextField.frame = CGRect(origin: .zero, size: CGSize(width: 200, height: 50))
     }
