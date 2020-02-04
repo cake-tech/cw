@@ -4,18 +4,19 @@ import QRCodeReader
 
 public enum AddressViewPickers:UInt8 {
     static var all:[AddressViewPickers] {
-        return [.qrScan, .addressBook, .subaddress]
+        return [.qrScan, .addressBook, .subaddress, .paste]
     }
     case qrScan
     case addressBook
     case subaddress
+    case paste
 }
 
 final class AddressView: BaseFlexView {
     
     let textView: AddressTextField
     let borderView, buttonsView: UIView
-    let qrScanButton, addressBookButton, subaddressButton: UIButton
+    let qrScanButton, addressBookButton, subaddressButton, pasteButton: UIButton
     let placeholder: String
     
     private var _pickers:[AddressViewPickers]
@@ -76,6 +77,7 @@ final class AddressView: BaseFlexView {
         qrScanButton = UIButton()
         addressBookButton = UIButton()
         subaddressButton = UIButton()
+        pasteButton = UIButton()
         _pickers = AddressViewPickers.all.sorted(by: { return $0.rawValue > $1.rawValue })
         super.init()
     }
@@ -88,12 +90,18 @@ final class AddressView: BaseFlexView {
         qrScanButton = UIButton()
         addressBookButton = UIButton()
         subaddressButton = UIButton()
+        pasteButton = UIButton()
         _pickers = AddressViewPickers.all
         super.init()
     }
     
     override func configureView() {
         super.configureView()
+        
+        pasteButton.imageEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5)
+        pasteButton.backgroundColor = .clear
+        pasteButton.layer.cornerRadius = 5
+        pasteButton.backgroundColor = UserInterfaceTheme.current.gray.dim
         
         qrScanButton.imageEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5)
         qrScanButton.backgroundColor = .clear
@@ -125,9 +133,16 @@ final class AddressView: BaseFlexView {
             subaddressButton.imageView?.tintColor = UserInterfaceTheme.current.gray.highlight
         }
         
+        if let pasteImage = UIImage(named:"paste_icon")?.withRenderingMode(.alwaysTemplate) {
+            pasteButton.setImage(pasteImage, for: .normal)
+            pasteButton.imageView?.contentMode = .scaleAspectFit
+            pasteButton.imageView?.tintColor = UserInterfaceTheme.current.gray.highlight
+        }
+        
         qrScanButton.addTarget(self, action: #selector(scanQr), for: .touchUpInside)
         addressBookButton.addTarget(self, action: #selector(fromAddressBook), for: .touchUpInside)
         subaddressButton.addTarget(self, action: #selector(fromSubaddress), for: .touchUpInside)
+        pasteButton.addTarget(self, action: #selector(pasteText), for: .touchUpInside)
         
         textView.font = applyFont(ofSize: 15, weight: .regular)
         textView.attributedPlaceholder = NSAttributedString(
@@ -153,6 +168,7 @@ final class AddressView: BaseFlexView {
             .direction(.row).justifyContent(.spaceEvenly).alignItems(.stretch)
             .width(CGFloat(40*availablePickers.count)).paddingLeft(5)
             .define{ flex in
+                    flex.addItem(pasteButton).width(35).height(35)
                     flex.addItem(qrScanButton).width(35).height(35)
                     flex.addItem(addressBookButton).width(35).height(35)
                     flex.addItem(subaddressButton).width(35).height(35)
@@ -173,6 +189,14 @@ final class AddressView: BaseFlexView {
         textView.flex.paddingRight(CGFloat(40*_pickers.count)).markDirty()
         
         textView.change(text: textView.originText.value) //this is a hack to get the text field to redraw to its new size
+        
+        if (_pickers.contains(.paste)) {
+            pasteButton.flex.width(35).height(35).markDirty()
+            pasteButton.isHidden = false
+        } else {
+            pasteButton.flex.width(0).height(0).markDirty()
+            pasteButton.isHidden = true
+        }
         
         if (_pickers.contains(.qrScan)) {
             qrScanButton.flex.width(35).height(35).markDirty()
@@ -229,6 +253,10 @@ final class AddressView: BaseFlexView {
         
         let sendNavigation = UINavigationController(rootViewController: subaddressVC)
         presenter?.present(sendNavigation, animated: true)
+    }
+    
+    @objc private func pasteText() {
+        textView.originText.accept(UIPasteboard.general.string ?? "")
     }
     
     private func updateAddress(from uri: QRUri) {

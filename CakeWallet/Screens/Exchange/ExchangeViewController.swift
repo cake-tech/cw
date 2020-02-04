@@ -1064,13 +1064,13 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         if (depositCrypto.value == CryptoCurrency.monero) {
             contentView.depositCardView.addressContainer.availablePickers = []
         } else {
-            contentView.depositCardView.addressContainer.availablePickers = [.qrScan, .addressBook]
+            contentView.depositCardView.addressContainer.availablePickers = [.paste, .qrScan, .addressBook]
         }
         
         if (receiveCrypto.value == CryptoCurrency.monero) {
-            contentView.receiveCardView.addressContainer.availablePickers = [.qrScan, .addressBook, .subaddress]
+            contentView.receiveCardView.addressContainer.availablePickers = [.paste, .qrScan, .addressBook, .subaddress]
         } else {
-            contentView.receiveCardView.addressContainer.availablePickers = [.qrScan, .addressBook]
+            contentView.receiveCardView.addressContainer.availablePickers = [.paste, .qrScan, .addressBook]
         }
     }
     
@@ -1098,15 +1098,15 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
             if (item == CryptoCurrency.monero) {
                 contentView.depositCardView.addressContainer.availablePickers = []
             } else {
-                contentView.depositCardView.addressContainer.availablePickers = [.qrScan, .addressBook]
+                contentView.depositCardView.addressContainer.availablePickers = [.paste, .qrScan, .addressBook]
             }
 
         case .receive:
             receiveCrypto.accept(item)
             if (item == CryptoCurrency.monero) {
-                contentView.receiveCardView.addressContainer.availablePickers = [.qrScan, .addressBook, .subaddress]
+                contentView.receiveCardView.addressContainer.availablePickers = [.paste, .qrScan, .addressBook, .subaddress]
             } else {
-                contentView.receiveCardView.addressContainer.availablePickers = [.qrScan, .addressBook]
+                contentView.receiveCardView.addressContainer.availablePickers = [.paste, .qrScan, .addressBook]
             }
         case .unknown:
             return

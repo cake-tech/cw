@@ -526,8 +526,8 @@ final class SettingsViewController: BaseViewController<SettingsView>, UITableVie
                     actions: [cancelAction, changeAction])
         })
         
-        var supportEmail = SettingsInformativeCellItem(title: "Email", informativeText: "support@cakewallet.io", image: nil) {
-            UIApplication.shared.open(URL(string:"mailto:support@cakewallet.io")!, options:[:], completionHandler: nil)
+        var supportEmail = SettingsInformativeCellItem(title: "Email", informativeText: "support@cakewallet.com", image: nil) {
+            UIApplication.shared.open(URL(string:"mailto:support@cakewallet.com")!, options:[:], completionHandler: nil)
         }
         supportEmail.wantsBlue = true
         var supportTelegram = SettingsInformativeCellItem(title: "Telegram", informativeText: "Cake_Wallet", image: UIImage(named:"telegram_logo")) {
