@@ -21,7 +21,6 @@ final class NewAddressView: BaseFlexView {
         contactNameTextField.textColor = UserInterfaceTheme.current.text
         addressView = AddressView(placeholder: NSLocalizedString("address", comment: ""))
         addressView.textView.font = applyFont(ofSize: 16)
-        addressView.availablePickers = [.qrScan]
 
         saveButton = PrimaryButton(title: NSLocalizedString("save", comment: ""))
         resetButton = SecondaryButton(title: NSLocalizedString("reset", comment: ""))
@@ -52,5 +51,6 @@ final class NewAddressView: BaseFlexView {
             flex.addItem(cardView).width(100%)
             flex.addItem(buttonsContainer).width(100%).marginTop(25).paddingHorizontal(15)
         }
+        addressView.availablePickers = [.paste, .qrScan]
     }
 }
