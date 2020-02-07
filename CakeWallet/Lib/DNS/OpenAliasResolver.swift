@@ -39,19 +39,18 @@ public class OpenAlias {
         var readData = Data()
         try socket.write(from:request)
         try socket.setReadTimeout(value: UInt(timeoutSeconds*1000))
-        var response:Message? = nil
         repeat {
             do {
                 usleep(100000)
                 try socket.read(into:&readData)
-                response = try? Message(deserializeTCP: readData)
             } catch _ {
                 throw OpenAlias.ResolutionError.queryTimeout
             }
-        } while (response == nil)
-        if let gotResponse = response?.answers.first, let textResponse = gotResponse as? TextRecord, let openaliasXMRAddress = textResponse.attributes["oa1:xmr recipient_address"] {
-            if let hasName = textResponse.attributes["recipient_name"] {
-                return (name:hasName, address:openaliasXMRAddress)
+        } while (readData.count == 0)
+        let response = try Message.init(deserializeTCP: readData)
+        if let gotResponse = response.answers.first, let textResponse = gotResponse as? TextRecord, let openaliasXMRAddress = textResponse.attributes["oa1:xmr recipient_address"] {
+            if let hasRecipientName = textResponse.attributes["recipient_name"] {
+                return (name:hasRecipientName, address:openaliasXMRAddress)
             } else {
                 return (name:nil, address:openaliasXMRAddress)
             }
