@@ -19,9 +19,7 @@ target 'CakeWallet' do
     pod 'RxBiBinding'
     pod 'Sourcery'
     pod 'SwipeCellKit'
-    pod 'SwiftDate', '~> 6.0',
-    pod 'BlueSocket' '~> 1.0.52'
-    pod 'BlueSSLService' '~> 1.0.52'
+    pod 'SwiftDate', '~> 6.0'
 end
 
 target 'CWMonero' do
@@ -30,5 +28,7 @@ target 'CWMonero' do
 end
 
 target 'CakeWalletLib' do
+    pod 'BlueSocket', '~> 1.0.52'
+    pod 'BlueSSLService', '~> 1.0.52'
     pod 'KeychainAccess'
 end
