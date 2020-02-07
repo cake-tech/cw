@@ -44,17 +44,23 @@ public class OpenAlias {
                 usleep(100000)
                 try socket.read(into:&readData)
             } catch _ {
+                socket.close()
                 throw OpenAlias.ResolutionError.queryTimeout
             }
         } while (readData.count == 0)
         let response = try Message.init(deserializeTCP: readData)
-        if let gotResponse = response.answers.first, let textResponse = gotResponse as? TextRecord, let openaliasXMRAddress = textResponse.attributes["oa1:xmr recipient_address"] {
-            if let hasRecipientName = textResponse.attributes["recipient_name"] {
-                return (name:hasRecipientName, address:openaliasXMRAddress)
-            } else {
-                return (name:nil, address:openaliasXMRAddress)
+        for (_, curAnswer) in response.answers.enumerated() {
+            if let textResponse = curAnswer as? TextRecord, let openaliasXMRAddress = textResponse.attributes["oa1:xmr recipient_address"] {
+                if let hasRecipientName = textResponse.attributes["recipient_name"] {
+                    socket.close()
+                    return (name:hasRecipientName, address:openaliasXMRAddress)
+                } else {
+                    socket.close()
+                    return (name:nil, address:openaliasXMRAddress)
+                }
             }
         }
+        socket.close()
         throw OpenAlias.ResolutionError.unexpectedResponse
     }
 
