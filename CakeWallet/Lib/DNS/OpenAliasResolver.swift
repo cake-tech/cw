@@ -28,7 +28,7 @@ public class OpenAlias {
         return try newRequest.serializeTCP()
     }
     
-    private class func resolveOverTLS(request:Data, endpoint:String="1.1.1.1", port:Int32=853, timeoutSeconds:TimeInterval) throws -> String {
+    private class func resolveOverTLS(request:Data, endpoint:String="1.1.1.1", port:Int32=853, timeoutSeconds:TimeInterval) throws -> (name:String?, address:String) {
         guard timeoutSeconds > 0 else {
             throw OpenAlias.ResolutionError.invalidTimeout
         }
@@ -39,30 +39,34 @@ public class OpenAlias {
         var readData = Data()
         try socket.write(from:request)
         try socket.setReadTimeout(value: UInt(timeoutSeconds*1000))
+        var response:Message? = nil
         repeat {
             do {
                 usleep(100000)
                 try socket.read(into:&readData)
+                response = try? Message(deserializeTCP: readData)
             } catch _ {
                 throw OpenAlias.ResolutionError.queryTimeout
             }
-        } while (readData.count == 0)
-        let response = try Message.init(deserializeTCP: readData)
-        if let gotResponse = response.answers.first, let textResponse = gotResponse as? TextRecord, let openaliasXMRAddress = textResponse.attributes["oa1:xmr recipient_address"] {
-            return openaliasXMRAddress
+        } while (response == nil)
+        if let gotResponse = response?.answers.first, let textResponse = gotResponse as? TextRecord, let openaliasXMRAddress = textResponse.attributes["oa1:xmr recipient_address"] {
+            if let hasName = textResponse.attributes["recipient_name"] {
+                return (name:hasName, address:openaliasXMRAddress)
+            } else {
+                return (name:nil, address:openaliasXMRAddress)
+            }
         }
         throw OpenAlias.ResolutionError.unexpectedResponse
     }
 
-    public class func resolve(jobID:UInt64, query:String, _ success:@escaping (UInt64, String) -> Void) {
+    public class func resolve(jobID:UInt64, query:String, _ success:@escaping (UInt64, String, String?) -> Void) {
         oaQueue.async {
             do {
                 let requestData = try Self.getSerializedTCPDNSRequest(query: query)
-                let resolvedAddress = try Self.resolveOverTLS(request: requestData, timeoutSeconds: 4)
-                success(jobID, resolvedAddress)
-            } catch let error {
+                let resolvedAddress = try Self.resolveOverTLS(request: requestData, timeoutSeconds: 5)
+                success(jobID, resolvedAddress.address, resolvedAddress.name)
+            } catch _ {
                 print("[OPENALIAS] failed to resolve job id: \(jobID)")
-                print("\(error)")
             }
         }
     }
