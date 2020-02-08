@@ -361,6 +361,13 @@
 		AE169DF62342D5E7000A9F2E /* CWNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE169DF52342D5E7000A9F2E /* CWNavigationBar.swift */; };
 		AE227C44233C6647009488F6 /* AboutSeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE227C43233C6647009488F6 /* AboutSeedView.swift */; };
 		AE227C46233C6656009488F6 /* AboutSeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE227C45233C6656009488F6 /* AboutSeedViewController.swift */; };
+		AE2B1CAE23ED3E560036CDD2 /* Bytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2B1CAD23ED3E560036CDD2 /* Bytes.swift */; };
+		AE2B1CB023ED3E720036CDD2 /* Data+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2B1CAF23ED3E720036CDD2 /* Data+Extensions.swift */; };
+		AE2B1CB223ED3EDE0036CDD2 /* IP.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2B1CB123ED3EDE0036CDD2 /* IP.swift */; };
+		AE2B1CB423ED3EEF0036CDD2 /* Integer+Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2B1CB323ED3EEF0036CDD2 /* Integer+Data.swift */; };
+		AE2B1CB623ED3F010036CDD2 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2B1CB523ED3F010036CDD2 /* Message.swift */; };
+		AE2B1CB823ED3F220036CDD2 /* DNSTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2B1CB723ED3F220036CDD2 /* DNSTypes.swift */; };
+		AE2B1CBD23ED458E0036CDD2 /* OpenAliasResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2B1CBC23ED458E0036CDD2 /* OpenAliasResolver.swift */; };
 		AE728B2122F65702000A9F2E /* Vibrate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE728B2022F65701000A9F2E /* Vibrate.swift */; };
 		AEBAD6632310EBBF000A9F2E /* SubAddressPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAD6622310EBBF000A9F2E /* SubAddressPickerViewController.swift */; };
 		AEBAD6652310EBD3000A9F2E /* SubAddressPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAD6642310EBD3000A9F2E /* SubAddressPickerView.swift */; };
@@ -900,6 +907,13 @@
 		AE169DF52342D5E7000A9F2E /* CWNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CWNavigationBar.swift; sourceTree = "<group>"; };
 		AE227C43233C6647009488F6 /* AboutSeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutSeedView.swift; sourceTree = "<group>"; };
 		AE227C45233C6656009488F6 /* AboutSeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutSeedViewController.swift; sourceTree = "<group>"; };
+		AE2B1CAD23ED3E560036CDD2 /* Bytes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bytes.swift; sourceTree = "<group>"; };
+		AE2B1CAF23ED3E720036CDD2 /* Data+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Extensions.swift"; sourceTree = "<group>"; };
+		AE2B1CB123ED3EDE0036CDD2 /* IP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IP.swift; sourceTree = "<group>"; };
+		AE2B1CB323ED3EEF0036CDD2 /* Integer+Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Integer+Data.swift"; sourceTree = "<group>"; };
+		AE2B1CB523ED3F010036CDD2 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		AE2B1CB723ED3F220036CDD2 /* DNSTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNSTypes.swift; sourceTree = "<group>"; };
+		AE2B1CBC23ED458E0036CDD2 /* OpenAliasResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAliasResolver.swift; sourceTree = "<group>"; };
 		AE728B2022F65701000A9F2E /* Vibrate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vibrate.swift; sourceTree = "<group>"; };
 		AEBAD6622310EBBF000A9F2E /* SubAddressPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubAddressPickerViewController.swift; sourceTree = "<group>"; };
 		AEBAD6642310EBD3000A9F2E /* SubAddressPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubAddressPickerView.swift; sourceTree = "<group>"; };
@@ -1560,6 +1574,7 @@
 		6AAF1E9720B602AD000E4E02 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				AE2B1CAC23ED3E320036CDD2 /* DNS */,
 				0C651F362280406A005617FD /* AppSecrets.generated.swift */,
 				0CCD604422731DB60038B602 /* Exchange */,
 				64AA49D821457883002CE1FE /* Amounts */,
@@ -1860,6 +1875,20 @@
 				AE227C45233C6656009488F6 /* AboutSeedViewController.swift */,
 			);
 			path = AboutSeed;
+			sourceTree = "<group>";
+		};
+		AE2B1CAC23ED3E320036CDD2 /* DNS */ = {
+			isa = PBXGroup;
+			children = (
+				AE2B1CAD23ED3E560036CDD2 /* Bytes.swift */,
+				AE2B1CAF23ED3E720036CDD2 /* Data+Extensions.swift */,
+				AE2B1CB123ED3EDE0036CDD2 /* IP.swift */,
+				AE2B1CB323ED3EEF0036CDD2 /* Integer+Data.swift */,
+				AE2B1CB523ED3F010036CDD2 /* Message.swift */,
+				AE2B1CB723ED3F220036CDD2 /* DNSTypes.swift */,
+				AE2B1CBC23ED458E0036CDD2 /* OpenAliasResolver.swift */,
+			);
+			path = DNS;
 			sourceTree = "<group>";
 		};
 		AEBAD6612310EB7E000A9F2E /* SubaddressPicker */ = {
@@ -2501,19 +2530,26 @@
 				64AA49A121455F31002CE1FE /* KeychainStorageError.swift in Sources */,
 				646FF2D320E1201F00ADF30C /* ConnectionStatus.swift in Sources */,
 				646FF2D620E1201F00ADF30C /* Amount.swift in Sources */,
+				AE2B1CB823ED3F220036CDD2 /* DNSTypes.swift in Sources */,
 				64AA49A221455F39002CE1FE /* KeychainStorageImpl.swift in Sources */,
 				646FF2CB20E1201F00ADF30C /* WalletKeys.swift in Sources */,
 				64AA49A021455F2A002CE1FE /* KeychainKey.swift in Sources */,
 				646FF2DA20E1201F00ADF30C /* Stringify.swift in Sources */,
+				AE2B1CBD23ED458E0036CDD2 /* OpenAliasResolver.swift in Sources */,
 				6413ACD920E946FC004922AD /* FiatAmount.swift in Sources */,
 				646FF2E020E1201F00ADF30C /* NodeDescription.swift in Sources */,
+				AE2B1CB223ED3EDE0036CDD2 /* IP.swift in Sources */,
 				646FF2DC20E1201F00ADF30C /* WalletGateway.swift in Sources */,
+				AE2B1CAE23ED3E560036CDD2 /* Bytes.swift in Sources */,
+				AE2B1CB423ED3EEF0036CDD2 /* Integer+Data.swift in Sources */,
 				646FF2C920E1201F00ADF30C /* WalletType.swift in Sources */,
 				646FF2DF20E1201F00ADF30C /* Wallet.swift in Sources */,
 				646FF2CC20E1201F00ADF30C /* CurrentWallet.swift in Sources */,
 				646FF2DB20E1201F00ADF30C /* TransactionsState.swift in Sources */,
+				AE2B1CB623ED3F010036CDD2 /* Message.swift in Sources */,
 				646FF2DD20E1201F00ADF30C /* WalletIndex.swift in Sources */,
 				64AA49A321455F3D002CE1FE /* KeychainStorage.swift in Sources */,
+				AE2B1CB023ED3E720036CDD2 /* Data+Extensions.swift in Sources */,
 				643ED0AB21346D2E0042B1B8 /* WalletConfig.swift in Sources */,
 				644E32FB213468A400331241 /* FileManager+extensions.swift in Sources */,
 			);

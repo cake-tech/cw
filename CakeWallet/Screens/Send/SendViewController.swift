@@ -5,6 +5,7 @@ import CWMonero
 import QRCodeReader
 import SwiftyJSON
 import CryptoSwift
+import RxSwift
 
 protocol QRUri {
     var uri: String { get }
@@ -110,6 +111,12 @@ struct DefaultCryptoQRResult: QRUri {
 final class SendViewController: BaseViewController<SendView>, StoreSubscriber, QRUriUpdateResponsible, QRCodeReaderViewControllerDelegate {
     private static let allSymbol = NSLocalizedString("all", comment: "")
     
+    //openalias related
+    var openaliasJobId:UInt64? = nil
+    var isPotentialDomainString:Bool = false
+    var latestResolvedAddress:String? = nil
+    var resolvedAgainst:Int? = nil
+    
     let store: Store<ApplicationState>
     let address: String?
     var priority: TransactionPriority {
@@ -153,6 +160,64 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
         contentView.addressView.updateResponsible = self
         contentView.scanQrForPaymentId.addTarget(self, action: #selector(scanPaymnetIdQr), for: .touchUpInside)
         updateEstimatedFee(for: store.state.settingsState.transactionPriority)
+        _ = contentView.addressView.textView.originText.subscribe(onNext: { [weak self] stringValue in
+            guard let self = self else {
+                return
+            }
+            let doesContain = stringValue.contains(".")
+            if doesContain == true && self.isPotentialDomainString == false {
+                self.isPotentialDomainString = true
+            } else if doesContain == false {
+                self.isPotentialDomainString = false
+                self.resolvedAgainst = nil
+            }
+        })
+        _ = contentView.addressView.textView.originText.throttle(1, scheduler: MainScheduler.instance).subscribe(onNext: { [weak self] stringValue in
+            guard let self = self else {
+                return
+            }
+            let stringHash = stringValue.hashValue
+            if self.isPotentialDomainString == true && self.resolvedAgainst != stringHash {
+                let newJob = UInt64.random(in:UInt64.min..<UInt64.max)
+                self.openaliasJobId = newJob
+                OpenAlias.resolve(jobID: newJob, query: stringValue) { [weak self] (jobId, resolvedAddress, possibleName) in
+                    guard let self = self else {
+                        return
+                    }
+                    if self.openaliasJobId == jobId {
+                        self.openaliasJobId = nil
+                        self.latestResolvedAddress = resolvedAddress
+                        self.resolvedAgainst = stringValue.hashValue
+                        DispatchQueue.main.sync { [weak self] in
+                            guard let self = self else {
+                                return
+                            }
+                            if let hasName = possibleName {
+                                let newAlert = UIAlertController(title: "XMR Recipient Detected", message: "You will be sending funds to \(hasName)", preferredStyle: .alert)
+                                newAlert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default))
+                                self.present(newAlert, animated: true, completion: { [weak self] in
+                                    guard let self = self else {
+                                        return
+                                    }
+                                    self.contentView.addressView.textView.originText.accept(resolvedAddress)
+                                })
+                            } else {
+                                let newAlert = UIAlertController(title: "XMR Recipient Detected", message: "You will be sending funds to someone", preferredStyle: .alert)
+                                newAlert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default))
+                                self.present(newAlert, animated: true, completion: { [weak self] in
+                                    guard let self = self else {
+                                        return
+                                    }
+                                    self.contentView.addressView.textView.originText.accept(resolvedAddress)
+                                })
+                            }
+                        }
+                    }
+                }
+            }
+        })
+        
+        
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(named:"close_symbol")?.resized(to:CGSize(width: 12, height: 12)),
             style: .plain,
@@ -446,7 +511,7 @@ final class SendViewController: BaseViewController<SendView>, StoreSubscriber, Q
     private func createTransaction(_ handler: (() -> Void)? = nil) {
         let authController = AuthenticationViewController(store: store, authentication: AuthenticationImpl())
         authController.modalPresentationStyle = .fullScreen
-        let paymentID = contentView.paymentIdTextField.text  ?? ""
+        let paymentID = contentView.paymentIdTextField.text ?? ""
         navigationController?.modalPresentationStyle = .fullScreen
         authController.handler = { [weak self] in
             authController.dismiss(animated: true) {

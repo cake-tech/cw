@@ -28,5 +28,7 @@ target 'CWMonero' do
 end
 
 target 'CakeWalletLib' do
+    pod 'BlueSocket', '~> 1.0.52'
+    pod 'BlueSSLService', '~> 1.0.52'
     pod 'KeychainAccess'
 end

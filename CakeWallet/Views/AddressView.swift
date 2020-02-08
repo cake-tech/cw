@@ -97,7 +97,7 @@ final class AddressView: BaseFlexView {
     
     override func configureView() {
         super.configureView()
-        
+        textView.autocorrectionType = .no
         pasteButton.imageEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5)
         pasteButton.backgroundColor = .clear
         pasteButton.layer.cornerRadius = 5
