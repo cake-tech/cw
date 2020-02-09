@@ -16,12 +16,12 @@ public struct MoneroAmount: Amount {
     public init(value: UInt64) {
         self.value = value
         nf = NumberFormatter()
-        nf.numberStyle = .decimal
-        nf.maximumFractionDigits = 1000000000000
-        nf.minimumFractionDigits = 1
         nf.isLenient = false
         nf.alwaysShowsDecimalSeparator = true
         nf.locale = Locale(identifier: "en_US")
+        nf.numberStyle = .decimal
+        nf.maximumFractionDigits = 1000000000000
+        nf.minimumFractionDigits = 1
     }
     
     public init(from string: String) {
@@ -42,12 +42,12 @@ public struct MoneroAmount: Amount {
         value = MoneroAmountParser.amount(from: _string)
         
         nf = NumberFormatter()
-        nf.numberStyle = .decimal
-        nf.maximumFractionDigits = 1000000000000
-        nf.minimumFractionDigits = 1
         nf.isLenient = false
         nf.alwaysShowsDecimalSeparator = true
         nf.locale = Locale(identifier: "en_US")
+        nf.numberStyle = .decimal
+        nf.maximumFractionDigits = 1000000000000
+        nf.minimumFractionDigits = 1
     }
     
     public func formatted() -> String {
