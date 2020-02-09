@@ -10,8 +10,6 @@ import RxCocoa
 import RxBiBinding
 import SwiftSVG
 
-// fixme!!!
-
 private let morphTokenUri = "https://api.morphtoken.com"
 private let xmrtoUri = "https://xmr.to/api/v2/xmr2btc"
 private let cakeUserAgent = "CakeWallet/XMR iOS"
