@@ -9,6 +9,7 @@ import RxCocoa
 
 final class TradeDetailsViewController: BaseViewController<TransactionDetailsView>, UITableViewDataSource, UITableViewDelegate {
     private static let arrowRightSymbol = "→"
+    private var didInitialInsert:Bool = false
     
     private(set) var items: [TradeDetailsCellItem] = []
     private let trade: TradeInfo
@@ -111,21 +112,24 @@ final class TradeDetailsViewController: BaseViewController<TransactionDetailsVie
     }
     
     private func setRows(trade: TradeInfo) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MMM d, yyyy HH:mm"
-        let formattedDate = dateFormatter.string(from: Date(timeIntervalSince1970: trade.date))
-        
-        items.append(TradeDetailsCellItem(row: .tradeID, value: trade.tradeID))
-        items.append(TradeDetailsCellItem(row: .date, value: formattedDate))
-        items.append(TradeDetailsCellItem(row: .exchangeProvider, value: trade.provider))
-        items.append(TradeDetailsCellItem(row: .state, value: "Fetching..."))
-        
-        if
-            let from = trade.from,
-            let to = trade.to {
-            let pair = from.formatted() + TradeDetailsViewController.arrowRightSymbol + to.formatted()
-            items.append(TradeDetailsCellItem(row: .pair, value: pair))
+        if didInitialInsert == false {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MMM d, yyyy HH:mm"
+            let formattedDate = dateFormatter.string(from: Date(timeIntervalSince1970: trade.date))
+            
+            items.append(TradeDetailsCellItem(row: .tradeID, value: trade.tradeID))
+            items.append(TradeDetailsCellItem(row: .date, value: formattedDate))
+            items.append(TradeDetailsCellItem(row: .exchangeProvider, value: trade.provider))
+            items.append(TradeDetailsCellItem(row: .state, value: "Fetching..."))
+            
+            if
+                let from = trade.from,
+                let to = trade.to {
+                let pair = from.formatted() + TradeDetailsViewController.arrowRightSymbol + to.formatted()
+                items.append(TradeDetailsCellItem(row: .pair, value: pair))
+            }
         }
+        didInitialInsert = true
     }
     
     private func fetchTradeDetails() {
