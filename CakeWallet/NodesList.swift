@@ -35,32 +35,37 @@ final class NodesList: Collection {
             var userNodes = documentSerialized.compactMap({ someNode -> [String:Any]? in
                 if let hasIsUserDeleted = someNode["isUserDeleted"] as? Bool, hasIsUserDeleted == false {
                     //this node is not user deleted..now verify that it is not using one of the old cakewallet domains before returning
-                    if let nodeURI = someNode["uri"] as? String, containedURIs.contains(nodeURI.lowercased()) == false {
-                        containedURIs.update(with:nodeURI.lowercased())
-                        var nodeDataToModify = someNode
+                    if let nodeURI = someNode["uri"] as? String {
+                        var newNodeURI:String
                         switch nodeURI {
-                        case "eu-node.cakewallet.io:18081":
-                            nodeDataToModify["uri"] = "xmr-node-eu.cakewallet.com:18081"
-                        case "node.cakewallet.io:18081":
-                            nodeDataToModify["uri"] = "xmr-node-usa-east.cakewallet.com:18081"
-                        default:
-                            break
+                            case "eu-node.cakewallet.io:18081":
+                                newNodeURI = "xmr-node-eu.cakewallet.com:18081"
+                            case "node.cakewallet.io:18081":
+                                newNodeURI = "xmr-node-usa-east.cakewallet.com:18081"
+                            default:
+                                newNodeURI = nodeURI.lowercased()
+                                break
                         }
-                        return nodeDataToModify
+                        if containedURIs.contains(newNodeURI) == false {
+                            print("\(newNodeURI) is not contained")
+                            containedURIs.update(with:newNodeURI)
+                            var nodeDataToModify = someNode
+                            nodeDataToModify["uri"] = newNodeURI
+                            return nodeDataToModify
+                        }
+                        return nil
                     } else {
                         return nil
                     }
                 } else {
                     return nil
                 }
-                })
-
-            let allDocumentNodeURIs = documentSerialized.compactMap({ $0["uri"] as? String })
-            
+            })
             for (_, currentBundledNode) in originalSerialized.enumerated() {
                 if let thisNodeURI = currentBundledNode["uri"] as? String {
-                    if allDocumentNodeURIs.contains(thisNodeURI) == false {
+                    if containedURIs.contains(thisNodeURI) == false {
                         userNodes.append(currentBundledNode)
+                        containedURIs.update(with:thisNodeURI)
                     }
                 }
             }
