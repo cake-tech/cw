@@ -61,11 +61,11 @@ final class NodesList: Collection {
                     return nil
                 }
             })
-
             for (_, currentBundledNode) in originalSerialized.enumerated() {
                 if let thisNodeURI = currentBundledNode["uri"] as? String {
                     if containedURIs.contains(thisNodeURI) == false {
                         userNodes.append(currentBundledNode)
+                        containedURIs.update(with:thisNodeURI)
                     }
                 }
             }
