@@ -33,7 +33,6 @@ public struct AskToUpdateHandler: AsyncHandler {
         guard case .askToUpdate = action else { return }
         
         workQueue.async {
-            print("updating wallet")
             currentWallet.startUpdate()
             let transactionHistory = currentWallet.transactions()
             transactionHistory.refresh()
