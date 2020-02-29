@@ -56,12 +56,6 @@ final class NodesViewController: BaseViewController<NodesView>, UITableViewDeleg
         contentView.table.delegate = self
         contentView.table.dataSource = self
         contentView.table.register(items: [NodeCellItem.self])
-        contentView.autoNodeSwitchLabel.text = NSLocalizedString("auto_switch_node", comment: "")
-        contentView.autoNodeSwitch.onChangeHandler = { [weak store] isOn in
-            store?.dispatch(
-                SettingsActions.changeAutoSwitchNodes(isOn: isOn)
-            )
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -77,7 +71,6 @@ final class NodesViewController: BaseViewController<NodesView>, UITableViewDeleg
     
     func onStateChange(_ state: ApplicationState) {
         currentNode = state.settingsState.node
-        updateAutoSwitch(isOn: state.settingsState.isAutoSwitchNodeOn)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -155,12 +148,6 @@ final class NodesViewController: BaseViewController<NodesView>, UITableViewDeleg
         }
         
         contentView.table.reloadData()
-    }
-    
-    private func updateAutoSwitch(isOn: Bool) {
-        if contentView.autoNodeSwitch.isOn != isOn {
-            contentView.autoNodeSwitch.isOn = isOn
-        }
     }
     
     private func updateCurrent(node: NodeDescription) {

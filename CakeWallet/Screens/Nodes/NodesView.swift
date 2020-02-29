@@ -3,16 +3,9 @@ import FlexLayout
 
 final class NodesView: BaseFlexView {
     let table: UITableView
-    let autoNodeSwitchContainer: UIView
-    let autoNodeSwitchLabel: UILabel
-    let autoNodeSwitch: SwitchView
     
     required init() {
         table = UITableView()
-        autoNodeSwitchContainer = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 10, height: 60)))
-        autoNodeSwitch = SwitchView()
-        autoNodeSwitchLabel = UILabel()
-        autoNodeSwitchLabel.font = applyFont(ofSize: 16)
         super.init()
     }
     
@@ -20,7 +13,6 @@ final class NodesView: BaseFlexView {
         super.configureView()
         table.tableFooterView = UIView()
         table.backgroundColor = .clear
-        autoNodeSwitchLabel.textColor = UserInterfaceTheme.current.text
         table.separatorStyle = .none
         backgroundColor = UserInterfaceTheme.current.background
     }
@@ -33,19 +25,9 @@ final class NodesView: BaseFlexView {
     }
     
     override func configureConstraints() {
-        autoNodeSwitchContainer.flex
-            .direction(.row).backgroundColor(UserInterfaceTheme.current.gray.dim)
-            .padding(0, 20, 0, 20)
-            .justifyContent(.spaceBetween).alignItems(.center)
-            .height(56).define { flex in
-                flex.addItem(autoNodeSwitchLabel)
-                flex.addItem(autoNodeSwitch).width(55).height(33)
-        }
-        
         rootFlexContainer.flex
             .backgroundColor(UserInterfaceTheme.current.background)
             .define { flex in
-                flex.addItem(autoNodeSwitchContainer).width(100%).marginTop(5)
                 flex.addItem(table).width(100%).marginTop(15)
         }
     }
