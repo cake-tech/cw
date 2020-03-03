@@ -1,5 +1,28 @@
 import CakeWalletLib
 
+private let deep = 1000000000000 as Double
+private var moneroAmountFormatter = { () -> NumberFormatter in
+    let formatter = NumberFormatter()
+    formatter.isLenient = false
+    formatter.alwaysShowsDecimalSeparator = true
+    formatter.locale = Locale(identifier: "en_US")
+    formatter.numberStyle = .decimal
+    formatter.maximumFractionDigits = 12
+    formatter.minimumFractionDigits = 1
+    
+    return formatter
+}()
+
+func moneroAmountToString(amount: UInt64) -> String {
+    let damount = Double(amount) / deep
+    return moneroAmountFormatter.string(from: NSNumber(value: damount)) ?? "0.0"
+}
+
+func stringToMoneroAmount(string: String) -> UInt64 {
+    let damount = (Double(string) ?? 0.0) * deep
+    return UInt64(damount)
+}
+
 extension String {
     subscript(_ range: CountableRange<Int>) -> String {
         let idx1 = index(startIndex, offsetBy: max(0, range.lowerBound))
@@ -11,53 +34,16 @@ extension String {
 public struct MoneroAmount: Amount {
     public let currency: Currency = CryptoCurrency.monero
     public let value: UInt64
-    fileprivate let nf:NumberFormatter
     
     public init(value: UInt64) {
         self.value = value
-        nf = NumberFormatter()
-        nf.isLenient = false
-        nf.alwaysShowsDecimalSeparator = true
-        nf.locale = Locale(identifier: "en_US")
-        nf.numberStyle = .decimal
-        nf.maximumFractionDigits = 1000000000000
-        nf.minimumFractionDigits = 1
     }
     
     public init(from string: String) {
-        var _string = string
-        let splitResult = string.split(separator: ".")
-
-        if splitResult.count > 1 {
-            let afterDot = splitResult[1]
-
-            if afterDot.count > 12 {
-                let forCut = String(afterDot)
-                let cut = String(forCut[0..<12])
-                let beforeDot = String(splitResult[0])
-                _string = String(format: "%@.%@", beforeDot, cut)
-            }
-        }
-        
-        value = MoneroAmountParser.amount(from: _string)
-        
-        nf = NumberFormatter()
-        nf.isLenient = false
-        nf.alwaysShowsDecimalSeparator = true
-        nf.locale = Locale(identifier: "en_US")
-        nf.numberStyle = .decimal
-        nf.maximumFractionDigits = 1000000000000
-        nf.minimumFractionDigits = 1
+        value = stringToMoneroAmount(string: string)
     }
     
     public func formatted() -> String {
-        guard
-            let formattedValue = MoneroAmountParser.formatValue(value),
-            let _value = Double(formattedValue),
-            _value != 0 else {
-              return "0.0"
-        }
-        let number = NSNumber(value:_value)
-        return nf.string(from:number) ?? String(_value)
+        return moneroAmountToString(amount: value)
     }
 }
