@@ -20,7 +20,13 @@ public struct TransactionsState: StateType {
     public let estimatedFee: Amount
     
     public init(transactions: [TransactionDescription], sendingStage: SendingStage, estimatedFee: Amount) {
-        self.transactions = transactions
+        let groupedByID = Dictionary(grouping:transactions, by: { $0.id }).compactMapValues({ someTrans -> [TransactionDescription] in
+            if someTrans.count > 1 {
+                return someTrans.filter { $0.isPending == false }
+            }
+            return someTrans
+        })
+        self.transactions = groupedByID.values.flatMap({ $0 }).sorted(by: { $0.date > $1.date })
         self.sendingStage = sendingStage
         self.estimatedFee = estimatedFee
     }
