@@ -78,10 +78,7 @@ public final class MoneroWallet: Wallet {
     }
     
     public var isConnected: Bool {
-        var connectionStatus = moneroAdapter.connectionStatus()
-        let isConneected = connectionStatus != 0
-        connectionStatus = 0
-        return isConneected
+        return moneroAdapter.connectionStatus() != 0
     }
     
     public var keys: WalletKeys {
@@ -382,7 +379,7 @@ extension MoneroWallet: MoneroWalletAdapterDelegate {
                     return
                 }
                 
-                if !isRecovery {
+                if (!isRecovery && isConnected) { 
                     self.onConnectionStatusChange?(.synced)
                 }
             }

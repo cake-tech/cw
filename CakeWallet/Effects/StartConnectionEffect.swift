@@ -37,7 +37,7 @@ public final class StartConnectionEffect: Effect {
 }
 
 let checkConnectionTimer: UTimer = {
-    let timer = UTimer(deadline: .now(), repeating: .seconds(5), queue: backgroundConnectionTimerQueue)
+    let timer = UTimer(deadline: .now(), repeating: .seconds(60), queue: backgroundConnectionTimerQueue)
     timer.listener = {
         store.dispatch(
             BlockchainActions.checkConnection

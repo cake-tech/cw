@@ -30,8 +30,11 @@ public struct CheckConnectionHandler: AsyncHandler {
                         WalletActions.connect(node)
                     )
                 } else if store.state.settingsState.isAutoSwitchNodeOn {
+                    store.dispatch(BlockchainState.Action.changedConnectionStatus(ConnectionStatus.failed))
                     print("Need switch node!")
                     switchNode()
+                } else {
+                    store.dispatch(BlockchainState.Action.changedConnectionStatus(ConnectionStatus.failed))
                 }
             }
         }
