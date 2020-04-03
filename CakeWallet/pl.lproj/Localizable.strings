@@ -16,7 +16,7 @@
 "restore" = "Wczytaj";
 "restore_from_seed_keys" = "Wczytaj";
 
-// Next Page Seed
+// Następna strona odzyskiwania (Next Page Seed)
 "next_page_seed" = "Następna strona pokaże ci ziarno";
 "i_understand" = "rozumiem";
 "next_page_seed_instructions" = "Zapisz je na wypadek zgubienia lub wyczyszczenia telefonu. Możesz także zobaczyć ziarno ponownie w menu ustawień.";
@@ -32,7 +32,7 @@
 "pin_setup_success" = "PIN został ustawiony pomyślnie!";
 "incorrect_pin" = "Nieprawidłowy PIN.";
 
-// Restore root
+// Źródła odzyskiwania (Restore root)
 
 "restore_from_seed_keys" = "Przywróć z seed/keys";
 "restore_from_seed_keys_long" = "Przywróć swój portfel z nasion lub kluczy";
@@ -40,15 +40,15 @@
 "restore_from_backup_long" = "Przywróć całą aplikację Cake Wallet z pliku kopii zapasowej";
 
 
-// Restore cards
+// Karty odzyskiwania (Restore cards)
 
-"restore_seed_card_title" = "Przywróć z seed";
+"restore_seed_card_title" = "Przywróć z frazy";
 "restore_seed_card_description" = "Przywróć portfel z 25 lub 13 słów seed";
 "restore_keys_card_title" = "Przywróć z klawiszy";
 "restore_keys_card_description" = "Przywróć swój portfel ze swoich prywatnych kluczy";
 
 
-// Restore
+// Odzyskiwanie (Restore)
 
 "recover" = "Wyzdrowieć";
 "restore_your_wallet" = "Wczytaj Twój portfel";
@@ -80,7 +80,7 @@
 "wallet" = "Portfel";
 
 
-// Connection state
+// Stan połączenia (Connection state)
 
 "blocks_remaining" = "Pozostało bloków";
 "connecting" = "Łączenie";
@@ -91,13 +91,13 @@
 "last_block_received" = "Ostatni otrzymany blok:";
 "synchronizing" = "Synchronizacja";
 
-// Balances
+// Środki (Balances)
 "balance-display-type_unlocked" = "Dostępne Saldo";
 "balance-display-type_full" = "Pełne saldo";
 "balance-display-type_hidden" = "ukryty";
 "balance_type_title" = "Wyświetl saldo jako";
 
-// Wallet
+// Portfel (Wallet)
 
 "reconnection" = "Ponowne Połączenie";
 "reconnect" = "Połącz Ponownie";
@@ -111,7 +111,7 @@
 "pending" = "Oczekiwanie";
 
 
-// Wallets
+// Portfele (Wallets)
 
 "show_seed" = "Pokaż frazę odzyskiwania";
 "load_wallet" = "Wczytaj portfel";
@@ -124,7 +124,7 @@
 "accounts" = "Konta";
 
 
-// Address book
+// Książka adresowa (Address book)
 
 "address_book" = "Książka adresowa";
 "no_contacts" = "Brak kontaktów";
@@ -132,12 +132,12 @@
 "contact_name" = "Nazwa kontaktu";
 
 
-// Rescan
+// Przeskanuj (Rescan)
 
 "starting_rescan" = "Rozpoczęcie skanowania";
 
 
-// Send
+// Wyślij (Send)
 
 "your_wallet" = "Twój portfel";
 "all" = "Wszystko";
@@ -154,7 +154,7 @@
 "change_transaction_priority" = "Priorytet transakcji może być zmieniony w ustawieniach";
 
 
-// Receive
+// Odbierz (Receive)
 
 "copy_address" = "Kopiuj Adres";
 "more_options" = "Więcej opcji";
@@ -162,14 +162,14 @@
 "copied" = "Skopiowano";
 
 
-// Subs
+// Subadresy (Subs)
 
 "subaddresses" = "Subadresy";
 "new_subaddress_label" = "Nowa etykieta subadresu";
 "add" = "Dodaj";
 
 
-// Settings
+// Ustawienia (Settings)
 
 "settings" = "Ustawienia";
 "currency" = "Waluta";
@@ -199,7 +199,7 @@
 "save_recipient_address" = "Zapisz adres odbiorcy";
 "dark_mode_setting_title" = "Tryb ciemny";
 
-// Settings sections
+// Sekcja ustawień (Settings sections)
 
 "personal" = "Osobiste";
 "wallets" = "Portfele";
@@ -208,14 +208,14 @@
 "manual_backup" = "Ręczne tworzenie kopii zapasowych";
 
 
-// Nodes
+// Węzły (Nodes)
 
 "nodes" = "Węzły";
 "auto_switch_node" = "Dostosowanie automatyczne";
 "node_new" = "Nowy węzeł";
 
 
-// Exchange
+// Giełda (Exchange)
 
 "exchange" = "Wymiana";
 "switch_exchange" = "Wymiana przełączników";
@@ -249,7 +249,7 @@
 "trade_id" = "Identyfikator handlu";
 
 
-// Auth
+// Autoryzacja (Auth)
 
 "loading_wallet" = "Wczytywanie portfela";
 "authentication" = "Autoryzacja";
@@ -257,19 +257,19 @@
 "unlock_wallet" = "Żeby odblokować Twój portfel";
 
 
-// Wallets keys
+// Klucze dostępowe portfela (Wallets keys)
 
 "wallet_keys" = "Klucze portfela";
 "view_key_public" = "Klucz wglądu (publiczny)";
 "spend_key_public" = "Klucz wydawania (publiczny)";
 
 
-// Seed
+// Fraza odzyskiwania portfela (Seed)
 
 "seed_disclaimer" = "Proszę, skopiuj albo zapisz sobie frazę odzyskiwania portfela. Ta fraza jest potrzebna dla odzyskania portfela jeśli coś pójdzie nie tak. NIE POKAZUJ NIKOMU TEJ FRAZY gdyż uprawnia ona do kontroli środków na portfelu!";
 
 
-// Transactions details
+// Szczegóły transakcji (Transactions details)
 
 "height" = "Wysokość bloku";
 "date" = "Data";
@@ -277,7 +277,7 @@
 "transaction_details" = "Szczegóły Transakcji";
 
 
-// Exchange trade states
+// Stany transakcji giełdowych (Exchange trade states)
 
 "exchange_trade_state_pending" = "Oczekiwanie";
 "exchange_trade_state_confirming" = "Potwierdzanie";
@@ -320,9 +320,9 @@
 
 
 "ask_to_remove_message" = "Ta operacja będzie trwale usuwać portfel% @ i wszystkie jego klucze początkowe i prywatne. Czy chcesz kontynuować?";
-"order_created" = "Trade is created";
-"i_saved_sec_key" = "I have saved the trade ID";
-"please_save_sec_key" = "Please copy or write down the trade ID to continue.\n\nTrade ID: %@";
+"order_created" = "Transakcja została utworzona";
+"i_saved_sec_key" = "Zachowałem/am ID transakcji";
+"please_save_sec_key" = "Skopiuj lub zapisz ID transakcji żeby kontynuować.\n\nID transakcji: %@";
 "edit" = "edytować";
 "trade_is_powered" = "Ten handel jest napędzany przez %@";
 
