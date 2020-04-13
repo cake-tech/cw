@@ -214,396 +214,6 @@ extension ExchangerError: LocalizedError {
     }
 }
 
-//final class ExchangeActionCreators {
-//    static let shared = ExchangeActionCreators()
-//    private static let ref = "cakewallet"
-//    
-//    func fetchRates() -> Store<ApplicationState>.AsyncActionProducer {
-//        return { state, store, handler in
-//            exchangeQueue.async {
-//                let url =  URLComponents(string: "\(morphTokenUri)/rates")!
-//                var request = URLRequest(url: url.url!)
-//                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-//                Alamofire.request(request).responseData(completionHandler: { response in
-//                    if let error = response.error {
-//                        handler(ApplicationState.Action.changedError(error))
-//                        return
-//                    }
-//                    
-//                    guard
-//                        let data = response.data,
-//                        let json = try? JSON(data: data),
-//                        let ticker = json["data"].dictionaryObject as? [String: [String: String]] else {
-//                            return
-//                    }
-//                    
-//                    var _rates = ticker.reduce([CryptoCurrency : [CryptoCurrency : Double]](), { generalResult, val -> [CryptoCurrency : [CryptoCurrency : Double]] in
-//                        guard let crypto = CryptoCurrency(from: val.key) else {
-//                            return generalResult
-//                        }
-//                        
-//                        var _generalResult = generalResult
-//                        let values = val.value.reduce([CryptoCurrency : Double](), { (result, val) -> [CryptoCurrency : Double] in
-//                            guard let key = CryptoCurrency(from: val.key) else {
-//                                return result
-//                            }
-//                            
-//                            var _result = result
-//                            let rate = Double(val.value)
-//                            _result[key] = rate
-//                            return _result
-//                        })
-//                        
-//                        _generalResult[crypto] = values
-//                        return _generalResult
-//                    })
-//                    
-//                    _rates[.bitcoin]?[.monero] = nil
-//                    store.dispatch(ExchangeState.Action.changedRate(_rates))
-//                })
-//                
-//                self.fetchRatesForXMRTO()
-//            }
-//        }
-//    }
-//    
-//    func fetchRatesForXMRTO() {
-//        fetchPriceForXMRTO() { btcprice in
-//            let price = 1 / btcprice
-//            store.dispatch(ExchangeState.Action.changeRateOnlyFor(.bitcoin, .monero, price))
-//        }
-//    }
-//    
-//    func updateCurrentTradeState() -> Store<ApplicationState>.AsyncActionProducer {
-//        return { state, store, handler in
-//            exchangeQueue.async {
-//                guard let trade = state.exchangeState.trade else {
-//                    return
-//                }
-//                
-//                let url =  URLComponents(string: "\(morphTokenUri)/morph/\(trade.id)")!
-//                var request = URLRequest(url: url.url!)
-//                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-//                Alamofire.request(request).responseData(completionHandler: { response in
-//                    if let error = response.error {
-//                        handler(ApplicationState.Action.changedError(error))
-//                        return
-//                    }
-//                    
-//                    guard
-//                        let data = response.data,
-//                        let json = try? JSON(data: data),
-//                        let stateString = json["state"].string,
-//                        let state = ExchangeTradeState(rawValue: stateString.lowercased()) else {
-//                            handler(ApplicationState.Action.changedError(ExchangerError.tradeNotFould(trade.id)))
-//                            return
-//                    }
-//                    
-//                    let trade = ExchangeTrade(
-//                        id: trade.id,
-//                        inputCurrency: trade.inputCurrency,
-//                        outputCurrency: trade.outputCurrency,
-//                        inputAddress: trade.inputAddress,
-//                        min: trade.min,
-//                        max: trade.max,
-//                        status: state,
-//                        provider: .morph)
-//                    
-//                    handler(ExchangeState.Action.changedTrade(trade))
-//                })
-//            }
-//        }
-//    }
-//    
-//    func fetchPriceForXMRTO(handler: @escaping (Double) -> Void) {
-//        exchangeQueue.async {
-//            let url =  URLComponents(string: String(format: "%@/order_parameter_query/", xmrtoUri))!
-//            var request = URLRequest(url: url.url!)
-//            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-//            Alamofire.request(request).responseData(completionHandler: { response in
-//                if let _ = response.error {
-//                    //                        handler(ApplicationState.Action.changedError(error))
-//                    return
-//                }
-//                
-//                guard
-//                    let data = response.data,
-//                    let json = try? JSON(data: data),
-//                    let btcprice = json["price"].double else {
-//                        return
-//                }
-//                
-//                handler(btcprice)
-//            })
-//        }
-//    }
-//    
-//    func createTradeXMRTO(withMoneroAmount amount: Amount, address: String, handler: @escaping (CakeWalletLib.Result<String>) -> Void) {
-//        fetchPriceForXMRTO() { price in
-//            let doubleAmount = Double(amount.formatted()) ?? 0.0 as Double
-//            let url =  URLComponents(string: String(format: "%@/order_create/", xmrtoUri))!
-//            var request = URLRequest(url: url.url!)
-//            request.httpMethod = "POST"
-//            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-//            request.addValue(cakeUserAgent, forHTTPHeaderField: "User-Agent")
-//            let btcAmount = doubleAmount * price
-//            let bodyJSON: JSON = [
-//                "btc_amount": String(btcAmount).replacingOccurrences(of: ",", with: "."),
-//                "btc_dest_address": address
-//            ]
-//            
-//            do {
-//                request.httpBody = try bodyJSON.rawData(options: .prettyPrinted)
-//            } catch {
-//                handler(.failed(error))
-//                return
-//            }
-//            
-//            Alamofire.request(request).responseData(completionHandler: { response in
-//                if let error = response.error {
-//                    handler(.failed(error))
-//                    return
-//                }
-//                
-//                guard
-//                    let data = response.data,
-//                    let json = try? JSON(data: data) else {
-//                        return
-//                }
-//                
-//                guard response.response?.statusCode == 201 else {
-//                    if response.response?.statusCode == 400 {
-//                        handler(.failed(ExchangerError.credentialsFailed(json["error_msg"].stringValue)))
-//                    } else {
-//                        handler(.failed(ExchangerError.tradeNotCreated))
-//                    }
-//                    
-//                    return
-//                }
-//                
-//                let uuid = json["uuid"].stringValue
-//                handler(.success(uuid))
-//            })
-//            
-//        }
-//    }
-//    
-//    func createTradeXMRTO(amount: Amount, address: String, handler: @escaping (CakeWalletLib.Result<String>) -> Void) {
-//        let url =  URLComponents(string: String(format: "%@/order_create/", xmrtoUri))!
-//        var request = URLRequest(url: url.url!)
-//        request.httpMethod = "POST"
-//        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-//        request.addValue(cakeUserAgent, forHTTPHeaderField: "User-Agent")
-//        let bodyJSON: JSON = [
-//            "btc_amount": amount.formatted().replacingOccurrences(of: ",", with: "."),
-//            "btc_dest_address": address
-//        ]
-//        
-//        do {
-//            request.httpBody = try bodyJSON.rawData(options: .prettyPrinted)
-//        } catch {
-//            handler(.failed(error))
-//            return
-//        }
-//        
-//        Alamofire.request(request).responseData(completionHandler: { response in
-//            if let error = response.error {
-//                handler(.failed(error))
-//                return
-//            }
-//            
-//            guard
-//                let data = response.data,
-//                let json = try? JSON(data: data) else {
-//                    return
-//            }
-//            
-//            guard response.response?.statusCode == 201 else {
-//                if response.response?.statusCode == 400 {
-//                    handler(.failed(ExchangerError.credentialsFailed(json["error_msg"].stringValue)))
-//                } else {
-//                    handler(.failed(ExchangerError.tradeNotCreated))
-//                }
-//                
-//                return
-//            }
-//            
-//            let uuid = json["uuid"].stringValue
-//            handler(.success(uuid))
-//        })
-//    }
-//    
-//    func getTradeForXMRTO(with uuid: String, handler: @escaping (CakeWalletLib.Result<ExchangeTrade>) -> Void) {
-//        let url =  URLComponents(string: String(format: "%@/order_status_query/", xmrtoUri))!
-//        var request = URLRequest(url: url.url!)
-//        request.httpMethod = "POST"
-//        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-//        request.addValue(cakeUserAgent, forHTTPHeaderField: "User-Agent")
-//        let bodyJSON: JSON = [
-//            "uuid": uuid
-//        ]
-//        
-//        do {
-//            request.httpBody = try bodyJSON.rawData(options: .prettyPrinted)
-//        } catch {
-//            handler(.failed(error))
-//            return
-//        }
-//        
-//        Alamofire.request(request).responseData(completionHandler: { response in
-//            if let error = response.error {
-//                handler(.failed(error))
-//                return
-//            }
-//            
-//            guard response.response?.statusCode == 200 else {
-//                return
-//            }
-//            
-//            guard
-//                let data = response.data,
-//                let json = try? JSON(data: data) else {
-//                    return
-//            }
-//            
-//            let dateFormatter = DateFormatter()
-//            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-//            
-//            let address = json["xmr_receiving_integrated_address"].stringValue
-//            let paymentId = json["xmr_required_payment_id_short"].stringValue
-//            let totalAmount = json["xmr_amount_total"].stringValue
-//            let amount = MoneroAmount(from: totalAmount)
-//            let stateString = json["state"].stringValue
-//            let state = ExchangeTradeState(fromXMRTO: stateString) ?? .notFound
-//            var expiredAt: Date? // = Date(timeIntervalSince1970: expiredAtTimestamp)
-//            
-//            if let _expiredAt = dateFormatter.date(from: json["expires_at"].stringValue) {
-//                expiredAt = _expiredAt
-//            }
-//            
-//            let trade = ExchangeTrade(
-//                id: uuid,
-//                inputCurrency: .monero,
-//                outputCurrency: .bitcoin,
-//                inputAddress: address,
-//                min: MoneroAmount(value: 0),
-//                max: MoneroAmount(value: 0),
-//                value: amount,
-//                status: state,
-//                paymentId: paymentId,
-//                provider: .xmrto,
-//                outputTxID: state == .btcSent
-//                    ? json["btc_transaction_id"].stringValue
-//                    : nil,
-//                expiredAt: expiredAt
-//            )
-//            
-//            handler(.success(trade))
-//        })
-//    }
-//    
-//    func getOrderStatusForXMRTO(uuid: String) -> Store<ApplicationState>.AsyncActionProducer {
-//        return { state, store, handler in
-//            self.getTradeForXMRTO(with: uuid, handler: { res in
-//                switch res {
-//                case let .success(trade):
-//                    handler(ExchangeState.Action.changedTrade(trade))
-//                case let .failed(error):
-//                    handler(ApplicationState.Action.changedError(error))
-//                }
-//            })
-//        }
-//    }
-//    
-//    func createTrade(from input: CryptoCurrency, refund: String, outputs: [ExchangeOutput], handler: @escaping (CakeWalletLib.Result<ExchangeTrade>) -> Void) {
-//        //        return { state, store, handler in
-//        exchangeQueue.async {
-//            let url =  URLComponents(string: "\(morphTokenUri)/morph")!
-//            var request = URLRequest(url: url.url!)
-//            request.httpMethod = "POST"
-//            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-//            let bodyJSON: JSON = [
-//                "input": [
-//                    "asset": input.formatted(),
-//                    "refund": refund
-//                ],
-//                "output": outputs.map({[
-//                    "asset": $0.crypto.formatted(),
-//                    "weight": $0.weight,
-//                    "address": $0.address
-//                    ]}),
-//                "tag": ExchangeActionCreators.ref
-//            ]
-//            
-//            do {
-//                request.httpBody = try bodyJSON.rawData(options: .prettyPrinted)
-//            } catch {
-//                handler(.failed(error))
-//                return
-//            }
-//            
-//            Alamofire.request(request).responseData(completionHandler: { response in
-//                if let error = response.error {
-//                    handler(.failed(error))
-//                    return
-//                }
-//                
-//                guard
-//                    let data = response.data,
-//                    let json = try? JSON(data: data) else {
-//                        return
-//                }
-//                
-//                if json["success"].exists() && !json["success"].boolValue {
-//                    handler(.failed(ExchangerError.credentialsFailed(json["description"].stringValue)))
-//                    
-//                    return
-//                }
-//                
-//                guard
-//                    let depositAddress = json["input"]["deposit_address"].string,
-//                    let id = json["id"].string,
-//                    let minAmount = json["input"]["limits"]["min"].uInt64,
-//                    let maxAmount = json["input"]["limits"]["max"].uInt64 else {
-//                        return
-//                }
-//                
-//                let min: Amount
-//                let max: Amount
-//                
-//                switch input {
-//                case .bitcoin:
-//                    min = BitcoinAmount(value: minAmount)
-//                    max = BitcoinAmount(value: maxAmount)
-//                case .monero:
-//                    min = MoneroAmount(value: UInt64(minAmount))
-//                    max = MoneroAmount(value: UInt64(maxAmount))
-//                case .bitcoinCash, .dash, .liteCoin:
-//                    min = EDAmount(value: minAmount, currency: input)
-//                    max = EDAmount(value: maxAmount, currency: input)
-//                case .ethereum:
-//                    min = EthereumAmount(value: minAmount)
-//                    max = EthereumAmount(value: maxAmount)
-//                }
-//                
-//                let trade = ExchangeTrade(
-//                    id: id,
-//                    inputCurrency: input,
-//                    outputCurrency: outputs.first!.crypto,
-//                    inputAddress: depositAddress,
-//                    min: min,
-//                    max: max,
-//                    status: ExchangeTradeState(rawValue: json["state"].stringValue.lowercased()) ?? .pending,
-//                    provider: .morph
-//                )
-//                
-//                handler(.success(trade))
-//            })
-//        }
-//    }
-//    //    }
-//}
-
 extension Array {
     public func toDictionary<Key: Hashable>(with selectKey: (Element) -> Key) -> [Key:Element] {
         var dict = [Key:Element]()
@@ -696,37 +306,11 @@ private func fetchXMRTOLimits(handler: @escaping (CakeWalletLib.Result<(min: Dou
     }
 }
 
-//func makeAmount(from stringAmount: String, for crypto: CryptoCurrency) -> Amount {
-//    switch crypto {
-//    case .bitcoin:
-//        return BitcoinAmount(from: stringAmount)
-//    case .bitcoinCash, .dash, .liteCoin:
-//        return EDAmount(from: stringAmount, currency: crypto)
-//    case .ethereum:
-//        return EthereumAmount(from: stringAmount)
-//    case .monero:
-//        return MoneroAmount(from: stringAmount)
-//    }
-//}
-
-//func makeAmount(from value: UInt64, for crypto: CryptoCurrency) -> Amount {
-//    switch crypto {
-//    case .bitcoin:
-//        return BitcoinAmount(value: value)
-//    case .bitcoinCash, .dash, .liteCoin:
-//        return EDAmount(value: value, currency: crypto)
-//    case .ethereum:
-//        return EthereumAmount(value: value)
-//    case .monero:
-//        return MoneroAmount(value: value)
-//    }
-//}
 
 final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubscriber, CurrencyPickerDelegate {
     weak var exchangeFlow: ExchangeFlow?
     
     let cryptos: [CryptoCurrency]
-//    let exchangeActionCreators: ExchangeActionCreators
     let store: Store<ApplicationState>
     
     var depositAmount: Amount {
@@ -760,9 +344,6 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
     private var didSetCurrentAddressForDeposit: Bool
     private var didSetCurrentAddressForReceive: Bool
     private var exchangeNameView: ExchangeNameView = ExchangeNameView()
-    private var isXMRTO: Bool {
-        return exchange.provider == .xmrto
-    }
     
     private var exchange: AnyExchange = XMRTOExchange() {
         didSet {
@@ -886,6 +467,7 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         contentView.depositCardView.addressContainer.updateResponsible = self
         contentView.receiveCardView.addressContainer.presenter = self
         contentView.receiveCardView.addressContainer.updateResponsible = self
+        contentView.receiveCardView.amountTextField.isUserInteractionEnabled = false
         exchangeNameView.title = NSLocalizedString("exchange", comment: "")
         exchangeNameView.titleLabel.textColor = UserInterfaceTheme.current.text
         exchangeNameView.subtitle = exchange.provider.formatted()
@@ -1011,10 +593,6 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         didSetCurrentAddressForDeposit = false
         didSetCurrentAddressForReceive = false
         setProviderTitle()
-//        if isXMRTO() {
-//            contentView.depositCardView.minLabel.isHidden = true
-//            contentView.depositCardView.maxLabel.isHidden = true
-//        }
     }
     
     override func viewDidLoad() {
@@ -1115,17 +693,15 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         updateLimits()
         setProviderTitle()
         exchangeNameView.subtitle = exchange.provider.formatted()
-        contentView.depositCardView.amountTextField.isUserInteractionEnabled = !isXMRTO
-        contentView.receiveCardView.amountTextField.isUserInteractionEnabled = isXMRTO
-        contentView.depositCardView.wantsEstimatedField = isXMRTO
-        contentView.receiveCardView.wantsEstimatedField = !isXMRTO
+//        contentView.depositCardView.amountTextField.isUserInteractionEnabled = false
+        contentView.depositCardView.wantsEstimatedField = false
+        contentView.receiveCardView.wantsEstimatedField = true
         highlightNeededFields()
     }
     
     private func highlightNeededFields() {
-        let isXMRTO = self.isXMRTO
-        contentView.depositCardView.amountTextField.bottomBorder.backgroundColor = !isXMRTO ? UserInterfaceTheme.current.purple.highlight.cgColor : UserInterfaceTheme.current.gray.dim.cgColor
-        contentView.receiveCardView.amountTextField.bottomBorder.backgroundColor = isXMRTO ? UserInterfaceTheme.current.purple.highlight.cgColor : UserInterfaceTheme.current.gray.dim.cgColor
+        contentView.depositCardView.amountTextField.bottomBorder.backgroundColor = UserInterfaceTheme.current.purple.highlight.cgColor
+        contentView.receiveCardView.amountTextField.bottomBorder.backgroundColor = UserInterfaceTheme.current.gray.dim.cgColor
     }
     
     private func changeExchange(deposit: CryptoCurrency, receive: CryptoCurrency) {
@@ -1162,85 +738,16 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
             .disposed(by: disposeBag)
         
         contentView.depositCardView.addressContainer.isUserInteractionEnabled = store.state.walletState.walletType.currency != crypto
-        
-//        receiveAmountString.accept(receiveAmount)
-//        contentView.receiveCardView.amountTextField.text = receiveAmount
         setProviderTitle()
         updateLimits()
     }
     
     private func updateLimits() {
-//        if isXMRTO() {
-//            fetchXMRTOLimits() { [weak self] result in
-//                DispatchQueue.main.async {
-//                    guard let receiveCrypto = self?.receiveCrypto else {
-//                        return
-//                    }
-//
-//                    switch result {
-//                    case let .success(limits):
-//                        let min = makeAmount(from: String(limits.min), for: receiveCrypto.value)
-//                        let max = makeAmount(from: String(limits.max), for: receiveCrypto.value)
-//                        self?.receiveMinAmount.accept(min.formatted())
-//                        self?.receiveMaxAmount.accept(max.formatted())
-//                        self?.contentView.depositCardView.minLabel.isHidden = true
-//                        self?.contentView.depositCardView.maxLabel.isHidden = true
-//                    case let.failed(error):
-//                        print(error)
-//                    }
-//                }
-//            }
-//            return
-//        }
-//
-//        contentView.depositCardView.minLabel.isHidden = false
-//        contentView.depositCardView.maxLabel.isHidden = false
-        
-        let from = isXMRTO ? receiveCrypto.value : depositCrypto.value
-        let to = isXMRTO ? depositCrypto.value : receiveCrypto.value
-        let limits = isXMRTO ? receiveLimits : depositLimits
-        
-        exchange.fetchLimist(from: from, to: to)
+        exchange.fetchLimist(from: depositCrypto.value, to: receiveCrypto.value)
             .catchErrorJustReturn((min: nil, max: nil))
-            .bind(to: limits)
+            .bind(to: depositLimits)
             .disposed(by: disposeBag)
         depositLimits.accept((min: nil, max: nil))
-        
-//        fetchLimits(for: receiveCrypto.value, and: depositCrypto.value) { [weak self] result in
-//            DispatchQueue.main.async {
-//                guard let depositCrypto = self?.depositCrypto else {
-//                    return
-//                }
-//
-//                switch result {
-//                case let .success(limits):
-//                    let min = makeAmount(from: limits.min, for: depositCrypto.value)
-//                    let max = makeAmount(from: limits.max, for: depositCrypto.value)
-//                    self?.receiveMinAmount.accept(min.formatted())
-//                    self?.receiveMaxAmount.accept(max.formatted())
-//                case let.failed(error):
-//                    print(error)
-//                }
-//            }
-//        }
-//
-//        fetchLimits(for: depositCrypto.value, and: receiveCrypto.value) { [weak self] result in
-//            DispatchQueue.main.async {
-//                guard let depositCrypto = self?.depositCrypto else {
-//                    return
-//                }
-//
-//                switch result {
-//                case let .success(limits):
-//                    let min = makeAmount(from: limits.min, for: depositCrypto.value)
-//                    let max = makeAmount(from: limits.max, for: depositCrypto.value)
-//                    self?.depositMaxAmount.accept(max.formatted())
-//                    self?.depositMinAmount.accept(min.formatted())
-//                case let.failed(error):
-//                    print(error)
-//                }
-//            }
-//        }
     }
     
     private func onReceiveCryptoChange(_ crypto: CryptoCurrency) {
@@ -1252,7 +759,6 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
                 receiveAddress.accept(store.state.walletState.address)
                 receiveCurrencyDisplayed = crypto
             }
-//            receiveAddress.accept(store.state.walletState.address)
         } else {
             if (receiveCurrencyDisplayed != crypto) {
                 receiveAddress.accept("")
@@ -1303,7 +809,6 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
             outputAmount = EDAmount(from: String(result), currency: receiveCrypto.value)
         }
         
-        //        return amountForDisplayFormatted(from: outputAmount.formatted())
         return outputAmount.formatted()
     }
     
@@ -1340,13 +845,7 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
     private func setProviderTitle() {
         var title: String
         var icon: String
-//        let isXMRTO = receiveCrypto.value == .bitcoin && depositCrypto.value == .monero
-//
-//        if isXMRTO {
-//            title = "Powered by XMR.to"
-//            icon = "xmr_to_logo"
-//        }
-        
+
         switch exchange.provider {
         case .changenow:
             title = "Powered by Changenow.io"
@@ -1363,9 +862,7 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
             return
         }
         
-        contentView.dispclaimerLabel.text = exchange.provider == .xmrto
-            ? NSLocalizedString("amount_is_guaranteed", comment: "")
-            : NSLocalizedString("amount_is_estimate", comment: "")
+        contentView.dispclaimerLabel.text = NSLocalizedString("amount_is_estimate", comment: "")
         changeProviderTitle(title, icon: UIImage(named: icon))
     }
     
@@ -1380,8 +877,6 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
     private func clear() {
         depositAmountString.accept("")
         receiveAmountString.accept("")
-//        contentView.depositCardView.addressContainer.textView.originText.accept(depositCrypto.value == .monero ? store.state.walletState.address : "")
-//        contentView.receiveCardView.addressContainer.textView.originText.accept(receiveCrypto.value == .monero ? store.state.walletState.address : "")
         updateReceiveResult(with: makeAmount(0 as UInt64, currency: receiveCrypto.value))
         store.dispatch(ExchangeState.Action.changedTrade(nil))
     }
@@ -1407,16 +902,11 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
             return
         }
         
-//        let output = ExchangeOutput(
-//            address: outputAddress,
-//            weight: 10000,
-//            crypto: receiveCrypto.value)
-//        let amount = isXMRTO() ? receiveAmount : depositAmount
-        let amountString = (isXMRTO ? receiveAmountString.value : depositAmountString.value).replacingOccurrences(of: ",", with: ".")
-        let amount = makeAmount(amountString, currency: isXMRTO ? receiveCrypto.value : depositCrypto.value)
+        let amountString = depositAmountString.value.replacingOccurrences(of: ",", with: ".")
+        let amount = makeAmount(amountString, currency: depositCrypto.value)
         let amountDouble = Double(amountString) ?? 0
         let request: TradeRequest
-        let limits = isXMRTO ? receiveLimits.value : depositLimits.value
+        let limits = depositLimits.value
         
         if
             let min = limits.min,
@@ -1460,61 +950,10 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
                         self.showErrorAlert(error: error)
                     }
                 }).disposed(by: self.disposeBag)
-            
-//            if self.isXMRTO() {
-//                self.exchangeActionCreators.createTradeXMRTO(amount: amount, address: outputAddress) { result in
-//                    alert.dismiss(animated: true) { [weak self] in
-//                        guard let this = self else {
-//                            return
-//                        }
-//
-//                        switch result {
-//                        case let .success(uuid):
-//                            let alert = ExchangeAlertViewController()
-//                            alert.onDone = {
-//                                this.store.dispatch(
-//                                    this.exchangeActionCreators.getOrderStatusForXMRTO(uuid: uuid)
-//                                ) {
-//                                    this.exchangeFlow?.change(route: .exchangeResult(amount))
-//                                }
-//                            }
-//                            alert.setTradeID(uuid)
-//                            self?.present(alert, animated: true)
-//                        case let .failed(error):
-//                            this.store.dispatch(ApplicationState.Action.changedError(error))
-//                            this.showErrorAlert(error: error)
-//                        }
-//                    }
-//                }
-//                return
-//            }
-//
-//            self.exchangeActionCreators.createTrade(
-//                from: self.depositCrypto.value,
-//                refund: refundAddress,
-//                outputs: [output]
-//            ) { result in
-//                alert.dismiss(animated: true) { [weak self] in
-//                    switch result {
-//                    case let .success(trade):
-//                        let alert = ExchangeAlertViewController()
-//                        alert.onDone = {
-//                            self?.store.dispatch(ExchangeState.Action.changedTrade(trade))
-//                            self?.exchangeFlow?.change(route: .exchangeResult(amount))
-//                        }
-//                        alert.setTradeID(trade.id)
-//                        self?.present(alert, animated: true)
-//                    case let .failed(error):
-//                        self?.store.dispatch(ApplicationState.Action.changedError(error))
-//                        self?.showErrorAlert(error: error)
-//                    }
-//                }
-//            }
         }
     }
     
     private func onTradeCreated(_ trade: Trade, amount: Amount) {
-        
         TradesList.shared.add(
             tradeID: trade.id,
             date: Date(),
@@ -1530,10 +969,6 @@ final class ExchangeViewController: BaseViewController<ExchangeView>, StoreSubsc
         alert.setTradeID(trade.id)
         present(alert, animated: true)
     }
-    
-//    private func isXMRTO() -> Bool {
-//        return receiveCrypto.value == .bitcoin && depositCrypto.value == .monero
-//    }
 }
 
 extension ExchangeViewController: QRUriUpdateResponsible {

@@ -280,6 +280,7 @@ final class ExchangeResultViewController: BaseViewController<ExchangeResultView>
                 
                 self?.contentView.timeoutLabel.text = String(format: "Offer expires in: %@", timeout.formatted())
                 self?.contentView.timeoutLabel.boldSubstring("Offer expires in:")
+                self?.contentView.timeoutLabel.flex.layout()
             }.fire()
             
             timeoutTimerRun = true

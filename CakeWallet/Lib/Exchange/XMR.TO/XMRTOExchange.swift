@@ -95,7 +95,7 @@ final class XMRTOExchange: Exchange {
                 urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
                 urlRequest.addValue(XMRTOExchange.cakeUserAgent, forHTTPHeaderField: "User-Agent")
                 let bodyJSON: JSON = [
-                    "btc_amount": request.amount.formatted().replacingOccurrences(of: ",", with: "."),
+                    "xmr_amount": request.amount.formatted().replacingOccurrences(of: ",", with: "."),
                     "btc_dest_address": request.address
                 ]
                 
@@ -156,7 +156,7 @@ final class XMRTOExchange: Exchange {
     func fetchLimist(from input: CryptoCurrency, to output: CryptoCurrency) -> Observable<ExchangeLimits> {
         return Observable.create({ o -> Disposable in
             exchangeQueue.async {
-                guard input == .bitcoin && output == .monero else {
+                guard input == .monero && output == .bitcoin else {
                     o.onNext((min: nil, max: nil))
                     return
                 }
@@ -178,13 +178,17 @@ final class XMRTOExchange: Exchange {
                     }
                     
                     guard
-                        let min = json["lower_limit"].double,
-                        let max = json["upper_limit"].double
+                        let btcPrice = json["price"].double,
+                        let btcMin = json["lower_limit"].double,
+                        let btcMax = json["upper_limit"].double
                         else {
                             o.onError(ExchangerError.limitsNotFoud)
                             return
                     }
                     
+                    let price = 1 / btcPrice
+                    let min = String(format: "%.3f", (btcMin * price))
+                    let max = String(format: "%.3f", (btcMax * price))
                     let minAmount = makeAmount(min, currency: input)
                     let maxAmount = makeAmount(max, currency: input)
                     let limits = ExchangeLimits(min: minAmount, max: maxAmount)
@@ -195,55 +199,7 @@ final class XMRTOExchange: Exchange {
             return Disposables.create()
         })
     }
-    
-//    func createTrade(from request: XMRTOTradeRequest, handler: @escaping (CakeWalletLib.Result<XMRTOTrade>) -> Void) {
-//        exchangeQueue.async {
-//            let url =  URLComponents(string: XMRTOExchange.createTradeURI)!
-//            var urlRequest = URLRequest(url: url.url!)
-//            urlRequest.httpMethod = "POST"
-//            urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-//            urlRequest.addValue(XMRTOExchange.cakeUserAgent, forHTTPHeaderField: "User-Agent")
-//            let bodyJSON: JSON = [
-//                "btc_amount": request.amount.formatted().replacingOccurrences(of: ",", with: "."),
-//                "btc_dest_address": request.address
-//            ]
-//
-//            do {
-//                urlRequest.httpBody = try bodyJSON.rawData(options: .prettyPrinted)
-//            } catch {
-//                handler(.failed(error))
-//                return
-//            }
-//
-//            Alamofire.request(urlRequest).responseData(completionHandler: { response in
-//                if let error = response.error {
-//                    handler(.failed(error))
-//                    return
-//                }
-//
-//                guard
-//                    let data = response.data,
-//                    let json = try? JSON(data: data) else {
-//                        return
-//                }
-//
-//                guard response.response?.statusCode == 201 else {
-//                    if response.response?.statusCode == 400 {
-//                        handler(.failed(ExchangerError.credentialsFailed(json["error_msg"].stringValue)))
-//                    } else {
-//                        handler(.failed(ExchangerError.tradeNotCreated))
-//                    }
-//
-//                    return
-//                }
-//
-//                let uuid = json["uuid"].stringValue
-//                let trade = XMRTOTrade(id: uuid, from: request.from, to: request.to)
-//                handler(.success(trade))
-//            })
-//        }
-//    }
-    
+ 
     func fetchRates() -> Observable<Rates> {
         return Observable.create({ o -> Disposable in
             if let rates = self.rates {
@@ -268,8 +224,8 @@ final class XMRTOExchange: Exchange {
                             return
                     }
                     
-                    let price = 1 / btcprice
-                    let rate = [CryptoCurrency.bitcoin: [CryptoCurrency.monero: price]]
+                    let price = btcprice
+                    let rate = [CryptoCurrency.monero: [CryptoCurrency.bitcoin: price]]
                     o.onNext(rate)
                 })
             }
